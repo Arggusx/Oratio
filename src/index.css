@@ -2106,4 +2106,22 @@ h1, h2, h3, h4,
   padding: var(--space-lg);
 }
 
+.btn-read-more-inline {
+  background: transparent;
+  border: none;
+  color: var(--color-terracotta);
+  font-weight: 600;
+  font-size: 0.85rem;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  padding: 0 0.2rem;
+  transition: opacity var(--duration-fast);
+}
+
+.btn-read-more-inline:hover {
+  text-decoration: underline;
+  opacity: 0.85;
+}
+
+
 
