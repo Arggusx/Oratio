@@ -61,41 +61,98 @@ export default function Leituras() {
   const [focus, setFocus] = useState(false);
 
   useEffect(() => {
-    // 1. Fetch liturgia from Canção Nova
+    // 1. Fetch liturgia da API principal
     const fetchLiturgia = fetch('https://liturgia.up.railway.app/v2/')
-      .then((r) => r.json());
+      .then((r) => {
+        if (!r.ok) throw new Error('Falha na API da Liturgia');
+        return r.json();
+      });
 
-    // 2. Fetch Homilia from local API
-    const fetchHomilia = fetch(`${import.meta.env.VITE_API_ORACAO}/api/daily-reflection`)
-      .then((r) => r.json())
-      .catch(() => null); // Silent fallback
+    // 2. Fetch Homilia do backend (/api/daily-reflection)
+    const candidateBases = [
+      import.meta.env.VITE_API_ORACAO,
+      import.meta.env.DEV ? 'http://localhost:3000' : '',
+      'https://daily-prayer-api.vercel.app',
+    ].filter(Boolean);
 
-    Promise.allSettled([fetchLiturgia, fetchHomilia]).then((results) => {
-      let combinedData = { ...fallback };
-      
-      // Handle Liturgia
-      if (results[0].status === 'fulfilled' && results[0].value) {
-        const d = results[0].value;
-        combinedData = { ...combinedData, ...d.leituras };
-        setLiturgia(d.liturgia || 'Liturgia diária');
-        setColor(liturgicalColors[d.cor] || '#B84A13');
+    const fetchHomilia = (async () => {
+      for (const baseUrl of candidateBases) {
+        try {
+          const response = await fetch(`${baseUrl}/api/daily-reflection`);
+          if (!response.ok) continue;
+
+          return await response.json();
+        } catch {
+          // tenta o próximo candidato
+        }
       }
 
-      // Handle Homilia
+      return null;
+    })();
+
+    Promise.allSettled([fetchLiturgia, fetchHomilia]).then((results) => {
+      let combinedData = {
+        primeiraLeitura: [],
+        salmo: [],
+        segundaLeitura: [],
+        evangelho: [],
+        homilia: []
+      };
+      
+      // Trata a Liturgia Diária (versículos da Bíblia)
+      if (results[0].status === 'fulfilled' && results[0].value?.leituras) {
+        const d = results[0].value;
+        const leituras = d.leituras;
+
+        combinedData.primeiraLeitura = (leituras.primeiraLeitura && leituras.primeiraLeitura.length > 0)
+          ? leituras.primeiraLeitura
+          : fallback.primeiraLeitura;
+
+        combinedData.salmo = (leituras.salmo && leituras.salmo.length > 0)
+          ? leituras.salmo
+          : fallback.salmo;
+
+        combinedData.segundaLeitura = leituras.segundaLeitura || [];
+
+        combinedData.evangelho = (leituras.evangelho && leituras.evangelho.length > 0)
+          ? leituras.evangelho
+          : fallback.evangelho;
+
+        setLiturgia(d.liturgia || 'Liturgia diária');
+        setColor(liturgicalColors[d.cor] || '#B84A13');
+      } else {
+        // Se a API da liturgia falhar completamente, usa o fallback para as leituras
+        combinedData.primeiraLeitura = fallback.primeiraLeitura;
+        combinedData.salmo = fallback.salmo;
+        combinedData.evangelho = fallback.evangelho;
+      }
+
+      // Trata a Homilia/Reflexão consumindo { title, content } do endpoint /api/daily-reflection
       if (results[1].status === 'fulfilled' && results[1].value) {
         const homiliaData = results[1].value;
-        combinedData.homilia = [
-          {
-            referencia: 'Homilia do Dia',
-            titulo: homiliaData.title || 'Reflexão',
-            texto: homiliaData.content || 'Sem reflexão disponível hoje.',
-          }
-        ];
+        const content = homiliaData.content || homiliaData.texto || homiliaData.reflexao || homiliaData.message || '';
+        const title = homiliaData.title || homiliaData.titulo || homiliaData.subject || 'Reflexão Diária';
+
+        if (content) {
+          combinedData.homilia = [
+            {
+              referencia: 'Homilia Diária',
+              titulo: title,
+              texto: content,
+            }
+          ];
+        } else {
+          combinedData.homilia = fallback.homilia;
+        }
+      } else {
+        combinedData.homilia = fallback.homilia;
       }
 
       setData(combinedData);
     });
   }, []);
+
+
 
   // Lock scroll when focus mode is active
   useEffect(() => {
