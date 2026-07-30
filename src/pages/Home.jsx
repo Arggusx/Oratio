@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import DailyReading3Blocks from '../components/DailyReading3Blocks';
 
 const stagger = {
   animate: {
@@ -48,21 +49,10 @@ export default function Home() {
         </motion.div>
       </motion.section>
 
-      {/* ── Daily Inspiration Placeholder ── */}
-      <motion.section
-        className="reflection"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.35, ease: [0.33, 1, 0.68, 1] }}
-        style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
-      >
-        <span className="eyebrow">Inspiração Diária</span>
-        
-        <blockquote style={{ maxWidth: '800px', margin: '2rem auto 1rem' }}>
-          &ldquo;Não vos perturbeis, não temais coisa alguma. Tudo passa, só Deus não muda. A paciência tudo alcança; quem a Deus tem nada lhe falta: só Deus basta.&rdquo;
-        </blockquote>
-        <cite>— Santa Teresa de Ávila</cite>
-      </motion.section>
+      {/* ── Leitura Diária em 3 Blocos (5 a 10 min, sem Evangelho) ── */}
+      <DailyReading3Blocks />
     </main>
   );
 }
+
+
