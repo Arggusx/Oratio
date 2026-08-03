@@ -1887,6 +1887,14 @@ h1, h2, h3, h4,
   transform: translateX(3px);
 }
 
+.daily-reading-intro {
+  max-width: 46rem;
+  margin: 0 0 var(--space-xl);
+  color: var(--color-text-muted);
+  font-size: 0.96rem;
+  line-height: 1.7;
+}
+
 /* 3 Cards Grid */
 .reading-blocks-grid {
   display: grid;
@@ -1974,6 +1982,29 @@ h1, h2, h3, h4,
   flex: 1;
   border-left: 2px solid var(--color-gold-muted);
   padding-left: 0.75rem;
+}
+
+.block-interpretation {
+  margin: 0 0 1.1rem;
+  padding: 0.85rem;
+  background: var(--color-cream-warm);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+}
+
+.block-interpretation strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--color-terracotta-dark);
+  font-family: var(--font-serif);
+  font-size: 1rem;
+}
+
+.block-interpretation p {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.55;
 }
 
 .reading-block-actions {
@@ -2122,6 +2153,5 @@ h1, h2, h3, h4,
   text-decoration: underline;
   opacity: 0.85;
 }
-
 
 
