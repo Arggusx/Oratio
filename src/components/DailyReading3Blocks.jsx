@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { BookOpen, Clock, Copy, Check, ChevronRight, Sparkles, RefreshCw, AlertCircle, Feather, Scroll, Mail } from 'lucide-react';
 
@@ -40,7 +40,6 @@ export default function DailyReading3Blocks() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [copiedId, setCopiedId] = useState(null);
-  const [expandedId, setExpandedId] = useState(null);
   const [expandedTextId, setExpandedTextId] = useState(null);
 
   // Fetch daily reading 3 blocks from backend API (/api/daily-reading)
@@ -95,10 +94,6 @@ export default function DailyReading3Blocks() {
     }
   };
 
-  const toggleReflection = (id) => {
-    setExpandedId((prev) => (prev === id ? null : id));
-  };
-
   const toggleTextExpand = (id) => {
     setExpandedTextId((prev) => (prev === id ? null : id));
   };
@@ -126,14 +121,13 @@ export default function DailyReading3Blocks() {
           </p>
         </div>
 
-        {/* Link to Gospels page */}
+
         <Link to="/home/leituras" className="gospel-link-badge">
           <span>Ver também o Evangelho de hoje</span>
           <ChevronRight size={16} />
         </Link>
       </div>
 
-      {/* ── Offline/Fallback Notice if needed ── */}
       {error && (
         <div className="verse-api-notice" style={{ marginTop: '1rem' }}>
           <AlertCircle size={14} />
@@ -144,7 +138,6 @@ export default function DailyReading3Blocks() {
         </div>
       )}
 
-      {/* ── Loading Skeleton ── */}
       {loading ? (
         <div className="reading-blocks-grid">
           {[1, 2, 3].map((i) => (
@@ -156,21 +149,28 @@ export default function DailyReading3Blocks() {
           ))}
         </div>
       ) : (
-        /* ── 3 Blocks Grid ── */
-        <div className="reading-blocks-grid">
-          {readings.map((item, index) => {
-            const IconComponent = item.icon || getCategoryIcon(item.id, item.titulo_categoria || item.categoria);
-            const blockKey = item.id || `block-${index}`;
-            const categoriaNome = item.titulo_categoria || item.categoria || 'Leitura';
-            const tempoLeitura = item.tempo_estimado || item.tempoEstimado || '~2 min';
-            const isCopied = copiedId === (item.id || categoriaNome);
-            const isReflectionExpanded = expandedId === blockKey;
-            const isTextExpanded = expandedTextId === blockKey;
+        <>
+          <p className="daily-reading-intro">
+            Leituras breves para levar a Palavra com você, mesmo quando não for possível carregar a Bíblia.
+            Reserve alguns minutos, acolha cada trecho e deixe sua interpretação iluminar o seu dia.
+          </p>
 
-            const isLongText = (item.texto || '').length > 140;
-            const displayedText = isLongText && !isTextExpanded 
-              ? `${item.texto.slice(0, 140)}...` 
-              : item.texto;
+          {/* ── 3 Blocks Grid ── */}
+          <div className="reading-blocks-grid">
+            {readings.map((item, index) => {
+              const categoriaNome = item.titulo_categoria || item.categoria || 'Leitura';
+              // A API pode repetir ou omitir `id`; o índice mantém cada cartão independente.
+              const blockKey = `reading-${index}-${item.id || item.referencia || categoriaNome}`;
+              const IconComponent = item.icon || getCategoryIcon(item.id, categoriaNome);
+              const tempoLeitura = item.tempo_estimado || item.tempoEstimado || '~2 min';
+              const isCopied = copiedId === (item.id || categoriaNome);
+              const isTextExpanded = expandedTextId === blockKey;
+              const interpretacao = item.interpretacao || item['interpretação'] || item.interpretation || item.reflexao || item['reflexão'];
+
+              const isLongText = (item.texto || '').length > 140;
+              const displayedText = isLongText && !isTextExpanded
+                ? `${item.texto.slice(0, 140)}...`
+                : item.texto;
 
             return (
               <motion.article
@@ -207,6 +207,13 @@ export default function DailyReading3Blocks() {
                   )}
                 </blockquote>
 
+                {interpretacao && (
+                  <div className="block-interpretation" aria-label={`Interpretação de ${item.referencia}`}>
+                    <strong>Interpretação</strong>
+                    <p>{interpretacao}</p>
+                  </div>
+                )}
+
                 {/* Actions */}
                 <div className="reading-block-actions">
                   <button
@@ -218,37 +225,12 @@ export default function DailyReading3Blocks() {
                     <span>{isCopied ? 'Copiado' : 'Copiar'}</span>
                   </button>
 
-                  {item.reflexao && (
-                    <button
-                      className={`btn-block-action ${isReflectionExpanded ? 'active' : ''}`}
-                      onClick={() => toggleReflection(blockKey)}
-                    >
-                      <span>Reflexão</span>
-                      <ChevronRight size={14} style={{ transform: isReflectionExpanded ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
-                    </button>
-                  )}
                 </div>
-
-                {/* Expandable Reflection */}
-                <AnimatePresence>
-                  {isReflectionExpanded && item.reflexao && (
-                    <motion.div
-                      className="block-reflection-box"
-                      initial={{ opacity: 0, height: 0, marginTop: 0 }}
-                      animate={{ opacity: 1, height: 'auto', marginTop: 12 }}
-                      exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <div className="block-reflection-inner">
-                        <p>{item.reflexao}</p>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
               </motion.article>
             );
-          })}
-        </div>
+            })}
+          </div>
+        </>
       )}
 
 
