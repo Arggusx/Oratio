@@ -2,80 +2,9 @@ import { useMemo, useState } from 'react';
 import { ChevronDown, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 import NordicModal from '../components/NordicModal';
+import { prayers } from '../data/prayers';
+import { steps } from '../data/stapsRosary';
 
-/* ── Step-by-step rosary guide ── */
-const steps = [
-  [
-    'Sinal da Cruz e Oferecimento',
-    'Faça o Sinal da Cruz: "Em nome do Pai, do Filho e do Espírito Santo. Amém."\n\nOferecimento: "Divino Jesus, nós Vos oferecemos este terço que vamos rezar, meditando nos mistérios da nossa Redenção. Concedei-nos, por intercessão da Virgem Maria, Mãe de Deus e nossa Mãe, as virtudes que nos são necessárias para bem rezá-lo e a graça de ganharmos as indulgências desta santa devoção."',
-  ],
-  [
-    'Creio (Símbolo dos Apóstolos)',
-    'Segurando o crucifixo, reze: "Creio em Deus Pai Todo-Poderoso, Criador do céu e da terra; e em Jesus Cristo, seu único Filho, nosso Senhor; que foi concebido pelo poder do Espírito Santo; nasceu da Virgem Maria; padeceu sob Pôncio Pilatos, foi crucificado, morto e sepultado; desceu à mansão dos mortos; ressuscitou ao terceiro dia; subiu aos Céus, está sentado à direita de Deus Pai Todo-Poderoso, de onde há de vir a julgar os vivos e os mortos. Creio no Espírito Santo, na Santa Igreja Católica, na comunhão dos Santos, na remissão dos pecados, na ressurreição da carne, na vida eterna. Amém."',
-  ],
-  [
-    'Pai Nosso (na conta grande)',
-    'Na primeira conta grande, reze: "Pai nosso, que estais nos céus, santificado seja o vosso nome; venha a nós o vosso Reino; seja feita a vossa vontade, assim na terra como no céu. O pão nosso de cada dia nos dai hoje; perdoai-nos as nossas ofensas, assim como nós perdoamos a quem nos tem ofendido; e não nos deixeis cair em tentação, mas livrai-nos do mal. Amém."',
-  ],
-  [
-    'Três Ave-Marias',
-    'Nas três contas pequenas seguintes, reze uma Ave-Maria em cada, pedindo o aumento das virtudes teologais:\n1. Pelo aumento da Fé.\n2. Pelo aumento da Esperança.\n3. Pelo aumento da Caridade.\n\n"Ave Maria, cheia de graça, o Senhor é convosco. Bendita sois vós entre as mulheres, e bendito é o fruto do vosso ventre, Jesus. Santa Maria, Mãe de Deus, rogai por nós, pecadores, agora e na hora de nossa morte. Amém."',
-  ],
-  [
-    'Glória ao Pai',
-    'Reze: "Glória ao Pai, e ao Filho, e ao Espírito Santo. Como era no princípio, agora e sempre, e por todos os séculos dos séculos. Amém."',
-  ],
-  [
-    'Anunciação dos Mistérios e as Dezenas',
-    'Para cada um dos 5 mistérios do dia (Gozosos, Dolorosos, Gloriosos ou Luminosos):\n1. Anuncie o mistério (ex: "No primeiro mistério contemplamos...").\n2. Reze 1 Pai Nosso (na conta grande).\n3. Reze 10 Ave-Marias (nas 10 contas pequenas) meditando no mistério.\n4. Reze o Glória ao Pai.\n5. Reze a Jaculatória de Fátima: "Ó meu Jesus, perdoai-nos, livrai-nos do fogo do inferno, levai as almas todas para o Céu e socorrei principalmente as que mais precisarem."',
-  ],
-  [
-    'Salve Rainha (Agradecimento)',
-    'Ao final das 5 dezenas, segurando a medalha central, reze:\n"Salve, Rainha, mãe de misericórdia, vida, doçura e esperança nossa, salve! A vós bradamos, os degredados filhos de Eva. A vós suspiramos, gemendo e chorando neste vale de lágrimas. Eia, pois, advogada nossa, esses vossos olhos misericordiosos a nós volvei, e depois deste desterro, mostrai-nos Jesus, bendito fruto do vosso ventre. Ó clemente, ó piedosa, ó doce sempre Virgem Maria. Rogai por nós, Santa Mãe de Deus, para que sejamos dignos das promessas de Cristo. Amém."',
-  ],
-];
-
-/* ── Expanded traditional prayers ── */
-const prayers = [
-  ['Diárias', 'Sinal da Cruz', 'Em nome do Pai, do Filho e do Espírito Santo. Amém.'],
-  ['Diárias', 'Pai-Nosso', 'Pai nosso, que estais nos céus, santificado seja o vosso nome; venha a nós o vosso Reino; seja feita a vossa vontade, assim na terra como no céu. O pão nosso de cada dia nos dai hoje; perdoai-nos as nossas ofensas, assim como nós perdoamos a quem nos tem ofendido; e não nos deixeis cair em tentação, mas livrai-nos do mal. Amém.'],
-  ['Diárias', 'Glória ao Pai', 'Glória ao Pai, e ao Filho, e ao Espírito Santo. Como era no princípio, agora e sempre, e por todos os séculos dos séculos. Amém.'],
-  ['Diárias', 'Credo (Símbolo dos Apóstolos)', 'Creio em Deus Pai Todo-Poderoso, Criador do céu e da terra; e em Jesus Cristo, seu único Filho, nosso Senhor; que foi concebido pelo poder do Espírito Santo; nasceu da Virgem Maria; padeceu sob Pôncio Pilatos, foi crucificado, morto e sepultado; desceu à mansão dos mortos; ressuscitou ao terceiro dia; subiu aos Céus, está sentado à direita de Deus Pai Todo-Poderoso, de onde há de vir a julgar os vivos e os mortos. Creio no Espírito Santo, na Santa Igreja Católica, na comunhão dos Santos, na remissão dos pecados, na ressurreição da carne, na vida eterna. Amém.'],
-  ['Diárias', 'Ato de Contrição', 'Meu Deus, porque sois infinitamente bom e Vos amo de todo o meu coração, pesa-me de Vos ter ofendido, e com o auxílio da Vossa divina graça, proponho firmemente emendar-me e nunca mais Vos tornar a ofender. Peço e espero o perdão das minhas culpas pela Vossa infinita misericórdia. Amém.'],
-  ['Diárias', 'Ato de Fé', 'Meu Deus, creio firmemente em tudo o que revelastes e que a Santa Igreja nos propõe para crer, porque sois a verdade infalível. Nesta fé quero viver e morrer. Amém.'],
-  ['Diárias', 'Ato de Esperança', 'Meu Deus, espero com firme confiança que, pelos merecimentos de Jesus Cristo, me dareis a vossa graça neste mundo e, se observar os vossos mandamentos, a felicidade eterna no céu. Amém.'],
-  ['Diárias', 'Ato de Caridade', 'Meu Deus, amo-Vos de todo o meu coração e sobre todas as coisas, porque sois infinitamente bom e digno de ser amado. Por amor de Vós, amo o meu próximo como a mim mesmo. Amém.'],
-  ['Diárias', 'Oração da Manhã', 'Senhor, no início deste dia, eu Vos ofereço todos os meus pensamentos, palavras, obras, alegrias e sofrimentos. Concedei-me a graça de fazer em tudo a vossa vontade e de permanecer unido a Vós. Amém.'],
-  ['Diárias', 'Oração da Noite', 'Senhor, ao terminar este dia, agradeço-Vos por todos os benefícios recebidos. Perdoai as faltas que cometi e concedei-me uma noite tranquila sob a vossa proteção. Amém.'],
-  ['Diárias', 'Confissão Penitencial', 'Confesso a Deus todo-poderoso e a vós, irmãos e irmãs, que pequei muitas vezes por pensamentos e palavras, atos e omissões, por minha culpa, minha tão grande culpa. E peço à Virgem Maria, aos anjos e santos e a vós, irmãos e irmãs, que rogueis por mim a Deus, nosso Senhor. Amém.'],
-  ['Marianas', 'Ave-Maria', 'Ave Maria, cheia de graça, o Senhor é convosco. Bendita sois vós entre as mulheres, e bendito é o fruto do vosso ventre, Jesus. Santa Maria, Mãe de Deus, rogai por nós, pecadores, agora e na hora de nossa morte. Amém.'],
-  ['Marianas', 'Salve-Rainha', 'Salve, Rainha, mãe de misericórdia, vida, doçura e esperança nossa, salve! A vós bradamos, os degredados filhos de Eva. A vós suspiramos, gemendo e chorando neste vale de lágrimas. Eia, pois, advogada nossa, esses vossos olhos misericordiosos a nós volvei, e depois deste desterro, mostrai-nos Jesus, bendito fruto do vosso ventre. Ó clemente, ó piedosa, ó doce sempre Virgem Maria. Rogai por nós, Santa Mãe de Deus, para que sejamos dignos das promessas de Cristo. Amém.'],
-  ['Marianas', 'Angelus (Ângelus)', 'V. O Anjo do Senhor anunciou a Maria. R. E ela concebeu do Espírito Santo.\n\nAve Maria...\n\nV. Eis aqui a escrava do Senhor. R. Faça-se em mim segundo a vossa palavra.\n\nAve Maria...\n\nV. E o Verbo se fez carne. R. E habitou entre nós.\n\nAve Maria...\n\nV. Rogai por nós, Santa Mãe de Deus. R. Para que sejamos dignos das promessas de Cristo.\n\nOremos: Infundi, Senhor, nós Vos pedimos, a vossa graça em nossas almas, para que nós, que pela anunciação do Anjo conhecemos a encarnação de Cristo, vosso Filho, por sua paixão e morte na cruz sejamos conduzidos à glória da ressurreição. Pelo mesmo Cristo, nosso Senhor. Amém.'],
-  ['Marianas', 'Magnificat', 'A minha alma engrandece o Senhor, e o meu espírito se alegra em Deus, meu Salvador, porque olhou para a humildade de sua serva. Doravante todas as gerações me chamarão bem-aventurada, porque o Todo-Poderoso fez em mim maravilhas. Santo é o seu nome. Sua misericórdia se estende, de geração em geração, sobre os que o temem. Manifestou o poder de seu braço: dispersou os soberbos. Derrubou os poderosos de seus tronos e exaltou os humildes. Cumulou de bens os famintos e despediu os ricos de mãos vazias. Socorreu Israel, seu servo, lembrando-se de sua misericórdia, conforme prometera a nossos pais, em favor de Abraão e de sua descendência, para sempre.'],
-  ['Marianas', 'Regina Caeli', 'Rainha do céu, alegrai-Vos, aleluia. Pois Aquele que merecestes trazer em vosso seio, aleluia, ressuscitou como disse, aleluia. Rogai a Deus por nós, aleluia. Alegrai-Vos e exultai, ó Virgem Maria, aleluia, porque o Senhor ressuscitou verdadeiramente, aleluia.'],
-  ['Marianas', 'Lembrai-vos', 'Lembrai-Vos, ó piedosíssima Virgem Maria, que nunca se ouviu dizer que algum daqueles que têm recorrido à vossa proteção, implorado a vossa assistência e reclamado o vosso socorro, fosse por Vós desamparado. Animado eu, pois, com igual confiança, a Vós, Virgem entre todas singular, como Mãe recorro, de Vós me valho e, gemendo sob o peso dos meus pecados, me prostro a vossos pés. Não desprezeis as minhas súplicas, ó Mãe do Verbo encarnado, mas dignai-Vos de as ouvir propícia e de me alcançar o que Vos rogo. Amém.'],
-  ['Marianas', 'À vossa proteção', 'À vossa proteção recorremos, Santa Mãe de Deus. Não desprezeis as nossas súplicas em nossas necessidades, mas livrai-nos sempre de todos os perigos, ó Virgem gloriosa e bendita. Amém.'],
-  ['Marianas', 'Nossa Senhora Aparecida', 'Ó incomparável Senhora da Conceição Aparecida, Mãe de Deus, Rainha dos Anjos, Advogada dos pecadores, refúgio e consolação dos aflitos e atribulados, livrai-nos de tudo o que possa ofender vosso bendito Filho e vosso Imaculado Coração. Dai-nos a graça de viver e morrer sob o manto de vossa proteção. Amém.'],
-  ['Santos', 'Oração ao Espírito Santo', 'Vinde, Espírito Santo, enchei os corações dos vossos fiéis e acendei neles o fogo do vosso amor. Enviai o vosso Espírito e tudo será criado, e renovareis a face da terra.'],
-  ['Santos', 'Oração de São Francisco', 'Senhor, fazei de mim um instrumento da vossa paz. Onde houver ódio, que eu leve o amor. Onde houver ofensa, que eu leve o perdão. Onde houver discórdia, que eu leve a união. Onde houver dúvida, que eu leve a fé. Onde houver erro, que eu leve a verdade. Onde houver desespero, que eu leve a esperança. Onde houver tristeza, que eu leve a alegria. Onde houver trevas, que eu leve a luz.'],
-  ['Santos', 'Oração ao Anjo da Guarda', 'Santo Anjo do Senhor, meu zeloso guardador, se a ti me confiou a piedade divina, sempre me rege, guarda, governa e ilumina. Amém.'],
-  ['Santos', 'São Miguel Arcanjo', 'São Miguel Arcanjo, defendei-nos no combate, sede o nosso refúgio contra as maldades e ciladas do demônio. Ordene-lhe Deus, instantemente o pedimos; e vós, príncipe da milícia celeste, pelo divino poder, precipitai no inferno a Satanás e aos outros espíritos malignos que andam pelo mundo para perder as almas. Amém.'],
-  ['Santos', 'São José', 'Glorioso São José, pai adotivo de Jesus e castíssimo esposo da Virgem Maria, rogai por nós. Alcançai-nos a graça de viver com fé, pureza e fidelidade, e ajudai-nos a cumprir a vontade de Deus em nossa vida. Amém.'],
-  ['Santos', 'Santo Antônio', 'Glorioso Santo Antônio, que recebestes de Deus o poder de encontrar as coisas perdidas, ajudai-me a reencontrar a graça de Deus e a viver segundo a sua vontade. Intercedei por mim em minhas necessidades. Amém.'],
-  ['Santos', 'Santa Rita de Cássia', 'Ó poderosa Santa Rita, chamada Santa dos impossíveis, advogada dos casos desesperados, socorrei-me nesta aflição. Alcançai-me de Deus a graça de aceitar a sua vontade e de perseverar na fé. Amém.'],
-  ['Santos', 'Santa Teresinha do Menino Jesus', 'Santa Teresinha, que prometestes fazer cair uma chuva de rosas sobre a terra, alcançai-me a simplicidade, a confiança e o amor para seguir Jesus no pequeno caminho de cada dia. Amém.'],
-  ['Sacramentais', 'Jaculatória de Fátima', 'Ó meu Jesus, perdoai-nos, livrai-nos do fogo do inferno, levai as almas todas para o Céu, e socorrei principalmente as que mais precisarem. Amém.'],
-  ['Sacramentais', 'Consagração ao Imaculado Coração', 'Ó Maria, Mãe de Deus e nossa Mãe, eu me consagro inteiramente ao vosso Imaculado Coração, com tudo o que sou e o que tenho. Acolhei-me sob a vossa maternal proteção. Guardai-me e defendei-me como coisa e propriedade vossa. Amém.'],
-  ['Sacramentais', 'Alma de Cristo', 'Alma de Cristo, santificai-me. Corpo de Cristo, salvai-me. Sangue de Cristo, inebriai-me. Água do lado de Cristo, lavai-me. Paixão de Cristo, confortai-me. Ó bom Jesus, ouvi-me. Dentro de vossas chagas, escondi-me. Não permitais que eu me separe de Vós. Do espírito maligno, defendei-me. Na hora da morte, chamai-me e mandai-me ir para Vós, para que, com os vossos santos, Vos louve por todos os séculos dos séculos. Amém.'],
-  ['Sacramentais', 'Comunhão Espiritual', 'Meu Jesus, creio que estais realmente presente no Santíssimo Sacramento. Amo-Vos sobre todas as coisas e desejo receber-Vos em minha alma. Já que agora não posso receber-Vos sacramentalmente, vinde ao menos espiritualmente ao meu coração. Abraço-Vos como se já estivésseis comigo e uno-me inteiramente a Vós. Não permitais que eu jamais me separe de Vós. Amém.'],
-  ['Sacramentais', 'Jesus, eu confio em Vós', 'Jesus, eu confio em Vós.'],
-  ['Sacramentais', 'Sagrado Coração de Jesus', 'Sagrado Coração de Jesus, eu confio em Vós. Dai-me um coração semelhante ao vosso: humilde, manso, generoso e fiel. Amém.'],
-  ['Sacramentais', 'Pelas almas do purgatório', 'Dai-lhes, Senhor, o descanso eterno, e brilhe para elas a vossa luz. Descansem em paz. Amém.'],
-  ['Sacramentais', 'Benção de São Bento', 'A cruz sagrada seja a minha luz. Não seja o dragão o meu guia. Retira-te, Satanás! Nunca me aconselhes coisas vãs. É mau o que tu me ofereces; bebe tu mesmo os teus venenos.'],
-  ['Terço', 'Oferecimento do Terço', 'Divino Jesus, nós Vos oferecemos este terço que vamos rezar, meditando nos mistérios da nossa Redenção. Concedei-nos, por intercessão da Virgem Maria, Mãe de Deus e nossa Mãe, as virtudes que nos são necessárias para bem rezá-lo e a graça de ganharmos as indulgências desta santa devoção. Amém.'],
-];
-
-/* ── Accordion component ── */
 function Accordion({ title, badge, children, isOpen, onToggle }) {
   return (
     <div className={`accordion ${isOpen ? 'open' : ''}`}>
@@ -95,7 +24,6 @@ function Accordion({ title, badge, children, isOpen, onToggle }) {
   );
 }
 
-/* ── Page categories ── */
 const categories = ['Todas', 'Diárias', 'Marianas', 'Santos', 'Sacramentais', 'Terço'];
 
 export default function Oracoes() {
@@ -130,9 +58,6 @@ export default function Oracoes() {
         Reze passo a passo ou encontre uma oração para o momento presente.
       </p>
 
-      
-
-      {/* ── Toggle switch ── */}
       <div className="subnav" style={{ marginTop: '1.5rem' }}>
         <button
           className={section === 'terco' ? 'active' : ''}
@@ -154,11 +79,9 @@ export default function Oracoes() {
         </button>
       </div>
 
-      {/* ── Content ── */}
       <div className="prayer-layout">
         {section === 'terco' && (
           <>
-            {/* Step-by-step guide */}
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -179,7 +102,6 @@ export default function Oracoes() {
               ))}
             </motion.div>
 
-            {/* Visual guide image */}
             <motion.div
               initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -230,7 +152,6 @@ export default function Oracoes() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-            {/* Search bar */}
             <div className="search-wrapper">
               <Search size={16} className="search-icon" />
               <input
@@ -241,7 +162,6 @@ export default function Oracoes() {
               />
             </div>
 
-            {/* Category pills */}
             <div className="faq-categories">
               {categories.map((cat) => (
                 <button
@@ -254,7 +174,6 @@ export default function Oracoes() {
               ))}
             </div>
 
-            {/* Prayer list */}
             {filtered.map(([category, name, text], i) => (
               <Accordion
                 key={name}
