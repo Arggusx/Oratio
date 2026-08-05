@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { BookOpen, Clock, Copy, Check, ChevronRight, Sparkles, RefreshCw, AlertCircle, Feather, Scroll, Mail } from 'lucide-react';
+import { BookOpen, Clock, Copy, Check, ChevronDown, ChevronRight, Sparkles, RefreshCw, AlertCircle, Feather, Scroll, Mail } from 'lucide-react';
 
 /* ── Fallback data for the 3 Reading Blocks (excluding Gospels) ── */
 const fallbackReadings = [
@@ -41,8 +41,8 @@ export default function DailyReading3Blocks() {
   const [error, setError] = useState(null);
   const [copiedId, setCopiedId] = useState(null);
   const [expandedTextId, setExpandedTextId] = useState(null);
+  const [expandedInterpretationId, setExpandedInterpretationId] = useState(null);
 
-  // Fetch daily reading 3 blocks from backend API (/api/daily-reading)
   const fetchDailyReadings = async () => {
     setLoading(true);
     setError(null);
@@ -92,6 +92,10 @@ export default function DailyReading3Blocks() {
     } catch (err) {
       console.error('Erro ao copiar bloco:', err);
     }
+  };
+
+  const toggleInterpretation = (id) => {
+    setExpandedInterpretationId((prev) => (prev === id ? null : id));
   };
 
   const toggleTextExpand = (id) => {
@@ -165,6 +169,7 @@ export default function DailyReading3Blocks() {
               const tempoLeitura = item.tempo_estimado || item.tempoEstimado || '~2 min';
               const isCopied = copiedId === (item.id || categoriaNome);
               const isTextExpanded = expandedTextId === blockKey;
+              const isInterpretationExpanded = expandedInterpretationId === blockKey;
               const interpretacao = item.interpretacao || item['interpretação'] || item.interpretation || item.reflexao || item['reflexão'];
 
               const isLongText = (item.texto || '').length > 140;
@@ -199,6 +204,7 @@ export default function DailyReading3Blocks() {
                   &ldquo;{displayedText}&rdquo;
                   {isLongText && (
                     <button
+                      type="button"
                       onClick={() => toggleTextExpand(blockKey)}
                       className="btn-read-more-inline"
                     >
@@ -208,9 +214,26 @@ export default function DailyReading3Blocks() {
                 </blockquote>
 
                 {interpretacao && (
-                  <div className="block-interpretation" aria-label={`Interpretação de ${item.referencia}`}>
-                    <strong>Interpretação</strong>
-                    <p>{interpretacao}</p>
+                  <div
+                    className={`block-interpretation ${isInterpretationExpanded ? 'is-expanded' : ''}`}
+                    aria-label={`Interpretação de ${item.referencia}`}
+                  >
+                    <button
+                      type="button"
+                      className="block-interpretation-toggle"
+                      onClick={() => toggleInterpretation(blockKey)}
+                      aria-expanded={isInterpretationExpanded}
+                    >
+                      <strong>Interpretação</strong>
+                      <ChevronDown
+                        size={18}
+                        className={isInterpretationExpanded ? 'is-expanded' : ''}
+                        aria-hidden="true"
+                      />
+                    </button>
+                    <div className="block-interpretation-content">
+                      <p>{interpretacao}</p>
+                    </div>
                   </div>
                 )}
 
