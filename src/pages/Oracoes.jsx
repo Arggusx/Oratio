@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react';
 import { ChevronDown, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
-import NordicModal from '../components/NordicModal';
+import RosaryGuide from '../components/RosaryGuide';
+import { traditionalRosaryData, nordicRosaryData } from '../data/rosaryData';
 import { prayers } from '../data/prayers';
-import { steps } from '../data/stapsRosary';
 
 function Accordion({ title, badge, children, isOpen, onToggle }) {
   return (
@@ -31,14 +31,6 @@ export default function Oracoes() {
   const [query, setQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('Todas');
   const [openIdx, setOpenIdx] = useState(null);
-  
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedMystery, setSelectedMystery] = useState(null);
-
-  const openNordicModal = (type) => {
-    setSelectedMystery(type);
-    setModalOpen(true);
-  };
 
   const filtered = useMemo(() => {
     return prayers.filter(([cat, name, text]) => {
@@ -53,104 +45,66 @@ export default function Oracoes() {
   return (
     <main className="page">
       <span className="eyebrow">Um caminho de oração</span>
-      <h1 className="section-title">Terço e orações</h1>
+      <h1 className="section-title">Terço e Orações</h1>
       <p className="lead">
-        Reze passo a passo ou encontre uma oração para o momento presente.
+        Aprenda a rezar passo a passo, escolha sua devoção ou consulte orações tradicionais.
       </p>
 
-      <div className="subnav" style={{ marginTop: '1.5rem' }}>
+      {/* 1. NAVEGAÇÃO SUPERIOR (BARRA DE ESCOLHA / TABS) */}
+      <div className="subnav-segmented">
         <button
           className={section === 'terco' ? 'active' : ''}
           onClick={() => setSection('terco')}
         >
-          Como rezar o terço
+          Terço Tradicional
         </button>
         <button
           className={section === 'nordico' ? 'active' : ''}
           onClick={() => setSection('nordico')}
         >
-          Rosário Nórdico
+          Terço Nórdico
         </button>
         <button
           className={section === 'oracoes' ? 'active' : ''}
           onClick={() => setSection('oracoes')}
         >
-          Orações tradicionais
+          Orações
         </button>
       </div>
 
-      <div className="prayer-layout">
+      <div className="prayer-layout-refactored">
+        {/* TAB 1: TERÇO TRADICIONAL */}
         {section === 'terco' && (
-          <>
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-            >
-              <h2 className="section-title" style={{ fontSize: 'clamp(1.6rem, 4vw, 2.2rem)' }}>
-                O terço, passo a passo
-              </h2>
-              {steps.map(([title, content], i) => (
-                <Accordion
-                  key={title}
-                  title={`${i + 1}. ${title}`}
-                  isOpen={openIdx === `step-${i}`}
-                  onToggle={() => setOpenIdx(openIdx === `step-${i}` ? null : `step-${i}`)}
-                >
-                  {content}
-                </Accordion>
-              ))}
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.97 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.15 }}
-              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            >
-              <img
-                className="terco-guide-img"
-                src="/img2/passo-a-passo-como-rezar-o-terco.png"
-                alt="Guia visual para rezar o terço"
-              />
-            </motion.div>
-          </>
-        )}
-
-        {section === 'nordico' && (
           <motion.div
-            style={{ gridColumn: '1 / -1' }}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.35 }}
           >
-            <section className="oracoes-block block-nordico" style={{ margin: 0 }}>
-              <h2 className="section-title" style={{ fontSize: 'clamp(1.6rem, 4vw, 2.2rem)' }}>Rosário das Cláusulas (Nórdico)</h2>
-              <p className="lead" style={{ marginBottom: '2rem' }}>Oração contínua com uma meditação específica inserida na Ave Maria.</p>
-              <div className="mini-card-grid">
-                <button className="mini-card" style={{'--accent': '#73B894'}} onClick={() => openNordicModal('gozosos')}>
-                  Mistérios Gozosos
-                </button>
-                <button className="mini-card" style={{'--accent': '#D4B86A'}} onClick={() => openNordicModal('luminosos')}>
-                  Mistérios Luminosos
-                </button>
-                <button className="mini-card" style={{'--accent': '#D27D7D'}} onClick={() => openNordicModal('dolorosos')}>
-                  Mistérios Dolorosos
-                </button>
-                <button className="mini-card" style={{'--accent': '#8AA8D0'}} onClick={() => openNordicModal('gloriosos')}>
-                  Mistérios Gloriosos
-                </button>
-              </div>
-            </section>
+            <RosaryGuide layoutData={traditionalRosaryData} />
           </motion.div>
         )}
 
-        {section === 'oracoes' && (
+        {/* TAB 2: TERÇO NÓRDICO */}
+        {section === 'nordico' && (
           <motion.div
-            style={{ gridColumn: '1 / -1' }}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.35 }}
+          >
+            <RosaryGuide layoutData={nordicRosaryData} />
+          </motion.div>
+        )}
+
+        {/* TAB 3: ORAÇÕES TRADICIONAIS */}
+        {section === 'oracoes' && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.35 }}
+            className="prayers-search-section"
           >
             <div className="search-wrapper">
               <Search size={16} className="search-icon" />
@@ -158,7 +112,7 @@ export default function Oracoes() {
                 className="search"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Buscar uma oração..."
+                placeholder="Buscar uma oração por nome, palavra ou categoria..."
               />
             </div>
 
@@ -174,17 +128,19 @@ export default function Oracoes() {
               ))}
             </div>
 
-            {filtered.map(([category, name, text], i) => (
-              <Accordion
-                key={name}
-                title={name}
-                badge={category}
-                isOpen={openIdx === `prayer-${i}`}
-                onToggle={() => setOpenIdx(openIdx === `prayer-${i}` ? null : `prayer-${i}`)}
-              >
-                {text}
-              </Accordion>
-            ))}
+            <div className="prayers-accordion-list">
+              {filtered.map(([category, name, text], i) => (
+                <Accordion
+                  key={name}
+                  title={name}
+                  badge={category}
+                  isOpen={openIdx === `prayer-${i}`}
+                  onToggle={() => setOpenIdx(openIdx === `prayer-${i}` ? null : `prayer-${i}`)}
+                >
+                  <span dangerouslySetInnerHTML={{ __html: text }} />
+                </Accordion>
+              ))}
+            </div>
 
             {filtered.length === 0 && (
               <p
@@ -197,12 +153,7 @@ export default function Oracoes() {
           </motion.div>
         )}
       </div>
-      
-      <NordicModal 
-        isOpen={modalOpen} 
-        onClose={() => setModalOpen(false)} 
-        mysteryType={selectedMystery} 
-      />
     </main>
   );
 }
+

@@ -42,7 +42,7 @@ export default function Header() {
           <span className="brand-mark">
             <img src="img2/icon_site.png" alt="Oratio Daily" />
           </span>
-          Oratio Daily
+          Oratio
         </NavLink>
 
         <div className="desktop-nav">

@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { BookOpen, Clock, Copy, Check, ChevronDown, ChevronRight, Sparkles, RefreshCw, AlertCircle, Feather, Scroll, Mail } from 'lucide-react';
 
-/* ── Fallback data for the 3 Reading Blocks (excluding Gospels) ── */
 const fallbackReadings = [
   {
     id: 'at_historia',
@@ -81,7 +80,6 @@ export default function DailyReading3Blocks() {
     fetchDailyReadings();
   }, []);
 
-  // Copy reference & text of a specific block
   const handleCopyBlock = async (item) => {
     const categoria = item.titulo_categoria || item.categoria || '';
     const textToCopy = `[${categoria}] ${item.referencia}\n"${item.texto}"`;
@@ -111,11 +109,10 @@ export default function DailyReading3Blocks() {
 
   return (
     <section className="daily-reading-section">
-      {/* ── Section Header ── */}
       <div className="daily-reading-header">
         <div className="daily-reading-title-box">
           <span className="eyebrow verse-eyebrow">
-            <Sparkles size={16} className="sparkle-icon" /> Leitura Diária ({totalEstimatedTime || '5 a 10 min'})
+            Leitura Diária
           </span>
           <h2 className="section-title" style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)', margin: '0.2rem 0 0.4rem' }}>
             A Palavra em Três Momentos
@@ -124,12 +121,6 @@ export default function DailyReading3Blocks() {
             Uma jornada de contemplação diária pelo Antigo Testamento, Sabedoria e Epístolas.
           </p>
         </div>
-
-
-        <Link to="/home/leituras" className="gospel-link-badge">
-          <span>Ver também o Evangelho de hoje</span>
-          <ChevronRight size={16} />
-        </Link>
       </div>
 
       {error && (
@@ -159,11 +150,9 @@ export default function DailyReading3Blocks() {
             Reserve alguns minutos, acolha cada trecho e deixe sua interpretação iluminar o seu dia.
           </p>
 
-          {/* ── 3 Blocks Grid ── */}
           <div className="reading-blocks-grid">
             {readings.map((item, index) => {
               const categoriaNome = item.titulo_categoria || item.categoria || 'Leitura';
-              // A API pode repetir ou omitir `id`; o índice mantém cada cartão independente.
               const blockKey = `reading-${index}-${item.id || item.referencia || categoriaNome}`;
               const IconComponent = item.icon || getCategoryIcon(item.id, categoriaNome);
               const tempoLeitura = item.tempo_estimado || item.tempoEstimado || '~2 min';
@@ -185,7 +174,6 @@ export default function DailyReading3Blocks() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: index * 0.12 }}
               >
-                {/* Block Header */}
                 <div className="reading-block-top">
                   <div className="reading-category-pill">
                     <IconComponent size={14} className="category-icon" />
@@ -193,11 +181,9 @@ export default function DailyReading3Blocks() {
                   </div>
 
                   <span className="reading-time-badge" title="Tempo estimado de leitura">
-                    <Clock size={13} /> {tempoLeitura}
                   </span>
                 </div>
 
-                {/* Reference & Text */}
                 <h3 className="reading-block-ref">{item.referencia}</h3>
 
                 <blockquote className="reading-block-text">
@@ -237,7 +223,6 @@ export default function DailyReading3Blocks() {
                   </div>
                 )}
 
-                {/* Actions */}
                 <div className="reading-block-actions">
                   <button
                     className={`btn-block-action ${isCopied ? 'copied' : ''}`}
@@ -256,8 +241,6 @@ export default function DailyReading3Blocks() {
         </>
       )}
 
-
-      {/* ── Footer Link Banner to Evangelho Page ── */}
       <div className="gospel-banner-footer">
         <div className="gospel-banner-content">
           <BookOpen size={20} className="gospel-banner-icon" />

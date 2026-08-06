@@ -34,7 +34,7 @@ const prayers = [
   ['Sacramentais', 'Sagrado Coração de Jesus', 'Sagrado Coração de Jesus, eu confio em Vós. Dai-me um coração semelhante ao vosso: humilde, manso, generoso e fiel. Amém.'],
   ['Sacramentais', 'Pelas almas do purgatório', 'Dai-lhes, Senhor, o descanso eterno, e brilhe para elas a vossa luz. Descansem em paz. Amém.'],
   ['Sacramentais', 'Benção de São Bento', 'A cruz sagrada seja a minha luz. Não seja o dragão o meu guia. Retira-te, Satanás! Nunca me aconselhes coisas vãs. É mau o que tu me ofereces; bebe tu mesmo os teus venenos.'],
-  ['Terço', 'Oferecimento do Terço', 'Divino Jesus, nós Vos oferecemos este terço que vamos rezar, meditando nos mistérios da nossa Redenção. Concedei-nos, por intercessão da Virgem Maria, Mãe de Deus e nossa Mãe, as virtudes que nos são necessárias para bem rezá-lo e a graça de ganharmos as indulgências desta santa devoção. Amém.'],
+  ['Terço', 'Oferecimento do Terço', 'Divino Jesus, nós Vos oferecemos este terço que vamos rezar, meditando nos mistérios da nossa Redenção. Concedei-nos, por intercessão da Virgem Maria, Mãe de Deus e nossa Mãe, as virtudes que nos são necessárias para bem rezá-lo e a graça de ganharmos as indulgências desta santa devoção. <strong>Oferecemos particularmente por [dizer aqui as suas intenções, como a paz no mundo, a familia ou os doentes]</strong>. Amém.'],
 ];
 
 export { prayers };

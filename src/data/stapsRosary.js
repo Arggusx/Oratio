@@ -1,7 +1,7 @@
 const steps = [
   [
     'Sinal da Cruz e Oferecimento',
-    'Faça o Sinal da Cruz: "Em nome do Pai, do Filho e do Espírito Santo. Amém."\n\nOferecimento: "Divino Jesus, nós Vos oferecemos este terço que vamos rezar, meditando nos mistérios da nossa Redenção. Concedei-nos, por intercessão da Virgem Maria, Mãe de Deus e nossa Mãe, as virtudes que nos são necessárias para bem rezá-lo e a graça de ganharmos as indulgências desta santa devoção."',
+    'Faça o Sinal da Cruz: "Em nome do Pai, do Filho e do Espírito Santo. Amém."\n\nOferecimento: "Divino Jesus, nós Vos oferecemos este terço que vamos rezar, meditando nos mistérios da nossa Redenção. Concedei-nos, por intercessão da Virgem Maria, Mãe de Deus e nossa Mãe, as virtudes que nos são necessárias para bem rezá-lo e a graça de ganharmos as indulgências desta santa devoção. Oferecemos particularmente por [dizer aqui as suas intenções, como a paz no mundo, a familia ou os doentes]"',
   ],
   [
     'Creio (Símbolo dos Apóstolos)',

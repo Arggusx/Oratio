@@ -1,26 +1,22 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BookOpen, Copy, Check, ChevronDown, Info, Search, Sparkles, RefreshCw, AlertCircle } from 'lucide-react';
+import { Copy, Check, ChevronDown, Info, Search, Sparkles, RefreshCw, AlertCircle } from 'lucide-react';
 
 export default function VerseOfTheDay() {
-  // State for Verse of the Day API call
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // UI state for reflection tab, tooltip, copy button
   const [showReflection, setShowReflection] = useState(false);
   const [copied, setCopied] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
 
-  // Search Bar state
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   const searchRef = useRef(null);
 
-  // Fetch Verse of the Day from API
   const fetchVerseOfTheDay = async () => {
     setLoading(true);
     setError(null);
@@ -34,7 +30,6 @@ export default function VerseOfTheDay() {
       setData(result);
     } catch (err) {
       console.error('Erro ao buscar versículo do dia:', err);
-      // Fallback data if API is offline
       setData({
         reference: 'Gênesis 1:1',
         text: 'No princípio, Deus criou o céu e a terra.',
@@ -50,7 +45,6 @@ export default function VerseOfTheDay() {
     fetchVerseOfTheDay();
   }, []);
 
-  // Handle outside click for search dropdown & tooltip
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
@@ -61,7 +55,6 @@ export default function VerseOfTheDay() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Copy reference and verse text to clipboard
   const handleCopy = async () => {
     if (!data) return;
     const textToCopy = `"${data.text}" - ${data.reference}`;
@@ -74,7 +67,6 @@ export default function VerseOfTheDay() {
     }
   };
 
-  // Search logic (mock / local filter over common verses & chapter format)
   const handleSearch = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
@@ -88,7 +80,6 @@ export default function VerseOfTheDay() {
     setIsSearching(true);
     setShowSearchDropdown(true);
 
-    // Simulate search results for demonstration & quick biblical navigation
     const mockVerses = [
       { reference: 'João 3:16', text: 'Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito...', book: 'João', chapter: 3, verse: 16 },
       { reference: 'Salmos 23:1', text: 'O Senhor é o meu pastor; nada me faltará.', book: 'Salmos', chapter: 23, verse: 1 },
@@ -108,7 +99,6 @@ export default function VerseOfTheDay() {
         item.book.toLowerCase().includes(qLower)
     );
 
-    // If query matches a standard pattern like "Gênesis 1" or "João 1:1" not in static list
     if (filtered.length === 0) {
       filtered.push({
         reference: query,
@@ -132,173 +122,150 @@ export default function VerseOfTheDay() {
   };
 
   return (
-    <motion.section
-      className="verse-of-the-day-card"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: [0.33, 1, 0.68, 1] }}
-    >
-      {/* ── Card Header with Eyebrow, Info Badge & Search ── */}
+    <article className="verse-card">
       <div className="verse-card-header">
-        <div className="verse-badge-container">
+        <div className="verse-eyebrow-container">
           <span className="eyebrow verse-eyebrow">
-            <Sparkles size={15} className="sparkle-icon" /> Versículo do Dia
+            Versículo do Dia
           </span>
-
-          {/* Info Icon with Tooltip */}
-          <div
-            className="verse-info-wrapper"
-            onMouseEnter={() => setShowTooltip(true)}
-            onMouseLeave={() => setShowTooltip(false)}
-            onClick={() => setShowTooltip(!showTooltip)}
-            tabIndex={0}
-            role="button"
-            aria-label="Informações sobre o Versículo do Dia"
-          >
-            <Info size={16} className="info-icon" />
+          <div className="info-tooltip-wrapper">
+            <button
+              type="button"
+              className="info-icon-btn"
+              onClick={() => setShowTooltip(!showTooltip)}
+              onMouseEnter={() => setShowTooltip(true)}
+              onMouseLeave={() => setShowTooltip(false)}
+              aria-label="Sobre a seleção do versículo"
+            >
+              <Info size={14} />
+            </button>
             <AnimatePresence>
               {showTooltip && (
                 <motion.div
-                  className="verse-tooltip"
-                  initial={{ opacity: 0, scale: 0.9, y: 5 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.9, y: 5 }}
+                  className="tooltip-box"
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 5 }}
                   transition={{ duration: 0.2 }}
                 >
-                  Exibe um versículo bíblico diferente a cada dia, seguindo a ordem canônica da Bíblia (de Gênesis a Apocalipse).
+                  <p>Versículo diário atualizado para meditação e contemplação espiritual.</p>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
         </div>
 
-        {/* Search Bar */}
-        <div className="verse-search-wrapper" ref={searchRef}>
-          <div className="verse-search-input-box">
-            <Search size={15} className="search-icon" />
+        <div className="verse-search-container" ref={searchRef}>
+          <div className="verse-search-input-wrapper">
+            <Search size={15} className="verse-search-icon" />
             <input
               type="text"
-              placeholder="Pesquisar livro, capítulo ou versículo..."
               value={searchQuery}
               onChange={handleSearch}
-              onFocus={() => searchQuery.length >= 2 && setShowSearchDropdown(true)}
+              onFocus={() => searchQuery.trim().length >= 2 && setShowSearchDropdown(true)}
+              placeholder="Buscar livro, cap ou versículo (ex: Salmos 23)"
               className="verse-search-input"
             />
           </div>
 
-          {/* Search Dropdown */}
           <AnimatePresence>
             {showSearchDropdown && (
-              <motion.ul
+              <motion.div
                 className="verse-search-dropdown"
-                initial={{ opacity: 0, y: 8 }}
+                initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 8 }}
+                exit={{ opacity: 0, y: 4 }}
                 transition={{ duration: 0.2 }}
               >
                 {isSearching ? (
-                  <li className="search-status">Buscando...</li>
+                  <div className="dropdown-loading">Buscando...</div>
                 ) : searchResults.length > 0 ? (
-                  searchResults.map((item, idx) => (
-                    <li
-                      key={idx}
-                      className="search-item"
-                      onClick={() => selectSearchResult(item)}
-                    >
-                      <strong className="search-item-ref">{item.reference}</strong>
-                      <span className="search-item-text">{item.text}</span>
-                    </li>
-                  ))
+                  <ul className="dropdown-results-list">
+                    {searchResults.map((item, idx) => (
+                      <li
+                        key={idx}
+                        className="dropdown-result-item"
+                        onClick={() => selectSearchResult(item)}
+                      >
+                        <strong className="result-ref">{item.reference}</strong>
+                        <span className="result-snippet">{item.text}</span>
+                      </li>
+                    ))}
+                  </ul>
                 ) : (
-                  <li className="search-status">Nenhum resultado encontrado</li>
+                  <div className="dropdown-no-results">Nenhum resultado encontrado</div>
                 )}
-              </motion.ul>
+              </motion.div>
             )}
           </AnimatePresence>
         </div>
       </div>
 
-      {/* ── Main Content Block (Loading / Error / Data) ── */}
+      {error && (
+        <div className="verse-api-notice">
+          <AlertCircle size={14} />
+          <span>Exibindo mensagem contemplativa do dia.</span>
+          <button onClick={fetchVerseOfTheDay} className="btn-retry" title="Tentar novamente">
+            <RefreshCw size={13} />
+          </button>
+        </div>
+      )}
+
       {loading ? (
         <div className="verse-skeleton-body">
-          <div className="skeleton" style={{ width: '40%', height: '1.8rem', margin: '1rem auto' }} />
-          <div className="skeleton" style={{ width: '90%', height: '1.2rem', margin: '0.5rem auto' }} />
-          <div className="skeleton" style={{ width: '75%', height: '1.2rem', margin: '0.5rem auto' }} />
+          <div className="skeleton" style={{ width: '40%', height: '1.8rem', marginBottom: '1rem' }} />
+          <div className="skeleton" style={{ width: '90%', height: '3.5rem', marginBottom: '1.5rem' }} />
+          <div className="skeleton" style={{ width: '30%', height: '2rem' }} />
         </div>
-      ) : (
-        <>
-          {error && (
-            <div className="verse-api-notice">
-              <AlertCircle size={14} />
-              <span>Modo offline ativado (usando versículo diário de contingência).</span>
-              <button onClick={fetchVerseOfTheDay} className="btn-retry" title="Tentar novamente">
-                <RefreshCw size={13} />
-              </button>
-            </div>
-          )}
-
-          {/* Reference Header */}
-          <h2 className="verse-reference">{data?.reference}</h2>
-
-          {/* Verse Text */}
-          <blockquote className="verse-text">
-            &ldquo;{data?.text}&rdquo;
+      ) : data ? (
+        <div className="verse-content-wrapper">
+          <h2 className="verse-reference">{data.reference}</h2>
+          
+          <blockquote className="verse-quote">
+            &ldquo;{data.text}&rdquo;
           </blockquote>
 
-          {/* Share / Copy Button */}
           <div className="verse-actions">
             <button
               className={`btn-verse-action ${copied ? 'copied' : ''}`}
               onClick={handleCopy}
-              title="Copiar referência e versículo"
+              title="Copiar versículo para compartilhar"
             >
-              {copied ? (
-                <>
-                  <Check size={16} /> Copiado!
-                </>
-              ) : (
-                <>
-                  <Copy size={16} /> Compartilhar / Copiar
-                </>
-              )}
+              {copied ? <Check size={16} /> : <Copy size={16} />}
+              <span>{copied ? 'Copiado' : 'Copiar'}</span>
             </button>
 
-            {data?.reflection && (
+            {data.reflection && (
               <button
                 className={`btn-verse-action btn-reflection-toggle ${showReflection ? 'active' : ''}`}
                 onClick={() => setShowReflection(!showReflection)}
+                aria-expanded={showReflection}
               >
-                Reflexão do Dia
-                <motion.div
-                  animate={{ rotate: showReflection ? 180 : 0 }}
-                  transition={{ duration: 0.25 }}
-                  style={{ display: 'inline-flex', alignItems: 'center' }}
-                >
-                  <ChevronDown size={16} />
-                </motion.div>
+                <Sparkles size={16} />
+                <span>Interpretação & Reflexão</span>
+                <ChevronDown size={16} className={`chevron-icon ${showReflection ? 'rotated' : ''}`} />
               </button>
             )}
           </div>
 
-          {/* Expandable Reflection Section */}
           <AnimatePresence>
-            {showReflection && data?.reflection && (
+            {showReflection && data.reflection && (
               <motion.div
                 className="verse-reflection-box"
-                initial={{ opacity: 0, height: 0, marginTop: 0 }}
-                animate={{ opacity: 1, height: 'auto', marginTop: 16 }}
-                exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                transition={{ duration: 0.35, ease: [0.33, 1, 0.68, 1] }}
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3, ease: [0.33, 1, 0.68, 1] }}
               >
-                <div className="verse-reflection-content">
-                  <h4>Reflexão & Meditação</h4>
+                <div className="reflection-inner">
+                  <h4>Reflexão do Dia</h4>
                   <p>{data.reflection}</p>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
-        </>
-      )}
-    </motion.section>
+        </div>
+      ) : null}
+    </article>
   );
 }

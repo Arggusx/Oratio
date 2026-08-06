@@ -49,7 +49,7 @@ const liturgicalColors = {
   Verde: '#5B8060',
   Vermelho: '#AE463D',
   Roxo: '#73537B',
-  Branco: '#B28A42',
+  Branco: '#8E8E8E',
   Rosa: '#B95E78',
 };
 
@@ -99,7 +99,6 @@ export default function Leituras() {
         homilia: []
       };
       
-      // Trata a Liturgia Diária (versículos da Bíblia)
       if (results[0].status === 'fulfilled' && results[0].value?.leituras) {
         const d = results[0].value;
         const leituras = d.leituras;
@@ -267,17 +266,8 @@ export default function Leituras() {
           </motion.div>
         </AnimatePresence>
 
-        <button
-          className="btn-ghost btn"
-          onClick={() => setFocus(true)}
-          style={{ marginTop: '1rem' }}
-        >
-          <Maximize2 size={16} />
-          Modo foco
-        </button>
       </div>
 
-      {/* ── Focus overlay ── */}
       <AnimatePresence>
         {focus && (
           <motion.div
@@ -301,9 +291,12 @@ export default function Leituras() {
           </motion.div>
         )}
       </AnimatePresence>
-    <div style={{ marginTop: '2rem', fontSize: '0.9rem'}}>
-      Fonte: Liturgia Diária - Canção Nova
-    </div>
+    <a 
+      href='https://liturgia.cancaonova.com/pb/' 
+      target="_blank" rel="noopener noreferrer" 
+      style={{ marginTop: '2rem', fontSize: '0.9rem', color: '#555', textAlign: 'center', marginBottom: '1rem', display: 'block' }}>
+      Fonte: Liturgia Diária - <strong>Canção Nova</strong>
+    </a>
     </main>
     </>
   );
