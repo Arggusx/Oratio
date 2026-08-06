@@ -1,6 +1,6 @@
-# Oratio Daily
+# Oratio 
 
-O **Oratio Daily** é uma aplicação web católica para criar um momento diário de oração, leitura e contemplação. Ela reúne o roteiro do Santo Terço, os mistérios do Rosário, a liturgia do dia, leituras breves com reflexões e uma área de dúvidas sobre a fé e as tradições da Igreja.
+O **Oratio** é uma aplicação web católica para criar um momento diário de oração, leitura e contemplação. Ela reúne o roteiro do Santo Terço, os mistérios do Rosário, a liturgia do dia, leituras breves com reflexões e uma área de dúvidas sobre a fé e as tradições da Igreja.
 
 O projeto é uma *single-page application* (SPA) em React: a navegação acontece no navegador, sem recarregar a página, e as transições são animadas para manter uma experiência calma e contínua.
 
@@ -22,7 +22,7 @@ O conteúdo e a interface estão em português do Brasil.
 
 ### Início
 
-A página inicial apresenta o propósito do Oratio Daily e traz a seção **A Palavra em Três Momentos**. Ela organiza leituras contemplativas — sem o Evangelho — em três blocos: Antigo Testamento, Poesia e Sabedoria, e Cartas e Epístolas. Cada bloco pode exibir o texto completo, uma reflexão e um botão para copiar o trecho.
+A página inicial apresenta o propósito do Oratio  e traz a seção **A Palavra em Três Momentos**. Ela organiza leituras contemplativas — sem o Evangelho — em três blocos: Antigo Testamento, Poesia e Sabedoria, e Cartas e Epístolas. Cada bloco pode exibir o texto completo, uma reflexão e um botão para copiar o trecho.
 
 Há também um atalho para a página de Liturgia, onde o Evangelho do dia está disponível.
 
@@ -140,9 +140,9 @@ O front-end consome as seguintes fontes:
 
 | Recurso | Endereço padrão | Uso |
 | --- | --- | --- |
-| Leitura diária em três blocos | `https://daily-prayer-api.vercel.app/api/daily-reading` | Página inicial |
-| Versículo do dia | `https://daily-prayer-api.vercel.app/api/verse-of-the-day` | Componente `VerseOfTheDay` |
-| Reflexão/homilia | `https://daily-prayer-api.vercel.app/api/daily-reflection` | Página de Liturgia |
+| Leitura diária em três blocos | `https://-prayer-api.vercel.app/api/-reading` | Página inicial |
+| Versículo do dia | `https://-prayer-api.vercel.app/api/verse-of-the-day` | Componente `VerseOfTheDay` |
+| Reflexão/homilia | `https://-prayer-api.vercel.app/api/-reflection` | Página de Liturgia |
 | Liturgia | `https://liturgia.up.railway.app/v2/` | Leituras, salmo e Evangelho |
 | Feedback | Formspree (`https://formspree.io/f/mqapqejd`) | Formulário flutuante |
 
