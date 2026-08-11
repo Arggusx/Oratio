@@ -78,7 +78,7 @@ export default function Leituras() {
     const fetchHomilia = (async () => {
       for (const baseUrl of candidateBases) {
         try {
-          const response = await fetch(`${baseUrl}/api/daily-reflection`);
+          const response = await fetch(`${baseUrl}/api/daily-homily`);
           if (!response.ok) continue;
 
           return await response.json();
