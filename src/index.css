@@ -3848,3 +3848,159 @@ body {
 :root[data-theme='dark'] .terco-guide-img {
   filter: saturate(0.8) brightness(0.88);
 }
+
+
+/* ============================================================
+   ESCOLA DA FÉ — O QUE FAZER NA MISSA
+   ============================================================ */
+.mass-intro {
+  max-width: 46rem;
+  margin-bottom: 1.8rem;
+}
+
+.mass-intro-title {
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  margin-bottom: 0.6rem;
+}
+
+.mass-intro p {
+  color: var(--color-text-muted);
+  line-height: 1.7;
+}
+
+.mass-gestures-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 720px) {
+  .mass-gestures-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1080px) {
+  .mass-gestures-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.mass-gesture-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: linear-gradient(180deg, #162A44 0%, #0F1D31 100%);
+  border: 1px solid rgba(212, 163, 69, 0.45);
+  box-shadow: var(--shadow-lg);
+  color: #EDE6DA;
+}
+
+.mass-gesture-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1.3rem 1.2rem 1.4rem;
+}
+
+.mass-gesture-body h3 {
+  font-size: 1.7rem;
+  color: #FFF8EC;
+}
+
+.mass-gesture-description {
+  font-size: 0.88rem;
+  color: #C9C1B4;
+  margin-top: 0.35rem;
+}
+
+.mass-gesture-when {
+  margin: 1rem 0 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #E7BE64;
+}
+
+.mass-gesture-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.mass-gesture-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.mass-gesture-list li.is-example {
+  margin-top: 0.2rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(212, 163, 69, 0.35);
+}
+
+.mass-icon-badge {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 3.3rem;
+  height: 3.3rem;
+  border-radius: 14px;
+  background: radial-gradient(circle at 50% 35%, rgba(242, 205, 122, 0.16), rgba(242, 205, 122, 0.03));
+  border: 1px solid rgba(212, 163, 69, 0.3);
+}
+
+.mass-icon {
+  display: block;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
+}
+
+.mass-gesture-text {
+  font-size: 0.93rem;
+  line-height: 1.5;
+  color: #EDE6DA;
+}
+
+.mass-gesture-text strong {
+  color: #F2CD7A;
+  font-weight: 700;
+}
+
+.mass-who-tag {
+  display: inline-block;
+  margin-left: 0.4rem;
+  padding: 0.05rem 0.45rem;
+  border-radius: var(--radius-full);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #0F1D31;
+  background: #D4A345;
+  vertical-align: middle;
+}
+
+.mass-gesture-note {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 1.1rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #C9C1B4;
+}
+
+.mass-gesture-note svg {
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  color: #E7BE64;
+}
+
+.mass-source {
+  margin-top: 1.5rem;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}

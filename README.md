@@ -65,9 +65,9 @@ A página **Calendário** mostra o ano inteiro com domingos de preceito, dias sa
 
 O botão no cabeçalho alterna entre tema claro e escuro. Na primeira visita o site segue a preferência do sistema; a escolha fica salva no navegador.
 
-### Central de conhecimento
+### Escola da Fé
 
-A página **Curiosidades** funciona como uma FAQ. Ela permite pesquisar e filtrar perguntas sobre sacramentos, história da Igreja, símbolos e liturgia, dogmas e tradições.
+A página **Escola da Fé** tem duas seções. **Na Missa** explica, com ícones ilustrados, quando fazer a inclinação de cabeça, a inclinação profunda e a genuflexão, conforme a Instrução Geral do Missal Romano. **Curiosidades** funciona como uma FAQ. Ela permite pesquisar e filtrar perguntas sobre sacramentos, história da Igreja, símbolos e liturgia, dogmas e tradições.
 
 ### Navegação e feedback
 
@@ -82,7 +82,7 @@ O cabeçalho é responsivo: em telas pequenas, os links são apresentados em um 
 | `/home/leituras` | Liturgia diária, Evangelho e homilia |
 | `/home/oracoes` | Guia do terço, Rosário Nórdico e orações |
 | `/home/calendario` | Calendário católico do ano, com filtros e busca |
-| `/home/curiosidades` | Perguntas e respostas sobre a fé católica |
+| `/home/escola-da-fe` | Escola da Fé: curiosidades e o que fazer na Missa (`?secao=missa`). O antigo `/home/curiosidades` redireciona para cá |
 | `/home/misterio/foco/:tipo/:id` | Modo guiado de um mistério (`tipo`: `gozosos`, `luminosos`, `dolorosos` ou `gloriosos`; `id`: 1 a 5) |
 
 No modo guiado, cada mistério tem dez contas interativas. Ao avançar pelas dez Ave-Marias, a aplicação segue automaticamente para o próximo mistério; após o quinto, retorna à página de Mistérios.
@@ -203,7 +203,7 @@ Para publicar na Vercel:
 ## Observações de manutenção
 
 - Adicione ou edite mistérios em `src/data/mysteries.js` para que as páginas de Mistérios, Terço e Modo Foco permaneçam sincronizadas.
-- Os textos de orações e perguntas frequentes estão diretamente em `src/pages/Oracoes.jsx` e `src/pages/Curiosidades.jsx`.
+- As orações estão em `src/data/prayers.js` e as perguntas frequentes em `src/pages/EscolaDaFe.jsx`. Os gestos da Missa ficam em `src/components/MassGesturesSection.jsx` e os ícones ilustrados em `src/components/MassIcons.jsx`.
 - Não há backend local em execução neste repositório, embora `axios`, `express` e `cors` constem como dependências. As funcionalidades atuais dependem de APIs externas ou de dados de contingência no front-end.
 - O componente `VerseOfTheDay` existe no projeto e está preparado para consumir o endpoint de versículo do dia; verifique sua inclusão em uma página caso queira expô-lo na interface atual.
 

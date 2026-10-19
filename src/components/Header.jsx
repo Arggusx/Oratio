@@ -9,7 +9,7 @@ const links = [
   ['Leituras', '/home/leituras'],
   ['Terço e Orações', '/home/oracoes'],
   ['Calendário', '/home/calendario'],
-  ['Curiosidades', '/home/curiosidades'],
+  ['Escola da Fé', '/home/escola-da-fe'],
 ];
 
 export default function Header() {

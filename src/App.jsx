@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -7,7 +7,7 @@ import Home from './pages/Home';
 import Misterios from './pages/Misterios';
 import Leituras from './pages/Leituras';
 import Oracoes from './pages/Oracoes';
-import Curiosidades from './pages/Curiosidades';
+import EscolaDaFe from './pages/EscolaDaFe';
 import FocusMystery from './pages/FocusMystery';
 import Calendario from './pages/Calendario';
 const pageVariants = {
@@ -39,7 +39,9 @@ function AnimatedRoutes() {
           <Route path="/home/misterio" element={<Misterios />} />
           <Route path="/home/leituras" element={<Leituras />} />
           <Route path="/home/oracoes" element={<Oracoes />} />
-          <Route path="/home/curiosidades" element={<Curiosidades />} />
+          <Route path="/home/escola-da-fe" element={<EscolaDaFe />} />
+          {/* Endereço antigo da página */}
+          <Route path="/home/curiosidades" element={<Navigate to="/home/escola-da-fe" replace />} />
           <Route path="/home/calendario" element={<Calendario />} />
           <Route path="/home/misterio/foco/:tipo/:id" element={<FocusMystery />} />
         </Routes>
