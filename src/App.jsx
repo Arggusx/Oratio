@@ -9,6 +9,7 @@ import Leituras from './pages/Leituras';
 import Oracoes from './pages/Oracoes';
 import Curiosidades from './pages/Curiosidades';
 import FocusMystery from './pages/FocusMystery';
+import Calendario from './pages/Calendario';
 const pageVariants = {
   initial: { opacity: 0, y: 16 },
   animate: { opacity: 1, y: 0 },
@@ -39,6 +40,7 @@ function AnimatedRoutes() {
           <Route path="/home/leituras" element={<Leituras />} />
           <Route path="/home/oracoes" element={<Oracoes />} />
           <Route path="/home/curiosidades" element={<Curiosidades />} />
+          <Route path="/home/calendario" element={<Calendario />} />
           <Route path="/home/misterio/foco/:tipo/:id" element={<FocusMystery />} />
         </Routes>
       </motion.div>

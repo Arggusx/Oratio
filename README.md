@@ -22,7 +22,9 @@ O conteúdo e a interface estão em português do Brasil.
 
 ### Início
 
-A página inicial apresenta o propósito do Oratio  e traz a seção **A Palavra em Três Momentos**. Ela organiza leituras contemplativas — sem o Evangelho — em três blocos: Antigo Testamento, Poesia e Sabedoria, e Cartas e Epístolas. Cada bloco pode exibir o texto completo, uma reflexão e um botão para copiar o trecho.
+A página inicial apresenta o propósito do Oratio  e traz a seção **A Palavra em Três Momentos**. Ela organiza leituras contemplativas — sem o Evangelho — em três blocos: Antigo Testamento, Poesia e Sabedoria, e Cartas e Epístolas. Cada bloco pode exibir o texto completo, uma interpretação e um botão para copiar o trecho. Os textos aparecem mesmo quando a interpretação gerada por IA ainda não está pronta.
+
+É possível voltar a dias anteriores (nunca a dias futuros) e recomeçar a leitura do início (Gênesis 1, Jó 1 e Romanos 1) no próprio ritmo. O ponto de recomeço fica salvo no navegador do leitor.
 
 Há também um atalho para a página de Liturgia, onde o Evangelho do dia está disponível.
 
@@ -55,6 +57,14 @@ O botão **Modo foco** abre a leitura selecionada em uma sobreposição de tela 
 
 Caso uma integração esteja indisponível, o site apresenta leituras e reflexões de contingência em vez de interromper a experiência.
 
+### Calendário Católico
+
+A página **Calendário** mostra o ano inteiro com domingos de preceito, dias santos de guarda (normas da CNBB), as principais celebrações litúrgicas e os feriados nacionais. A legenda funciona como filtro e há busca por nome. As datas móveis são calculadas a partir da Páscoa em `src/utils/liturgicalCalendar.js`, que também define o mistério do terço do dia (domingos do Advento são gozosos e os da Quaresma, dolorosos) e quando o Aleluia é omitido na Liturgia.
+
+### Modo escuro
+
+O botão no cabeçalho alterna entre tema claro e escuro. Na primeira visita o site segue a preferência do sistema; a escolha fica salva no navegador.
+
 ### Central de conhecimento
 
 A página **Curiosidades** funciona como uma FAQ. Ela permite pesquisar e filtrar perguntas sobre sacramentos, história da Igreja, símbolos e liturgia, dogmas e tradições.
@@ -71,6 +81,7 @@ O cabeçalho é responsivo: em telas pequenas, os links são apresentados em um 
 | `/home/misterio` | Conjuntos e meditações dos mistérios |
 | `/home/leituras` | Liturgia diária, Evangelho e homilia |
 | `/home/oracoes` | Guia do terço, Rosário Nórdico e orações |
+| `/home/calendario` | Calendário católico do ano, com filtros e busca |
 | `/home/curiosidades` | Perguntas e respostas sobre a fé católica |
 | `/home/misterio/foco/:tipo/:id` | Modo guiado de um mistério (`tipo`: `gozosos`, `luminosos`, `dolorosos` ou `gloriosos`; `id`: 1 a 5) |
 

@@ -1,7 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { BookOpen, Clock, Copy, Check, ChevronDown, ChevronRight, Sparkles, RefreshCw, AlertCircle, Feather, Scroll, Mail } from 'lucide-react';
+import {
+  BookOpen, Copy, Check, ChevronDown, ChevronLeft, ChevronRight, RefreshCw, AlertCircle,
+  Feather, Scroll, Mail, RotateCcw, CalendarDays,
+} from 'lucide-react';
+import { addDays, fromKey, toKey } from '../utils/liturgicalCalendar';
+
+const API_BASE = import.meta.env.VITE_API_ORACAO || 'https://daily-prayer-api.vercel.app';
+const START_KEY = 'oratio:leitura-inicio';
+const CACHE_PREFIX = 'oratio:leitura-cache:';
 
 const fallbackReadings = [
   {
@@ -33,52 +41,143 @@ const fallbackReadings = [
   }
 ];
 
+const dayLabel = new Intl.DateTimeFormat('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+
+// localStorage pode estar indisponível (modo privado, bloqueio de cookies).
+function readStorage(key) {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+function writeStorage(key, value) {
+  try {
+    if (value === null) localStorage.removeItem(key);
+    else localStorage.setItem(key, value);
+  } catch {
+    // ignora: a leitura funciona sem persistência
+  }
+}
+
+function daysBetweenKeys(fromK, toK) {
+  return Math.round((fromKey(toK) - fromKey(fromK)) / 86_400_000);
+}
+
+/**
+ * Qual consulta fazer para um dia:
+ * - leitura pessoal (após "recomeçar"): ?seq=N, onde N é o dia da jornada do leitor;
+ * - dias passados da leitura geral: ?date=AAAA-MM-DD;
+ * - hoje na leitura geral: sem parâmetros.
+ */
+function buildQuery(dateKey, todayKey, startKey) {
+  if (startKey && dateKey >= startKey) {
+    return `seq=${daysBetweenKeys(startKey, dateKey) + 1}`;
+  }
+  if (dateKey !== todayKey) return `date=${dateKey}`;
+  return '';
+}
+
+function normalizeReadings(result) {
+  const readingsArray = result?.readings || (Array.isArray(result) ? result : null);
+  if (!Array.isArray(readingsArray)) return [];
+  return readingsArray.filter(
+    (b) => !(b.titulo_categoria || b.categoria || '').toLowerCase().includes('evangelho')
+  );
+}
+
 export default function DailyReading3Blocks() {
+  const todayKey = toKey(new Date());
+  const [selectedKey, setSelectedKey] = useState(todayKey);
+  const [startKey, setStartKey] = useState(() => readStorage(START_KEY));
+  const [confirmReset, setConfirmReset] = useState(false);
+
   const [readings, setReadings] = useState([]);
-  const [totalEstimatedTime, setTotalEstimatedTime] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [status, setStatus] = useState('ok'); // 'ok' | 'fallback' | 'not-found'
   const [copiedId, setCopiedId] = useState(null);
   const [expandedTextId, setExpandedTextId] = useState(null);
   const [expandedInterpretationId, setExpandedInterpretationId] = useState(null);
 
-  const fetchDailyReadings = async () => {
-    setLoading(true);
-    setError(null);
+  const requestIdRef = useRef(0);
+
+  const query = buildQuery(selectedKey, todayKey, startKey);
+  const journeyDay = startKey && selectedKey >= startKey ? daysBetweenKeys(startKey, selectedKey) + 1 : null;
+
+  const fetchDailyReadings = useCallback(async () => {
+    // Ignora respostas de um dia que o leitor já deixou para trás.
+    const requestId = ++requestIdRef.current;
+    const isCurrent = () => requestId === requestIdRef.current;
+    const cacheKey = CACHE_PREFIX + (query || `hoje:${todayKey}`);
+    const cached = readStorage(cacheKey);
+    let hasCache = false;
+
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        if (parsed.length > 0) {
+          setReadings(parsed);
+          setStatus('ok');
+          setLoading(false);
+          hasCache = true;
+        }
+      } catch {
+        writeStorage(cacheKey, null);
+      }
+    }
+    if (!hasCache) setLoading(true);
+
     try {
-      const baseUrl = import.meta.env.VITE_API_ORACAO || 'https://daily-prayer-api.vercel.app';
-      const response = await fetch(`${baseUrl}/api/daily-reading`);
-      if (!response.ok) {
-        throw new Error(`Erro HTTP: ${response.status}`);
+      const response = await fetch(`${API_BASE}/api/daily-reading${query ? `?${query}` : ''}`);
+      if (!isCurrent()) return;
+      if (response.status === 404) {
+        setReadings([]);
+        setStatus('not-found');
+        return;
       }
-      const result = await response.json();
+      if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
 
-      if (result.total_estimated_time) {
-        setTotalEstimatedTime(result.total_estimated_time);
-      }
+      const fresh = normalizeReadings(await response.json());
+      if (!isCurrent()) return;
+      if (fresh.length === 0) throw new Error('Resposta sem leituras.');
 
-      const readingsArray = result.readings || (Array.isArray(result) ? result : null);
-
-      if (readingsArray && Array.isArray(readingsArray) && readingsArray.length > 0) {
-        const filtered = readingsArray.filter(
-          (b) => !(b.titulo_categoria || b.categoria || '').toLowerCase().includes('evangelho')
-        );
-        setReadings(filtered.length > 0 ? filtered : fallbackReadings);
-      } else {
-        setReadings(fallbackReadings);
-      }
+      setReadings(fresh);
+      setStatus('ok');
+      writeStorage(cacheKey, JSON.stringify(fresh));
     } catch (err) {
       console.error('Erro ao buscar leitura diária em 3 blocos:', err);
-      setReadings(fallbackReadings);
-      setError(err.message);
+      if (isCurrent() && !hasCache) {
+        setReadings(fallbackReadings);
+        setStatus('fallback');
+      }
     } finally {
-      setLoading(false);
+      if (isCurrent()) setLoading(false);
     }
-  };
+  }, [query, todayKey]);
 
   useEffect(() => {
+    setExpandedTextId(null);
+    setExpandedInterpretationId(null);
     fetchDailyReadings();
-  }, []);
+  }, [fetchDailyReadings]);
+
+  const goToDay = (key) => {
+    if (!key) return;
+    setSelectedKey(key > todayKey ? todayKey : key);
+  };
+
+  const restartJourney = () => {
+    writeStorage(START_KEY, todayKey);
+    setStartKey(todayKey);
+    setSelectedKey(todayKey);
+    setConfirmReset(false);
+  };
+
+  const backToGeneral = () => {
+    writeStorage(START_KEY, null);
+    setStartKey(null);
+    setConfirmReset(false);
+  };
 
   const handleCopyBlock = async (item) => {
     const categoria = item.titulo_categoria || item.categoria || '';
@@ -92,14 +191,6 @@ export default function DailyReading3Blocks() {
     }
   };
 
-  const toggleInterpretation = (id) => {
-    setExpandedInterpretationId((prev) => (prev === id ? null : id));
-  };
-
-  const toggleTextExpand = (id) => {
-    setExpandedTextId((prev) => (prev === id ? null : id));
-  };
-
   const getCategoryIcon = (id, categoria) => {
     const key = (id || categoria || '').toLowerCase();
     if (key.includes('poesia') || key.includes('sabedoria')) return Feather;
@@ -107,13 +198,13 @@ export default function DailyReading3Blocks() {
     return Scroll;
   };
 
+  const isToday = selectedKey === todayKey;
+
   return (
     <section className="daily-reading-section">
       <div className="daily-reading-header">
         <div className="daily-reading-title-box">
-          <span className="eyebrow verse-eyebrow">
-            Leitura Diária
-          </span>
+          <span className="eyebrow verse-eyebrow">Leitura Diária</span>
           <h2 className="section-title" style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)', margin: '0.2rem 0 0.4rem' }}>
             A Palavra em Três Momentos
           </h2>
@@ -123,10 +214,81 @@ export default function DailyReading3Blocks() {
         </div>
       </div>
 
-      {error && (
+      {/* ── Navegação entre dias (nunca para o futuro) ── */}
+      <div className="reading-day-nav">
+        <div className="reading-day-controls">
+          <button
+            className="calendar-icon-btn"
+            onClick={() => goToDay(toKey(addDays(fromKey(selectedKey), -1)))}
+            aria-label="Dia anterior"
+          >
+            <ChevronLeft size={18} />
+          </button>
+
+          <label className="reading-day-picker">
+            <CalendarDays size={15} />
+            <span className="reading-day-label">{isToday ? 'Hoje' : dayLabel.format(fromKey(selectedKey))}</span>
+            <input
+              type="date"
+              value={selectedKey}
+              max={todayKey}
+              onChange={(e) => goToDay(e.target.value)}
+              aria-label="Escolher o dia da leitura"
+            />
+          </label>
+
+          <button
+            className="calendar-icon-btn"
+            onClick={() => goToDay(toKey(addDays(fromKey(selectedKey), 1)))}
+            disabled={isToday}
+            aria-label="Próximo dia"
+          >
+            <ChevronRight size={18} />
+          </button>
+
+          {!isToday && (
+            <button className="btn-block-action" onClick={() => setSelectedKey(todayKey)}>
+              Voltar para hoje
+            </button>
+          )}
+        </div>
+
+        <div className="reading-journey">
+          {startKey ? (
+            <>
+              <span className="reading-journey-badge">
+                {journeyDay ? `Sua leitura · dia ${journeyDay}` : 'Leitura geral (antes do recomeço)'}
+              </span>
+              <button className="btn-block-action" onClick={backToGeneral}>
+                Voltar à leitura geral
+              </button>
+            </>
+          ) : confirmReset ? (
+            <span className="reading-journey-confirm">
+              Recomeçar do Gênesis 1, Jó 1 e Romanos 1 a partir de hoje?
+              <button className="btn-block-action active" onClick={restartJourney}>Sim, recomeçar</button>
+              <button className="btn-block-action" onClick={() => setConfirmReset(false)}>Cancelar</button>
+            </span>
+          ) : (
+            <button className="btn-block-action" onClick={() => setConfirmReset(true)}>
+              <RotateCcw size={14} />
+              <span>Recomeçar a leitura</span>
+            </button>
+          )}
+        </div>
+      </div>
+
+      {startKey && (
+        <p className="reading-journey-note">
+          Você está fazendo a leitura no seu próprio ritmo desde {dayLabel.format(fromKey(startKey))}. O progresso fica
+          salvo neste navegador.
+        </p>
+      )}
+
+      {status === 'fallback' && (
         <div className="verse-api-notice" style={{ marginTop: '1rem' }}>
           <AlertCircle size={14} />
-          <span>Exibindo leituras contemplativas recomendadas para hoje.</span>
+          <span>Não foi possível carregar a leitura agora. Exibindo leituras contemplativas recomendadas.</span>
           <button onClick={fetchDailyReadings} className="btn-retry" title="Tentar novamente">
             <RefreshCw size={13} />
           </button>
@@ -143,6 +305,11 @@ export default function DailyReading3Blocks() {
             </div>
           ))}
         </div>
+      ) : status === 'not-found' ? (
+        <div className="reading-not-found">
+          <p>Não há leituras registradas para este dia.</p>
+          <button className="btn-block-action" onClick={() => setSelectedKey(todayKey)}>Ver a leitura de hoje</button>
+        </div>
       ) : (
         <>
           <p className="daily-reading-intro">
@@ -155,7 +322,6 @@ export default function DailyReading3Blocks() {
               const categoriaNome = item.titulo_categoria || item.categoria || 'Leitura';
               const blockKey = `reading-${index}-${item.id || item.referencia || categoriaNome}`;
               const IconComponent = item.icon || getCategoryIcon(item.id, categoriaNome);
-              const tempoLeitura = item.tempo_estimado || item.tempoEstimado || '~2 min';
               const isCopied = copiedId === (item.id || categoriaNome);
               const isTextExpanded = expandedTextId === blockKey;
               const isInterpretationExpanded = expandedInterpretationId === blockKey;
@@ -166,76 +332,74 @@ export default function DailyReading3Blocks() {
                 ? `${item.texto.slice(0, 140)}...`
                 : item.texto;
 
-            return (
-              <motion.article
-                key={blockKey}
-                className="reading-block-card"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.12 }}
-              >
-                <div className="reading-block-top">
-                  <div className="reading-category-pill">
-                    <IconComponent size={14} className="category-icon" />
-                    <span>{categoriaNome}</span>
-                  </div>
-
-                  <span className="reading-time-badge" title="Tempo estimado de leitura">
-                  </span>
-                </div>
-
-                <h3 className="reading-block-ref">{item.referencia}</h3>
-
-                <blockquote className="reading-block-text">
-                  &ldquo;{displayedText}&rdquo;
-                  {isLongText && (
-                    <button
-                      type="button"
-                      onClick={() => toggleTextExpand(blockKey)}
-                      className="btn-read-more-inline"
-                    >
-                      {isTextExpanded ? ' (Ler menos)' : ' (Ler mais)'}
-                    </button>
-                  )}
-                </blockquote>
-
-                {interpretacao && (
-                  <div
-                    className={`block-interpretation ${isInterpretationExpanded ? 'is-expanded' : ''}`}
-                    aria-label={`Interpretação de ${item.referencia}`}
-                  >
-                    <button
-                      type="button"
-                      className="block-interpretation-toggle"
-                      onClick={() => toggleInterpretation(blockKey)}
-                      aria-expanded={isInterpretationExpanded}
-                    >
-                      <strong>Interpretação</strong>
-                      <ChevronDown
-                        size={18}
-                        className={isInterpretationExpanded ? 'is-expanded' : ''}
-                        aria-hidden="true"
-                      />
-                    </button>
-                    <div className="block-interpretation-content">
-                      <p>{interpretacao}</p>
+              return (
+                <motion.article
+                  key={blockKey}
+                  className="reading-block-card"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: index * 0.12 }}
+                >
+                  <div className="reading-block-top">
+                    <div className="reading-category-pill">
+                      <IconComponent size={14} className="category-icon" />
+                      <span>{categoriaNome}</span>
                     </div>
                   </div>
-                )}
 
-                <div className="reading-block-actions">
-                  <button
-                    className={`btn-block-action ${isCopied ? 'copied' : ''}`}
-                    onClick={() => handleCopyBlock(item)}
-                    title="Copiar trecho"
-                  >
-                    {isCopied ? <Check size={14} /> : <Copy size={14} />}
-                    <span>{isCopied ? 'Copiado' : 'Copiar'}</span>
-                  </button>
+                  <h3 className="reading-block-ref">{item.referencia}</h3>
 
-                </div>
-              </motion.article>
-            );
+                  <blockquote className={`reading-block-text ${isTextExpanded ? 'is-expanded' : ''}`}>
+                    &ldquo;{displayedText}&rdquo;
+                    {isLongText && (
+                      <button
+                        type="button"
+                        onClick={() => setExpandedTextId((prev) => (prev === blockKey ? null : blockKey))}
+                        className="btn-read-more-inline"
+                      >
+                        {isTextExpanded ? ' (Ler menos)' : ' (Ler mais)'}
+                      </button>
+                    )}
+                  </blockquote>
+
+                  {interpretacao ? (
+                    <div
+                      className={`block-interpretation ${isInterpretationExpanded ? 'is-expanded' : ''}`}
+                      aria-label={`Interpretação de ${item.referencia}`}
+                    >
+                      <button
+                        type="button"
+                        className="block-interpretation-toggle"
+                        onClick={() =>
+                          setExpandedInterpretationId((prev) => (prev === blockKey ? null : blockKey))
+                        }
+                        aria-expanded={isInterpretationExpanded}
+                      >
+                        <strong>Interpretação</strong>
+                        <ChevronDown size={18} className={isInterpretationExpanded ? 'is-expanded' : ''} aria-hidden="true" />
+                      </button>
+                      <div className="block-interpretation-content">
+                        <p>{interpretacao}</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="block-interpretation-pending">
+                      A interpretação deste trecho ainda está sendo preparada. Leia com calma e deixe a Palavra falar.
+                    </p>
+                  )}
+
+                  <div className="reading-block-actions">
+                    <button
+                      className={`btn-block-action ${isCopied ? 'copied' : ''}`}
+                      onClick={() => handleCopyBlock(item)}
+                      title="Copiar trecho"
+                    >
+                      {isCopied ? <Check size={14} /> : <Copy size={14} />}
+                      <span>{isCopied ? 'Copiado' : 'Copiar'}</span>
+                    </button>
+                  </div>
+                </motion.article>
+              );
             })}
           </div>
         </>

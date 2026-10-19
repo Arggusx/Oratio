@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { ChevronDown, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 import RosaryGuide from '../components/RosaryGuide';
+import SaoBentoSection from '../components/SaoBentoSection';
 import { traditionalRosaryData, nordicRosaryData } from '../data/rosaryData';
 import { prayers } from '../data/prayers';
 
@@ -106,6 +107,8 @@ export default function Oracoes() {
             transition={{ duration: 0.35 }}
             className="prayers-search-section"
           >
+            <SaoBentoSection />
+
             <div className="search-wrapper">
               <Search size={16} className="search-icon" />
               <input

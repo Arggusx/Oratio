@@ -1,12 +1,14 @@
 import { NavLink } from 'react-router-dom';
 import { Menu, X, Cross } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import ThemeToggle from './ThemeToggle';
 
 const links = [
   ['Início', '/'],
   ['Mistérios', '/home/misterio'],
   ['Leituras', '/home/leituras'],
   ['Terço e Orações', '/home/oracoes'],
+  ['Calendário', '/home/calendario'],
   ['Curiosidades', '/home/curiosidades'],
 ];
 
@@ -40,7 +42,7 @@ export default function Header() {
       <nav className="nav">
         <NavLink to="/" className="brand" onClick={() => setOpen(false)}>
           <span className="brand-mark">
-            <img src="img2/icon_site.png" alt="Oratio Daily" />
+            <img src="/img2/icon_site.png" alt="Oratio Daily" />
           </span>
           Oratio
         </NavLink>
@@ -49,13 +51,16 @@ export default function Header() {
           {navLinks}
         </div>
 
-        <button
-          className="menu-toggle"
-          aria-label={open ? 'Fechar menu' : 'Abrir menu'}
-          onClick={() => setOpen(!open)}
-        >
-          {open ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div className="nav-actions">
+          <ThemeToggle />
+          <button
+            className="menu-toggle"
+            aria-label={open ? 'Fechar menu' : 'Abrir menu'}
+            onClick={() => setOpen(!open)}
+          >
+            {open ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </nav>
 
       {/* Mobile backdrop */}

@@ -1,38 +1,280 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Sparkles, Calendar } from 'lucide-react';
+import { ChevronDown, Sparkles, Calendar, HeartHandshake } from 'lucide-react';
+import { getTodayMysteryKey } from '../utils/liturgicalCalendar';
+import {
+  closingPrayers,
+  SIGN_OF_THE_CROSS,
+  HOLY_SPIRIT_INVOCATION,
+  OUR_FATHER,
+  GLORY_BE,
+  FATIMA_PRAYER,
+  THANKSGIVING,
+  HAIL_HOLY_QUEEN,
+  ORDINAL_WORDS,
+} from '../data/rosaryData';
 
-// Helper para detectar o mistério do dia atual baseado no dia da semana
-function getTodayMysteryKey() {
-  const day = new Date().getDay(); // 0 = Domingo, 1 = Segunda, 2 = Terça, 3 = Quarta, 4 = Quinta, 5 = Sexta, 6 = Sábado
-  switch (day) {
-    case 1: // Segunda
-    case 6: // Sábado
-      return 'gozosos';
-    case 2: // Terça
-    case 5: // Sexta
-      return 'dolorosos';
-    case 4: // Quinta
-      return 'luminosos';
-    case 3: // Quarta
-    case 0: // Domingo
-    default:
-      return 'gloriosos';
-  }
+const MYSTERY_ADJECTIVE = {
+  gozosos: 'gozoso',
+  luminosos: 'luminoso',
+  dolorosos: 'doloroso',
+  gloriosos: 'glorioso',
+};
+
+const WEEKDAYS = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
+
+const lowerFirst = (text) => text.charAt(0).toLowerCase() + text.slice(1);
+
+function Collapse({ isOpen, children, className }) {
+  return (
+    <AnimatePresence initial={false}>
+      {isOpen && (
+        <motion.div
+          className={className}
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: 'auto', opacity: 1 }}
+          exit={{ height: 0, opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          style={{ overflow: 'hidden' }}
+        >
+          {children}
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+/** Lista dos 5 mistérios do conjunto escolhido, como devem ser anunciados. */
+function MysteryAnnouncements({ mysteryKey, mystery, isToday }) {
+  return (
+    <div className="mystery-announcements" style={{ '--accent': mystery.color }}>
+      <p className="mystery-announcements-title">
+        {isToday ? (
+          <>
+            Hoje, {WEEKDAYS[new Date().getDay()]}, rezam-se os <strong>{mystery.title}</strong>:
+          </>
+        ) : (
+          <>
+            Você escolheu os <strong>{mystery.title}</strong>:
+          </>
+        )}
+      </p>
+      <ol>
+        {mystery.mysteries.map((m, i) => (
+          <li key={m.id}>
+            <span className="announcement-number">{i + 1}ª dezena</span>
+            <span>
+              “No {ORDINAL_WORDS[i]} mistério {MYSTERY_ADJECTIVE[mysteryKey]}, contemplamos {lowerFirst(m.text)}”
+            </span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+function ClosingPrayers() {
+  const [openId, setOpenId] = useState(null);
+
+  return (
+    <section className="closing-prayers">
+      <div className="section-subtitle-wrapper">
+        <HeartHandshake size={18} />
+        <h3 className="timeline-heading">Depois do terço</h3>
+      </div>
+      <p className="timeline-subtext">
+        Orações opcionais que podem ser rezadas ao final, conforme a sua devoção e o tempo disponível.
+      </p>
+
+      <div className="closing-prayers-list">
+        {closingPrayers.map((prayer) => {
+          const isOpen = openId === prayer.id;
+          return (
+            <div key={prayer.id} className={`closing-prayer-item ${isOpen ? 'is-open' : ''}`}>
+              <button
+                className="closing-prayer-trigger"
+                onClick={() => setOpenId(isOpen ? null : prayer.id)}
+                aria-expanded={isOpen}
+              >
+                <span>
+                  <strong>{prayer.title}</strong>
+                  <small>{prayer.description}</small>
+                </span>
+                <ChevronDown size={18} className={`arrow-icon ${isOpen ? 'rotated' : ''}`} />
+              </button>
+              <Collapse isOpen={isOpen}>
+                <p className="prayer-full-text closing-prayer-text">{prayer.text}</p>
+              </Collapse>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function NordicTimeline({ mystery }) {
+  const [openDecades, setOpenDecades] = useState(() => new Set());
+
+  const toggleDecade = (id) => {
+    setOpenDecades((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const allOpen = openDecades.size === mystery.mysteries.length;
+
+  return (
+    <div className="nordic-full-timeline">
+      {/* ABERTURA */}
+      <motion.article className="rosary-step-card" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
+        <div className="step-bead-indicator">
+          <span className="bead-number">✦</span>
+          <span className="bead-line" />
+        </div>
+        <div className="step-main-content">
+          <div className="step-tags">
+            <span className="bead-tag">Cruz</span>
+            <span className="action-tag">Abertura</span>
+          </div>
+          <h4 className="step-action-title">Sinal da Cruz e Invocação do Espírito Santo</h4>
+          <p className="step-summary">Coloque-se na presença de Deus e peça a luz do Espírito Santo.</p>
+          <div className="prayer-full-text" style={{ marginTop: '0.6rem' }}>
+            {SIGN_OF_THE_CROSS}
+            {'\n\n'}
+            {HOLY_SPIRIT_INVOCATION}
+            {'\n\n'}
+            <em>“Abri, Senhor, os meus lábios para louvar o vosso Santo Nome e purificai o meu coração de todos os pensamentos vãos e distraídos.”</em>
+          </div>
+        </div>
+      </motion.article>
+
+      <div className="nordic-decades-toolbar">
+        <span>{mystery.title} · 5 dezenas</span>
+        <button
+          type="button"
+          className="step-expand-btn"
+          onClick={() =>
+            setOpenDecades(allOpen ? new Set() : new Set(mystery.mysteries.map((m) => m.id)))
+          }
+        >
+          {allOpen ? 'Recolher todas' : 'Expandir todas'}
+        </button>
+      </div>
+
+      {/* AS 5 DEZENAS, CADA UMA RECOLHÍVEL */}
+      {mystery.mysteries.map((m, mIdx) => {
+        const isOpen = openDecades.has(m.id);
+        return (
+          <motion.div
+            key={m.id}
+            className={`nordic-mystery-block ${isOpen ? 'is-open' : ''}`}
+            style={{ '--accent': mystery.color }}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: mIdx * 0.05 }}
+          >
+            <button
+              type="button"
+              className="nordic-mystery-header nordic-mystery-toggle"
+              onClick={() => toggleDecade(m.id)}
+              aria-expanded={isOpen}
+            >
+              <span className="nordic-mystery-header-text">
+                <span className="mystery-badge-number">{mIdx + 1}ª Dezena</span>
+                <span className="nordic-mystery-title">{m.name}</span>
+                <span className="nordic-meditation-text">{m.text}</span>
+                <span className="nordic-clause-preview">Cláusula: {m.clause}</span>
+              </span>
+              <ChevronDown size={20} className={`arrow-icon ${isOpen ? 'rotated' : ''}`} />
+            </button>
+
+            <Collapse isOpen={isOpen}>
+              <div className="nordic-step-sequence">
+                <div className="nordic-substep">
+                  <span className="substep-label">Conta Grande</span>
+                  <strong className="substep-title">Pai Nosso</strong>
+                  <p className="substep-text">{OUR_FATHER}</p>
+                </div>
+
+                <div className="nordic-substep">
+                  <span className="substep-label">10 Contas Pequenas</span>
+                  <strong className="substep-title">10 Ave-Marias com Cláusula</strong>
+                  <div className="nordic-ave-marias-list">
+                    {[...Array(10)].map((_, i) => (
+                      <div key={i} className="nordic-ave-maria-item">
+                        <span className="ave-num">{i + 1}.</span>
+                        <p className="ave-text">
+                          Ave Maria, cheia de graça, o Senhor é convosco, bendita sois vós entre as mulheres e bendito é o fruto do vosso ventre, Jesus,
+                          <strong className="clause-highlight"> {m.clause} </strong>
+                          Santa Maria, Mãe de Deus, rogai por nós pecadores, agora e na hora da nossa morte. Amém.
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="nordic-substep">
+                  <span className="substep-label">Fecho da Dezena</span>
+                  <strong className="substep-title">Glória ao Pai e Jaculatória</strong>
+                  <p className="substep-text">
+                    {GLORY_BE}
+                    <br />
+                    <br />
+                    {FATIMA_PRAYER}
+                  </p>
+                </div>
+              </div>
+            </Collapse>
+          </motion.div>
+        );
+      })}
+
+      {/* CONCLUSÃO */}
+      <motion.article className="rosary-step-card" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
+        <div className="step-bead-indicator">
+          <span className="bead-number">✦</span>
+        </div>
+        <div className="step-main-content">
+          <div className="step-tags">
+            <span className="bead-tag">Medalha</span>
+            <span className="action-tag">Conclusão</span>
+          </div>
+          <h4 className="step-action-title">Agradecimento e Salve-Rainha</h4>
+          <p className="step-summary">Ao terminar as cinco dezenas, agradeça a Nossa Senhora e encerre com a Salve-Rainha e o Sinal da Cruz.</p>
+          <div className="prayer-full-text" style={{ marginTop: '0.6rem' }}>
+            <strong>Agradecimento</strong>
+            {'\n'}
+            {THANKSGIVING}
+            {'\n\n'}
+            <strong>Salve-Rainha</strong>
+            {'\n'}
+            {HAIL_HOLY_QUEEN}
+            {'\n\n'}
+            {SIGN_OF_THE_CROSS}
+          </div>
+        </div>
+      </motion.article>
+    </div>
+  );
 }
 
 export default function RosaryGuide({ layoutData }) {
   const [openStepId, setOpenStepId] = useState(null);
-  
+
   // Mistério selecionado (inicia com o do dia atual)
   const defaultMysteryKey = useMemo(() => getTodayMysteryKey(), []);
   const [activeMysteryKey, setActiveMysteryKey] = useState(defaultMysteryKey);
 
   const toggleStep = (id) => {
-    setOpenStepId(prev => (prev === id ? null : id));
+    setOpenStepId((prev) => (prev === id ? null : id));
   };
 
-  const currentMystery = layoutData.mysteriesList ? layoutData.mysteriesList[activeMysteryKey] : null;
+  const currentMystery = layoutData.mysteriesList[activeMysteryKey];
+  const isToday = activeMysteryKey === defaultMysteryKey;
 
   return (
     <div className="rosary-guide-container">
@@ -43,130 +285,44 @@ export default function RosaryGuide({ layoutData }) {
       </header>
 
       {/* 2. SELETOR DE MISTÉRIOS POR BOTÕES */}
-      {layoutData.mysteriesList && (
-        <section className="rosary-mysteries-selector-section">
-          <div className="selector-top-info">
-            <div className="section-subtitle-wrapper">
-              <Sparkles size={18} className="icon-sparkle" />
-              <h3 className="mysteries-heading">
-                Contemplação dos Mistérios
-              </h3>
-            </div>
-            
-            {activeMysteryKey === defaultMysteryKey && (
-              <span className="today-badge">
-                <Calendar size={13} />
-                Mistério Recomendado para Hoje
-              </span>
-            )}
+      <section className="rosary-mysteries-selector-section">
+        <div className="selector-top-info">
+          <div className="section-subtitle-wrapper">
+            <Sparkles size={18} className="icon-sparkle" />
+            <h3 className="mysteries-heading">Contemplação dos Mistérios</h3>
           </div>
 
-          {/* BOTÕES DE MISTÉRIO */}
-          <div className="mystery-buttons-pill">
-            {Object.entries(layoutData.mysteriesList).map(([key, item]) => {
-              const isActive = activeMysteryKey === key;
-              const isToday = defaultMysteryKey === key;
-              return (
-                <button
-                  key={key}
-                  className={`mystery-tab-btn ${isActive ? 'active' : ''}`}
-                  style={{
-                    '--accent': item.color,
-                    '--bg': item.bg
-                  }}
-                  onClick={() => setActiveMysteryKey(key)}
-                >
-                  <span className="mystery-btn-title">{item.title}</span>
-                  {isToday && <span className="today-dot" title="Mistério do dia" />}
-                </button>
-              );
-            })}
-          </div>
-        </section>
-      )}
+          {isToday && (
+            <span className="today-badge">
+              <Calendar size={13} />
+              Mistério Recomendado para Hoje
+            </span>
+          )}
+        </div>
+
+        <div className="mystery-buttons-pill">
+          {Object.entries(layoutData.mysteriesList).map(([key, item]) => (
+            <button
+              key={key}
+              className={`mystery-tab-btn ${activeMysteryKey === key ? 'active' : ''}`}
+              style={{ '--accent': item.color, '--bg': item.bg }}
+              onClick={() => setActiveMysteryKey(key)}
+            >
+              <span className="mystery-btn-title">{item.title}</span>
+              {defaultMysteryKey === key && <span className="today-dot" title="Mistério do dia" />}
+            </button>
+          ))}
+        </div>
+      </section>
 
       {/* 3. GUIA PASSO A PASSO COMPLETO */}
       <section className="rosary-timeline-section">
         <h3 className="timeline-heading">Roteiro Passo a Passo do {layoutData.title}</h3>
         <p className="timeline-subtext">Siga as etapas sequenciais abaixo para a recitação completa:</p>
 
-        {/* SE FOR TERÇO NÓRDICO, EXIBE AS 5 DEZENAS DETALHADAS COM AS CLÁUSULAS INTEGRADAS */}
-        {layoutData.id === 'nordico' && currentMystery ? (
-          <div className="nordic-full-timeline">
-            {/* ORAÇÃO INICIAL NÓRDICA */}
-            <motion.article className="rosary-step-card" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
-              <div className="step-bead-indicator">
-                <span className="bead-number">✦</span>
-                <span className="bead-line" />
-              </div>
-              <div className="step-main-content">
-                <div className="step-tags">
-                  <span className="bead-tag">Cruz</span>
-                  <span className="action-tag">Abertura</span>
-                </div>
-                <h4 className="step-action-title">Invocação Inicial</h4>
-                <p className="step-summary">Sinal da Cruz e oração inicial de purificação dos lábios e coração.</p>
-                <div className="prayer-full-text" style={{ marginTop: '0.6rem' }}>
-                  Em nome do Pai, do Filho e do Espírito Santo. Amém.<br /><br />
-                  <em>"Abri, Senhor, os meus lábios para louvar o vosso Santo Nome e purificai o meu coração de todos os pensamentos vãos e distraídos."</em>
-                </div>
-              </div>
-            </motion.article>
-
-            {/* AS 5 DEZENAS DO MISTÉRIO SELECIONADO COM AS AVE-MARIAS E CLÁUSULAS */}
-            {currentMystery.mysteries.map((m, mIdx) => (
-              <motion.div
-                key={m.id}
-                className="nordic-mystery-block"
-                style={{ '--accent': currentMystery.color }}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: mIdx * 0.05 }}
-              >
-                <div className="nordic-mystery-header">
-                  <span className="mystery-badge-number">{mIdx + 1}ª Dezena</span>
-                  <h4 className="nordic-mystery-title">{m.name}</h4>
-                  <p className="nordic-meditation-text">{m.text}</p>
-                </div>
-
-                <div className="nordic-step-sequence">
-                  {/* Pai Nosso */}
-                  <div className="nordic-substep">
-                    <span className="substep-label">Conta Grande</span>
-                    <strong className="substep-title">Pai Nosso</strong>
-                    <p className="substep-text">Pai nosso, que estais nos céus, santificado seja o vosso nome; venha a nós o vosso Reino; seja feita a vossa vontade, assim na terra como no céu. O pão nosso de cada dia nos dai hoje; perdoai-nos as nossas ofensas, assim como nós perdoamos a quem nos tem ofendido; e não nos deixeis cair em tentação, mas livrai-nos do mal. Amém.</p>
-                  </div>
-
-                  {/* 10 Ave Marias com Cláusula Nórdica Integrada */}
-                  <div className="nordic-substep">
-                    <span className="substep-label">10 Contas Pequenas</span>
-                    <strong className="substep-title">10 Ave-Marias com Cláusula</strong>
-                    <div className="nordic-ave-marias-list">
-                      {[...Array(10)].map((_, i) => (
-                        <div key={i} className="nordic-ave-maria-item">
-                          <span className="ave-num">{i + 1}.</span>
-                          <p className="ave-text">
-                            Ave Maria, cheia de graça, o Senhor é convosco, bendita sois vós entre as mulheres e bendito é o fruto do vosso ventre, Jesus,
-                            <strong className="clause-highlight"> {m.clause} </strong>
-                            Santa Maria, Mãe de Deus, rogai por nós pecadores, agora e na hora da nossa morte. Amém.
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Glória ao Pai */}
-                  <div className="nordic-substep">
-                    <span className="substep-label">Fecho da Dezena</span>
-                    <strong className="substep-title">Glória ao Pai</strong>
-                    <p className="substep-text">Glória ao Pai, e ao Filho, e ao Espírito Santo. Como era no princípio, agora e sempre, e por todos os séculos dos séculos. Amém.</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+        {layoutData.id === 'nordico' ? (
+          <NordicTimeline key={activeMysteryKey} mystery={currentMystery} />
         ) : (
-          /* SE FOR TERÇO TRADICIONAL */
           <div className="rosary-steps-timeline">
             {layoutData.steps.map((step, index) => {
               const isOpen = openStepId === step.id;
@@ -194,6 +350,14 @@ export default function RosaryGuide({ layoutData }) {
                     <h4 className="step-action-title">{step.action}</h4>
                     <p className="step-summary">{step.summary}</p>
 
+                    {step.showMysteries && (
+                      <MysteryAnnouncements
+                        mysteryKey={activeMysteryKey}
+                        mystery={currentMystery}
+                        isToday={isToday}
+                      />
+                    )}
+
                     {step.prayerText && (
                       <div className="step-expand-wrapper">
                         <button
@@ -205,19 +369,9 @@ export default function RosaryGuide({ layoutData }) {
                           <ChevronDown size={18} className={`arrow-icon ${isOpen ? 'rotated' : ''}`} />
                         </button>
 
-                        <AnimatePresence>
-                          {isOpen && (
-                            <motion.div
-                              className="step-prayer-box"
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: 'auto', opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.3 }}
-                            >
-                              <p className="prayer-full-text">{step.prayerText}</p>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
+                        <Collapse isOpen={isOpen} className="step-prayer-box">
+                          <p className="prayer-full-text">{step.prayerText}</p>
+                        </Collapse>
                       </div>
                     )}
                   </div>
@@ -227,6 +381,9 @@ export default function RosaryGuide({ layoutData }) {
           </div>
         )}
       </section>
+
+      {/* 4. ORAÇÕES PARA DEPOIS DO TERÇO */}
+      <ClosingPrayers />
 
       {/* GUIA ILUSTRATIVO DE POSIÇÃO DAS CONTAS */}
       <div className="rosary-visual-guide">
@@ -240,5 +397,3 @@ export default function RosaryGuide({ layoutData }) {
     </div>
   );
 }
-
-

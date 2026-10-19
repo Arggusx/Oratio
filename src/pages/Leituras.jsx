@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Maximize2, X, BookOpen } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { isAlleluiaSuppressed } from '../utils/liturgicalCalendar';
 
 /* ── Fallback readings when API is unavailable ── */
 const fallback = {
@@ -52,6 +53,35 @@ const liturgicalColors = {
   Branco: '#8E8E8E',
   Rosa: '#B95E78',
 };
+
+/* ── Salmo responsorial: o refrão é repetido depois de cada estrofe ── */
+function PsalmText({ reading }) {
+  const stanzas = (reading.texto || '')
+    .split('\n')
+    .map((line) => line.replace(/^\s*[–—-]\s*/, '').trim())
+    .filter(Boolean);
+  const refrain = reading.refrao?.trim();
+
+  if (!refrain) {
+    return <p className="reading-text">{reading.texto}</p>;
+  }
+
+  return (
+    <div className="psalm-text">
+      <p className="psalm-refrain">
+        <span className="psalm-r">R.</span> {refrain}
+      </p>
+      {stanzas.map((stanza, i) => (
+        <div key={i} className="psalm-stanza">
+          <p className="reading-text">— {stanza}</p>
+          <p className="psalm-refrain">
+            <span className="psalm-r">R.</span> {refrain}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function Leituras() {
   const [data, setData] = useState(null);
@@ -175,6 +205,9 @@ export default function Leituras() {
     );
   }
 
+  // Na Quaresma o Aleluia é substituído por outra aclamação.
+  const alleluiaSuppressed = /quaresma|cinzas|paix[aã]o|semana santa/i.test(liturgia) || isAlleluiaSuppressed();
+
   const available = Object.keys(tabNames).filter((k) => data[k] && data[k].length > 0);
   const reading = data[active]?.[0] || data[available[0]]?.[0];
 
@@ -191,10 +224,44 @@ export default function Leituras() {
         {tabNames[active]} {reading.referencia && `· ${reading.referencia}`}
       </p>
       <h2>{reading.titulo}</h2>
-      <p className="reading-text">{reading.texto}</p>
 
       {active === 'evangelho' && (
-        <p className="reading-text" style={{ marginTop: '1.5rem' }}>
+        <div className="liturgy-dialogue">
+          <p className="liturgy-label">Aclamação ao Evangelho</p>
+          {alleluiaSuppressed ? (
+            <p className="liturgy-acclamation">Louvor e glória a vós, Senhor Jesus Cristo!</p>
+          ) : (
+            <p className="liturgy-acclamation">Aleluia, aleluia, aleluia!</p>
+          )}
+          <p>
+            <strong>— O Senhor esteja convosco.</strong>
+            <br />
+            — Ele está no meio de nós.
+          </p>
+          <p>
+            <strong>— {reading.titulo || 'Proclamação do Evangelho de Jesus Cristo'}.</strong>
+            <br />
+            — Glória a vós, Senhor.
+          </p>
+        </div>
+      )}
+
+      {active === 'salmo' ? (
+        <PsalmText reading={reading} />
+      ) : (
+        <p className="reading-text">{reading.texto}</p>
+      )}
+
+      {(active === 'primeiraLeitura' || active === 'segundaLeitura') && (
+        <p className="reading-text liturgy-response">
+          <strong>— Palavra do Senhor.</strong>
+          <br />
+          — Graças a Deus.
+        </p>
+      )}
+
+      {active === 'evangelho' && (
+        <p className="reading-text liturgy-response">
           <strong>— Palavra da Salvação.</strong>
           <br />
           — Glória a vós, Senhor.
@@ -294,7 +361,7 @@ export default function Leituras() {
     <a 
       href='https://liturgia.cancaonova.com/pb/' 
       target="_blank" rel="noopener noreferrer" 
-      style={{ marginTop: '2rem', fontSize: '0.9rem', color: '#555', textAlign: 'center', marginBottom: '1rem', display: 'block' }}>
+      className="liturgy-source">
       Fonte: Liturgia Diária - <strong>Canção Nova</strong>
     </a>
     </main>

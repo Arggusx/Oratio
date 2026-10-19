@@ -55,7 +55,7 @@ export const mysteriesData = {
       { id: 1, name: '1º Mistério: A Ressurreição', text: 'A ressurreição de Jesus Cristo.', clause: '– que ressuscitou dos mortos. –' },
       { id: 2, name: '2º Mistério: A Ascensão', text: 'A ascensão de Jesus ao Céu.', clause: '– que subiu aos céus. –' },
       { id: 3, name: '3º Mistério: A Vinda do Espírito Santo', text: 'A descida do Espírito Santo sobre Maria e os Apóstolos.', clause: '– que nos enviou o Espírito Santo. –' },
-      { id: 4, name: '4º Mistério: A Assunção', text: 'A assunção de Nossa Senhora ao Céu.', clause: '– que vos assunziu aos céus. –' },
+      { id: 4, name: '4º Mistério: A Assunção', text: 'A assunção de Nossa Senhora ao Céu.', clause: '– que vos elevou ao céu. –' },
       { id: 5, name: '5º Mistério: A Coroação', text: 'A coroação de Nossa Senhora como Rainha do Céu e da Terra.', clause: '– que vos coroou no céu. –' },
     ]
   }

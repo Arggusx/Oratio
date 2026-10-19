@@ -2787,3 +2787,1064 @@ h1, h2, h3, h4,
   margin-top: 1.5rem;
 }
 
+
+
+/* ============================================================
+   NAV ACTIONS & THEME TOGGLE
+   ============================================================ */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-terracotta);
+  cursor: pointer;
+  transition: background var(--duration-fast), transform var(--duration-fast);
+}
+
+.theme-toggle:hover {
+  background: var(--color-cream-warm);
+  transform: rotate(-12deg);
+}
+
+@media (min-width: 768px) and (max-width: 1099px) {
+  .desktop-nav {
+    gap: 0.9rem;
+    font-size: 0.8rem;
+  }
+  .brand-mark {
+    width: 3rem;
+    height: 3rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .nav-actions {
+    margin-left: 1rem;
+  }
+}
+
+/* ============================================================
+   ROSÁRIO — ANÚNCIO DOS MISTÉRIOS, NÓRDICO E ORAÇÕES FINAIS
+   ============================================================ */
+.mystery-announcements {
+  margin-top: 0.6rem;
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--accent, var(--color-terracotta));
+  background: color-mix(in srgb, var(--accent, var(--color-terracotta)) 9%, var(--color-surface));
+}
+
+.mystery-announcements-title {
+  font-size: 0.88rem;
+  color: var(--color-text);
+  margin-bottom: 0.6rem;
+}
+
+.mystery-announcements ol {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.mystery-announcements li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--color-text-soft);
+  font-style: italic;
+}
+
+.announcement-number {
+  font-style: normal;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-pale);
+}
+
+.nordic-decades-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  padding: 0 0.2rem;
+}
+
+.nordic-mystery-block {
+  gap: 0;
+}
+
+.nordic-mystery-block.is-open .nordic-mystery-toggle {
+  border-bottom: 1px solid var(--color-border-soft);
+  padding-bottom: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.nordic-mystery-toggle {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+}
+
+.nordic-mystery-toggle .arrow-icon {
+  flex-shrink: 0;
+  margin-top: 0.3rem;
+  color: var(--accent, var(--color-terracotta));
+  transition: transform var(--duration-fast);
+}
+
+.arrow-icon.rotated {
+  transform: rotate(180deg);
+}
+
+.nordic-mystery-header-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+}
+
+.nordic-mystery-header-text .nordic-mystery-title {
+  display: block;
+}
+
+.nordic-clause-preview {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--accent, var(--color-terracotta));
+  margin-top: 0.2rem;
+}
+
+.closing-prayers {
+  display: flex;
+  flex-direction: column;
+}
+
+.closing-prayers .section-subtitle-wrapper {
+  margin-bottom: 0.2rem;
+}
+
+.closing-prayers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.closing-prayer-item {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--duration-fast);
+}
+
+.closing-prayer-item.is-open {
+  border-color: var(--color-terracotta-light);
+}
+
+.closing-prayer-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: var(--color-charcoal);
+}
+
+.closing-prayer-trigger > span {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.closing-prayer-trigger strong {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+}
+
+.closing-prayer-trigger small {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.closing-prayer-trigger .arrow-icon {
+  flex-shrink: 0;
+  color: var(--color-terracotta);
+  transition: transform var(--duration-fast);
+}
+
+.closing-prayer-text {
+  margin: 0 1.1rem 1.1rem;
+}
+
+/* ============================================================
+   ORAÇÃO DE SÃO BENTO
+   ============================================================ */
+.sao-bento-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-top: 4px solid var(--color-gold);
+  border-radius: var(--radius-xl);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-md);
+  margin-bottom: var(--space-xl);
+}
+
+.sao-bento-header {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-bottom: 0.8rem;
+}
+
+.sao-bento-icon {
+  display: grid;
+  place-items: center;
+  width: 2.8rem;
+  height: 2.8rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--color-cream-warm);
+  color: var(--color-gold-muted);
+  border: 1px solid var(--color-border);
+}
+
+.sao-bento-title {
+  font-size: clamp(1.6rem, 4vw, 2.1rem);
+  margin-top: 0.2rem;
+}
+
+.sao-bento-intro {
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  font-size: 0.95rem;
+  max-width: 48rem;
+}
+
+.sao-bento-toggle {
+  display: inline-flex;
+  gap: 0.25rem;
+  margin: 1.2rem 0 1rem;
+  padding: 0.3rem;
+  border-radius: var(--radius-full);
+  background: var(--color-cream-warm);
+}
+
+.sao-bento-toggle button {
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-full);
+  padding: 0.45rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.sao-bento-toggle button.active {
+  background: var(--color-surface);
+  color: var(--color-terracotta);
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+}
+
+.sao-bento-prayer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 1rem 1.1rem;
+  background: var(--color-cream);
+  border-left: 3px solid var(--color-gold);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.sao-bento-line {
+  display: grid;
+  grid-template-columns: 6.2rem 1fr;
+  align-items: baseline;
+  gap: 0.2rem 0.8rem;
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  line-height: 1.45;
+  color: var(--color-text);
+}
+
+.sao-bento-prayer.view-both .sao-bento-line {
+  grid-template-columns: 6.2rem 1fr 1fr;
+}
+
+.sao-bento-latin {
+  font-style: italic;
+  color: var(--color-terracotta-dark);
+}
+
+.sao-bento-abbr {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--color-text-pale);
+}
+
+@media (max-width: 639px) {
+  .sao-bento-line,
+  .sao-bento-prayer.view-both .sao-bento-line {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sao-bento-more {
+  margin-top: 1rem;
+}
+
+.sao-bento-details {
+  padding-top: 0.6rem;
+}
+
+.sao-bento-details h3 {
+  font-size: 1.25rem;
+  margin: 1rem 0 0.4rem;
+}
+
+.sao-bento-details p {
+  color: var(--color-text-soft);
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.sao-bento-inscriptions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-bottom: 0.7rem;
+  font-size: 0.9rem;
+  color: var(--color-text-soft);
+}
+
+.sao-bento-inscriptions li {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 0.6rem;
+  align-items: baseline;
+}
+
+/* ============================================================
+   LITURGIA — SALMO E ACLAMAÇÕES
+   ============================================================ */
+.liturgy-dialogue {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-bottom: 1.4rem;
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--color-cream-warm);
+  color: var(--color-text);
+  line-height: 1.6;
+}
+
+.liturgy-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--liturgical-color, var(--color-terracotta));
+}
+
+.liturgy-acclamation {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--color-charcoal);
+}
+
+.liturgy-response {
+  margin-top: 1.5rem;
+}
+
+.psalm-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.psalm-stanza {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.psalm-refrain {
+  font-weight: 600;
+  font-style: italic;
+  color: var(--color-charcoal);
+  line-height: 1.6;
+  padding-left: 0.8rem;
+  border-left: 3px solid var(--liturgical-color, var(--color-terracotta));
+}
+
+.psalm-r {
+  font-style: normal;
+  font-weight: 800;
+  color: var(--liturgical-color, var(--color-terracotta));
+}
+
+.liturgy-source {
+  display: block;
+  margin: 2rem 0 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+/* ============================================================
+   LEITURA DIÁRIA — NAVEGAÇÃO ENTRE DIAS E RECOMEÇO
+   ============================================================ */
+.reading-day-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.reading-day-controls,
+.reading-journey {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.reading-day-picker {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-charcoal);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.reading-day-label::first-letter {
+  text-transform: uppercase;
+}
+
+/* O input nativo fica invisível por cima do rótulo e abre o seletor de datas. */
+.reading-day-picker input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+}
+
+.reading-day-picker:focus-within {
+  border-color: var(--color-terracotta);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-terracotta) 15%, transparent);
+}
+
+.reading-journey-badge {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--color-terracotta);
+  background: var(--color-cream-warm);
+  border: 1px solid var(--color-border);
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--radius-full);
+}
+
+.reading-journey-confirm {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--color-text-soft);
+}
+
+.reading-journey-note {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  margin-bottom: 1rem;
+}
+
+.reading-not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 1.5rem;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-muted);
+}
+
+.reading-block-text.is-expanded {
+  white-space: pre-line;
+}
+
+.block-interpretation-pending {
+  margin: 0 0 1.1rem;
+  font-size: 0.82rem;
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+.calendar-icon-btn {
+  display: grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-soft);
+  cursor: pointer;
+  transition: background var(--duration-fast), color var(--duration-fast);
+}
+
+.calendar-icon-btn:hover:not(:disabled) {
+  background: var(--color-cream-warm);
+  color: var(--color-terracotta);
+}
+
+.calendar-icon-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ============================================================
+   CALENDÁRIO
+   ============================================================ */
+.calendar-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.calendar-year-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.calendar-year {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  color: var(--color-charcoal);
+  min-width: 4.2rem;
+  text-align: center;
+}
+
+.calendar-search {
+  flex: 1;
+  min-width: min(100%, 260px);
+}
+
+.calendar-clear-search {
+  position: absolute;
+  right: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  border: none;
+  background: none;
+  color: var(--color-text-faint);
+  cursor: pointer;
+  padding: 0.2rem;
+}
+
+.calendar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.2rem 0 1.5rem;
+}
+
+.calendar-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity var(--duration-fast), border-color var(--duration-fast), background var(--duration-fast);
+}
+
+.calendar-legend-item.active {
+  opacity: 1;
+  color: var(--color-charcoal);
+  border-color: var(--type-color);
+  background: color-mix(in srgb, var(--type-color) 12%, var(--color-surface));
+}
+
+.calendar-legend-dot {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: var(--type-color);
+}
+
+.calendar-legend-reset {
+  border: none;
+  background: none;
+  color: var(--color-terracotta);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.calendar-results,
+.calendar-day-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 1.2rem 1.3rem;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.2rem;
+}
+
+.calendar-day-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-terracotta);
+}
+
+.calendar-panel-title {
+  font-size: 1.35rem;
+  color: var(--color-charcoal);
+}
+
+.calendar-panel-title::first-letter {
+  text-transform: uppercase;
+}
+
+.calendar-season {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-pale);
+  margin: 0.3rem 0 0.8rem;
+}
+
+.calendar-empty {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.calendar-day-events {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.calendar-day-events li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.calendar-day-events strong {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: var(--color-charcoal);
+}
+
+.calendar-day-events p {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.calendar-type-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.calendar-type-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-full);
+  color: var(--color-charcoal);
+  background: color-mix(in srgb, var(--type-color) 18%, var(--color-surface));
+  border: 1px solid color-mix(in srgb, var(--type-color) 45%, transparent);
+}
+
+.calendar-results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.8rem;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.calendar-result {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: 0.2rem 0.8rem;
+  align-items: center;
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  background: var(--color-cream);
+  text-align: left;
+  cursor: pointer;
+  color: var(--color-text);
+}
+
+.calendar-result:hover,
+.calendar-result.active {
+  border-color: var(--color-terracotta-light);
+}
+
+.calendar-result-date {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-terracotta);
+}
+
+.calendar-result-date::first-letter {
+  text-transform: uppercase;
+}
+
+.calendar-result-name {
+  font-weight: 600;
+}
+
+.calendar-result .calendar-type-badges {
+  grid-column: 2;
+}
+
+@media (max-width: 539px) {
+  .calendar-result {
+    grid-template-columns: 1fr;
+  }
+  .calendar-result .calendar-type-badges {
+    grid-column: 1;
+  }
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 560px) {
+  .calendar-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .calendar-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1100px) {
+  .calendar-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.calendar-month {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 0.9rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.calendar-month-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.6rem;
+  color: var(--color-charcoal);
+}
+
+.calendar-weekdays,
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+
+.calendar-weekdays span {
+  text-align: center;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--color-text-pale);
+  padding-bottom: 0.3rem;
+}
+
+.calendar-day {
+  position: relative;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: none;
+  font-size: 0.8rem;
+  color: var(--color-text-soft);
+  cursor: pointer;
+  transition: background var(--duration-fast), opacity var(--duration-fast);
+}
+
+.calendar-day:hover {
+  background: var(--color-cream-warm);
+}
+
+.calendar-day.is-marked {
+  font-weight: 700;
+  color: var(--color-charcoal);
+  background: color-mix(in srgb, var(--type-color) 22%, var(--color-surface));
+  border-color: color-mix(in srgb, var(--type-color) 55%, transparent);
+}
+
+.calendar-day.is-today {
+  box-shadow: 0 0 0 2px var(--color-terracotta);
+}
+
+.calendar-day.is-selected {
+  outline: 2px solid var(--color-charcoal);
+  outline-offset: 1px;
+}
+
+.calendar-day.is-dimmed {
+  opacity: 0.3;
+}
+
+.calendar-day-dots {
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 2px;
+}
+
+.calendar-day-dots span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+}
+
+.calendar-footnote {
+  margin-top: 1.5rem;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+/* ============================================================
+   MODO ESCURO
+   ============================================================ */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --color-cream:       #17120F;
+  --color-cream-warm:  #251D18;
+  --color-cream-light: #1C1612;
+  --color-cream-dark:  #33281F;
+
+  --color-terracotta:       #E58A55;
+  --color-terracotta-dark:  #F2A473;
+  --color-terracotta-light: #C96A35;
+
+  --color-gold:        #D9AE5C;
+  --color-gold-light:  #E3BD72;
+  --color-gold-muted:  #C9A15A;
+
+  --color-charcoal:    #F3E9DE;
+  --color-text:        #E6DAD0;
+  --color-text-muted:  #BBA99A;
+  --color-text-soft:   #CDBFB3;
+  --color-text-pale:   #A8937F;
+  --color-text-faint:  #9C8773;
+  --color-text-light:  #A8968A;
+
+  --color-border:      #3A2E26;
+  --color-border-soft: #30261F;
+  --color-surface:     #201914;
+
+  --shadow-sm:   0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-md:   0 6px 18px rgba(0, 0, 0, 0.3);
+  --shadow-lg:   0 14px 25px rgba(0, 0, 0, 0.35);
+  --shadow-xl:   0 9px 22px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 5px 20px rgba(0, 0, 0, 0.45);
+}
+
+body {
+  transition: background var(--duration-mid), color var(--duration-mid);
+}
+
+/* Botões com fundo terracota mantêm o tom original para contraste com o texto claro. */
+:root[data-theme='dark'] .btn,
+:root[data-theme='dark'] .category.active,
+:root[data-theme='dark'] .btn-gospel-banner {
+  background: #B84A13;
+  color: #FFF7EF;
+}
+
+:root[data-theme='dark'] .btn:hover,
+:root[data-theme='dark'] .btn-gospel-banner:hover {
+  background: #CF5E24;
+}
+
+:root[data-theme='dark'] .btn-ghost,
+:root[data-theme='dark'] .mystery-card .btn {
+  background: var(--color-cream-warm);
+  color: var(--color-text);
+}
+
+:root[data-theme='dark'] .site-header {
+  background: rgba(23, 18, 15, 0.88);
+}
+
+:root[data-theme='dark'] .brand,
+:root[data-theme='dark'] .footer-brand-name,
+:root[data-theme='dark'] .menu-toggle {
+  color: var(--color-terracotta);
+}
+
+:root[data-theme='dark'] .reflection blockquote,
+:root[data-theme='dark'] .reading-text {
+  color: var(--color-text);
+}
+
+:root[data-theme='dark'] .tab {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme='dark'] .tab:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+:root[data-theme='dark'] .category {
+  color: var(--color-text-soft);
+}
+
+:root[data-theme='dark'] .bead {
+  background-color: #3A2E26;
+}
+
+:root[data-theme='dark'] .btn-prev:hover,
+:root[data-theme='dark'] .modal-close:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+:root[data-theme='dark'] .skeleton {
+  background: linear-gradient(90deg, #241C17 25%, #2F251E 50%, #241C17 75%);
+  background-size: 200% 100%;
+}
+
+:root[data-theme='dark'] .verse-api-notice {
+  background: #2B1D12;
+  border-color: #4A2E17;
+  color: #F2A46B;
+}
+
+:root[data-theme='dark'] .btn-retry {
+  color: #F2A46B;
+}
+
+:root[data-theme='dark'] .btn-verse-action.copied,
+:root[data-theme='dark'] .btn-block-action.copied {
+  background: #0F2A20;
+  border-color: #10B981;
+  color: #6EE7B7;
+}
+
+:root[data-theme='dark'] .gospel-link-badge:hover,
+:root[data-theme='dark'] .verse-search-input-box:focus-within {
+  background: var(--color-surface);
+}
+
+:root[data-theme='dark'] .nordic-clause-highlight {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+:root[data-theme='dark'] .github-contact-btn:hover,
+:root[data-theme='dark'] .verse-tooltip {
+  color: var(--color-cream);
+}
+
+/* Cores claras vindas dos dados (mistérios) são misturadas ao fundo escuro. */
+:root[data-theme='dark'] .mystery-tab-btn:hover,
+:root[data-theme='dark'] .mystery-tab-btn.active {
+  background: color-mix(in srgb, var(--accent) 18%, var(--color-surface));
+}
+
+:root[data-theme='dark'] .mystery-card {
+  --bg-soft: color-mix(in srgb, var(--accent) 14%, var(--color-surface));
+}
+
+:root[data-theme='dark'] .focus-prayer-card {
+  background: color-mix(in srgb, var(--accent) 14%, var(--color-surface));
+}
+
+:root[data-theme='dark'] .reading-card .eyebrow {
+  filter: brightness(1.6);
+}
+
+:root[data-theme='dark'] .hero-image img,
+:root[data-theme='dark'] .terco-guide-img {
+  filter: saturate(0.8) brightness(0.88);
+}
