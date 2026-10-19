@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import {
   BookOpen, Copy, Check, ChevronDown, ChevronLeft, ChevronRight, RefreshCw, AlertCircle,
-  Feather, Scroll, Mail, RotateCcw, CalendarDays,
+  Feather, Scroll, Mail, RotateCcw, CalendarDays, X,
 } from 'lucide-react';
 import { addDays, fromKey, toKey } from '../utils/liturgicalCalendar';
 
@@ -86,6 +87,96 @@ function normalizeReadings(result) {
   );
 }
 
+const PREVIEW_LENGTH = 140;
+
+// Corta o trecho no fim de uma palavra para a prévia do cartão.
+function previewText(text) {
+  const cut = text.slice(0, PREVIEW_LENGTH);
+  const lastSpace = cut.lastIndexOf(' ');
+  return `${(lastSpace > 80 ? cut.slice(0, lastSpace) : cut).trimEnd()}…`;
+}
+
+function getInterpretation(item) {
+  return item.interpretacao || item['interpretação'] || item.interpretation || item.reflexao || item['reflexão'];
+}
+
+/** Janela de leitura com o trecho completo, aberta pelo "Ler mais". */
+function ReadingModal({ reading, onClose, onCopy, isCopied }) {
+  const closeRef = useRef(null);
+
+  useEffect(() => {
+    if (!reading) return undefined;
+    const onKey = (e) => e.key === 'Escape' && onClose();
+    document.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    closeRef.current?.focus();
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
+    };
+  }, [reading, onClose]);
+
+  const interpretacao = reading && getInterpretation(reading);
+
+  // Portal no <body>: o .page tem transform (animação de entrada), que prenderia o
+  // position: fixed da janela à página em vez da tela.
+  return createPortal(
+    <AnimatePresence>
+      {reading && (
+        <motion.div
+          className="reading-modal-overlay"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          onClick={(e) => e.target === e.currentTarget && onClose()}
+        >
+          <motion.div
+            className="reading-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="reading-modal-title"
+            initial={{ opacity: 0, y: 24, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 16, scale: 0.98 }}
+            transition={{ duration: 0.25, ease: [0.33, 1, 0.68, 1] }}
+          >
+            <div className="reading-modal-header">
+              <div>
+                <span className="eyebrow">{reading.titulo_categoria || reading.categoria || 'Leitura'}</span>
+                <h3 id="reading-modal-title" className="reading-modal-title">{reading.referencia}</h3>
+              </div>
+              <button ref={closeRef} className="calendar-icon-btn" onClick={onClose} aria-label="Fechar leitura">
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="reading-modal-body">
+              <p className="reading-modal-text">{reading.texto}</p>
+
+              {interpretacao && (
+                <div className="reading-modal-interpretation">
+                  <strong>Interpretação</strong>
+                  <p>{interpretacao}</p>
+                </div>
+              )}
+            </div>
+
+            <div className="reading-modal-footer">
+              <button className={`btn-block-action ${isCopied ? 'copied' : ''}`} onClick={() => onCopy(reading)}>
+                {isCopied ? <Check size={14} /> : <Copy size={14} />}
+                <span>{isCopied ? 'Copiado' : 'Copiar trecho'}</span>
+              </button>
+              <button className="btn-block-action" onClick={onClose}>Fechar</button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>,
+    document.body
+  );
+}
+
 export default function DailyReading3Blocks() {
   const todayKey = toKey(new Date());
   const [selectedKey, setSelectedKey] = useState(todayKey);
@@ -96,7 +187,7 @@ export default function DailyReading3Blocks() {
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState('ok'); // 'ok' | 'fallback' | 'not-found'
   const [copiedId, setCopiedId] = useState(null);
-  const [expandedTextId, setExpandedTextId] = useState(null);
+  const [openReading, setOpenReading] = useState(null);
   const [expandedInterpretationId, setExpandedInterpretationId] = useState(null);
 
   const requestIdRef = useRef(0);
@@ -156,14 +247,27 @@ export default function DailyReading3Blocks() {
   }, [query, todayKey]);
 
   useEffect(() => {
-    setExpandedTextId(null);
+    setOpenReading(null);
     setExpandedInterpretationId(null);
     fetchDailyReadings();
   }, [fetchDailyReadings]);
 
+  // Na leitura pessoal, a jornada começa no dia do recomeço: não há dias antes dele.
+  const minKey = startKey ?? undefined;
+  const clampDay = (key) => {
+    if (key > todayKey) return todayKey;
+    if (minKey && key < minKey) return minKey;
+    return key;
+  };
+
   const goToDay = (key) => {
     if (!key) return;
-    setSelectedKey(key > todayKey ? todayKey : key);
+    setSelectedKey(clampDay(key));
+  };
+
+  // Usa o valor mais recente do estado para não perder cliques rápidos nas setas.
+  const shiftDay = (delta) => {
+    setSelectedKey((prev) => clampDay(toKey(addDays(fromKey(prev), delta))));
   };
 
   const restartJourney = () => {
@@ -178,6 +282,8 @@ export default function DailyReading3Blocks() {
     setStartKey(null);
     setConfirmReset(false);
   };
+
+  const closeReading = useCallback(() => setOpenReading(null), []);
 
   const handleCopyBlock = async (item) => {
     const categoria = item.titulo_categoria || item.categoria || '';
@@ -219,7 +325,8 @@ export default function DailyReading3Blocks() {
         <div className="reading-day-controls">
           <button
             className="calendar-icon-btn"
-            onClick={() => goToDay(toKey(addDays(fromKey(selectedKey), -1)))}
+            onClick={() => shiftDay(-1)}
+            disabled={Boolean(minKey) && selectedKey <= minKey}
             aria-label="Dia anterior"
           >
             <ChevronLeft size={18} />
@@ -231,6 +338,7 @@ export default function DailyReading3Blocks() {
             <input
               type="date"
               value={selectedKey}
+              min={minKey}
               max={todayKey}
               onChange={(e) => goToDay(e.target.value)}
               aria-label="Escolher o dia da leitura"
@@ -239,7 +347,7 @@ export default function DailyReading3Blocks() {
 
           <button
             className="calendar-icon-btn"
-            onClick={() => goToDay(toKey(addDays(fromKey(selectedKey), 1)))}
+            onClick={() => shiftDay(1)}
             disabled={isToday}
             aria-label="Próximo dia"
           >
@@ -257,7 +365,7 @@ export default function DailyReading3Blocks() {
           {startKey ? (
             <>
               <span className="reading-journey-badge">
-                {journeyDay ? `Sua leitura · dia ${journeyDay}` : 'Leitura geral (antes do recomeço)'}
+                Sua leitura · dia {journeyDay ?? 1}
               </span>
               <button className="btn-block-action" onClick={backToGeneral}>
                 Voltar à leitura geral
@@ -317,20 +425,23 @@ export default function DailyReading3Blocks() {
             Reserve alguns minutos, acolha cada trecho e deixe sua interpretação iluminar o seu dia.
           </p>
 
+          {status === 'ok' && readings.length > 0 && readings.length < 3 && (
+            <p className="reading-journey-note">
+              Neste dia nem todas as leituras foram registradas. Exibindo {readings.length === 1 ? 'a leitura disponível' : 'as leituras disponíveis'}.
+            </p>
+          )}
+
           <div className="reading-blocks-grid">
             {readings.map((item, index) => {
               const categoriaNome = item.titulo_categoria || item.categoria || 'Leitura';
               const blockKey = `reading-${index}-${item.id || item.referencia || categoriaNome}`;
               const IconComponent = item.icon || getCategoryIcon(item.id, categoriaNome);
               const isCopied = copiedId === (item.id || categoriaNome);
-              const isTextExpanded = expandedTextId === blockKey;
               const isInterpretationExpanded = expandedInterpretationId === blockKey;
-              const interpretacao = item.interpretacao || item['interpretação'] || item.interpretation || item.reflexao || item['reflexão'];
+              const interpretacao = getInterpretation(item);
 
-              const isLongText = (item.texto || '').length > 140;
-              const displayedText = isLongText && !isTextExpanded
-                ? `${item.texto.slice(0, 140)}...`
-                : item.texto;
+              const isLongText = (item.texto || '').length > PREVIEW_LENGTH;
+              const displayedText = isLongText ? previewText(item.texto) : item.texto;
 
               return (
                 <motion.article
@@ -349,15 +460,16 @@ export default function DailyReading3Blocks() {
 
                   <h3 className="reading-block-ref">{item.referencia}</h3>
 
-                  <blockquote className={`reading-block-text ${isTextExpanded ? 'is-expanded' : ''}`}>
+                  <blockquote className="reading-block-text">
                     &ldquo;{displayedText}&rdquo;
                     {isLongText && (
                       <button
                         type="button"
-                        onClick={() => setExpandedTextId((prev) => (prev === blockKey ? null : blockKey))}
+                        onClick={() => setOpenReading(item)}
                         className="btn-read-more-inline"
+                        aria-haspopup="dialog"
                       >
-                        {isTextExpanded ? ' (Ler menos)' : ' (Ler mais)'}
+                        {' '}(Ler mais)
                       </button>
                     )}
                   </blockquote>
@@ -384,7 +496,10 @@ export default function DailyReading3Blocks() {
                     </div>
                   ) : (
                     <p className="block-interpretation-pending">
-                      A interpretação deste trecho ainda está sendo preparada. Leia com calma e deixe a Palavra falar.
+                      {/* Só a leitura geral de hoje ainda pode receber a interpretação da IA. */}
+                      {isToday && !startKey
+                        ? 'A interpretação deste trecho ainda está sendo preparada. Leia com calma e deixe a Palavra falar.'
+                        : 'Não há interpretação para este trecho. Leia com calma e deixe a Palavra falar.'}
                     </p>
                   )}
 
@@ -418,6 +533,13 @@ export default function DailyReading3Blocks() {
           <ChevronRight size={16} />
         </Link>
       </div>
+
+      <ReadingModal
+        reading={openReading}
+        onClose={closeReading}
+        onCopy={handleCopyBlock}
+        isCopied={Boolean(openReading) && copiedId === (openReading.id || openReading.titulo_categoria || openReading.categoria)}
+      />
     </section>
   );
 }
