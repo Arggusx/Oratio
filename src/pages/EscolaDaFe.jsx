@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
 import { ChevronDown, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useSearchParams } from 'react-router-dom';
+import MassGesturesSection from '../components/MassGesturesSection';
 
 const facts = [
   // Apologética & Dúvidas Frequentes
@@ -117,7 +119,7 @@ const cardVariants = {
   }),
 };
 
-export default function Curiosidades() {
+function CuriosidadesSection() {
   const [category, setCategory] = useState('Todos');
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(null);
@@ -134,16 +136,9 @@ export default function Curiosidades() {
   }, [category, query]);
 
   return (
-    <main className="page">
-      <span className="eyebrow">Conhecer para amar</span>
-      <h1 className="section-title">Central de Conhecimento</h1>
-      <p className="lead">
-        Respostas simples para dúvidas frequentes sobre a fé católica, 
-        história e tradições da Igreja.
-      </p>
-
+    <div>
       {/* ── Search bar ── */}
-      <div className="search-wrapper" style={{ marginTop: '1.5rem' }}>
+      <div className="search-wrapper">
         <Search size={16} className="search-icon" />
         <input
           className="search"
@@ -203,6 +198,53 @@ export default function Curiosidades() {
           </p>
         )}
       </div>
+    </div>
+  );
+}
+
+const SECTIONS = [
+  { id: 'curiosidades', label: 'Curiosidades' },
+  { id: 'missa', label: 'Na Missa' },
+];
+
+export default function EscolaDaFe() {
+  // A seção fica na URL (?secao=missa) para poder ser compartilhada.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const section = SECTIONS.some((s) => s.id === searchParams.get('secao'))
+    ? searchParams.get('secao')
+    : 'curiosidades';
+
+  return (
+    <main className="page">
+      <span className="eyebrow">Conhecer para amar</span>
+      <h1 className="section-title">Escola da Fé</h1>
+      <p className="lead">
+        Respostas simples sobre a fé católica, a história e as tradições da Igreja, e um guia prático para viver
+        bem a Santa Missa.
+      </p>
+
+      <div className="subnav-segmented" role="tablist" aria-label="Seções da Escola da Fé">
+        {SECTIONS.map((s) => (
+          <button
+            key={s.id}
+            role="tab"
+            aria-selected={section === s.id}
+            className={section === s.id ? 'active' : ''}
+            onClick={() => setSearchParams(s.id === 'curiosidades' ? {} : { secao: s.id }, { replace: true })}
+          >
+            {s.label}
+          </button>
+        ))}
+      </div>
+
+      <motion.div
+        key={section}
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35 }}
+      >
+        {section === 'missa' ? <MassGesturesSection /> : <CuriosidadesSection />}
+      </motion.div>
     </main>
   );
 }

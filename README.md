@@ -22,7 +22,9 @@ O conteúdo e a interface estão em português do Brasil.
 
 ### Início
 
-A página inicial apresenta o propósito do Oratio  e traz a seção **A Palavra em Três Momentos**. Ela organiza leituras contemplativas — sem o Evangelho — em três blocos: Antigo Testamento, Poesia e Sabedoria, e Cartas e Epístolas. Cada bloco pode exibir o texto completo, uma reflexão e um botão para copiar o trecho.
+A página inicial apresenta o propósito do Oratio  e traz a seção **A Palavra em Três Momentos**. Ela organiza leituras contemplativas — sem o Evangelho — em três blocos: Antigo Testamento, Poesia e Sabedoria, e Cartas e Epístolas. Cada bloco pode exibir o texto completo, uma interpretação e um botão para copiar o trecho. Os textos aparecem mesmo quando a interpretação gerada por IA ainda não está pronta.
+
+É possível voltar a dias anteriores (nunca a dias futuros) e recomeçar a leitura do início (Gênesis 1, Jó 1 e Romanos 1) no próprio ritmo. O ponto de recomeço fica salvo no navegador do leitor.
 
 Há também um atalho para a página de Liturgia, onde o Evangelho do dia está disponível.
 
@@ -55,9 +57,17 @@ O botão **Modo foco** abre a leitura selecionada em uma sobreposição de tela 
 
 Caso uma integração esteja indisponível, o site apresenta leituras e reflexões de contingência em vez de interromper a experiência.
 
-### Central de conhecimento
+### Calendário Católico
 
-A página **Curiosidades** funciona como uma FAQ. Ela permite pesquisar e filtrar perguntas sobre sacramentos, história da Igreja, símbolos e liturgia, dogmas e tradições.
+A página **Calendário** mostra o ano inteiro com domingos de preceito, dias santos de guarda (normas da CNBB), as principais celebrações litúrgicas e os feriados nacionais. A legenda funciona como filtro e há busca por nome. As datas móveis são calculadas a partir da Páscoa em `src/utils/liturgicalCalendar.js`, que também define o mistério do terço do dia (domingos do Advento são gozosos e os da Quaresma, dolorosos) e quando o Aleluia é omitido na Liturgia.
+
+### Modo escuro
+
+O botão no cabeçalho alterna entre tema claro e escuro. Na primeira visita o site segue a preferência do sistema; a escolha fica salva no navegador.
+
+### Escola da Fé
+
+A página **Escola da Fé** tem duas seções. **Na Missa** explica, com ícones ilustrados, quando fazer a inclinação de cabeça, a inclinação profunda e a genuflexão, conforme a Instrução Geral do Missal Romano. **Curiosidades** funciona como uma FAQ. Ela permite pesquisar e filtrar perguntas sobre sacramentos, história da Igreja, símbolos e liturgia, dogmas e tradições.
 
 ### Navegação e feedback
 
@@ -71,7 +81,8 @@ O cabeçalho é responsivo: em telas pequenas, os links são apresentados em um 
 | `/home/misterio` | Conjuntos e meditações dos mistérios |
 | `/home/leituras` | Liturgia diária, Evangelho e homilia |
 | `/home/oracoes` | Guia do terço, Rosário Nórdico e orações |
-| `/home/curiosidades` | Perguntas e respostas sobre a fé católica |
+| `/home/calendario` | Calendário católico do ano, com filtros e busca |
+| `/home/escola-da-fe` | Escola da Fé: curiosidades e o que fazer na Missa (`?secao=missa`). O antigo `/home/curiosidades` redireciona para cá |
 | `/home/misterio/foco/:tipo/:id` | Modo guiado de um mistério (`tipo`: `gozosos`, `luminosos`, `dolorosos` ou `gloriosos`; `id`: 1 a 5) |
 
 No modo guiado, cada mistério tem dez contas interativas. Ao avançar pelas dez Ave-Marias, a aplicação segue automaticamente para o próximo mistério; após o quinto, retorna à página de Mistérios.
@@ -192,7 +203,7 @@ Para publicar na Vercel:
 ## Observações de manutenção
 
 - Adicione ou edite mistérios em `src/data/mysteries.js` para que as páginas de Mistérios, Terço e Modo Foco permaneçam sincronizadas.
-- Os textos de orações e perguntas frequentes estão diretamente em `src/pages/Oracoes.jsx` e `src/pages/Curiosidades.jsx`.
+- As orações estão em `src/data/prayers.js` e as perguntas frequentes em `src/pages/EscolaDaFe.jsx`. Os gestos da Missa ficam em `src/components/MassGesturesSection.jsx` e os ícones ilustrados em `src/components/MassIcons.jsx`.
 - Não há backend local em execução neste repositório, embora `axios`, `express` e `cors` constem como dependências. As funcionalidades atuais dependem de APIs externas ou de dados de contingência no front-end.
 - O componente `VerseOfTheDay` existe no projeto e está preparado para consumir o endpoint de versículo do dia; verifique sua inclusão em uma página caso queira expô-lo na interface atual.
 

@@ -16,6 +16,18 @@
     rel="stylesheet"
   />
 
+  <script>
+    // Aplica o tema salvo antes da primeira pintura (evita piscar em claro).
+    (function () {
+      var theme = null;
+      try { theme = localStorage.getItem('oratio:tema'); } catch (e) {}
+      if (theme !== 'dark' && theme !== 'light') {
+        theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script>
+
   <title>Oratio Daily — Oração, Terço e Liturgia Diária</title>
 </head>
 

@@ -27,7 +27,8 @@ export default function Footer() {
               <li><Link to="/home/misterio">Mistérios do Terço</Link></li>
               <li><Link to="/home/leituras">Liturgia Diária</Link></li>
               <li><Link to="/home/oracoes">Terço e Orações</Link></li>
-              <li><Link to="/home/curiosidades">Curiosidades</Link></li>
+              <li><Link to="/home/calendario">Calendário Católico</Link></li>
+              <li><Link to="/home/escola-da-fe">Escola da Fé</Link></li>
             </ul>
           </div>
 
