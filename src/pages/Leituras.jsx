@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Maximize2, X, BookOpen } from 'lucide-react';
+import { X, BookOpen, ExternalLink } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { isAlleluiaSuppressed } from '../utils/liturgicalCalendar';
 
@@ -31,12 +31,37 @@ const fallback = {
   ],
   homilia: [
     {
-      referencia: 'Reflexão Diária',
-      titulo: 'Acolhendo a Palavra',
-      texto: 'Esta é uma reflexão de exemplo para a homilia diária. A verdadeira será carregada em breve.',
+      referencia: 'Homilia Diária',
+      titulo: 'Homilia do dia',
+      texto: 'Não foi possível carregar o trecho da homilia de hoje agora. Você pode lê-la diretamente no site da Canção Nova.',
+      url: 'https://homilia.cancaonova.com/pb/',
     }
   ]
 };
+
+// A homilia é conteúdo autoral da Canção Nova: o site mostra só um trecho e leva ao texto completo.
+const HOMILY_EXCERPT_MAX = 600;
+const GOSPEL_QUOTE = /^(Naquele tempo|Em verdade|[“"«])/;
+
+/** Garante um trecho curto mesmo se a API devolver o texto inteiro (versões antigas). */
+function toExcerpt(text) {
+  if (text.length <= HOMILY_EXCERPT_MAX) return text;
+  const paragraphs = text
+    .split(/\n\s*\n/)
+    .map((t) => t.trim())
+    // Descarta subtítulos (linhas curtas sem pontuação final).
+    .filter((t) => t && (t.length > 80 || /[.!?…”"]$/.test(t)));
+  const start = paragraphs.findIndex((t) => !GOSPEL_QUOTE.test(t));
+  let excerpt = '';
+  for (const paragraph of paragraphs.slice(Math.max(start, 0))) {
+    excerpt = excerpt ? `${excerpt}\n\n${paragraph}` : paragraph;
+    if (excerpt.length >= 280) break;
+  }
+  if (excerpt.length <= HOMILY_EXCERPT_MAX) return excerpt;
+  const cut = excerpt.slice(0, HOMILY_EXCERPT_MAX);
+  const end = cut.lastIndexOf('. ');
+  return end > 280 ? cut.slice(0, end + 1) : `${cut.trimEnd()}…`;
+}
 
 const tabNames = {
   primeiraLeitura: '1ª Leitura',
@@ -157,18 +182,19 @@ export default function Leituras() {
         combinedData.evangelho = fallback.evangelho;
       }
 
-      // Trata a Homilia/Reflexão consumindo { title, content } do endpoint /api/daily-reflection
+      // Homilia: { title, excerpt, url } do endpoint /api/daily-homily (só um trecho + link).
       if (results[1].status === 'fulfilled' && results[1].value) {
         const homiliaData = results[1].value;
-        const content = homiliaData.content || homiliaData.texto || homiliaData.reflexao || homiliaData.message || '';
-        const title = homiliaData.title || homiliaData.titulo || homiliaData.subject || 'Reflexão Diária';
+        const content = homiliaData.excerpt || homiliaData.content || homiliaData.texto || '';
+        const title = homiliaData.title || homiliaData.titulo || 'Homilia do dia';
 
         if (content) {
           combinedData.homilia = [
             {
               referencia: 'Homilia Diária',
               titulo: title,
-              texto: content,
+              texto: toExcerpt(content),
+              url: homiliaData.url || fallback.homilia[0].url,
             }
           ];
         } else {
@@ -259,6 +285,17 @@ export default function Leituras() {
           <br />
           — Graças a Deus.
         </p>
+      )}
+
+      {active === 'homilia' && reading.url && (
+        <div className="homily-source">
+          <p>Trecho da homilia do dia, publicada pela <strong>Canção Nova</strong>.</p>
+          <a className="btn" href={reading.url} target="_blank" rel="noopener noreferrer">
+            Ler a homilia completa na Canção Nova
+            <ExternalLink size={16} aria-hidden="true" />
+            <span className="sr-only">(abre em nova aba)</span>
+          </a>
+        </div>
       )}
 
       {active === 'evangelho' && (
