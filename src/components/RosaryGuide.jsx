@@ -390,7 +390,10 @@ export default function RosaryGuide({ layoutData }) {
         <h4>Guia Visual de Posição das Contas</h4>
         <img
           className="terco-guide-img"
-          src="/img2/passo-a-passo-como-rezar-o-terco.png"
+          src="/img2/passo-a-passo-como-rezar-o-terco.webp"
+          width="607"
+          height="885"
+          loading="lazy"
           alt="Guia visual ilustrado para rezar o terço"
         />
       </div>

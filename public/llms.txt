@@ -1,0 +1,18 @@
+# Oratio Daily
+
+> Site católico em português do Brasil para rezar o terço, acompanhar a liturgia diária, conhecer os santos, consultar o calendário litúrgico e tirar dúvidas sobre a fé. Não exige cadastro.
+
+O conteúdo segue a doutrina e a liturgia da Igreja Católica (normas da CNBB para o Brasil). As citações bíblicas usam a Bíblia Ave-Maria.
+
+## Páginas principais
+
+- [Como rezar o terço e orações](https://oratio-daily-dev.vercel.app/home/oracoes): roteiro passo a passo do terço tradicional e do rosário nórdico (das cláusulas), mistério recomendado para o dia, orações para depois do terço, Oração de São Bento (português e latim) e orações filtráveis por intenção e momento do dia.
+- [Mistérios do terço](https://oratio-daily-dev.vercel.app/home/misterio): mistérios gozosos (segunda e sábado), luminosos (quinta), dolorosos (terça e sexta) e gloriosos (quarta e domingo).
+- [Liturgia diária](https://oratio-daily-dev.vercel.app/home/leituras): leituras, salmo com refrão, Evangelho e homilia do dia, com as respostas da Missa.
+- [Calendário católico](https://oratio-daily-dev.vercel.app/home/calendario): domingos e dias santos de preceito, solenidades, festas de santos e feriados nacionais do Brasil.
+- [Santos](https://oratio-daily-dev.vercel.app/home/santos): biografia, festa, patronatos e orações de santos (São Bento, São Rafael, São Miguel, São José, Santo Antônio, Santa Rita, São Judas Tadeu, Santa Luzia, São Brás, São Francisco, Santa Teresinha).
+- [Escola da Fé](https://oratio-daily-dev.vercel.app/home/escola-da-fe): perguntas frequentes sobre a fé católica, o que fazer na Missa (genuflexão, inclinação de cabeça e inclinação profunda) e o significado dos símbolos cristãos.
+
+## Opcional
+
+- [Política de Privacidade](https://oratio-daily-dev.vercel.app/privacidade)

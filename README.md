@@ -91,6 +91,7 @@ O cabeçalho é responsivo: em telas pequenas, os links são apresentados em um 
 | `/home/santos` | Lista de santos, com busca e filtro por intenção |
 | `/home/santos/:slug` | Página de um santo: biografia, festa, padroeiro de quê e orações |
 | `/home/escola-da-fe` | Escola da Fé: curiosidades, o que fazer na Missa (`?secao=missa`) e símbolos cristãos (`?secao=simbolos`). O antigo `/home/curiosidades` redireciona para cá |
+| `/privacidade` | Política de Privacidade (LGPD) |
 | `/home/misterio/foco/:tipo/:id` | Modo guiado de um mistério (`tipo`: `gozosos`, `luminosos`, `dolorosos` ou `gloriosos`; `id`: 1 a 5) |
 
 No modo guiado, cada mistério tem dez contas interativas. Ao avançar pelas dez Ave-Marias, a aplicação segue automaticamente para o próximo mistério; após o quinto, retorna à página de Mistérios.

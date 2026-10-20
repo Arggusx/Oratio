@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://oratio-daily-dev.vercel.app/sitemap.xml

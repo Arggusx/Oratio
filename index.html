@@ -4,10 +4,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Oratio Daily — Um refúgio diário para o silêncio, a contemplação dos mistérios e a Palavra que sustenta o caminho. Reze o terço, leia a liturgia e aprofunde sua fé." />
+  <meta name="description" content="Um refúgio diário para o silêncio, a contemplação dos mistérios e a Palavra que sustenta o caminho. Reze o terço, leia a liturgia e aprofunde sua fé." />
   <meta name="theme-color" content="#FDFBF7" />
+  <link rel="canonical" href="https://oratio-daily-dev.vercel.app/" />
 
-  <link rel="icon" type="image/png" href="/img2/icon_site.png" />
+  <!-- Prévia ao compartilhar (WhatsApp, redes sociais). Título, descrição e URL são atualizados por página. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Oratio Daily" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:title" content="Oratio Daily — Oração, Terço e Liturgia Diária" />
+  <meta property="og:description" content="Um refúgio diário para o silêncio, a contemplação dos mistérios e a Palavra que sustenta o caminho." />
+  <meta property="og:url" content="https://oratio-daily-dev.vercel.app/" />
+  <meta property="og:image" content="https://oratio-daily-dev.vercel.app/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Oratio Daily — Reze com calma. Viva com fé." />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Dados estruturados para buscadores. -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Oratio Daily",
+      "alternateName": "Oratio",
+      "url": "https://oratio-daily-dev.vercel.app/",
+      "inLanguage": "pt-BR",
+      "description": "Site católico para rezar o terço, acompanhar a liturgia diária, conhecer os santos e o calendário litúrgico."
+    }
+  </script>
+
+  <link rel="icon" type="image/png" href="/img2/icon_site-64.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,17 +43,7 @@
     rel="stylesheet"
   />
 
-  <script>
-    // Aplica o tema salvo antes da primeira pintura (evita piscar em claro).
-    (function () {
-      var theme = null;
-      try { theme = localStorage.getItem('oratio:tema'); } catch (e) {}
-      if (theme !== 'dark' && theme !== 'light') {
-        theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      }
-      document.documentElement.dataset.theme = theme;
-    })();
-  </script>
+  <script src="/theme-init.js"></script>
 
   <title>Oratio Daily — Oração, Terço e Liturgia Diária</title>
 </head>
