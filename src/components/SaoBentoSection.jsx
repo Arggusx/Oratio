@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Shield } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ChevronDown, ChevronRight } from 'lucide-react';
+import SaoBentoMedal from './SaoBentoMedal';
 
 // Versos da oração gravada na Medalha de São Bento (Vade retro Satana).
 const prayerLines = [
@@ -28,15 +30,16 @@ const VIEWS = [
   ['both', 'Lado a lado'],
 ];
 
-export default function SaoBentoSection() {
+export default function SaoBentoSection({ showSaintLink = true }) {
   const [view, setView] = useState('pt');
-  const [showDetails, setShowDetails] = useState(false);
+  // Na página do santo, a explicação já começa aberta.
+  const [showDetails, setShowDetails] = useState(!showSaintLink);
 
   return (
     <section className="sao-bento-card" aria-labelledby="sao-bento-title">
       <div className="sao-bento-header">
-        <span className="sao-bento-icon" aria-hidden="true">
-          <Shield size={22} />
+        <span className="sao-bento-icon">
+          <SaoBentoMedal size={76} />
         </span>
         <div>
           <span className="eyebrow">Sacramental · Proteção espiritual</span>
@@ -75,15 +78,23 @@ export default function SaoBentoSection() {
         ))}
       </div>
 
-      <button
-        type="button"
-        className="step-expand-btn sao-bento-more"
-        onClick={() => setShowDetails((v) => !v)}
-        aria-expanded={showDetails}
-      >
-        <span>{showDetails ? 'Ocultar explicação' : 'Entenda a medalha e como rezar'}</span>
-        <ChevronDown size={18} className={`arrow-icon ${showDetails ? 'rotated' : ''}`} />
-      </button>
+      <div className="sao-bento-actions">
+        <button
+          type="button"
+          className="step-expand-btn sao-bento-more"
+          onClick={() => setShowDetails((v) => !v)}
+          aria-expanded={showDetails}
+        >
+          <span>{showDetails ? 'Ocultar explicação' : 'Entenda a medalha e como rezar'}</span>
+          <ChevronDown size={18} className={`arrow-icon ${showDetails ? 'rotated' : ''}`} />
+        </button>
+        {showSaintLink && (
+          <Link to="/home/santos/sao-bento" className="prayer-saint-link">
+            Saiba mais sobre São Bento
+            <ChevronRight size={15} />
+          </Link>
+        )}
+      </div>
 
       <AnimatePresence initial={false}>
         {showDetails && (

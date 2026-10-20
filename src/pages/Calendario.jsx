@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Search, X, CalendarDays } from 'lucide-react';
+import { getSaint } from '../data/saints';
 import {
   EVENT_TYPES,
   MONTH_NAMES,
@@ -14,8 +16,17 @@ import {
 } from '../utils/liturgicalCalendar';
 
 const ALL_TYPES = Object.keys(EVENT_TYPES);
-// Ordem de prioridade da cor principal do dia.
-const TYPE_PRIORITY = ['santo', 'feriado', 'solenidade', 'facultativo', 'domingo'];
+
+// Dias de preceito (Missa obrigatória) são marcados com uma cruz, sem cor,
+// independentemente do tipo de celebração.
+const PRECEPT_TYPES = ['domingo', 'santo'];
+// A cor de fundo mostra o tipo de celebração, nesta ordem de prioridade.
+const FILL_PRIORITY = ['solenidade', 'festaSanto', 'feriado', 'facultativo'];
+
+const LEGEND = [
+  { id: 'preceito', types: PRECEPT_TYPES, label: 'Dia de preceito (Missa obrigatória)', isPrecept: true },
+  ...FILL_PRIORITY.map((t) => ({ id: t, types: [t], label: EVENT_TYPES[t].label, color: EVENT_TYPES[t].color })),
+];
 
 const SEASON_LABEL = {
   advento: 'Tempo do Advento',
@@ -76,11 +87,13 @@ export default function Calendario() {
       .flatMap(([key, list]) => list.map((e) => ({ key, ...e })));
   }, [visibleByDay, normalizedQuery]);
 
-  const toggleType = (type) => {
+  const isLegendActive = (item) => item.types.every((t) => activeTypes.has(t));
+
+  const toggleLegend = (item) => {
     setActiveTypes((prev) => {
       const next = new Set(prev);
-      if (next.has(type)) next.delete(type);
-      else next.add(type);
+      const active = item.types.every((t) => next.has(t));
+      item.types.forEach((t) => (active ? next.delete(t) : next.add(t)));
       return next;
     });
   };
@@ -131,16 +144,20 @@ export default function Calendario() {
       </div>
 
       <div className="calendar-legend" role="group" aria-label="Filtrar por legenda">
-        {ALL_TYPES.map((type) => (
+        {LEGEND.map((item) => (
           <button
-            key={type}
-            className={`calendar-legend-item ${activeTypes.has(type) ? 'active' : ''}`}
-            style={{ '--type-color': EVENT_TYPES[type].color }}
-            onClick={() => toggleType(type)}
-            aria-pressed={activeTypes.has(type)}
+            key={item.id}
+            className={`calendar-legend-item ${isLegendActive(item) ? 'active' : ''} ${item.isPrecept ? 'is-precept' : ''}`}
+            style={item.color ? { '--type-color': item.color } : undefined}
+            onClick={() => toggleLegend(item)}
+            aria-pressed={isLegendActive(item)}
           >
-            <span className="calendar-legend-dot" />
-            {EVENT_TYPES[type].label}
+            {item.isPrecept ? (
+              <span className="calendar-legend-cross" aria-hidden="true">✝</span>
+            ) : (
+              <span className="calendar-legend-dot" />
+            )}
+            {item.label}
           </button>
         ))}
         {activeTypes.size !== ALL_TYPES.length && (
@@ -149,6 +166,12 @@ export default function Calendario() {
           </button>
         )}
       </div>
+
+      <p className="calendar-legend-help">
+        A <strong>cruz (✝)</strong> marca os dias de preceito: todos os domingos e os dias santos de guarda,
+        em que a participação na Missa é obrigatória. A <strong>cor de fundo</strong> indica o tipo de celebração, e os{' '}
+        <strong>pontinhos</strong> mostram outras marcações no mesmo dia. O anel dourado indica o dia de hoje.
+      </p>
 
       {normalizedQuery ? (
         <section className="calendar-results" aria-live="polite">
@@ -191,6 +214,12 @@ export default function Calendario() {
                 <strong>{e.name}</strong>
                 <TypeBadges types={e.types} />
                 {e.note && <p>{e.note}</p>}
+                {e.saints?.map((slug) => (
+                  <Link key={slug} to={`/home/santos/${slug}`} className="prayer-saint-link">
+                    Conheça {getSaint(slug)?.name}
+                    <ChevronRight size={15} />
+                  </Link>
+                ))}
               </li>
             ))}
           </ul>
@@ -227,7 +256,9 @@ export default function Calendario() {
                   const key = toKey(makeDate(year, monthIndex + 1, day));
                   const visible = visibleByDay.get(key);
                   const types = visible ? [...new Set(visible.flatMap((e) => e.types))] : [];
-                  const mainType = TYPE_PRIORITY.find((t) => types.includes(t));
+                  const isPrecept = types.some((t) => PRECEPT_TYPES.includes(t));
+                  const fillTypes = FILL_PRIORITY.filter((t) => types.includes(t));
+                  const mainType = fillTypes[0];
                   const dimmed = normalizedQuery && !visible;
 
                   return (
@@ -236,20 +267,26 @@ export default function Calendario() {
                       className={[
                         'calendar-day',
                         mainType ? 'is-marked' : '',
+                        isPrecept ? 'is-precept' : '',
                         key === todayKey ? 'is-today' : '',
                         key === selectedKey ? 'is-selected' : '',
                         dimmed ? 'is-dimmed' : '',
                       ].join(' ')}
                       style={mainType ? { '--type-color': EVENT_TYPES[mainType].color } : undefined}
                       onClick={() => setSelectedKey(key)}
-                      aria-label={`${day} de ${monthName}${visible ? `: ${visible.map((e) => e.name).join(', ')}` : ''}`}
+                      aria-label={`${day} de ${monthName}${isPrecept ? ' (dia de preceito)' : ''}${visible ? `: ${visible.map((e) => e.name).join(', ')}` : ''}`}
                       title={visible ? visible.map((e) => e.name).join('\n') : undefined}
                     >
+                      {isPrecept && (
+                        <span className="calendar-day-cross" aria-hidden="true">
+                          ✝
+                        </span>
+                      )}
                       <span className="calendar-day-number">{day}</span>
-                      {types.length > 1 && (
+                      {fillTypes.length > 1 && (
                         <span className="calendar-day-dots">
-                          {types
-                            .filter((t) => t !== mainType)
+                          {fillTypes
+                            .slice(1)
                             .map((t) => (
                               <span key={t} style={{ background: EVENT_TYPES[t].color }} />
                             ))}

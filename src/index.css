@@ -3031,13 +3031,17 @@ h1, h2, h3, h4,
 .sao-bento-icon {
   display: grid;
   place-items: center;
-  width: 2.8rem;
-  height: 2.8rem;
   flex-shrink: 0;
-  border-radius: 50%;
-  background: var(--color-cream-warm);
-  color: var(--color-gold-muted);
-  border: 1px solid var(--color-border);
+}
+
+.sao-bento-medal {
+  display: block;
+  filter: drop-shadow(0 4px 8px rgba(60, 36, 12, 0.3));
+  transition: transform 0.5s var(--ease-spring);
+}
+
+.sao-bento-card:hover .sao-bento-medal {
+  transform: rotate(-8deg);
 }
 
 .sao-bento-title {
@@ -3740,8 +3744,30 @@ h1, h2, h3, h4,
   border-color: color-mix(in srgb, var(--type-color) 55%, transparent);
 }
 
+/* Dia de preceito: cruz no alto da célula, sem cor; o número desce um pouco. */
+.calendar-day.is-precept {
+  font-weight: 700;
+  color: var(--color-charcoal);
+}
+
+.calendar-day.is-precept .calendar-day-number {
+  transform: translateY(3px);
+}
+
+.calendar-day-cross {
+  position: absolute;
+  top: 1px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-text-soft);
+}
+
+/* Hoje: anel dourado externo. */
 .calendar-day.is-today {
-  box-shadow: 0 0 0 2px var(--color-terracotta);
+  box-shadow: 0 0 0 2px var(--color-gold);
 }
 
 .calendar-day.is-selected {
@@ -3755,7 +3781,7 @@ h1, h2, h3, h4,
 
 .calendar-day-dots {
   position: absolute;
-  bottom: 2px;
+  bottom: 1px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -4085,4 +4111,577 @@ body {
   margin-top: 1.5rem;
   font-size: 0.8rem;
   color: var(--color-text-muted);
+}
+
+
+/* ============================================================
+   SANTOS — LISTA, PÁGINA E FILTRO POR INTENÇÃO
+   ============================================================ */
+.prayer-accordion-text {
+  white-space: pre-wrap;
+}
+
+.prayer-accordion-latin {
+  margin-top: 0.8rem;
+  font-style: italic;
+  font-size: 0.92rem;
+  color: var(--color-text-muted);
+}
+
+.prayer-accordion-latin strong {
+  font-style: normal;
+  color: var(--color-text-soft);
+}
+
+.prayer-accordion-note {
+  margin-top: 0.8rem;
+  font-size: 0.8rem;
+  color: var(--color-text-pale);
+}
+
+.prayer-saint-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  margin-top: 0.7rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-terracotta);
+}
+
+.prayer-saint-link:hover {
+  text-decoration: underline;
+}
+
+.sao-bento-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem 1.2rem;
+  margin-top: 1rem;
+}
+
+.sao-bento-actions .sao-bento-more,
+.sao-bento-actions .prayer-saint-link {
+  margin-top: 0;
+}
+
+/* Faixa de santos na aba Orações */
+.saints-strip {
+  margin-bottom: var(--space-xl);
+}
+
+.saints-strip-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.saints-strip-head .prayer-saint-link {
+  margin-top: 0;
+}
+
+.saints-strip-title {
+  font-size: 1.5rem;
+}
+
+.saints-strip-list {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.4rem;
+  scrollbar-width: thin;
+}
+
+.saint-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  padding: 0.35rem 0.9rem 0.35rem 0.35rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-charcoal);
+  transition: border-color var(--duration-fast), transform var(--duration-fast);
+}
+
+.saint-chip:hover {
+  border-color: var(--color-gold);
+  transform: translateY(-1px);
+}
+
+.saint-chip-initial,
+.saint-initial {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  color: #FFF8EC;
+  background: radial-gradient(circle at 35% 30%, #E9C27A, #A87432);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-gold) 35%, transparent);
+}
+
+.saint-chip-initial {
+  width: 1.9rem;
+  height: 1.9rem;
+  font-size: 1rem;
+}
+
+/* Filtro por intenção */
+.intention-filter {
+  margin: 0.4rem 0 1.4rem;
+}
+
+.intention-filter-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-pale);
+  margin-bottom: 0.5rem;
+}
+
+.intention-filter-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.intention-chip {
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-full);
+  border: 1px dashed var(--color-border);
+  background: transparent;
+  color: var(--color-text-soft);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: background var(--duration-fast), border-color var(--duration-fast), color var(--duration-fast);
+}
+
+.intention-chip:hover {
+  border-color: var(--color-gold);
+}
+
+.intention-chip.active {
+  border-style: solid;
+  border-color: var(--color-gold);
+  background: color-mix(in srgb, var(--color-gold) 18%, var(--color-surface));
+  color: var(--color-charcoal);
+  font-weight: 600;
+}
+
+.intention-saints {
+  margin: -0.4rem 0 1.2rem;
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+}
+
+.intention-saints a {
+  color: var(--color-terracotta);
+  font-weight: 600;
+}
+
+.intention-saints a:hover {
+  text-decoration: underline;
+}
+
+.intention-tag {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-text-soft);
+  background: var(--color-cream-warm);
+  border: 1px solid var(--color-border-soft);
+}
+
+/* Lista de santos */
+.saints-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.8rem;
+}
+
+@media (min-width: 720px) {
+  .saints-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.saint-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  height: 100%;
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--duration-fast), transform var(--duration-fast), box-shadow var(--duration-fast);
+}
+
+.saint-card:hover {
+  border-color: var(--color-gold);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.saint-initial {
+  width: 3.2rem;
+  height: 3.2rem;
+  font-size: 1.6rem;
+}
+
+.saint-initial.is-large {
+  width: 5rem;
+  height: 5rem;
+  font-size: 2.6rem;
+}
+
+.saint-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.saint-card-body strong {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: var(--color-charcoal);
+}
+
+.saint-card-title,
+.saint-card-patron {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+.saint-card-feast {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-terracotta);
+}
+
+.saint-card-arrow {
+  flex-shrink: 0;
+  color: var(--color-text-faint);
+}
+
+/* Página do santo */
+.saint-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin-bottom: 1.2rem;
+}
+
+.saint-back-link:hover {
+  color: var(--color-terracotta);
+}
+
+.saint-hero {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.saint-hero .section-title {
+  margin-bottom: 0.4rem;
+}
+
+.saint-hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+}
+
+.saint-hero-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.saint-section {
+  margin-bottom: 2rem;
+}
+
+.saint-section-title {
+  font-size: 1.7rem;
+  margin-bottom: 0.8rem;
+}
+
+.saint-bio {
+  max-width: 46rem;
+  font-size: 1.02rem;
+  line-height: 1.8;
+  color: var(--color-text);
+}
+
+.saint-patron {
+  margin-top: 1.2rem;
+}
+
+.saint-patron h2 {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-pale);
+  margin-bottom: 0.5rem;
+}
+
+.saint-patron ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.saint-patron li {
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--radius-full);
+  background: var(--color-cream-warm);
+  border: 1px solid var(--color-border);
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+}
+
+.saint-prayers {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.saint-prayer {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.saint-prayer.is-open {
+  border-color: var(--color-gold);
+}
+
+.saint-prayer-trigger {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  color: var(--color-charcoal);
+}
+
+.saint-prayer-trigger > span {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.saint-prayer-trigger strong {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+}
+
+.saint-prayer-trigger .arrow-icon {
+  flex-shrink: 0;
+  color: var(--color-terracotta);
+  transition: transform var(--duration-fast);
+}
+
+.saint-prayer-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.saint-prayer-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  padding: 0 1.1rem 1.1rem;
+}
+
+.saint-prayer-body .prayer-full-text {
+  align-self: stretch;
+  font-size: 0.98rem;
+  line-height: 1.75;
+}
+
+.saint-prayer-body .btn-block-action {
+  margin-top: 0.8rem;
+}
+
+.mass-intro-note {
+  margin-top: 0.6rem;
+  font-size: 0.88rem;
+}
+
+.mass-intro-note a {
+  color: var(--color-terracotta);
+  font-weight: 600;
+}
+
+.mass-intro-note a:hover {
+  text-decoration: underline;
+}
+
+
+/* ============================================================
+   ESCOLA DA FÉ — SÍMBOLOS CRISTÃOS
+   ============================================================ */
+.symbols-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .symbols-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .symbols-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.symbol-card {
+  display: flex;
+  gap: 1rem;
+  height: 100%;
+  padding: 1.1rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--duration-fast), transform var(--duration-fast), box-shadow var(--duration-fast);
+}
+
+.symbol-card:hover {
+  border-color: var(--color-gold);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.symbol-image {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 5.5rem;
+  height: 6.5rem;
+  border-radius: var(--radius-md);
+  background: radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--color-gold) 16%, var(--color-surface)), var(--color-cream-warm));
+}
+
+/* Imagens pequenas (cerca de 100 px): exibidas sem ampliar para não perder nitidez. */
+.symbol-image img {
+  max-width: 82%;
+  max-height: 86%;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.18));
+  transition: transform 0.4s var(--ease-spring);
+}
+
+.symbol-card:hover .symbol-image img {
+  transform: scale(1.06);
+}
+
+.symbol-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.symbol-body h3 {
+  font-size: 1.3rem;
+  color: var(--color-charcoal);
+}
+
+.symbol-body p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--color-text-soft);
+}
+
+.symbol-body .symbol-extra {
+  font-size: 0.83rem;
+  color: var(--color-text-muted);
+}
+
+.symbol-ref {
+  margin-top: 0.2rem;
+  padding-left: 0.7rem;
+  border-left: 2px solid var(--color-gold);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.98rem;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.symbol-ref cite {
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-terracotta);
+}
+
+
+/* ============================================================
+   CALENDÁRIO — DIAS DE PRECEITO
+   ============================================================ */
+.calendar-legend-cross {
+  font-size: 0.85rem;
+  line-height: 1;
+  color: var(--color-text-soft);
+}
+
+.calendar-legend-item.is-precept.active {
+  border-color: var(--color-text-soft);
+  background: var(--color-surface);
+  font-weight: 600;
+}
+
+.calendar-legend-help {
+  margin: -0.6rem 0 1.4rem;
+  max-width: 52rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+.calendar-legend-help strong {
+  color: var(--color-text-soft);
 }

@@ -1,7 +1,7 @@
 import { mysteriesData } from './mysteries';
 import { prayers } from './prayers';
 
-const prayerText = (name) => prayers.find(([, n]) => n === name)?.[2] ?? '';
+const prayerText = (id) => prayers.find((p) => p.id === id)?.text ?? '';
 
 export const SIGN_OF_THE_CROSS = 'Em nome do Pai, do Filho e do Espírito Santo. Amém.';
 
@@ -115,25 +115,25 @@ Oremos: Senhor Deus, nós vos suplicamos que concedais aos vossos servos perpét
     id: 'sao-miguel',
     title: 'Oração a São Miguel Arcanjo',
     description: 'Composta pelo Papa Leão XIII, pede proteção no combate espiritual.',
-    text: prayerText('São Miguel Arcanjo'),
+    text: prayerText('sao-miguel-arcanjo'),
   },
   {
     id: 'sao-jose',
     title: 'A vós, São José',
     description: 'Oração de Leão XIII, tradicionalmente rezada no mês do Rosário (outubro).',
-    text: 'A vós, São José, recorremos em nossa tribulação e, depois de ter implorado o auxílio de vossa santíssima Esposa, cheios de confiança solicitamos também o vosso patrocínio. Por esse laço sagrado de caridade que vos uniu à Virgem Imaculada, Mãe de Deus, e pelo amor paternal que tivestes ao Menino Jesus, ardentemente suplicamos que lanceis um olhar benigno para a herança que Jesus Cristo conquistou com seu sangue e nos socorrais em nossas necessidades com o vosso auxílio e poder. Protegei, ó guarda providente da divina Família, o povo eleito de Jesus Cristo. Afastai para longe de nós, ó pai amantíssimo, a peste do erro e do vício. Assisti-nos do alto do céu, ó nosso fortíssimo sustentáculo, na luta contra o poder das trevas; e assim como outrora salvastes da morte a vida ameaçada do Menino Jesus, assim também defendei agora a Santa Igreja de Deus das ciladas de seus inimigos e de toda adversidade. Amparai a cada um de nós com o vosso constante patrocínio, a fim de que, a vosso exemplo e sustentados com o vosso auxílio, possamos viver virtuosamente, piedosamente morrer e obter no céu a eterna bem-aventurança. Amém.',
+    text: prayerText('a-vos-sao-jose'),
   },
   {
     id: 'lembrai-vos',
     title: 'Lembrai-vos (Memorare)',
     description: 'Súplica confiante à intercessão de Nossa Senhora.',
-    text: prayerText('Lembrai-vos'),
+    text: prayerText('lembrai-vos'),
   },
   {
     id: 'sub-tuum',
     title: 'À vossa proteção',
     description: 'A oração mariana mais antiga que se conhece (século III).',
-    text: prayerText('À vossa proteção'),
+    text: prayerText('a-vossa-protecao'),
   },
   {
     id: 'santo-padre',
