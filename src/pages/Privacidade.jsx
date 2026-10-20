@@ -30,8 +30,10 @@ export default function Privacidade() {
 
         <h3>Formulário de feedback</h3>
         <p>
-          Quando você envia uma sugestão pelo botão <strong>Feedback</strong>, recebemos o texto que você escreveu
-          (e qualquer dado que decidir incluir nele). O envio é feito pelo serviço <strong>Formspree</strong>, que
+          Quando você envia uma mensagem pelo botão <strong>Feedback</strong> (relato de erro, sugestão ou ideia),
+          recebemos o tipo de mensagem, o texto que você escreveu (e qualquer dado que decidir incluir nele), o
+          endereço da página do site em que você estava e, <strong>somente se você informar</strong>, o seu e-mail,
+          usado apenas para responder. O envio é feito pelo serviço <strong>Formspree</strong>, que
           também pode registrar dados técnicos, como endereço IP e navegador, para entregar a mensagem e filtrar
           spam. Usamos as mensagens apenas para melhorar o site. A base legal é o seu consentimento, dado ao enviar
           (LGPD, art. 7º, I). Não peça nem envie dados sensíveis pelo formulário.
