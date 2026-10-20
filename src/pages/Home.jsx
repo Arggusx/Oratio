@@ -43,7 +43,9 @@ export default function Home() {
 
         <motion.div className="hero-image" variants={fadeUp}>
           <img
-            src="/img2/img-terco.jpg"
+            src="/img2/img-terco.webp"
+            width="612"
+            height="408"
             alt="Mãos segurando um terço em oração"
           />
         </motion.div>

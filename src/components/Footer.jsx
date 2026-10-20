@@ -11,7 +11,7 @@ export default function Footer() {
           {/* Coluna 1: Marca e Missão */}
           <div className="footer-col brand-col">
             <div className="footer-brand-header">
-              <img src="/img2/icon_site.png" alt="Oratio Daily" className="footer-brand-icon" />
+              <img src="/img2/icon_site.webp" alt="" className="footer-brand-icon" width="28" height="28" />
               <span className="footer-brand-name">Oratio Daily</span>
             </div>
             <p className="footer-description">
@@ -41,7 +41,7 @@ export default function Footer() {
             </a>
             <div className="footer-contact">
               <a
-                href="https://github.com"
+                href="https://github.com/Arggusx/Oratio"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="github-contact-btn"
@@ -59,6 +59,9 @@ export default function Footer() {
           </div>
           <p className="footer-copy">
             © {year} <strong>Oratio</strong>. Todos os direitos reservados. Desenvolvido por <strong>Douglas/Arggusx</strong>
+          </p>
+          <p className="footer-copy">
+            <Link to="/privacidade" className="footer-privacy-link">Política de Privacidade</Link>
           </p>
         </div>
       </div>

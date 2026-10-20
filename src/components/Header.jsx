@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Menu, X, Cross } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import ThemeToggle from './ThemeToggle';
 
@@ -15,14 +15,16 @@ const links = [
 export default function Header() {
   const [open, setOpen] = useState(false);
 
-  // Lock body scroll when mobile menu is open
+  // Trava a rolagem com o menu aberto e permite fechá-lo com Esc.
   useEffect(() => {
-    if (open) {
-      document.body.style.overflow = 'hidden';
-    } else {
+    if (!open) return undefined;
+    document.body.style.overflow = 'hidden';
+    const onKeyDown = (e) => e.key === 'Escape' && setOpen(false);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
       document.body.style.overflow = '';
-    }
-    return () => { document.body.style.overflow = ''; };
+      document.removeEventListener('keydown', onKeyDown);
+    };
   }, [open]);
 
   const navLinks = links.map(([label, to]) => (
@@ -42,7 +44,7 @@ export default function Header() {
       <nav className="nav">
         <NavLink to="/" className="brand" onClick={() => setOpen(false)}>
           <span className="brand-mark">
-            <img src="/img2/icon_site.png" alt="Oratio Daily" />
+            <img src="/img2/icon_site.webp" alt="" width="64" height="64" />
           </span>
           Oratio
         </NavLink>
@@ -56,6 +58,8 @@ export default function Header() {
           <button
             className="menu-toggle"
             aria-label={open ? 'Fechar menu' : 'Abrir menu'}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
             onClick={() => setOpen(!open)}
           >
             {open ? <X size={24} /> : <Menu size={24} />}
@@ -71,9 +75,10 @@ export default function Header() {
       />
 
       {/* Mobile slide-in menu */}
-      <div className={`mobile-menu ${open ? 'open' : ''}`}>
+      {/* Fechado, o menu fica fora da tela: inert impede que o Tab chegue nos links. */}
+      <nav id="mobile-menu" className={`mobile-menu ${open ? 'open' : ''}`} aria-label="Menu principal" inert={!open}>
         {navLinks}
-      </div>
+      </nav>
     </header>
   );
 }

@@ -132,6 +132,18 @@ const cardVariants = {
   }),
 };
 
+// Dados estruturados (schema.org FAQPage) com todas as perguntas desta seção.
+const faqJsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  inLanguage: 'pt-BR',
+  mainEntity: facts.map(([, question, answer]) => ({
+    '@type': 'Question',
+    name: question,
+    acceptedAnswer: { '@type': 'Answer', text: answer },
+  })),
+}).replace(/</g, '\\u003c'); // evita que algum texto feche a tag <script>
+
 function CuriosidadesSection() {
   const [category, setCategory] = useState('Todos');
   const [query, setQuery] = useState('');
@@ -150,6 +162,8 @@ function CuriosidadesSection() {
 
   return (
     <div>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqJsonLd }} />
+
       {/* ── Search bar ── */}
       <div className="search-wrapper">
         <Search size={16} className="search-icon" />

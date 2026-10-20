@@ -46,12 +46,13 @@ const tabNames = {
   homilia: 'Homilia',
 };
 
+// Tons escurecidos o suficiente para serem legíveis como texto (contraste ≥ 4,5:1).
 const liturgicalColors = {
-  Verde: '#5B8060',
+  Verde: '#517255',
   Vermelho: '#AE463D',
   Roxo: '#73537B',
-  Branco: '#8E8E8E',
-  Rosa: '#B95E78',
+  Branco: '#6A6A6A',
+  Rosa: '#A15268',
 };
 
 /* ── Salmo responsorial: o refrão é repetido depois de cada estrofe ── */
