@@ -57,6 +57,12 @@ O botão **Modo foco** abre a leitura selecionada em uma sobreposição de tela 
 
 Caso uma integração esteja indisponível, o site apresenta leituras e reflexões de contingência em vez de interromper a experiência.
 
+### Santos e orações por intenção
+
+Cada santo tem uma página com biografia, data da festa, do que é padroeiro e suas orações: a principal e as específicas para cada intenção (por exemplo, São Rafael para quem procura um(a) companheiro(a)). Na aba **Orações** é possível filtrar por **intenção** ("Para que você quer rezar?") e por **momento do dia** ("Quando rezar?": ao acordar, ao meio-dia, nas refeições, antes de estudar e antes de dormir). As festas dos santos também aparecem no Calendário.
+
+Os dados ficam em `src/data/saints.js` (santos e intenções) e `src/data/prayers.js` (orações, com os campos `saint`, `intentions` e `moments`), organizados como tabelas para facilitar uma futura migração para o banco de dados.
+
 ### Calendário Católico
 
 A página **Calendário** mostra o ano inteiro com domingos de preceito, dias santos de guarda (normas da CNBB), as principais celebrações litúrgicas e os feriados nacionais. A legenda funciona como filtro e há busca por nome. As datas móveis são calculadas a partir da Páscoa em `src/utils/liturgicalCalendar.js`, que também define o mistério do terço do dia (domingos do Advento são gozosos e os da Quaresma, dolorosos) e quando o Aleluia é omitido na Liturgia.
@@ -67,7 +73,7 @@ O botão no cabeçalho alterna entre tema claro e escuro. Na primeira visita o s
 
 ### Escola da Fé
 
-A página **Escola da Fé** tem duas seções. **Na Missa** explica, com ícones ilustrados, quando fazer a inclinação de cabeça, a inclinação profunda e a genuflexão, conforme a Instrução Geral do Missal Romano. **Curiosidades** funciona como uma FAQ. Ela permite pesquisar e filtrar perguntas sobre sacramentos, história da Igreja, símbolos e liturgia, dogmas e tradições.
+A página **Escola da Fé** tem três seções. **Na Missa** explica, com ícones ilustrados, quando fazer a inclinação de cabeça, a inclinação profunda e a genuflexão, conforme a Instrução Geral do Missal Romano. **Símbolos** apresenta 15 símbolos cristãos (imagens em `public/img2/simbolos` e textos em `src/data/symbols.js`), cada um com uma citação bíblica. **Curiosidades** funciona como uma FAQ. Ela permite pesquisar e filtrar perguntas sobre sacramentos, história da Igreja, símbolos e liturgia, dogmas e tradições.
 
 ### Navegação e feedback
 
@@ -82,7 +88,9 @@ O cabeçalho é responsivo: em telas pequenas, os links são apresentados em um 
 | `/home/leituras` | Liturgia diária, Evangelho e homilia |
 | `/home/oracoes` | Guia do terço, Rosário Nórdico e orações |
 | `/home/calendario` | Calendário católico do ano, com filtros e busca |
-| `/home/escola-da-fe` | Escola da Fé: curiosidades e o que fazer na Missa (`?secao=missa`). O antigo `/home/curiosidades` redireciona para cá |
+| `/home/santos` | Lista de santos, com busca e filtro por intenção |
+| `/home/santos/:slug` | Página de um santo: biografia, festa, padroeiro de quê e orações |
+| `/home/escola-da-fe` | Escola da Fé: curiosidades, o que fazer na Missa (`?secao=missa`) e símbolos cristãos (`?secao=simbolos`). O antigo `/home/curiosidades` redireciona para cá |
 | `/home/misterio/foco/:tipo/:id` | Modo guiado de um mistério (`tipo`: `gozosos`, `luminosos`, `dolorosos` ou `gloriosos`; `id`: 1 a 5) |
 
 No modo guiado, cada mistério tem dez contas interativas. Ao avançar pelas dez Ave-Marias, a aplicação segue automaticamente para o próximo mistério; após o quinto, retorna à página de Mistérios.

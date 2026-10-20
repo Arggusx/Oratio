@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -10,6 +11,8 @@ import Oracoes from './pages/Oracoes';
 import EscolaDaFe from './pages/EscolaDaFe';
 import FocusMystery from './pages/FocusMystery';
 import Calendario from './pages/Calendario';
+import Santos from './pages/Santos';
+import Santo from './pages/Santo';
 const pageVariants = {
   initial: { opacity: 0, y: 16 },
   animate: { opacity: 1, y: 0 },
@@ -23,6 +26,11 @@ const pageTransition = {
 
 function AnimatedRoutes() {
   const location = useLocation();
+
+  // Ao abrir outra página (ex.: a página de um santo), começa do topo.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   return (
     <AnimatePresence mode="wait">
@@ -43,6 +51,8 @@ function AnimatedRoutes() {
           {/* Endereço antigo da página */}
           <Route path="/home/curiosidades" element={<Navigate to="/home/escola-da-fe" replace />} />
           <Route path="/home/calendario" element={<Calendario />} />
+          <Route path="/home/santos" element={<Santos />} />
+          <Route path="/home/santos/:slug" element={<Santo />} />
           <Route path="/home/misterio/foco/:tipo/:id" element={<FocusMystery />} />
         </Routes>
       </motion.div>

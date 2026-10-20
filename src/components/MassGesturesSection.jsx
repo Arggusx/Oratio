@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Info } from 'lucide-react';
 import {
   IhsIcon,
@@ -67,6 +68,10 @@ export default function MassGesturesSection() {
         <p>
           Na liturgia, o corpo também reza. Os gestos expressam por fora a fé que trazemos por dentro e unem toda
           a assembleia na mesma atitude diante de Deus. Veja quando fazer cada um.
+        </p>
+        <p className="mass-intro-note">
+          Na oração pessoal, fora da Missa, você tem liberdade de postura. Veja{' '}
+          <Link to="/home/escola-da-fe">“Posso rezar deitado?” em Curiosidades</Link>.
         </p>
       </header>
 

@@ -4,10 +4,13 @@
    data da Páscoa, sem depender de API.
    ============================================================ */
 
+import { saints } from '../data/saints';
+
 export const EVENT_TYPES = {
   domingo: { label: 'Domingo de preceito', color: '#B84A13' },
   santo: { label: 'Dia santo de guarda', color: '#73537B' },
   solenidade: { label: 'Celebração litúrgica', color: '#C8963E' },
+  festaSanto: { label: 'Festa de santo', color: '#B95E78' },
   feriado: { label: 'Feriado nacional', color: '#5B8060' },
   facultativo: { label: 'Ponto facultativo', color: '#8AA8D0' },
 };
@@ -180,15 +183,17 @@ export function getYearEvents(year) {
   const k = getKeyDates(year);
   const events = new Map();
 
-  const add = (date, name, types, note) => {
+  // saintSlugs: santos com página no site ligados a este evento.
+  const add = (date, name, types, note, saintSlugs = []) => {
     const key = toKey(date);
     const list = events.get(key) ?? [];
     const existing = list.find((e) => e.name === name);
     if (existing) {
       existing.types = [...new Set([...existing.types, ...types])];
+      existing.saints = [...new Set([...existing.saints, ...saintSlugs])];
       if (note && !existing.note) existing.note = note;
     } else {
-      list.push({ name, types: [...types], note });
+      list.push({ name, types: [...types], note, saints: [...saintSlugs] });
     }
     events.set(key, list);
   };
@@ -254,6 +259,19 @@ export function getYearEvents(year) {
   add(makeDate(year, 11, 20), 'Dia Nacional de Zumbi e da Consciência Negra', ['feriado']);
   add(makeDate(year, 12, 8), 'Imaculada Conceição de Nossa Senhora', ['santo', 'solenidade']);
   add(makeDate(year, 12, 25), 'Natal do Senhor', ['santo', 'solenidade', 'feriado']);
+
+  // ── Festas dos santos com página no site ──
+  for (const saint of saints) {
+    const [month, day] = saint.feast.split('-').map(Number);
+    const date = makeDate(year, month, day);
+    if (saint.inCalendar) {
+      // A data já existe no calendário base: só liga o evento à página do santo.
+      const existing = events.get(toKey(date))?.find((e) => e.name.includes(saint.name));
+      if (existing) existing.saints = [...new Set([...existing.saints, saint.slug])];
+      continue;
+    }
+    add(date, saint.feastName ?? saint.name, ['festaSanto'], undefined, [saint.slug]);
+  }
 
   // ── Domingos de preceito ──
   for (let day = sundayOnOrAfter(makeDate(year, 1, 1)); day.getFullYear() === year; day = addDays(day, 7)) {

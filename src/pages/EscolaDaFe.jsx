@@ -3,6 +3,7 @@ import { ChevronDown, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useSearchParams } from 'react-router-dom';
 import MassGesturesSection from '../components/MassGesturesSection';
+import SymbolsSection from '../components/SymbolsSection';
 
 const facts = [
   // Apologética & Dúvidas Frequentes
@@ -45,6 +46,18 @@ const facts = [
     'Dúvidas Frequentes',
     'O Papa é infalível? O que significa a Infalibilidade Papal?',
     'A infalibilidade não significa que o Papa seja impecável ou que nunca erre em sua vida pessoal. Significa que, por uma assistência especial do Espírito Santo prometida por Cristo a Pedro (Lc 22,32), o Papa não pode errar quando define de forma solene e definitiva (ex cathedra) uma doutrina de Fé ou Moral para ser seguida por toda a Igreja.',
+  ],
+
+  // Vida de Oração
+  [
+    'Vida de Oração',
+    'Posso rezar deitado? E o terço?',
+    'Pode, sim. Na oração pessoal, a Igreja não exige uma posição específica: você pode rezar de pé, sentado, de joelhos, caminhando, enquanto cozinha ou trabalha, ou deitado, como antes de dormir, durante uma doença ou na velhice. O próprio salmista reza na cama: “Quando, no leito, me vem vossa lembrança, passo a noite toda pensando em vós” (Sl 62,7). O terço também pode ser rezado deitado. Deus olha antes de tudo para o coração: “o homem vê a face, mas o Senhor olha o coração” (1Sm 16,7). Ele conhece o seu cansaço e não exige que você mude de posição para se aproximar dele.',
+  ],
+  [
+    'Vida de Oração',
+    'Então a postura do corpo não importa na oração?',
+    'Importa, mas não como condição para Deus nos ouvir. Somos corpo e alma, e o Catecismo ensina que o corpo também participa da oração (CIC 2702): ajoelhar-se expressa humildade e adoração, e ficar de pé expressa prontidão e respeito. O próprio Jesus rezou de joelhos (Lc 22,41) e prostrado com o rosto em terra (Mt 26,39). Por isso, quando for possível, escolher uma postura que ajude na atenção e na reverência é um bom hábito. O que Jesus condena é a oração feita para ser vista: “não façais como os hipócritas, que gostam de orar de pé nas sinagogas e nas esquinas das ruas, para serem vistos pelos homens” (Mt 6,5). Deus procura sinceridade, não aparência. Na Missa é diferente: os gestos são comuns a toda a assembleia e seguem as normas litúrgicas (veja a seção “Na Missa”).',
   ],
 
   // Os 7 Sacramentos
@@ -205,6 +218,7 @@ function CuriosidadesSection() {
 const SECTIONS = [
   { id: 'curiosidades', label: 'Curiosidades' },
   { id: 'missa', label: 'Na Missa' },
+  { id: 'simbolos', label: 'Símbolos' },
 ];
 
 export default function EscolaDaFe() {
@@ -219,8 +233,8 @@ export default function EscolaDaFe() {
       <span className="eyebrow">Conhecer para amar</span>
       <h1 className="section-title">Escola da Fé</h1>
       <p className="lead">
-        Respostas simples sobre a fé católica, a história e as tradições da Igreja, e um guia prático para viver
-        bem a Santa Missa.
+        Respostas simples sobre a fé católica, um guia prático para viver bem a Santa Missa e o significado dos
+        principais símbolos cristãos.
       </p>
 
       <div className="subnav-segmented" role="tablist" aria-label="Seções da Escola da Fé">
@@ -243,7 +257,9 @@ export default function EscolaDaFe() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.35 }}
       >
-        {section === 'missa' ? <MassGesturesSection /> : <CuriosidadesSection />}
+        {section === 'missa' && <MassGesturesSection />}
+        {section === 'simbolos' && <SymbolsSection />}
+        {section === 'curiosidades' && <CuriosidadesSection />}
       </motion.div>
     </main>
   );
