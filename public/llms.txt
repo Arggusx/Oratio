@@ -10,8 +10,8 @@ O conteúdo segue a doutrina e a liturgia da Igreja Católica (normas da CNBB pa
 - [Mistérios do terço](https://oratio-daily-dev.vercel.app/home/misterio): mistérios gozosos (segunda e sábado), luminosos (quinta), dolorosos (terça e sexta) e gloriosos (quarta e domingo).
 - [Liturgia diária](https://oratio-daily-dev.vercel.app/home/leituras): leituras, salmo com refrão, Evangelho e homilia do dia, com as respostas da Missa.
 - [Calendário católico](https://oratio-daily-dev.vercel.app/home/calendario): domingos e dias santos de preceito, solenidades, festas de santos e feriados nacionais do Brasil.
-- [Santos](https://oratio-daily-dev.vercel.app/home/santos): biografia, festa, patronatos e orações de santos (São Bento, São Rafael, São Miguel, São José, Santo Antônio, Santa Rita, São Judas Tadeu, Santa Luzia, São Brás, São Francisco, Santa Teresinha).
-- [Escola da Fé](https://oratio-daily-dev.vercel.app/home/escola-da-fe): perguntas frequentes sobre a fé católica, o que fazer na Missa (genuflexão, inclinação de cabeça e inclinação profunda) e o significado dos símbolos cristãos.
+- [Santos](https://oratio-daily-dev.vercel.app/home/santos): biografia, festa, patronatos e orações de mais de 40 santos, como São Bento, Santo Antônio, Santa Rita, São Jorge, Padre Pio, Santa Dulce dos Pobres, Frei Galvão e São Carlo Acutis.
+- [Escola da Fé](https://oratio-daily-dev.vercel.app/home/escola-da-fe): perguntas frequentes sobre a fé católica, o que fazer na Missa (genuflexão, inclinação de cabeça e inclinação profunda), o significado dos símbolos cristãos, um catálogo de milagres eucarísticos pelo mundo (Lanciano, Bolsena, Santarém, Siena, Buenos Aires, Sokółka, Legnica e outros) e os títulos de Nossa Senhora explicados (Aparecida, Fátima, Lourdes, Guadalupe, Carmo, Desatadora dos Nós e outros), mostrando que todos se referem à mesma Maria.
 
 ## Opcional
 

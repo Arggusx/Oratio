@@ -249,7 +249,7 @@ export default function Leituras() {
         fontSize: expanded ? '1.1rem' : undefined,
       }}
     >
-      <p className="eyebrow" style={{ color }}>
+      <p className="eyebrow reading-eyebrow">
         {tabNames[active]} {reading.referencia && `· ${reading.referencia}`}
       </p>
       <h2>{reading.titulo}</h2>
@@ -348,7 +348,7 @@ export default function Leituras() {
             display: 'inline-block',
           }}
         />
-        Cor litúrgica - {Object.entries(liturgicalColors).find(([_, c]) => c === color)?.[0] || 'Desconhecida'}
+        Cor litúrgica - {Object.entries(liturgicalColors).find(([, c]) => c === color)?.[0] || 'Desconhecida'}
       </div>
 
       {/* ── Tabs ── */}

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Cross, Github, Heart } from 'lucide-react';
+import { Cross, Github } from 'lucide-react';
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -62,6 +62,8 @@ export default function Footer() {
           </p>
           <p className="footer-copy">
             <Link to="/privacidade" className="footer-privacy-link">Política de Privacidade</Link>
+            {' · '}
+            <Link to="/creditos" className="footer-privacy-link">Créditos das imagens</Link>
           </p>
         </div>
       </div>

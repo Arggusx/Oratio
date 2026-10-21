@@ -1,7 +1,13 @@
 import { motion } from 'framer-motion';
 import { symbols } from '../data/symbols';
+import { LoadMoreButton } from './LoadMore';
+import { useLoadMore } from '../utils/useLoadMore';
+
+const PAGE_SIZE = 6;
 
 export default function SymbolsSection() {
+  const { listed, remaining, showMore } = useLoadMore(symbols, PAGE_SIZE);
+
   return (
     <section className="symbols-section">
       <header className="mass-intro">
@@ -13,13 +19,13 @@ export default function SymbolsSection() {
       </header>
 
       <div className="symbols-grid">
-        {symbols.map((s, index) => (
+        {listed.map((s, index) => (
           <motion.article
             key={s.id}
             className="symbol-card"
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35, delay: Math.min(index * 0.04, 0.4) }}
+            transition={{ duration: 0.35, delay: Math.min((index % PAGE_SIZE) * 0.04, 0.4) }}
           >
             <div className="symbol-image">
               <img src={s.image} alt="" loading="lazy" />
@@ -37,6 +43,8 @@ export default function SymbolsSection() {
           </motion.article>
         ))}
       </div>
+
+      <LoadMoreButton remaining={remaining} onClick={showMore} label="Ver mais símbolos" />
     </section>
   );
 }

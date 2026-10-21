@@ -1,9 +1,47 @@
 import { useMemo, useState } from 'react';
-import { ChevronDown, Search } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ChevronDown, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useSearchParams } from 'react-router-dom';
 import MassGesturesSection from '../components/MassGesturesSection';
 import SymbolsSection from '../components/SymbolsSection';
+import MiraclesCatalog from '../components/MiraclesCatalog';
+import MarianTitles from '../components/MarianTitles';
+import { marianTitles } from '../data/marianTitles';
+import { LoadMoreButton } from '../components/LoadMore';
+import { useLoadMore } from '../utils/useLoadMore';
+import { eucharisticMiracles } from '../data/eucharisticMiracles';
+
+const countryCount = new Set(eucharisticMiracles.map((m) => m.country)).size;
+
+// Ostensório: a Hóstia no centro de raios dourados, sobre a base.
+// Monograma mariano: a letra M sob uma coroa.
+function MarianIcon() {
+  return (
+    <svg className="feature-card-icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+      <path d="M15 14l4.5-5 4.5 4 4.5-4 4.5 5" className="figure" />
+      <path d="M13 40V19l11 13 11-13v21" className="figure" />
+      <path d="M24 32v8" className="figure" />
+    </svg>
+  );
+}
+
+function MonstranceIcon() {
+  const rays = Array.from({ length: 16 }, (_, i) => {
+    const a = (i * Math.PI) / 8;
+    const outer = i % 2 === 0 ? 15 : 12.5;
+    return { x1: 24 + 8.5 * Math.cos(a), y1: 18 + 8.5 * Math.sin(a), x2: 24 + outer * Math.cos(a), y2: 18 + outer * Math.sin(a) };
+  });
+  return (
+    <svg className="feature-card-icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+      {rays.map((r, i) => (
+        <line key={i} {...r} />
+      ))}
+      <circle cx="24" cy="18" r="6.5" className="host" />
+      <path d="M24 15v6M21 18h6" className="host-cross" />
+      <path d="M24 33v8M18 44h12M20.5 41h7" className="stand" />
+    </svg>
+  );
+}
 
 const facts = [
   // Apologética & Dúvidas Frequentes
@@ -11,6 +49,11 @@ const facts = [
     'Dúvidas Frequentes',
     'Os católicos adoram imagens ou estátuas?',
     'Não! A Igreja Católica ensina com clareza a diferença entre Adoração (Latreia) e Veneração (Dulia). A adoração é devida EXCLUSIVAMENTE a Deus (Pai, Filho e Espírito Santo). As imagens e estátuas de Maria e dos Santos não são adoradas nem possuem poderes próprios; elas funcionam como memórias visuais ("fotografias de fé") que nos ajudam a recordar os exemplos de virtude e nos direcionam a Deus.',
+  ],
+  [
+    'Dúvidas Frequentes',
+    'Existem várias Nossas Senhoras?',
+    'Não. Nossa Senhora Aparecida, de Fátima, de Lourdes, das Graças e todas as outras são a mesma pessoa: Maria de Nazaré, a Mãe de Jesus. Os diferentes títulos destacam um aspecto da sua vida (como as Dores ou a Assunção), uma verdade de fé (como a Imaculada Conceição), um lugar onde ela se manifestou (como Fátima ou Lourdes) ou a forma como um povo experimenta a sua proteção (como Auxiliadora ou Perpétuo Socorro). As imagens mudam de acordo com a cultura de cada lugar, mas a pessoa é uma só. Veja a coleção “Uma só Maria, muitos títulos” no topo desta seção.',
   ],
   [
     'Dúvidas Frequentes',
@@ -96,7 +139,7 @@ const facts = [
   [
     'História e Tradições',
     'Quem foi o primeiro Papa e o que é a Sucessão Apostólica?',
-    'São Pedro, apóstolo de Jesus Cristo, é o primeiro Papa. Jesus disse a ele: "Tu és Pedro, e sobre esta pedra edificarei a minha Igreja" (Mt 16,18). A Sucessão Apostólica é a linha ininterrupta de imposição de mãos de Pedro até o atual Papa (Papa Francisco).',
+    'São Pedro, apóstolo de Jesus Cristo, é o primeiro Papa. Jesus disse a ele: "Tu és Pedro, e sobre esta pedra edificarei a minha Igreja" (Mt 16,18). A Sucessão Apostólica é a linha ininterrupta de imposição de mãos de Pedro até o atual Papa (Papa Leão XIV, eleito em 2025).',
   ],
 
   // Símbolos e Liturgia
@@ -108,7 +151,7 @@ const facts = [
   [
     'Símbolos e Liturgia',
     'O que é o Jejum e a Abstinência na Sexta-feira Santa e Quarta de Cinzas?',
-    'O jejum (redução de refeições) e a abstinência de carne vermelha são atos penitenciais da Igreja para nos unir ao sacrifício de Jesus na cruz. São obrigatórios na Quarta-feira de Cinzas e na Sexta-feira da Paixão para fiéis de 18 a 59 anos (jejum) e a partir dos 14 anos (abstinência).',
+    'O jejum (redução de refeições) e a abstinência de carne (de qualquer tipo, não só a vermelha) são atos penitenciais da Igreja para nos unir ao sacrifício de Jesus na cruz. São obrigatórios na Quarta-feira de Cinzas e na Sexta-feira da Paixão para fiéis de 18 a 59 anos (jejum) e a partir dos 14 anos (abstinência).',
   ],
   [
     'Símbolos e Liturgia',
@@ -116,6 +159,9 @@ const facts = [
     'São devoções centradas no amor misericordioso de Deus e no sim generoso de Maria. Revelada a Santa Margarida Maria Alacoque no século XVII, a devoção ao Sagrado Coração promete graças especiais para quem comunga nas primeiras sextas-feiras do mês.',
   ],
 ];
+
+// Quantas curiosidades aparecem antes do botão "Ver mais".
+const PAGE_SIZE = 6;
 
 const allCategories = ['Todos', ...new Set(facts.map((f) => f[0]))];
 
@@ -148,6 +194,14 @@ function CuriosidadesSection() {
   const [category, setCategory] = useState('Todos');
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(null);
+  // Coleção aberta no lugar das perguntas: 'milagres', 'maria' ou nenhuma.
+  const [collection, setCollection] = useState(null);
+
+  // Ao abrir ou fechar o catálogo, volta ao topo da seção.
+  const openCollection = (value) => {
+    setCollection(value);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const shown = useMemo(() => {
     return facts.filter((f) => {
@@ -160,9 +214,50 @@ function CuriosidadesSection() {
     });
   }, [category, query]);
 
+  // Com busca ou categoria escolhida, mostra todos os resultados de uma vez.
+  const isFiltering = query.trim() !== '' || category !== 'Todos';
+  const { listed, remaining, showMore } = useLoadMore(shown, PAGE_SIZE, { showAll: isFiltering });
+
+  if (collection) {
+    return (
+      <div>
+        <button type="button" className="miracles-back" onClick={() => openCollection(null)}>
+          <ArrowLeft size={16} aria-hidden="true" />
+          Voltar às curiosidades
+        </button>
+        {collection === 'milagres' ? <MiraclesCatalog /> : <MarianTitles />}
+      </div>
+    );
+  }
+
   return (
     <div>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqJsonLd }} />
+
+      {/* ── Destaques: coleções que abrem no lugar das perguntas ── */}
+      <div className="feature-cards">
+        <button type="button" className="feature-card" onClick={() => openCollection('milagres')}>
+          <MonstranceIcon />
+          <span className="feature-card-text">
+            <span className="feature-card-eyebrow">Inspirado em São Carlo Acutis</span>
+            <strong>Milagres eucarísticos pelo mundo</strong>
+            <span>
+              {eucharisticMiracles.length} milagres em {countryCount} países, de Lanciano a Buenos Aires
+            </span>
+          </span>
+          <ArrowRight size={20} className="feature-card-arrow" aria-hidden="true" />
+        </button>
+
+        <button type="button" className="feature-card" onClick={() => openCollection('maria')}>
+          <MarianIcon />
+          <span className="feature-card-text">
+            <span className="feature-card-eyebrow">Nossa Senhora</span>
+            <strong>Uma só Maria, muitos títulos</strong>
+            <span>Por que Aparecida, Fátima e Lourdes são a mesma Mãe de Jesus ({marianTitles.length} títulos)</span>
+          </span>
+          <ArrowRight size={20} className="feature-card-arrow" aria-hidden="true" />
+        </button>
+      </div>
 
       {/* ── Search bar ── */}
       <div className="search-wrapper">
@@ -172,6 +267,7 @@ function CuriosidadesSection() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Pesquisar dúvidas e curiosidades..."
+          aria-label="Pesquisar dúvidas e curiosidades"
         />
       </div>
 
@@ -190,11 +286,11 @@ function CuriosidadesSection() {
 
       {/* ── FAQ items ── */}
       <div>
-        {shown.map(([cat, title, text], i) => (
+        {listed.map(([cat, title, text], i) => (
           <motion.div
             className="faq-item"
             key={title}
-            custom={i}
+            custom={i % PAGE_SIZE}
             variants={cardVariants}
             initial="hidden"
             animate="visible"
@@ -218,6 +314,8 @@ function CuriosidadesSection() {
             </div>
           </motion.div>
         ))}
+
+        <LoadMoreButton remaining={remaining} onClick={showMore} label="Ver mais curiosidades" />
 
         {shown.length === 0 && (
           <p className="lead" style={{ textAlign: 'center', marginTop: '2rem' }}>

@@ -21,6 +21,9 @@ export const THANKSGIVING = 'Infinitas graças vos damos, soberana Rainha, pelos
 
 export const HAIL_HOLY_QUEEN = 'Salve, Rainha, mãe de misericórdia, vida, doçura e esperança nossa, salve! A vós bradamos, os degredados filhos de Eva. A vós suspiramos, gemendo e chorando neste vale de lágrimas. Eia, pois, advogada nossa, esses vossos olhos misericordiosos a nós volvei, e depois deste desterro, mostrai-nos Jesus, bendito fruto do vosso ventre. Ó clemente, ó piedosa, ó doce sempre Virgem Maria. Rogai por nós, Santa Mãe de Deus, para que sejamos dignos das promessas de Cristo. Amém.';
 
+// Agradecimento pessoal ao terminar as dezenas, antes do "Infinitas graças".
+export const ROSARY_THANKS = 'Senhor, obrigado pela graça de ter rezado este terço e por todos os benefícios que recebi de Vós. Coloco nas mãos de Nossa Senhora cada intenção que apresentei hoje, confiando que ela as levará até Vós. Amém.';
+
 export const ORDINAL_WORDS = ['primeiro', 'segundo', 'terceiro', 'quarto', 'quinto'];
 
 /** Orações que podem ser rezadas depois da Salve-Rainha (todas opcionais). */
@@ -156,6 +159,27 @@ export const traditionalRosaryData = {
   title: 'Terço Tradicional de Nossa Senhora',
   introduction: 'O Santo Terço é uma contemplação dos mistérios da salvação através da oração vocal e mental, recomendada pela Virgem Maria em diversas aparições.',
   mysteriesList: mysteriesData,
+  // Resumo do roteiro em três momentos, exibido antes do passo a passo.
+  practicalStructure: [
+    {
+      id: 'inicio',
+      title: 'Início',
+      prayers: 'Sinal da Cruz, Creio, Pai Nosso e 3 Ave-Marias',
+      text: 'Faça o oferecimento geral do terço e mencione os seus principais agradecimentos.',
+    },
+    {
+      id: 'dezenas',
+      title: 'Nas dezenas',
+      prayers: 'Da 1ª à 5ª dezena',
+      text: 'Antes de cada Pai Nosso, anuncie o mistério do dia e acrescente um pedido ou oferecimento específico para aquela dezena.',
+    },
+    {
+      id: 'final',
+      title: 'No final',
+      prayers: 'Agradecimento final e Salve-Rainha',
+      text: 'Agradeça a oportunidade de ter rezado e confie as suas intenções às mãos de Nossa Senhora.',
+    },
+  ],
   steps: [
     {
       id: 'step-1',
@@ -169,9 +193,9 @@ export const traditionalRosaryData = {
       id: 'step-2',
       bead: 'Cruz',
       beadBadge: 'Oferecimento',
-      action: 'Oferecimento do Terço',
-      summary: 'Ofereça o terço e apresente suas intenções.',
-      prayerText: 'Divino Jesus, nós Vos oferecemos este terço que vamos rezar, meditando nos mistérios da nossa Redenção. Concedei-nos, por intercessão da Virgem Maria, Mãe de Deus e nossa Mãe, as virtudes que nos são necessárias para bem rezá-lo e a graça de ganharmos as indulgências desta santa devoção. Oferecemos particularmente por [suas intenções: a paz no mundo, a família, os doentes...]. Amém.',
+      action: 'Oferecimento geral e agradecimentos',
+      summary: 'Ofereça o terço, apresente suas intenções gerais e agradeça as principais graças que recebeu.',
+      prayerText: 'Divino Jesus, nós Vos oferecemos este terço que vamos rezar, meditando nos mistérios da nossa Redenção. Concedei-nos, por intercessão da Virgem Maria, Mãe de Deus e nossa Mãe, as virtudes que nos são necessárias para bem rezá-lo e a graça de ganharmos as indulgências desta santa devoção. Oferecemos particularmente por [suas intenções: a paz no mundo, a família, os doentes...].\n\nAgradecemos também por [as graças que você recebeu: a saúde, o trabalho, uma oração atendida...]. Amém.',
     },
     {
       id: 'step-3',
@@ -210,17 +234,17 @@ export const traditionalRosaryData = {
       bead: 'Medalha / Dezenas (5x)',
       beadBadge: 'Meditação',
       action: 'Anúncio dos Mistérios e as 5 Dezenas',
-      summary: 'Em cada uma das 5 dezenas: anuncie o mistério, reze 1 Pai Nosso, 10 Ave-Marias, 1 Glória ao Pai e a Jaculatória de Fátima.',
+      summary: 'Em cada uma das 5 dezenas: anuncie o mistério e faça um pedido ou oferecimento para aquela dezena; depois reze 1 Pai Nosso, 10 Ave-Marias, 1 Glória ao Pai e a Jaculatória de Fátima.',
       showMysteries: true,
-      prayerText: `Para cada uma das 5 dezenas:\n\n1. Anuncie o mistério contemplado.\n2. Reze 1 Pai Nosso (na conta grande).\n3. Reze 10 Ave-Marias (nas 10 contas pequenas).\n4. Reze 1 Glória ao Pai.\n5. Reze a Jaculatória de Fátima: "${FATIMA_PRAYER}"`,
+      prayerText: `Para cada uma das 5 dezenas:\n\n1. Anuncie o mistério contemplado e apresente um pedido ou oferecimento só para aquela dezena (ex.: "Ofereço esta dezena pela saúde da minha mãe").\n2. Reze 1 Pai Nosso (na conta grande).\n3. Reze 10 Ave-Marias (nas 10 contas pequenas).\n4. Reze 1 Glória ao Pai.\n5. Reze a Jaculatória de Fátima: "${FATIMA_PRAYER}"`,
     },
     {
       id: 'step-8',
       bead: 'Medalha / Fecho',
       beadBadge: 'Encerramento',
-      action: 'Agradecimento e Salve-Rainha',
-      summary: 'Ao concluir as 5 dezenas, agradeça a Nossa Senhora e reze a Salve-Rainha.',
-      prayerText: `Agradecimento:\n${THANKSGIVING}\n\nSalve-Rainha:\n${HAIL_HOLY_QUEEN}`,
+      action: 'Agradecimento final e Salve-Rainha',
+      summary: 'Ao concluir as 5 dezenas, agradeça a oportunidade de ter rezado, confie suas intenções às mãos de Nossa Senhora e reze a Salve-Rainha.',
+      prayerText: `Agradecimento do terço:\n${ROSARY_THANKS}\n\nInfinitas graças:\n${THANKSGIVING}\n\nSalve-Rainha:\n${HAIL_HOLY_QUEEN}`,
     },
   ],
 };

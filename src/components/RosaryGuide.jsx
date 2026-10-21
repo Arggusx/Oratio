@@ -69,7 +69,27 @@ function MysteryAnnouncements({ mysteryKey, mystery, isToday }) {
           </li>
         ))}
       </ol>
+      <p className="mystery-announcements-tip">
+        Depois de anunciar, acrescente um pedido só para aquela dezena: “Ofereço esta dezena por…”
+      </p>
     </div>
+  );
+}
+
+function PracticalStructure({ items }) {
+  return (
+    <ol className="rosary-structure" aria-label="Estrutura prática do terço">
+      {items.map((item, i) => (
+        <li key={item.id} className="rosary-structure-item">
+          <span className="rosary-structure-number" aria-hidden="true">{i + 1}</span>
+          <div>
+            <h4>{item.title}</h4>
+            <p className="rosary-structure-prayers">{item.prayers}</p>
+            <p>{item.text}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
   );
 }
 
@@ -318,6 +338,7 @@ export default function RosaryGuide({ layoutData }) {
       {/* 3. GUIA PASSO A PASSO COMPLETO */}
       <section className="rosary-timeline-section">
         <h3 className="timeline-heading">Roteiro Passo a Passo do {layoutData.title}</h3>
+        {layoutData.practicalStructure && <PracticalStructure items={layoutData.practicalStructure} />}
         <p className="timeline-subtext">Siga as etapas sequenciais abaixo para a recitação completa:</p>
 
         {layoutData.id === 'nordico' ? (

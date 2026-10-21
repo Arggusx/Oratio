@@ -1,9 +1,12 @@
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ChevronDown, ChevronRight, Search } from 'lucide-react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { ArrowRight, ChevronDown, ChevronRight, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 import RosaryGuide from '../components/RosaryGuide';
 import SaoBentoSection from '../components/SaoBentoSection';
+import SaintsDirectory from '../components/SaintsDirectory';
+import { LoadMoreButton } from '../components/LoadMore';
+import { useLoadMore } from '../utils/useLoadMore';
 import { traditionalRosaryData, nordicRosaryData } from '../data/rosaryData';
 import { prayers, moments } from '../data/prayers';
 import { saints, intentions, getSaint } from '../data/saints';
@@ -44,10 +47,38 @@ function PrayerAccordion({ prayer, isOpen, onToggle }) {
   );
 }
 
+// Quantas orações aparecem antes do botão "Ver mais".
+const PRAYERS_PAGE_SIZE = 10;
+
 const categories = ['Todas', 'Diárias', 'Marianas', 'Santos', 'Sacramentais', 'Terço'];
 
+const SECTIONS = [
+  { id: 'terco', label: 'Terço Tradicional' },
+  { id: 'nordico', label: 'Terço Nórdico' },
+  { id: 'oracoes', label: 'Orações' },
+  { id: 'santos', label: 'Santos' },
+];
+
+// Auréola sobre uma figura: ícone do cartão que leva à aba Santos.
+function HaloIcon() {
+  return (
+    <svg className="feature-card-icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+      <ellipse cx="24" cy="9.5" rx="9" ry="3" className="halo" />
+      <circle cx="24" cy="19" r="6" className="figure" />
+      <path d="M12 42c0-8 5.4-13.5 12-13.5S36 34 36 42" className="figure" />
+      <path d="M24 31v8M20.5 34.5h7" className="figure" />
+    </svg>
+  );
+}
+
 export default function Oracoes() {
-  const [section, setSection] = useState('terco');
+  // A aba fica na URL (?secao=santos) para poder ser compartilhada.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const section = SECTIONS.some((s) => s.id === searchParams.get('secao')) ? searchParams.get('secao') : 'terco';
+  const setSection = (id) => {
+    setSearchParams(id === 'terco' ? {} : { secao: id }, { replace: true });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
   const [query, setQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('Todas');
   const [activeIntention, setActiveIntention] = useState(null);
@@ -66,6 +97,13 @@ export default function Oracoes() {
     });
   }, [query, activeCategory, activeIntention, activeMoment]);
 
+  // Com busca ou filtro ativo, mostra todas as orações encontradas.
+  const isFiltering =
+    query.trim() !== '' || activeCategory !== 'Todas' || activeIntention !== null || activeMoment !== null;
+  const { listed: listedPrayers, remaining, showMore } = useLoadMore(filtered, PRAYERS_PAGE_SIZE, {
+    showAll: isFiltering,
+  });
+
   // Santos ligados à intenção escolhida aparecem em destaque.
   const intentionSaints = activeIntention ? saints.filter((s) => s.intentions.includes(activeIntention)) : [];
 
@@ -77,16 +115,18 @@ export default function Oracoes() {
         Aprenda a rezar passo a passo, escolha sua devoção ou consulte orações tradicionais.
       </p>
 
-      <div className="subnav-segmented">
-        <button className={section === 'terco' ? 'active' : ''} onClick={() => setSection('terco')}>
-          Terço Tradicional
-        </button>
-        <button className={section === 'nordico' ? 'active' : ''} onClick={() => setSection('nordico')}>
-          Terço Nórdico
-        </button>
-        <button className={section === 'oracoes' ? 'active' : ''} onClick={() => setSection('oracoes')}>
-          Orações
-        </button>
+      <div className="subnav-segmented" role="tablist" aria-label="Seções de Terço e Orações">
+        {SECTIONS.map((s) => (
+          <button
+            key={s.id}
+            role="tab"
+            aria-selected={section === s.id}
+            className={section === s.id ? 'active' : ''}
+            onClick={() => setSection(s.id)}
+          >
+            {s.label}
+          </button>
+        ))}
       </div>
 
       <div className="prayer-layout-refactored">
@@ -102,6 +142,19 @@ export default function Oracoes() {
           </motion.div>
         )}
 
+        {section === 'santos' && (
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+            <header className="mass-intro" style={{ marginBottom: 0 }}>
+              <h2 className="mass-intro-title">Santos e intercessores</h2>
+              <p>
+                Escolha um santo para abrir a página dele, com a história, a data em que a Igreja o celebra e as
+                orações para pedir sua intercessão.
+              </p>
+            </header>
+            <SaintsDirectory />
+          </motion.div>
+        )}
+
         {section === 'oracoes' && (
           <motion.div
             initial={{ opacity: 0, y: 12 }}
@@ -109,26 +162,20 @@ export default function Oracoes() {
             transition={{ duration: 0.35 }}
             className="prayers-search-section"
           >
-            <SaoBentoSection />
+            {/* ── Destaque: leva à aba Santos ── */}
+            <button type="button" className="feature-card" onClick={() => setSection('santos')}>
+              <HaloIcon />
+              <span className="feature-card-text">
+                <span className="feature-card-eyebrow">Santos e intercessores</span>
+                <strong>Conheça a história de cada santo</strong>
+                <span>
+                  {saints.length} santos, cada um com uma página própria: vida, data da festa e orações
+                </span>
+              </span>
+              <ArrowRight size={20} className="feature-card-arrow" aria-hidden="true" />
+            </button>
 
-            {/* ── Santos e intercessores ── */}
-            <section className="saints-strip" aria-labelledby="saints-strip-title">
-              <div className="saints-strip-head">
-                <h2 id="saints-strip-title" className="saints-strip-title">Santos e intercessores</h2>
-                <Link to="/home/santos" className="prayer-saint-link">
-                  Ver todos
-                  <ChevronRight size={15} />
-                </Link>
-              </div>
-              <div className="saints-strip-list">
-                {saints.map((s) => (
-                  <Link key={s.slug} to={`/home/santos/${s.slug}`} className="saint-chip">
-                    <span className="saint-chip-initial" aria-hidden="true">{s.name.replace(/^(São|Santa|Santo)\s/, '').charAt(0)}</span>
-                    <span>{s.name}</span>
-                  </Link>
-                ))}
-              </div>
-            </section>
+            <SaoBentoSection />
 
             {/* ── Busca e filtros ── */}
             <div className="search-wrapper">
@@ -138,6 +185,7 @@ export default function Oracoes() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Buscar uma oração por nome, santo, palavra ou categoria..."
+                aria-label="Buscar oração"
               />
             </div>
 
@@ -198,7 +246,7 @@ export default function Oracoes() {
             )}
 
             <div className="prayers-accordion-list">
-              {filtered.map((prayer) => (
+              {listedPrayers.map((prayer) => (
                 <PrayerAccordion
                   key={prayer.id}
                   prayer={prayer}
@@ -207,6 +255,8 @@ export default function Oracoes() {
                 />
               ))}
             </div>
+
+            <LoadMoreButton remaining={remaining} onClick={showMore} label="Ver mais orações" />
 
             {filtered.length === 0 && (
               <p className="lead" style={{ textAlign: 'center', marginTop: '2rem' }}>

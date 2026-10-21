@@ -9,7 +9,14 @@ const DEFAULT_META = {
     'Um refúgio diário para o silêncio, a contemplação dos mistérios e a Palavra que sustenta o caminho. Reze o terço, leia a liturgia e aprofunde sua fé.',
 };
 
+const NOT_FOUND_META = {
+  title: 'Página não encontrada — Oratio',
+  description: 'O endereço pode ter mudado ou sido digitado errado.',
+  noindex: true,
+};
+
 const PAGE_META = {
+  '/': DEFAULT_META,
   '/home/misterio': {
     title: 'Mistérios do Terço para cada dia — Oratio',
     description: 'Mistérios gozosos, luminosos, dolorosos e gloriosos: quando rezar cada um e o que contemplar em cada dezena.',
@@ -34,31 +41,38 @@ const PAGE_META = {
     title: 'Escola da Fé: dúvidas, gestos da Missa e símbolos — Oratio',
     description: 'Respostas simples sobre a fé católica, o que fazer na Missa (genuflexão e inclinações) e o significado dos símbolos cristãos.',
   },
+  '/creditos': {
+    title: 'Créditos das imagens — Oratio',
+    description: 'Autores e licenças das pinturas, ícones e fotografias de santos e de Nossa Senhora usadas no Oratio.',
+  },
   '/privacidade': {
     title: 'Política de Privacidade — Oratio',
     description: 'Quais dados o Oratio trata, por quê e quais são os seus direitos pela LGPD.',
   },
 };
 
-function metaFor(pathname) {
+function metaFor(rawPathname) {
+  // O React Router aceita "/home/leituras/" como "/home/leituras".
+  const pathname = rawPathname.length > 1 ? rawPathname.replace(/\/+$/, '') : rawPathname;
   if (PAGE_META[pathname]) return PAGE_META[pathname];
 
   const saintMatch = pathname.match(/^\/home\/santos\/([^/]+)$/);
   if (saintMatch) {
     const saint = getSaint(saintMatch[1]);
-    if (saint) {
-      return {
-        title: `${saint.name}: história e orações — Oratio`,
-        description: `${saint.name} (${saint.title}). Biografia, data da festa, do que é padroeiro e orações para pedir sua intercessão.`,
-      };
-    }
+    if (!saint) return NOT_FOUND_META;
+    return {
+      title: `${saint.name}: história e orações — Oratio`,
+      description: `${saint.name} (${saint.title}). Biografia, data da festa, do que é padroeiro e orações para pedir sua intercessão.`,
+    };
   }
 
-  if (pathname.startsWith('/home/misterio/foco/')) {
+  if (/^\/home\/misterio\/foco\/[^/]+\/[^/]+$/.test(pathname)) {
     return { title: 'Rezar o mistério em modo foco — Oratio', description: DEFAULT_META.description };
   }
 
-  return DEFAULT_META;
+  // Rota inexistente: o servidor responde 200 (é um SPA), então avisamos os
+  // buscadores para não indexar a página de erro.
+  return NOT_FOUND_META;
 }
 
 function setMeta(selector, attr, value) {
@@ -69,7 +83,7 @@ function setMeta(selector, attr, value) {
 /** Atualiza título, descrição, Open Graph e URL canônica a cada troca de página. */
 export default function usePageMeta(pathname) {
   useEffect(() => {
-    const { title, description } = metaFor(pathname);
+    const { title, description, noindex } = metaFor(pathname);
     const url = `${SITE_URL}${pathname === '/' ? '/' : pathname}`;
 
     document.title = title;
@@ -78,5 +92,17 @@ export default function usePageMeta(pathname) {
     setMeta('meta[property="og:description"]', 'content', description);
     setMeta('meta[property="og:url"]', 'content', url);
     setMeta('link[rel="canonical"]', 'href', url);
+
+    let robots = document.head.querySelector('meta[name="robots"]');
+    if (noindex) {
+      if (!robots) {
+        robots = document.createElement('meta');
+        robots.setAttribute('name', 'robots');
+        document.head.appendChild(robots);
+      }
+      robots.setAttribute('content', 'noindex');
+    } else if (robots) {
+      robots.remove();
+    }
   }, [pathname]);
 }

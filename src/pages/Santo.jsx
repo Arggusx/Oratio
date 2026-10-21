@@ -4,7 +4,9 @@ import { ArrowLeft, CalendarDays, ChevronDown, Copy, Check } from 'lucide-react'
 import { getSaint, formatFeast, intentionLabel } from '../data/saints';
 import { prayers } from '../data/prayers';
 import SaoBentoSection from '../components/SaoBentoSection';
-import { SaintInitial } from './Santos';
+import { SaintInitial } from '../components/SaintsDirectory';
+import ImageCredit from '../components/ImageCredit';
+import { saintImages } from '../data/imageCredits';
 
 function SaintPrayer({ prayer, defaultOpen }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -62,9 +64,22 @@ export default function Santo() {
   if (!saint) return <Navigate to="/home/santos" replace />;
 
   // Oração principal primeiro, depois as orações por intenção.
-  const saintPrayers = prayers
+  const ownPrayers = prayers
     .filter((p) => p.saint === saint.slug)
     .sort((a, b) => Number(Boolean(b.main)) - Number(Boolean(a.main)));
+
+  // Santo ainda sem oração própria: uma oração simples de intercessão.
+  const saintPrayers =
+    ownPrayers.length > 0
+      ? ownPrayers
+      : [
+          {
+            id: `intercessao-${saint.slug}`,
+            title: `Oração a ${saint.name}`,
+            intentions: saint.intentions,
+            text: `${saint.name}, que seguistes Jesus com fidelidade e hoje contemplais a face de Deus, intercedei por mim. Apresentai ao Senhor o meu pedido [faça aqui o seu pedido] e alcançai-me a graça de viver o Evangelho com o mesmo amor com que vós o vivestes. Amém.\n\n${saint.name}, rogai por nós.`,
+          },
+        ];
 
   return (
     <main className="page saint-page">
@@ -85,11 +100,20 @@ export default function Santo() {
             </span>
             {saint.lifespan && <span>{saint.lifespan}</span>}
           </p>
+          {saint.feastNote && <p className="saint-hero-note">{saint.feastNote}</p>}
         </div>
       </header>
+      <ImageCredit image={saintImages[saint.slug]} className="saint-image-credit" />
 
       <section className="saint-section">
         <p className="saint-bio">{saint.bio}</p>
+
+        {saint.quote && (
+          <blockquote className="saint-quote">
+            <p>“{saint.quote.text}”</p>
+            <cite>— {saint.quote.author}</cite>
+          </blockquote>
+        )}
 
         <div className="saint-patron">
           <h2>Padroeiro(a) de</h2>
@@ -100,6 +124,31 @@ export default function Santo() {
           </ul>
         </div>
       </section>
+
+      {saint.sections?.map((section) => (
+        <section key={section.title} className="saint-section">
+          <h2 className="saint-section-title">{section.title}</h2>
+          {section.paragraphs.map((text) => (
+            <p key={text.slice(0, 40)} className="saint-bio saint-paragraph">{text}</p>
+          ))}
+        </section>
+      ))}
+
+      {saint.miracles && (
+        <section className="saint-section">
+          <h2 className="saint-section-title">Milagres reconhecidos</h2>
+          <div className="saint-miracles">
+            {saint.miracles.map((miracle, i) => (
+              <article key={miracle.title} className="saint-miracle">
+                <span className="saint-miracle-label">{i + 1}º milagre</span>
+                <h3>{miracle.title}</h3>
+                <p>{miracle.text}</p>
+              </article>
+            ))}
+          </div>
+          {saint.canonization && <p className="saint-canonization">{saint.canonization}</p>}
+        </section>
+      )}
 
       {saint.hasMedal && (
         <section className="saint-section">
