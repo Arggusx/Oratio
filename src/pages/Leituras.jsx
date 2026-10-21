@@ -195,6 +195,8 @@ export default function Leituras() {
               titulo: title,
               texto: toExcerpt(content),
               url: homiliaData.url || fallback.homilia[0].url,
+              // A Canção Nova ainda não publicou a de hoje: a API devolve a mais recente.
+              dataAnterior: homiliaData.isFromPreviousDay ? homiliaData.date : null,
             }
           ];
         } else {
@@ -289,7 +291,14 @@ export default function Leituras() {
 
       {active === 'homilia' && reading.url && (
         <div className="homily-source">
-          <p>Trecho da homilia do dia, publicada pela <strong>Canção Nova</strong>.</p>
+          {reading.dataAnterior ? (
+            <p>
+              A homilia de hoje ainda não foi publicada. Este é um trecho da homilia de{' '}
+              {reading.dataAnterior.split('-').reverse().slice(0, 2).join('/')}, publicada pela <strong>Canção Nova</strong>.
+            </p>
+          ) : (
+            <p>Trecho da homilia do dia, publicada pela <strong>Canção Nova</strong>.</p>
+          )}
           <a className="btn" href={reading.url} target="_blank" rel="noopener noreferrer">
             Ler a homilia completa na Canção Nova
             <ExternalLink size={16} aria-hidden="true" />
