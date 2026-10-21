@@ -247,6 +247,31 @@ const prayers = [
     ]
   },
   {
+    "id": "sao-carlo-acutis",
+    "category": "Santos",
+    "title": "Oração a São Carlo Acutis",
+    "text": "São Carlo Acutis, que fizestes da Eucaristia a vossa autoestrada para o Céu, ensinai-me a amar Jesus presente no Santíssimo Sacramento e a viver a fé com alegria no meio do mundo de hoje. Ajudai-me a não ser uma cópia de ninguém, mas o original que Deus sonhou para mim. Intercedei pela minha saúde, pelos meus estudos e pelo meu trabalho [faça aqui o seu pedido], para que tudo sirva à glória de Deus. Amém.",
+    "saint": "sao-carlo-acutis",
+    "main": true,
+    "intentions": [
+      "saude",
+      "trabalho"
+    ]
+  },
+  {
+    "id": "sao-carlo-acutis-tecnologia",
+    "category": "Santos",
+    "title": "Antes de usar a internet e o computador",
+    "text": "São Carlo Acutis, que usastes o computador para levar as pessoas até Jesus, ajudai-me a usar a internet e a tecnologia com sabedoria e equilíbrio. Que o meu trabalho diante da tela seja honesto e bem feito, que eu não perca tempo com o que me afasta de Deus e que as minhas palavras nas redes construam e não destruam. Amém.",
+    "saint": "sao-carlo-acutis",
+    "moments": [
+      "estudo"
+    ],
+    "intentions": [
+      "trabalho"
+    ]
+  },
+  {
     "id": "jaculatoria-de-fatima",
     "category": "Sacramentais",
     "title": "Jaculatória de Fátima",

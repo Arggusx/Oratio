@@ -18,6 +18,7 @@ const pages = [
   { path: '/home/escola-da-fe?secao=missa', changefreq: 'monthly', priority: '0.6' },
   { path: '/home/escola-da-fe?secao=simbolos', changefreq: 'monthly', priority: '0.6' },
   { path: '/privacidade', changefreq: 'yearly', priority: '0.2' },
+  { path: '/creditos', changefreq: 'yearly', priority: '0.2' },
 ];
 
 const escapeXml = (text) => text.replace(/&/g, '&amp;');

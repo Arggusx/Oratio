@@ -270,7 +270,7 @@ export function getYearEvents(year) {
       if (existing) existing.saints = [...new Set([...existing.saints, saint.slug])];
       continue;
     }
-    add(date, saint.feastName ?? saint.name, ['festaSanto'], undefined, [saint.slug]);
+    add(date, saint.feastName ?? saint.name, ['festaSanto'], saint.feastNote, [saint.slug]);
   }
 
   // ── Domingos de preceito ──
