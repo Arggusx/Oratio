@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { mysteriesData } from '../data/mysteries';
+import Candle from '../components/anim/Candle';
 
 const mysteries = Object.values(mysteriesData);
 
@@ -19,8 +20,13 @@ const cardVariants = {
 export default function Misterios() {
   return (
     <main className="page">
-      <span className="eyebrow">Santo Terço</span>
-      <h1 className="section-title">Mistérios para cada dia</h1>
+      <div className="page-title-row">
+        <div>
+          <span className="eyebrow">Santo Terço</span>
+          <h1 className="section-title">Mistérios para cada dia</h1>
+        </div>
+        <Candle />
+      </div>
       <p className="lead">
         Conheça, estude e contemple a história por trás de cada dia de oração.
       </p>

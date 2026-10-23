@@ -1,8 +1,10 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Search, X, CalendarDays } from 'lucide-react';
 import { getSaint } from '../data/saints';
+import Bell from '../components/anim/Bell';
+import LiturgicalYearRing from '../components/anim/LiturgicalYearRing';
 import {
   EVENT_TYPES,
   MONTH_NAMES,
@@ -63,6 +65,13 @@ export default function Calendario() {
   const [activeTypes, setActiveTypes] = useState(() => new Set(ALL_TYPES));
   const [query, setQuery] = useState('');
   const [selectedKey, setSelectedKey] = useState(todayKey);
+  const panelRef = useRef(null);
+
+  // Ao escolher um dia, sobe até o painel com as informações dele, no topo da página.
+  const selectDay = (key) => {
+    setSelectedKey(key);
+    panelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   const events = useMemo(() => getYearEvents(year), [year]);
   const normalizedQuery = normalizeText(query.trim());
@@ -109,8 +118,13 @@ export default function Calendario() {
 
   return (
     <main className="page">
-      <span className="eyebrow">Ano litúrgico</span>
-      <h1 className="section-title">Calendário Católico</h1>
+      <div className="page-title-row">
+        <div>
+          <span className="eyebrow">Ano litúrgico</span>
+          <h1 className="section-title">Calendário Católico</h1>
+        </div>
+        <Bell />
+      </div>
       <p className="lead">
         Domingos de preceito, dias santos de guarda, principais celebrações da Igreja e feriados nacionais do Brasil.
       </p>
@@ -186,7 +200,7 @@ export default function Calendario() {
                 <li key={`${r.key}-${r.name}`}>
                   <button
                     className={`calendar-result ${selectedKey === r.key ? 'active' : ''}`}
-                    onClick={() => setSelectedKey(r.key)}
+                    onClick={() => selectDay(r.key)}
                   >
                     <span className="calendar-result-date">{shortDate.format(fromKey(r.key))}</span>
                     <span className="calendar-result-name">{r.name}</span>
@@ -199,7 +213,12 @@ export default function Calendario() {
         </section>
       ) : null}
 
-      <section className="calendar-day-panel" aria-live="polite">
+      {/* Anel do ano litúrgico: cada tempo na sua cor e um ponto no dia de hoje */}
+      <div className="calendar-year-ring">
+        <LiturgicalYearRing />
+      </div>
+
+      <section className="calendar-day-panel" aria-live="polite" ref={panelRef}>
         <div className="calendar-day-panel-head">
           <CalendarDays size={18} />
           <h2 className="calendar-panel-title">{longDate.format(selectedDate)}</h2>
@@ -273,9 +292,9 @@ export default function Calendario() {
                         dimmed ? 'is-dimmed' : '',
                       ].join(' ')}
                       style={mainType ? { '--type-color': EVENT_TYPES[mainType].color } : undefined}
-                      onClick={() => setSelectedKey(key)}
+                      onClick={() => selectDay(key)}
                       aria-label={`${day} de ${monthName}${isPrecept ? ' (dia de preceito)' : ''}${visible ? `: ${visible.map((e) => e.name).join(', ')}` : ''}`}
-                      title={visible ? visible.map((e) => e.name).join('\n') : undefined}
+                      data-tip={visible ? visible.map((e) => e.name).join(' · ') : undefined}
                     >
                       {isPrecept && (
                         <span className="calendar-day-cross" aria-hidden="true">

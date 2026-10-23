@@ -5,7 +5,6 @@ import ThemeToggle from './ThemeToggle';
 
 const links = [
   ['Início', '/'],
-  ['Mistérios', '/home/misterio'],
   ['Leituras', '/home/leituras'],
   ['Terço e Orações', '/home/oracoes'],
   ['Calendário', '/home/calendario'],

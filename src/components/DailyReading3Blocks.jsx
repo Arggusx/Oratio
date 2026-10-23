@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { CopyCheckIcon } from './anim/AnimatedIcons';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import {
-  BookOpen, Copy, Check, ChevronDown, ChevronLeft, ChevronRight, RefreshCw, AlertCircle,
+  BookOpen, ChevronDown, ChevronLeft, ChevronRight, RefreshCw, AlertCircle,
   Feather, Scroll, Mail, RotateCcw, CalendarDays, X,
 } from 'lucide-react';
 import { addDays, fromKey, toKey } from '../utils/liturgicalCalendar';
@@ -164,7 +165,7 @@ function ReadingModal({ reading, onClose, onCopy, isCopied }) {
 
             <div className="reading-modal-footer">
               <button className={`btn-block-action ${isCopied ? 'copied' : ''}`} onClick={() => onCopy(reading)}>
-                {isCopied ? <Check size={14} /> : <Copy size={14} />}
+                <CopyCheckIcon done={isCopied} size={14} />
                 <span>{isCopied ? 'Copiado' : 'Copiar trecho'}</span>
               </button>
               <button className="btn-block-action" onClick={onClose}>Fechar</button>
@@ -509,7 +510,7 @@ export default function DailyReading3Blocks() {
                       onClick={() => handleCopyBlock(item)}
                       title="Copiar trecho"
                     >
-                      {isCopied ? <Check size={14} /> : <Copy size={14} />}
+                      <CopyCheckIcon done={isCopied} size={14} />
                       <span>{isCopied ? 'Copiado' : 'Copiar'}</span>
                     </button>
                   </div>

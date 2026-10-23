@@ -7,24 +7,16 @@ import SymbolsSection from '../components/SymbolsSection';
 import MiraclesCatalog from '../components/MiraclesCatalog';
 import MarianTitles from '../components/MarianTitles';
 import { marianTitles } from '../data/marianTitles';
+import { marianImages } from '../data/imageCredits';
+import SaintsDirectory from '../components/SaintsDirectory';
 import { LoadMoreButton } from '../components/LoadMore';
 import { useLoadMore } from '../utils/useLoadMore';
 import { eucharisticMiracles } from '../data/eucharisticMiracles';
+import Angel from '../components/anim/Angel';
 
 const countryCount = new Set(eucharisticMiracles.map((m) => m.country)).size;
 
 // Ostensório: a Hóstia no centro de raios dourados, sobre a base.
-// Monograma mariano: a letra M sob uma coroa.
-function MarianIcon() {
-  return (
-    <svg className="feature-card-icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-      <path d="M15 14l4.5-5 4.5 4 4.5-4 4.5 5" className="figure" />
-      <path d="M13 40V19l11 13 11-13v21" className="figure" />
-      <path d="M24 32v8" className="figure" />
-    </svg>
-  );
-}
-
 function MonstranceIcon() {
   const rays = Array.from({ length: 16 }, (_, i) => {
     const a = (i * Math.PI) / 8;
@@ -53,7 +45,7 @@ const facts = [
   [
     'Dúvidas Frequentes',
     'Existem várias Nossas Senhoras?',
-    'Não. Nossa Senhora Aparecida, de Fátima, de Lourdes, das Graças e todas as outras são a mesma pessoa: Maria de Nazaré, a Mãe de Jesus. Os diferentes títulos destacam um aspecto da sua vida (como as Dores ou a Assunção), uma verdade de fé (como a Imaculada Conceição), um lugar onde ela se manifestou (como Fátima ou Lourdes) ou a forma como um povo experimenta a sua proteção (como Auxiliadora ou Perpétuo Socorro). As imagens mudam de acordo com a cultura de cada lugar, mas a pessoa é uma só. Veja a coleção “Uma só Maria, muitos títulos” no topo desta seção.',
+    'Não. Nossa Senhora Aparecida, de Fátima, de Lourdes, das Graças e todas as outras são a mesma pessoa: Maria de Nazaré, a Mãe de Jesus. Os diferentes títulos destacam um aspecto da sua vida (como as Dores ou a Assunção), uma verdade de fé (como a Imaculada Conceição), um lugar onde ela se manifestou (como Fátima ou Lourdes) ou a forma como um povo experimenta a sua proteção (como Auxiliadora ou Perpétuo Socorro). As imagens mudam de acordo com a cultura de cada lugar, mas a pessoa é uma só. Veja “Uma só Maria, muitos títulos” na aba Santos desta página.',
   ],
   [
     'Dúvidas Frequentes',
@@ -225,7 +217,7 @@ function CuriosidadesSection() {
           <ArrowLeft size={16} aria-hidden="true" />
           Voltar às curiosidades
         </button>
-        {collection === 'milagres' ? <MiraclesCatalog /> : <MarianTitles />}
+        <MiraclesCatalog />
       </div>
     );
   }
@@ -244,16 +236,6 @@ function CuriosidadesSection() {
             <span>
               {eucharisticMiracles.length} milagres em {countryCount} países, de Lanciano a Buenos Aires
             </span>
-          </span>
-          <ArrowRight size={20} className="feature-card-arrow" aria-hidden="true" />
-        </button>
-
-        <button type="button" className="feature-card" onClick={() => openCollection('maria')}>
-          <MarianIcon />
-          <span className="feature-card-text">
-            <span className="feature-card-eyebrow">Nossa Senhora</span>
-            <strong>Uma só Maria, muitos títulos</strong>
-            <span>Por que Aparecida, Fátima e Lourdes são a mesma Mãe de Jesus ({marianTitles.length} títulos)</span>
           </span>
           <ArrowRight size={20} className="feature-card-arrow" aria-hidden="true" />
         </button>
@@ -327,10 +309,65 @@ function CuriosidadesSection() {
   );
 }
 
+/** Santos: Nossa Senhora em destaque e, abaixo, todos os santos. */
+function SantosSection() {
+  const [showMarian, setShowMarian] = useState(false);
+  const cover = marianImages.guadalupe;
+
+  const toggle = (value) => {
+    setShowMarian(value);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  if (showMarian) {
+    return (
+      <div>
+        <button type="button" className="miracles-back" onClick={() => toggle(false)}>
+          <ArrowLeft size={16} aria-hidden="true" />
+          Voltar aos santos
+        </button>
+        <MarianTitles />
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <header className="mass-intro" style={{ marginBottom: '1.2rem' }}>
+        <h2 className="mass-intro-title">Santos e intercessores</h2>
+        <p>
+          Conheça Nossa Senhora e os santos: a história de cada um, a data em que a Igreja os celebra e as orações
+          para pedir sua intercessão.
+        </p>
+      </header>
+
+      {/* Nossa Senhora vem antes e com mais destaque que os demais santos */}
+      <button type="button" className="marian-feature" onClick={() => toggle(true)}>
+        {cover && <img src={cover.src} width={cover.width} height={cover.height} alt="" loading="lazy" decoding="async" />}
+        <span className="marian-feature-text">
+          <span className="feature-card-eyebrow">Rainha de todos os santos</span>
+          <strong>Nossa Senhora</strong>
+          <span>
+            Aparecida, Fátima, Lourdes, Guadalupe… Por que são todas a mesma Maria, Mãe de Jesus: {marianTitles.length}{' '}
+            títulos explicados, com imagens.
+          </span>
+          <span className="marian-feature-cta">
+            Conhecer os títulos de Maria
+            <ArrowRight size={18} aria-hidden="true" />
+          </span>
+        </span>
+      </button>
+
+      <SaintsDirectory />
+    </div>
+  );
+}
+
 const SECTIONS = [
   { id: 'curiosidades', label: 'Curiosidades' },
   { id: 'missa', label: 'Na Missa' },
   { id: 'simbolos', label: 'Símbolos' },
+  { id: 'santos', label: 'Santos' },
 ];
 
 export default function EscolaDaFe() {
@@ -342,11 +379,16 @@ export default function EscolaDaFe() {
 
   return (
     <main className="page">
-      <span className="eyebrow">Conhecer para amar</span>
-      <h1 className="section-title">Escola da Fé</h1>
+      <div className="page-title-row">
+        <div>
+          <span className="eyebrow">Conhecer para amar</span>
+          <h1 className="section-title">Escola da Fé</h1>
+        </div>
+        <Angel />
+      </div>
       <p className="lead">
-        Respostas simples sobre a fé católica, um guia prático para viver bem a Santa Missa e o significado dos
-        principais símbolos cristãos.
+        Respostas simples sobre a fé católica, um guia prático para viver bem a Santa Missa, o significado dos
+        principais símbolos cristãos e a vida de Nossa Senhora e dos santos.
       </p>
 
       <div className="subnav-segmented" role="tablist" aria-label="Seções da Escola da Fé">
@@ -372,6 +414,7 @@ export default function EscolaDaFe() {
         {section === 'missa' && <MassGesturesSection />}
         {section === 'simbolos' && <SymbolsSection />}
         {section === 'curiosidades' && <CuriosidadesSection />}
+        {section === 'santos' && <SantosSection />}
       </motion.div>
     </main>
   );

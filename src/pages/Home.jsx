@@ -2,6 +2,11 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import DailyReading3Blocks from '../components/DailyReading3Blocks';
+import Dove from '../components/anim/Dove';
+import TwinkleCrosses from '../components/anim/TwinkleCrosses';
+import LogoDraw from '../components/anim/LogoDraw';
+import HandwritingText from '../components/anim/HandwritingText';
+import PrayerNow from '../components/anim/PrayerNow';
 
 const stagger = {
   animate: {
@@ -24,12 +29,18 @@ export default function Home() {
         initial="initial"
         animate="animate"
       >
+        <TwinkleCrosses />
+        <Dove />
+        <Dove second />
         <motion.div className="hero-copy" variants={fadeUp}>
-          <span className="eyebrow">Um instante para o sagrado</span>
-          <h1 className="display">
-            Reze com calma.
-            <br />
-            Viva com fé.
+          <div className="hero-mark">
+            <LogoDraw size={64} showName={false} />
+            <span className="eyebrow">Um instante para o sagrado</span>
+          </div>
+          {/* O título é escrito “à mão”; o texto real fica para leitores de tela e buscadores. */}
+          <h1 className="display hero-title-hand">
+            <span className="sr-only">Reze com calma. Viva com fé.</span>
+            <HandwritingText />
           </h1>
           <p className="lead">
             Um refúgio diário para o silêncio, a contemplação dos mistérios
@@ -50,6 +61,9 @@ export default function Home() {
           />
         </motion.div>
       </motion.section>
+
+      {/* ── Oração do momento do dia, escrita com uma pena ── */}
+      <PrayerNow />
 
       {/* ── Leitura Diária em 3 Blocos (5 a 10 min, sem Evangelho) ── */}
       <DailyReading3Blocks />

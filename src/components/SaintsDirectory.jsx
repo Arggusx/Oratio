@@ -18,7 +18,15 @@ export function SaintInitial({ saint, large = false }) {
   return (
     <span className={`saint-initial ${large ? 'is-large' : ''} ${image ? 'has-image' : ''}`} aria-hidden="true">
       {image ? (
-        <img src={image.src} width={image.width} height={image.height} alt="" loading="lazy" decoding="async" />
+        <img
+          src={image.src}
+          width={image.width}
+          height={image.height}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          style={image.position ? { objectPosition: image.position } : undefined}
+        />
       ) : (
         letter
       )}
