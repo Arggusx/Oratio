@@ -3,13 +3,22 @@ import { saints } from '../data/saints';
 import { marianTitles } from '../data/marianTitles';
 import { saintImages, marianImages } from '../data/imageCredits';
 import ImageCredit from '../components/ImageCredit';
+import Angel from '../components/anim/Angel';
 
 function CreditList({ items }) {
   return (
     <ul className="credits-list">
       {items.map(({ id, name, image, to }) => (
         <li key={id} className="credits-item">
-          <img src={image.src} width={image.width} height={image.height} alt="" loading="lazy" decoding="async" />
+          <img
+            src={image.src}
+            width={image.width}
+            height={image.height}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            style={image.position ? { objectPosition: image.position } : undefined}
+          />
           <div>
             {to ? <Link to={to}>{name}</Link> : <strong>{name}</strong>}
             <ImageCredit image={image} />
@@ -30,8 +39,13 @@ export default function Creditos() {
 
   return (
     <main className="page credits-page">
-      <span className="eyebrow">Transparência</span>
-      <h1 className="section-title">Créditos das imagens</h1>
+      <div className="page-title-row">
+        <div>
+          <span className="eyebrow">Transparência</span>
+          <h1 className="section-title">Créditos das imagens</h1>
+        </div>
+        <Angel />
+      </div>
       <p className="lead">
         As pinturas, ícones e fotografias dos santos e de Nossa Senhora vêm do Wikimedia Commons. A maioria está
         em domínio público, por serem obras antigas; as demais têm licenças livres que permitem o uso com o

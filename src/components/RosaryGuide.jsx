@@ -1,7 +1,9 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Sparkles, Calendar, HeartHandshake } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, ChevronDown, Sparkles, Calendar, HeartHandshake } from 'lucide-react';
 import { getTodayMysteryKey } from '../utils/liturgicalCalendar';
+import RosaryExplorer from './anim/RosaryExplorer';
 import {
   closingPrayers,
   SIGN_OF_THE_CROSS,
@@ -293,6 +295,13 @@ export default function RosaryGuide({ layoutData }) {
     setOpenStepId((prev) => (prev === id ? null : id));
   };
 
+  // Clicar numa conta abre o passo e rola até ele.
+  const openStepFromBead = (id) => {
+    setOpenStepId(id);
+    document.getElementById(`passo-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+  const activeStepIndex = layoutData.steps?.findIndex((s) => s.id === openStepId) ?? -1;
+
   const currentMystery = layoutData.mysteriesList[activeMysteryKey];
   const isToday = activeMysteryKey === defaultMysteryKey;
 
@@ -333,6 +342,12 @@ export default function RosaryGuide({ layoutData }) {
             </button>
           ))}
         </div>
+
+        {/* Os mistérios saíram do menu principal: este link leva à página com os quatro grupos. */}
+        <Link to="/home/misterio" className="mysteries-all-link">
+          Ver os quatro grupos de mistérios lado a lado
+          <ArrowRight size={16} aria-hidden="true" />
+        </Link>
       </section>
 
       {/* 3. GUIA PASSO A PASSO COMPLETO */}
@@ -344,62 +359,66 @@ export default function RosaryGuide({ layoutData }) {
         {layoutData.id === 'nordico' ? (
           <NordicTimeline key={activeMysteryKey} mystery={currentMystery} />
         ) : (
-          <div className="rosary-steps-timeline">
-            {layoutData.steps.map((step, index) => {
-              const isOpen = openStepId === step.id;
-              return (
-                <motion.article
-                  key={step.id}
-                  className={`rosary-step-card ${isOpen ? 'is-open' : ''}`}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                >
-                  <div className="step-bead-indicator">
-                    <span className="bead-number">{index + 1}</span>
-                    <span className="bead-line" />
-                  </div>
-
-                  <div className="step-main-content">
-                    <div className="step-top-bar">
-                      <div className="step-tags">
-                        <span className="bead-tag">{step.bead}</span>
-                        {step.beadBadge && <span className="action-tag">{step.beadBadge}</span>}
-                      </div>
+          <>
+            <RosaryExplorer steps={layoutData.steps} activeIndex={activeStepIndex} onOpenStep={openStepFromBead} />
+            <div className="rosary-steps-timeline">
+              {layoutData.steps.map((step, index) => {
+                const isOpen = openStepId === step.id;
+                return (
+                  <motion.article
+                    key={step.id}
+                    id={`passo-${step.id}`}
+                    className={`rosary-step-card ${isOpen ? 'is-open' : ''}`}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                  >
+                    <div className="step-bead-indicator">
+                      <span className="bead-number">{index + 1}</span>
+                      <span className="bead-line" />
                     </div>
 
-                    <h4 className="step-action-title">{step.action}</h4>
-                    <p className="step-summary">{step.summary}</p>
-
-                    {step.showMysteries && (
-                      <MysteryAnnouncements
-                        mysteryKey={activeMysteryKey}
-                        mystery={currentMystery}
-                        isToday={isToday}
-                      />
-                    )}
-
-                    {step.prayerText && (
-                      <div className="step-expand-wrapper">
-                        <button
-                          className="step-expand-btn"
-                          onClick={() => toggleStep(step.id)}
-                          aria-expanded={isOpen}
-                        >
-                          <span>{isOpen ? 'Ocultar Oração' : 'Ver Texto da Oração'}</span>
-                          <ChevronDown size={18} className={`arrow-icon ${isOpen ? 'rotated' : ''}`} />
-                        </button>
-
-                        <Collapse isOpen={isOpen} className="step-prayer-box">
-                          <p className="prayer-full-text">{step.prayerText}</p>
-                        </Collapse>
+                    <div className="step-main-content">
+                      <div className="step-top-bar">
+                        <div className="step-tags">
+                          <span className="bead-tag">{step.bead}</span>
+                          {step.beadBadge && <span className="action-tag">{step.beadBadge}</span>}
+                        </div>
                       </div>
-                    )}
-                  </div>
-                </motion.article>
-              );
-            })}
-          </div>
+
+                      <h4 className="step-action-title">{step.action}</h4>
+                      <p className="step-summary">{step.summary}</p>
+
+                      {step.showMysteries && (
+                        <MysteryAnnouncements
+                          mysteryKey={activeMysteryKey}
+                          mystery={currentMystery}
+                          isToday={isToday}
+                        />
+                      )}
+
+                      {step.prayerText && (
+                        <div className="step-expand-wrapper">
+                          <button
+                            className="step-expand-btn"
+                            onClick={() => toggleStep(step.id)}
+                            aria-expanded={isOpen}
+                          >
+                            <span>{isOpen ? 'Ocultar Oração' : 'Ver Texto da Oração'}</span>
+                            <ChevronDown size={18} className={`arrow-icon ${isOpen ? 'rotated' : ''}`} />
+                          </button>
+
+                          <Collapse isOpen={isOpen} className="step-prayer-box">
+                            <p className="prayer-full-text">{step.prayerText}</p>
+                          </Collapse>
+                        </div>
+                      )}
+                    </div>
+                  </motion.article>
+                );
+              })}
+            </div>
+          </>
         )}
       </section>
 

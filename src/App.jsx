@@ -6,6 +6,9 @@ import Footer from './components/Footer';
 import Feedback from './components/Feedback';
 import Home from './pages/Home';
 import usePageMeta from './utils/usePageMeta';
+import Angel from './components/anim/Angel';
+import SiteBackground from './components/anim/SiteBackground';
+import RosaryLoader from './components/anim/RosaryLoader';
 
 // A página inicial vem no pacote principal; as demais são baixadas só quando abertas.
 const Misterios = lazy(() => import('./pages/Misterios'));
@@ -22,8 +25,13 @@ const Creditos = lazy(() => import('./pages/Creditos'));
 function NotFound() {
   return (
     <main className="page">
-      <span className="eyebrow">Página não encontrada</span>
-      <h1 className="section-title">Este caminho não existe</h1>
+      <div className="page-title-row">
+        <div>
+          <span className="eyebrow">Página não encontrada</span>
+          <h1 className="section-title">Este caminho não existe</h1>
+        </div>
+        <Angel />
+      </div>
       <p className="lead">O endereço pode ter mudado ou sido digitado errado.</p>
       <Link className="btn" to="/" style={{ marginTop: '1.5rem' }}>
         Voltar para o início
@@ -34,10 +42,8 @@ function NotFound() {
 
 function PageFallback() {
   return (
-    <main className="page" aria-busy="true">
-      <div className="skeleton" style={{ width: '30%', height: '0.8rem', marginBottom: '0.6rem' }} />
-      <div className="skeleton" style={{ width: '55%', height: '2.2rem', marginBottom: '1.5rem' }} />
-      <div className="skeleton large" />
+    <main className="page page-loading" aria-busy="true">
+      <RosaryLoader />
     </main>
   );
 }
@@ -102,6 +108,7 @@ export default function App() {
       {/* reducedMotion="user": as animações do Framer Motion seguem a preferência do sistema. */}
       <MotionConfig reducedMotion="user">
         <div className="app-shell">
+          <SiteBackground />
           <a href="#conteudo" className="skip-link">
             Pular para o conteúdo
           </a>

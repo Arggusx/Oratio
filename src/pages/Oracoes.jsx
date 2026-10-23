@@ -1,10 +1,11 @@
 import { useMemo, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, Navigate, useSearchParams } from 'react-router-dom';
 import { ArrowRight, ChevronDown, ChevronRight, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 import RosaryGuide from '../components/RosaryGuide';
 import SaoBentoSection from '../components/SaoBentoSection';
-import SaintsDirectory from '../components/SaintsDirectory';
+import Candle from '../components/anim/Candle';
+import { AmenButton } from '../components/anim/AnimatedIcons';
 import { LoadMoreButton } from '../components/LoadMore';
 import { useLoadMore } from '../utils/useLoadMore';
 import { traditionalRosaryData, nordicRosaryData } from '../data/rosaryData';
@@ -34,6 +35,7 @@ function PrayerAccordion({ prayer, isOpen, onToggle }) {
               </p>
             )}
             {prayer.note && <p className="prayer-accordion-note">{prayer.note}</p>}
+            <AmenButton />
             {saint && (
               <Link to={`/home/santos/${saint.slug}`} className="prayer-saint-link">
                 Conheça {saint.name}
@@ -56,7 +58,6 @@ const SECTIONS = [
   { id: 'terco', label: 'Terço Tradicional' },
   { id: 'nordico', label: 'Terço Nórdico' },
   { id: 'oracoes', label: 'Orações' },
-  { id: 'santos', label: 'Santos' },
 ];
 
 // Auréola sobre uma figura: ícone do cartão que leva à aba Santos.
@@ -72,7 +73,7 @@ function HaloIcon() {
 }
 
 export default function Oracoes() {
-  // A aba fica na URL (?secao=santos) para poder ser compartilhada.
+  // A aba fica na URL (?secao=oracoes) para poder ser compartilhada.
   const [searchParams, setSearchParams] = useSearchParams();
   const section = SECTIONS.some((s) => s.id === searchParams.get('secao')) ? searchParams.get('secao') : 'terco';
   const setSection = (id) => {
@@ -107,10 +108,22 @@ export default function Oracoes() {
   // Santos ligados à intenção escolhida aparecem em destaque.
   const intentionSaints = activeIntention ? saints.filter((s) => s.intentions.includes(activeIntention)) : [];
 
+  // A aba Santos mudou para a Escola da Fé.
+  if (searchParams.get('secao') === 'santos') return <Navigate to="/home/escola-da-fe?secao=santos" replace />;
+
   return (
     <main className="page">
-      <span className="eyebrow">Um caminho de oração</span>
-      <h1 className="section-title">Terço e Orações</h1>
+      <div className="page-title-row">
+        <div>
+          <span className="eyebrow">Um caminho de oração</span>
+          <h1 className="section-title">Terço e Orações</h1>
+        </div>
+        <div className="candles">
+          <Candle />
+          <Candle />
+          <Candle />
+        </div>
+      </div>
       <p className="lead">
         Aprenda a rezar passo a passo, escolha sua devoção ou consulte orações tradicionais.
       </p>
@@ -142,19 +155,6 @@ export default function Oracoes() {
           </motion.div>
         )}
 
-        {section === 'santos' && (
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-            <header className="mass-intro" style={{ marginBottom: 0 }}>
-              <h2 className="mass-intro-title">Santos e intercessores</h2>
-              <p>
-                Escolha um santo para abrir a página dele, com a história, a data em que a Igreja o celebra e as
-                orações para pedir sua intercessão.
-              </p>
-            </header>
-            <SaintsDirectory />
-          </motion.div>
-        )}
-
         {section === 'oracoes' && (
           <motion.div
             initial={{ opacity: 0, y: 12 }}
@@ -163,7 +163,7 @@ export default function Oracoes() {
             className="prayers-search-section"
           >
             {/* ── Destaque: leva à aba Santos ── */}
-            <button type="button" className="feature-card" onClick={() => setSection('santos')}>
+            <Link to="/home/escola-da-fe?secao=santos" className="feature-card">
               <HaloIcon />
               <span className="feature-card-text">
                 <span className="feature-card-eyebrow">Santos e intercessores</span>
@@ -173,7 +173,7 @@ export default function Oracoes() {
                 </span>
               </span>
               <ArrowRight size={20} className="feature-card-arrow" aria-hidden="true" />
-            </button>
+            </Link>
 
             <SaoBentoSection />
 

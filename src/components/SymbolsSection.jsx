@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import FlipCard from './anim/FlipCard';
 import { symbols } from '../data/symbols';
 import { LoadMoreButton } from './LoadMore';
 import { useLoadMore } from '../utils/useLoadMore';
@@ -20,27 +21,36 @@ export default function SymbolsSection() {
 
       <div className="symbols-grid">
         {listed.map((s, index) => (
-          <motion.article
+          <motion.div
             key={s.id}
-            className="symbol-card"
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, delay: Math.min((index % PAGE_SIZE) * 0.04, 0.4) }}
           >
-            <div className="symbol-image">
-              <img src={s.image} alt="" loading="lazy" />
-            </div>
-            <div className="symbol-body">
-              <h3>{s.name}</h3>
-              <p>{s.text}</p>
-              {s.extra && <p className="symbol-extra">{s.extra}</p>}
-              {s.ref && (
-                <blockquote className="symbol-ref">
-                  “{s.ref.quote}” <cite>({s.ref.cite})</cite>
-                </blockquote>
-              )}
-            </div>
-          </motion.article>
+            {/* Cartão que vira: imagem e nome na frente, significado no verso */}
+            <FlipCard
+              className="symbol-flip"
+              front={
+                <>
+                  <img src={s.image} alt="" loading="lazy" />
+                  <strong>{s.name}</strong>
+                  <small>Toque para ver o significado</small>
+                </>
+              }
+              back={
+                <>
+                  <strong>{s.name}</strong>
+                  <span className="symbol-flip-text">{s.text}</span>
+                  {s.extra && <span className="symbol-extra">{s.extra}</span>}
+                  {s.ref && (
+                    <span className="symbol-ref">
+                      “{s.ref.quote}” <cite>({s.ref.cite})</cite>
+                    </span>
+                  )}
+                </>
+              }
+            />
+          </motion.div>
         ))}
       </div>
 

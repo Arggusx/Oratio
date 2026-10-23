@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Bug, CheckCircle2, Lightbulb, Loader2, MessageCircle, MessageSquareHeart, Send, Sparkles, X } from 'lucide-react';
+import { DoveIcon } from './anim/AnimatedIcons';
 
 const FORMSPREE_URL = 'https://formspree.io/f/mqapqejd';
 const MAX_LENGTH = 2000;
@@ -158,7 +159,10 @@ export default function Feedback() {
 
               {status === 'sent' ? (
                 <div className="feedback-success" role="status">
-                  <CheckCircle2 size={44} className="feedback-success-icon" />
+                  <span className="feedback-success-dove">
+                    <CheckCircle2 size={44} className="feedback-success-icon" />
+                    <DoveIcon fly size={30} />
+                  </span>
                   <h2 id="feedback-title" className="feedback-title">Mensagem enviada!</h2>
                   <p id="feedback-description" className="feedback-subtitle">
                     Obrigado por ajudar a melhorar o Oratio. Toda mensagem é lida com carinho

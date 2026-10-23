@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
-import { ArrowLeft, CalendarDays, ChevronDown, Copy, Check } from 'lucide-react';
+import { ArrowLeft, CalendarDays, ChevronDown } from 'lucide-react';
+import { AmenButton, CopyCheckIcon } from '../components/anim/AnimatedIcons';
 import { getSaint, formatFeast, intentionLabel } from '../data/saints';
 import { prayers } from '../data/prayers';
 import SaoBentoSection from '../components/SaoBentoSection';
@@ -48,9 +49,10 @@ function SaintPrayer({ prayer, defaultOpen }) {
           )}
           {prayer.note && <p className="prayer-accordion-note">{prayer.note}</p>}
           <button className={`btn-block-action ${copied ? 'copied' : ''}`} onClick={copy}>
-            {copied ? <Check size={14} /> : <Copy size={14} />}
+            <CopyCheckIcon done={copied} size={14} />
             <span>{copied ? 'Copiada' : 'Copiar oração'}</span>
           </button>
+          <AmenButton />
         </div>
       )}
     </article>

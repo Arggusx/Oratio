@@ -84,6 +84,7 @@ export default function MarianTitles() {
                 alt={`Imagem de ${t.title}`}
                 loading="lazy"
                 decoding="async"
+                style={marianImages[t.id].position ? { objectPosition: marianImages[t.id].position } : undefined}
               />
             )}
             <div className="miracle-card-top">

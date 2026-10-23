@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ChevronDown, ChevronRight } from 'lucide-react';
-import SaoBentoMedal from './SaoBentoMedal';
+import Medal3D from './anim/Medal3D';
 
 // Versos da oração gravada na Medalha de São Bento (Vade retro Satana).
 const prayerLines = [
@@ -39,7 +39,8 @@ export default function SaoBentoSection({ showSaintLink = true }) {
     <section className="sao-bento-card" aria-labelledby="sao-bento-title">
       <div className="sao-bento-header">
         <span className="sao-bento-icon">
-          <SaoBentoMedal size={76} />
+          {/* medalha em 3D: gira devagar e vira ao clicar (frente: cruz; verso: São Bento) */}
+          <Medal3D size={84} />
         </span>
         <div>
           <span className="eyebrow">Sacramental · Proteção espiritual</span>

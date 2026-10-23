@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { X, BookOpen, ExternalLink } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { isAlleluiaSuppressed } from '../utils/liturgicalCalendar';
+import BibleFlip from '../components/anim/BibleFlip';
+import RosaryLoader from '../components/anim/RosaryLoader';
 
 /* ── Fallback readings when API is unavailable ── */
 const fallback = {
@@ -225,11 +227,8 @@ export default function Leituras() {
   /* ── Loading state ── */
   if (!data) {
     return (
-      <main className="page">
-        <div className="skeleton" style={{ width: '30%', height: '0.8rem', marginBottom: '0.6rem' }} />
-        <div className="skeleton" style={{ width: '60%', height: '2.2rem', marginBottom: '1rem' }} />
-        <div className="skeleton" style={{ width: '80%', height: '1rem', marginBottom: '2rem' }} />
-        <div className="skeleton large" />
+      <main className="page page-loading" aria-busy="true">
+        <RosaryLoader label="Buscando a liturgia de hoje…" />
       </main>
     );
   }
@@ -321,8 +320,13 @@ export default function Leituras() {
     <>
     <main className="page">
       {/* ── Page header ── */}
-      <span className="eyebrow">Palavra de hoje</span>
-      <h1 className="section-title">{liturgia}</h1>
+      <div className="page-title-row">
+        <div>
+          <span className="eyebrow">Palavra de hoje</span>
+          <h1 className="section-title">{liturgia}</h1>
+        </div>
+        <BibleFlip />
+      </div>
       <p className="lead">
         Acompanhe a liturgia e reserve alguns minutos para acolher a Palavra.
       </p>

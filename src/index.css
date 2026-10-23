@@ -2298,6 +2298,26 @@ h1, h2, h3, h4,
   box-shadow: 0 2px 10px rgba(94, 59, 36, 0.08);
 }
 
+/* No celular, quatro abas não cabem numa linha: viram uma grade 2 × 2. */
+@media (max-width: 560px) {
+  .subnav-segmented:has(> button:nth-child(4)) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border-radius: var(--radius-lg);
+  }
+
+  .subnav-segmented:has(> button:nth-child(4)) button {
+    border-radius: var(--radius-md);
+  }
+}
+
+@media (max-width: 380px) {
+  .subnav-segmented button {
+    padding: 0.65rem 0.4rem;
+    font-size: 0.8rem;
+  }
+}
+
 /* Rosary Guide Container */
 .rosary-guide-container {
   display: flex;
@@ -5781,4 +5801,147 @@ body {
 .saint-card .saint-initial.has-image {
   width: 4.4rem;
   height: 4.4rem;
+}
+
+/* Link para a página dos mistérios, dentro do guia do terço */
+.mysteries-all-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-terracotta);
+}
+
+.mysteries-all-link svg {
+  transition: transform var(--duration-fast);
+}
+
+.mysteries-all-link:hover svg {
+  transform: translateX(4px);
+}
+
+/* Nossa Senhora em destaque na aba Santos da Escola da Fé */
+.marian-feature {
+  display: grid;
+  grid-template-columns: minmax(7rem, 11rem) 1fr;
+  width: 100%;
+  margin-bottom: 1.6rem;
+  padding: 0;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid color-mix(in srgb, var(--color-gold) 55%, var(--color-border));
+  background:
+    radial-gradient(circle at 85% 20%, color-mix(in srgb, #4A6FA5 16%, transparent), transparent 55%),
+    color-mix(in srgb, var(--color-gold) 10%, var(--color-surface));
+  color: var(--color-text);
+  text-align: left;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--duration-fast), box-shadow var(--duration-fast), border-color var(--duration-fast);
+}
+
+.marian-feature:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-gold);
+  box-shadow: 0 16px 36px -22px color-mix(in srgb, var(--color-gold) 90%, transparent);
+}
+
+.marian-feature img {
+  width: 100%;
+  height: 100%;
+  min-height: 12rem;
+  object-fit: cover;
+  object-position: 50% 15%;
+}
+
+.marian-feature-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 1.3rem 1.4rem;
+}
+
+.marian-feature strong {
+  font-family: var(--font-serif);
+  font-size: clamp(1.7rem, 4.5vw, 2.3rem);
+  line-height: 1.1;
+}
+
+.marian-feature-text > span:nth-child(3) {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--color-text-soft);
+}
+
+.marian-feature-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.4rem;
+  font-weight: 700;
+  color: var(--color-terracotta);
+}
+
+.marian-feature:hover .marian-feature-cta svg {
+  transform: translateX(4px);
+}
+
+.marian-feature-cta svg {
+  transition: transform var(--duration-fast);
+}
+
+@media (max-width: 480px) {
+  .marian-feature {
+    grid-template-columns: 6.5rem 1fr;
+  }
+  .marian-feature img {
+    min-height: 10rem;
+  }
+  .marian-feature-text {
+    padding: 1rem;
+  }
+}
+
+/* Calendário: realce ao passar o mouse e dica com o nome da celebração */
+.calendar-day {
+  transition: background var(--duration-fast), opacity var(--duration-fast), transform var(--duration-fast),
+    box-shadow var(--duration-fast);
+}
+
+@media (hover: hover) {
+  .calendar-day:hover {
+    z-index: 2;
+    transform: translateY(-2px) scale(1.12);
+    border-color: var(--color-gold);
+    box-shadow: 0 6px 14px -6px rgba(94, 59, 36, 0.35);
+  }
+
+  .calendar-day[data-tip]:hover::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: 13rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: var(--radius-md);
+    background: var(--color-charcoal);
+    color: var(--color-surface);
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1.35;
+    white-space: normal;
+    text-align: center;
+    pointer-events: none;
+    z-index: 3;
+  }
+}
+
+/* O painel do dia fica visível abaixo do cabeçalho fixo ao rolar até ele */
+.calendar-day-panel {
+  scroll-margin-top: 6rem;
 }

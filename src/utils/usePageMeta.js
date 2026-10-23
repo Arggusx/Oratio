@@ -38,8 +38,8 @@ const PAGE_META = {
     description: 'História, data da festa e orações de santos como São Bento, São Rafael, Santo Antônio, Santa Rita e São Judas Tadeu.',
   },
   '/home/escola-da-fe': {
-    title: 'Escola da Fé: dúvidas, gestos da Missa e símbolos — Oratio',
-    description: 'Respostas simples sobre a fé católica, o que fazer na Missa (genuflexão e inclinações) e o significado dos símbolos cristãos.',
+    title: 'Escola da Fé: dúvidas, Missa, símbolos e santos — Oratio',
+    description: 'Respostas sobre a fé católica, o que fazer na Missa, símbolos cristãos, milagres eucarísticos, os títulos de Nossa Senhora e a vida dos santos.',
   },
   '/creditos': {
     title: 'Créditos das imagens — Oratio',

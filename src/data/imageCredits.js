@@ -22,7 +22,8 @@ export const saintImages = {
     height: 675,
     author: "Filippino Lippi",
     license: "Domínio público",
-    source: "https://commons.wikimedia.org/wiki/File:Tobias_and_the_Angel_-_Filippino_Lippi.jpg"
+    source: "https://commons.wikimedia.org/wiki/File:Tobias_and_the_Angel_-_Filippino_Lippi.jpg",
+    position: "35% 22%"
   },
   "sao-miguel": {
     src: "/img2/santos/sao-miguel.webp",
@@ -51,10 +52,11 @@ export const saintImages = {
   "santa-rita": {
     src: "/img2/santos/santa-rita.webp",
     width: 480,
-    height: 744,
-    author: "Antonio de Torres",
+    height: 635,
+    author: "Miguel Cabrera",
     license: "Domínio público",
-    source: "https://commons.wikimedia.org/wiki/File:%27Saint_Rita_of_Cascia%27_by_Antonio_de_Torres,_c._1720.JPG"
+    source: "https://commons.wikimedia.org/wiki/File:Santa_Rita_de_Casia,_Miguel_Cabrera.jpg",
+    position: "50% 35%"
   },
   "sao-judas-tadeu": {
     src: "/img2/santos/sao-judas-tadeu.webp",
@@ -72,21 +74,14 @@ export const saintImages = {
     license: "Domínio público",
     source: "https://commons.wikimedia.org/wiki/File:Francesco_del_Cossa_-_Saint_Lucy.jpg"
   },
-  "sao-bras": {
-    src: "/img2/santos/sao-bras.webp",
-    width: 480,
-    height: 722,
-    author: "Gaspar de Crayer",
-    license: "Domínio público",
-    source: "https://commons.wikimedia.org/wiki/File:Gaspar_de_Crayer_-_The_Martyrdom_of_Saint_Blaise.jpg"
-  },
   "sao-francisco": {
     src: "/img2/santos/sao-francisco.webp",
-    width: 480,
-    height: 778,
-    author: "Giotto",
+    width: 450,
+    height: 1371,
+    author: "Cimabue",
     license: "Domínio público",
-    source: "https://commons.wikimedia.org/wiki/File:Giotto_-_Saint_Francis_Receiving_the_Stigmata.jpg"
+    source: "https://commons.wikimedia.org/wiki/File:Francis_of_Assisi_-_Cimabue.jpg",
+    position: "50% 8%"
   },
   "santa-teresinha": {
     src: "/img2/santos/santa-teresinha.webp",
@@ -110,7 +105,8 @@ export const saintImages = {
     height: 563,
     author: "Peter Paul Rubens",
     license: "Domínio público",
-    source: "https://commons.wikimedia.org/wiki/File:Rubens_B116.jpg"
+    source: "https://commons.wikimedia.org/wiki/File:Rubens_B116.jpg",
+    position: "60% 38%"
   },
   "sao-paulo": {
     src: "/img2/santos/sao-paulo.webp",
@@ -118,7 +114,8 @@ export const saintImages = {
     height: 564,
     author: "El Greco",
     license: "Domínio público",
-    source: "https://commons.wikimedia.org/wiki/File:El_Greco_-_Apostles_Peter_and_Paul_-_WGA10496.jpg"
+    source: "https://commons.wikimedia.org/wiki/File:El_Greco_-_Apostles_Peter_and_Paul_-_WGA10496.jpg",
+    position: "78% 28%"
   },
   "santa-maria-madalena": {
     src: "/img2/santos/santa-maria-madalena.webp",
@@ -134,7 +131,8 @@ export const saintImages = {
     height: 468,
     author: "Giotto",
     license: "Domínio público",
-    source: "https://commons.wikimedia.org/wiki/File:Giotto_-_Scrovegni_-_-06-_-_Meeting_at_the_Golden_Gate.jpg"
+    source: "https://commons.wikimedia.org/wiki/File:Giotto_-_Scrovegni_-_-06-_-_Meeting_at_the_Golden_Gate.jpg",
+    position: "38% 42%"
   },
   "sao-sebastiao": {
     src: "/img2/santos/sao-sebastiao.webp",
@@ -142,7 +140,8 @@ export const saintImages = {
     height: 893,
     author: "Andrea Mantegna",
     license: "Domínio público",
-    source: "https://commons.wikimedia.org/wiki/File:Saint_Sebastian_by_Mantegna_(Louvre).jpg"
+    source: "https://commons.wikimedia.org/wiki/File:Saint_Sebastian_by_Mantegna_(Louvre).jpg",
+    position: "48% 30%"
   },
   "sao-jorge": {
     src: "/img2/santos/sao-jorge.webp",
@@ -150,7 +149,8 @@ export const saintImages = {
     height: 631,
     author: "Rafael",
     license: "Domínio público",
-    source: "https://commons.wikimedia.org/wiki/File:Raphael_-_Saint_George_and_the_Dragon_-_Google_Art_Project.jpg"
+    source: "https://commons.wikimedia.org/wiki/File:Raphael_-_Saint_George_and_the_Dragon_-_Google_Art_Project.jpg",
+    position: "55% 32%"
   },
   "sao-lourenco": {
     src: "/img2/santos/sao-lourenco.webp",
@@ -158,7 +158,8 @@ export const saintImages = {
     height: 675,
     author: "Atribuído a Juan Luis Zambrano",
     license: "Domínio público",
-    source: "https://commons.wikimedia.org/wiki/File:Juan_Luis_Zambrano_(1598-1639)_(attributed_to)_-_Saint_Lawrence_with_His_Gridiron,_Crowned_by_a_Putto-Angel_-_22854_-_National_Trust.jpg"
+    source: "https://commons.wikimedia.org/wiki/File:Juan_Luis_Zambrano_(1598-1639)_(attributed_to)_-_Saint_Lawrence_with_His_Gridiron,_Crowned_by_a_Putto-Angel_-_22854_-_National_Trust.jpg",
+    position: "50% 25%"
   },
   "santa-cecilia": {
     src: "/img2/santos/santa-cecilia.webp",
@@ -171,10 +172,10 @@ export const saintImages = {
   "santa-monica": {
     src: "/img2/santos/santa-monica.webp",
     width: 480,
-    height: 578,
-    author: "Francesco Botticini",
+    height: 455,
+    author: "Luis Tristán",
     license: "Domínio público",
-    source: "https://commons.wikimedia.org/wiki/File:Andrea_del_Verrocchio_-_Saint_Monica_-_WGA24998.jpg"
+    source: "https://commons.wikimedia.org/wiki/File:Luis_Trist%C3%A1n_de_Escamilla_-_St_Monica_-_WGA23069.jpg"
   },
   "santo-agostinho": {
     src: "/img2/santos/santo-agostinho.webp",
@@ -192,14 +193,6 @@ export const saintImages = {
     license: "CC BY-SA 4.0",
     licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
     source: "https://commons.wikimedia.org/wiki/File:Saint_Patrick_Catholic_Church_(Junction_City,_Ohio)_-_stained_glass,_Saint_Patrick_-_detail.jpg"
-  },
-  "santa-edwiges": {
-    src: "/img2/santos/santa-edwiges.webp",
-    width: 415,
-    height: 1024,
-    author: "Autor desconhecido (c. 1440)",
-    license: "Domínio público",
-    source: "https://commons.wikimedia.org/wiki/File:Saint_Hedwig_Altar_01.jpg"
   },
   "sao-domingos": {
     src: "/img2/santos/sao-domingos.webp",
@@ -248,7 +241,8 @@ export const saintImages = {
     height: 700,
     author: "Jan Wildens, Anthony van Dyck e Gerard Seghers",
     license: "Domínio público",
-    source: "https://commons.wikimedia.org/wiki/File:Anthony_van_Dyck_-_painting_from_Rome_Jesuit_church_now_in_the_Vatican.jpg"
+    source: "https://commons.wikimedia.org/wiki/File:Anthony_van_Dyck_-_painting_from_Rome_Jesuit_church_now_in_the_Vatican.jpg",
+    position: "50% 45%"
   },
   "santa-teresa-de-avila": {
     src: "/img2/santos/santa-teresa-de-avila.webp",
@@ -256,7 +250,8 @@ export const saintImages = {
     height: 748,
     author: "Peter Paul Rubens",
     license: "Domínio público",
-    source: "https://commons.wikimedia.org/wiki/File:Teresa_Avila_Vision_of_the_Dove_Rubens.jpg"
+    source: "https://commons.wikimedia.org/wiki/File:Teresa_Avila_Vision_of_the_Dove_Rubens.jpg",
+    position: "55% 30%"
   },
   "sao-jose-de-anchieta": {
     src: "/img2/santos/sao-jose-de-anchieta.webp",
@@ -272,7 +267,8 @@ export const saintImages = {
     height: 654,
     author: "Ateliê de Pierre Subleyras",
     license: "Domínio público",
-    source: "https://commons.wikimedia.org/wiki/File:Workshop_of_Subleyras_-_St._Camillus_de_Lellis_carrying_a_sick_man.jpg"
+    source: "https://commons.wikimedia.org/wiki/File:Workshop_of_Subleyras_-_St._Camillus_de_Lellis_carrying_a_sick_man.jpg",
+    position: "50% 15%"
   },
   "sao-vicente-de-paulo": {
     src: "/img2/santos/sao-vicente-de-paulo.webp",
@@ -293,10 +289,12 @@ export const saintImages = {
   "sao-joao-maria-vianney": {
     src: "/img2/santos/sao-joao-maria-vianney.webp",
     width: 480,
-    height: 341,
-    author: "Autor desconhecido",
-    license: "Domínio público",
-    source: "https://commons.wikimedia.org/wiki/File:Portrait_authentique_du_Saint_Cur%C3%A9_d%27Ars,_ex%C3%A9cute_d%27apr%C3%A8s_nature_-_btv1b10571201r.jpg"
+    height: 1006,
+    author: "Estátua na Basílica de São Boaventura, Lyon (foto: Romainbehar)",
+    license: "CC0 (domínio público)",
+    licenseUrl: "https://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    source: "https://commons.wikimedia.org/wiki/File:Lyon_2e_-_Basilique_Saint-Bonaventure_-_Chapelle_du_Cur%C3%A9_d%27Ars_-_Statue_du_Cur%C3%A9_d%27Ars.jpg",
+    position: "50% 12%"
   },
   "santa-josefina-bakhita": {
     src: "/img2/santos/santa-josefina-bakhita.webp",
@@ -427,11 +425,11 @@ export const marianImages = {
   "la-salette": {
     src: "/img2/maria/la-salette.webp",
     width: 480,
-    height: 642,
-    author: "Sebleouf",
-    license: "CC BY-SA 4.0",
-    licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
-    source: "https://commons.wikimedia.org/wiki/File:Chapelle_Notre-Dame_de_la_Salette_de_L%C3%A9tra_-_Statues_apparition_1_(mai_2021).jpg"
+    height: 640,
+    author: "FredSeiller",
+    license: "CC0 (domínio público)",
+    licenseUrl: "https://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    source: "https://commons.wikimedia.org/wiki/File:Apparition_de_Notre-Dame_%C3%A0_La_Salette_(1%C3%A8re_phase)2.jpg"
   },
   lourdes: {
     src: "/img2/maria/lourdes.webp",
@@ -444,10 +442,11 @@ export const marianImages = {
   fatima: {
     src: "/img2/maria/fatima.webp",
     width: 480,
-    height: 600,
-    author: "Atribuída a Joshua Benoliel (1917)",
+    height: 1092,
+    author: "Primeira escultura de Nossa Senhora de Fátima",
     license: "Domínio público",
-    source: "https://commons.wikimedia.org/wiki/File:Children_of_F%C3%A1tima_portrait_(Attributed_to_Joshua_Benoliel)_%E2%80%93_Ilustra%C3%A7%C3%A3o_Portuguesa,_1917.jpg"
+    source: "https://commons.wikimedia.org/wiki/File:First_Sculpture_of_Our_Lady_of_Fatima_(cropped).jpg",
+    position: "50% 20%"
   },
   aparecida: {
     src: "/img2/maria/aparecida.webp",
@@ -458,22 +457,14 @@ export const marianImages = {
     licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
     source: "https://commons.wikimedia.org/wiki/File:Imagem_de_Nossa_Senhora_Aparecida.png"
   },
-  nazare: {
-    src: "/img2/maria/nazare.webp",
-    width: 480,
-    height: 360,
-    author: "Andre Oliveira",
-    license: "CC BY 2.0",
-    licenseUrl: "https://creativecommons.org/licenses/by/2.0",
-    source: "https://commons.wikimedia.org/wiki/File:C%C3%ADrio_berlinda_(4009991785).jpg"
-  },
   carmo: {
     src: "/img2/maria/carmo.webp",
     width: 480,
-    height: 795,
-    author: "Sebastian Stettner",
-    license: "Domínio público",
-    source: "https://commons.wikimedia.org/wiki/File:Stetner_-_Madonna_with_the_Scapular,_1740.jpg"
+    height: 640,
+    author: "Corporación Voto Nacional O’Higgins / Germán Domínguez Gajardo",
+    license: "CC BY-SA 4.0",
+    licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
+    source: "https://commons.wikimedia.org/wiki/File:Pintura-Virgen_del_Carmen_y_Ni%C3%B1o_Dios.jpg"
   },
   rosario: {
     src: "/img2/maria/rosario.webp",
@@ -512,10 +503,11 @@ export const marianImages = {
   "perpetuo-socorro": {
     src: "/img2/maria/perpetuo-socorro.webp",
     width: 480,
-    height: 629,
-    author: "Ícone bizantino, século XV",
-    license: "Domínio público",
-    source: "https://commons.wikimedia.org/wiki/File:Original_icon_of_Our_Lady_of_Perpertual_Help_(Succour)_in_Sant%27Alfonso_di_Liguori_(Rome).jpg"
+    height: 597,
+    author: "RufflesDeQueijo (reprodução do ícone)",
+    license: "CC BY-SA 4.0",
+    licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
+    source: "https://commons.wikimedia.org/wiki/File:Nossa_Senhora_do_Perpetuo_Socorro_HD.jpg"
   },
   desatadora: {
     src: "/img2/maria/desatadora.webp",
