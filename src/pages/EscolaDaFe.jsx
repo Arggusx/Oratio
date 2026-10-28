@@ -237,7 +237,7 @@ function CuriosidadesSection() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqJsonLd }} />
 
       {/* ── Destaques: coleções que abrem no lugar das perguntas ── */}
-      <div className="feature-cards">
+      <div className="feature-cards h-scroll">
         <button type="button" className="feature-card" onClick={() => openCollection('milagres')}>
           <MonstranceIcon />
           <span className="feature-card-text">

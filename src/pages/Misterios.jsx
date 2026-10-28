@@ -31,7 +31,7 @@ export default function Misterios() {
         Conheça, estude e contemple a história por trás de cada dia de oração.
       </p>
 
-      <section className="card-grid">
+      <section className="card-grid h-scroll" aria-label="Os quatro grupos de mistérios" tabIndex={0}>
         {mysteries.map((mystery, i) => (
           <motion.article
             className="mystery-card"

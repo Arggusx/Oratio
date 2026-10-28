@@ -6596,3 +6596,52 @@ details[open] > summary .exam-chevron {
   color: var(--color-terracotta);
   font-weight: 600;
 }
+
+
+/* ---------- Scroll horizontal no celular ----------
+   Listas de cartões paralelos (anos do ciclo, grupos de mistérios, destaques, legenda) viram uma fileira
+   que se arrasta para o lado, com um pedaço do próximo cartão aparecendo como dica. */
+@media (max-width: 767px) {
+  .h-scroll {
+    --bleed: 1rem;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.75rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--bleed);
+    margin-inline: calc(var(--bleed) * -1);
+    padding: 0.25rem var(--bleed) 0.75rem;
+    scrollbar-width: none;
+  }
+
+  .h-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .h-scroll > * {
+    flex: 0 0 85%;
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+
+  .h-scroll.is-chips {
+    gap: 0.5rem;
+    scroll-snap-type: none;
+  }
+
+  .h-scroll.is-chips > * {
+    flex: none;
+    white-space: nowrap;
+  }
+
+  .cycles .h-scroll {
+    --bleed: 1.5rem;
+  }
+
+  .h-scroll:focus-visible {
+    outline: 2px solid var(--color-terracotta);
+    outline-offset: 2px;
+  }
+}

@@ -52,7 +52,7 @@ export default function LiturgicalCycles() {
         </div>
       </header>
 
-      <div className="cycles-grid">
+      <div className="cycles-grid h-scroll" role="region" aria-label="Os três anos do ciclo" tabIndex={0}>
         {CYCLES.map((c) => (
           <article key={c.id} className={`cycle-card ${c.id === current.id ? 'is-current' : ''}`}>
             <span className="cycle-letter" aria-hidden="true">{c.id}</span>

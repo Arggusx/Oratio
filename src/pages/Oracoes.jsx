@@ -185,7 +185,7 @@ export default function Oracoes() {
             className="prayers-search-section"
           >
             {/* ── Destaques: aba Santos e exame de consciência ── */}
-            <div className="feature-cards">
+            <div className="feature-cards h-scroll">
               <Link to="/home/escola-da-fe?secao=santos" className="feature-card">
                 <HaloIcon />
                 <span className="feature-card-text">
