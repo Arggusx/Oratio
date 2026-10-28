@@ -3,7 +3,7 @@ import Candle from '../components/anim/Candle';
 
 // Canal de contato do responsável pelo site (exigido pela LGPD, art. 41).
 const CONTACT_EMAIL = 'dougclasher9@gmail.com';
-const LAST_UPDATE = '20 de outubro de 2026';
+const LAST_UPDATE = '28 de outubro de 2026';
 
 export default function Privacidade() {
   return (
@@ -59,6 +59,12 @@ export default function Privacidade() {
           acesso, como endereço IP, data e hora e a página acessada, para manter o serviço funcionando e seguro. O
           mesmo vale para a nossa API de leituras, também hospedada na Vercel.
         </p>
+
+        <h3>Estatísticas de visitas</h3>
+        <p>
+          Usamos o Vercel Web Analytics para saber quantas pessoas visitam o site e quais páginas são mais lidas. Ele
+          não usa cookies e não identifica você: os dados são agregados e anônimos, sem guardar o endereço IP.
+        </p>
       </section>
 
       <section>
@@ -83,7 +89,7 @@ export default function Privacidade() {
       <section>
         <h2>4. O que não fazemos</h2>
         <ul>
-          <li>Não usamos cookies de rastreamento, ferramentas de análise de público nem anúncios.</li>
+          <li>Não usamos cookies de rastreamento nem anúncios.</li>
           <li>Não vendemos nem compartilhamos seus dados para fins comerciais.</li>
           <li>Não pedimos cadastro, senha nem dados de pagamento.</li>
         </ul>
