@@ -1217,3 +1217,21 @@
   font-weight: 700;
   fill: var(--color-terracotta);
 }
+
+/* No celular, a legenda continua ao lado do anel, que diminui um pouco para caber. */
+@media (max-width: 560px) {
+  .calendar-year-ring .fx-ring-wrap {
+    flex-wrap: nowrap;
+    gap: 0.75rem;
+  }
+
+  .calendar-year-ring svg {
+    flex: 0 1 11rem;
+    min-width: 0;
+  }
+
+  .calendar-year-ring .fx-ring-legend {
+    flex: none;
+    font-size: 0.74rem;
+  }
+}
