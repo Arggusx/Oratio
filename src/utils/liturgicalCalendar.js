@@ -298,3 +298,22 @@ export const WEEKDAY_SHORT = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
 export function normalizeText(text) {
   return text.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 }
+
+/**
+ * Ciclo de leituras do ano litúrgico de uma data (que começa no 1º Domingo do Advento):
+ * domingos em três anos (A: Mateus, B: Marcos, C: Lucas) e dias de semana em dois (I nos anos ímpares, II nos pares).
+ */
+export function getLiturgicalCycle(date = new Date()) {
+  const day = startOfDay(date);
+  const year = day.getFullYear();
+  const { advent1 } = getKeyDates(year);
+  // O ano litúrgico leva o número do ano civil em que termina.
+  const liturgicalYear = day >= advent1 ? year + 1 : year;
+  return {
+    liturgicalYear,
+    sunday: ['C', 'A', 'B'][liturgicalYear % 3],
+    weekday: liturgicalYear % 2 === 0 ? 'II' : 'I',
+    start: getKeyDates(liturgicalYear - 1).advent1,
+    nextStart: getKeyDates(liturgicalYear).advent1,
+  };
+}

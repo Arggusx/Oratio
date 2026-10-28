@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight, Search, X, CalendarDays } from 'lucide-react
 import { getSaint } from '../data/saints';
 import Bell from '../components/anim/Bell';
 import LiturgicalYearRing from '../components/anim/LiturgicalYearRing';
+import LiturgicalCycles from '../components/LiturgicalCycles';
 import {
   EVENT_TYPES,
   MONTH_NAMES,
@@ -319,6 +320,8 @@ export default function Calendario() {
           );
         })}
       </div>
+
+      <LiturgicalCycles />
 
       <p className="calendar-footnote">
         Datas conforme o calendário litúrgico da CNBB. Solenidades transferidas para o domingo no Brasil (Epifania,

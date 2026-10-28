@@ -91,6 +91,11 @@ const facts = [
   ],
   [
     'Vida de Oração',
+    'Quando fazer o sinal da cruz, além das orações?',
+    'O sinal da cruz é uma pequena oração em si: ao fazê-lo, você professa a fé na Santíssima Trindade e na cruz de Cristo. Já no século III, Tertuliano contava que os cristãos o traçavam na testa ao sair e ao entrar, ao se vestir, ao comer e ao se deitar. Hoje, momentos comuns para fazê-lo são: ao acordar e antes de dormir; ao sair de casa, antes de viajar ou de pegar a estrada; ao passar diante de uma igreja, onde Jesus está presente no sacrário; ao entrar na igreja, com água benta, recordando o Batismo; antes e depois das refeições; antes de uma prova, de uma entrevista, de uma cirurgia ou de começar o trabalho; ao ouvir uma sirene de ambulância ou uma notícia triste, rezando por quem sofre; ao passar por um cemitério ou por um cortejo fúnebre, pelos falecidos; em momentos de medo ou de tentação; ao receber a bênção do padre; e quando os pais abençoam os filhos, traçando a cruz na testa deles. Antes do Evangelho, na Missa, faz-se um sinal menor na testa, nos lábios e no peito, pedindo que a Palavra esteja no pensamento, na boca e no coração. O importante é fazê-lo com calma e consciência, e não como um gesto automático.',
+  ],
+  [
+    'Vida de Oração',
     'Então a postura do corpo não importa na oração?',
     'Importa, mas não como condição para Deus nos ouvir. Somos corpo e alma, e o Catecismo ensina que o corpo também participa da oração (CIC 2702): ajoelhar-se expressa humildade e adoração, e ficar de pé expressa prontidão e respeito. O próprio Jesus rezou de joelhos (Lc 22,41) e prostrado com o rosto em terra (Mt 26,39). Por isso, quando for possível, escolher uma postura que ajude na atenção e na reverência é um bom hábito. O que Jesus condena é a oração feita para ser vista: “não façais como os hipócritas, que gostam de orar de pé nas sinagogas e nas esquinas das ruas, para serem vistos pelos homens” (Mt 6,5). Deus procura sinceridade, não aparência. Na Missa é diferente: os gestos são comuns a toda a assembleia e seguem as normas litúrgicas (veja a seção “Na Missa”).',
   ],
@@ -139,6 +144,11 @@ const facts = [
     'Símbolos e Liturgia',
     'Por que o calendário litúrgico usa cores?',
     'As cores litúrgicas tornam visível o caráter de cada celebração e tempo do ano: o verde simboliza a esperança (Tempo Comum), o roxo a conversão e penitência (Advento e Quaresma), o branco a alegria e pureza (Natal, Páscoa), o vermelho o fogo do Espírito Santo e o martírio (Pentecostes), e o rosa a alegria em meio à penitência.',
+  ],
+  [
+    'Símbolos e Liturgia',
+    'O que são os Anos A, B e C da liturgia?',
+    'São os três ciclos das leituras de domingo. Em cada ano, o Evangelho dos domingos vem principalmente de um evangelista: Mateus no Ano A, Marcos no Ano B e Lucas no Ano C. O Evangelho de João é lido todos os anos, sobretudo na Quaresma, na Páscoa e, no Ano B, no discurso do Pão da Vida. Assim, em três anos, quem vai à Missa aos domingos ouve as partes mais importantes dos quatro Evangelhos. Os dias de semana têm outro ciclo, de dois anos (Ano I e Ano II), para a primeira leitura. O ano litúrgico começa no 1º Domingo do Advento: o que começou no fim de 2025 é o Ano A, com Mateus, e o que começa no fim de 2026 é o Ano B. Veja o ciclo atual no Calendário.',
   ],
   [
     'Símbolos e Liturgia',
