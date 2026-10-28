@@ -41,6 +41,10 @@ const PAGE_META = {
     title: 'Escola da Fé: dúvidas, Missa, símbolos e santos — Oratio',
     description: 'Respostas sobre a fé católica, o que fazer na Missa, símbolos cristãos, milagres eucarísticos, os títulos de Nossa Senhora e a vida dos santos.',
   },
+  '/home/confissao': {
+    title: 'Exame de consciência para a confissão — Oratio',
+    description: 'Roteiro para se confessar: perguntas pelos Dez Mandamentos e preceitos da Igreja, lista para marcar, como se confessar e Ato de Contrição.',
+  },
   '/creditos': {
     title: 'Créditos das imagens — Oratio',
     description: 'Autores e licenças das pinturas, ícones e fotografias de santos e de Nossa Senhora usadas no Oratio.',

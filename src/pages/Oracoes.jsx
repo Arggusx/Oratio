@@ -87,6 +87,18 @@ function HaloIcon() {
   );
 }
 
+// Estola cruzada sobre uma folha com marcas: ícone do cartão do exame de consciência.
+function ConfessionIcon() {
+  return (
+    <svg className="feature-card-icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+      <rect x="11" y="7" width="22" height="30" rx="3" className="figure" />
+      <path d="M16 16l2 2 4-4M16 25l2 2 4-4" className="halo" />
+      <path d="M26 17h3M26 26h3" className="figure" />
+      <path d="M30 30l7 11M37 30l-7 11" className="halo" />
+    </svg>
+  );
+}
+
 export default function Oracoes() {
   // A aba fica na URL (?secao=oracoes) para poder ser compartilhada.
   const [searchParams, setSearchParams] = useSearchParams();
@@ -172,18 +184,29 @@ export default function Oracoes() {
             transition={{ duration: 0.35 }}
             className="prayers-search-section"
           >
-            {/* ── Destaque: leva à aba Santos ── */}
-            <Link to="/home/escola-da-fe?secao=santos" className="feature-card">
-              <HaloIcon />
-              <span className="feature-card-text">
-                <span className="feature-card-eyebrow">Santos e intercessores</span>
-                <strong>Conheça a história de cada santo</strong>
-                <span>
-                  {saints.length} santos, cada um com uma página própria: vida, data da festa e orações
+            {/* ── Destaques: aba Santos e exame de consciência ── */}
+            <div className="feature-cards">
+              <Link to="/home/escola-da-fe?secao=santos" className="feature-card">
+                <HaloIcon />
+                <span className="feature-card-text">
+                  <span className="feature-card-eyebrow">Santos e intercessores</span>
+                  <strong>Conheça a história de cada santo</strong>
+                  <span>
+                    {saints.length} santos, cada um com uma página própria: vida, data da festa e orações
+                  </span>
                 </span>
-              </span>
-              <ArrowRight size={20} className="feature-card-arrow" aria-hidden="true" />
-            </Link>
+                <ArrowRight size={20} className="feature-card-arrow" aria-hidden="true" />
+              </Link>
+              <Link to="/home/confissao" className="feature-card">
+                <ConfessionIcon />
+                <span className="feature-card-text">
+                  <span className="feature-card-eyebrow">Confissão</span>
+                  <strong>Exame de consciência</strong>
+                  <span>Marque o que se aplica a você, veja como se confessar e reze o Ato de Contrição</span>
+                </span>
+                <ArrowRight size={20} className="feature-card-arrow" aria-hidden="true" />
+              </Link>
+            </div>
 
             <SaoBentoSection />
 

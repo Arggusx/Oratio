@@ -313,6 +313,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://oratio-daily-dev.vercel.app/home/confissao</loc>
+    <lastmod>2026-10-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://oratio-daily-dev.vercel.app/home/escola-da-fe?secao=missa</loc>
     <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
