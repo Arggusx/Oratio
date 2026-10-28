@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate, Link, useLocation } from 'react
 import { lazy, Suspense, useEffect } from 'react';
 import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
 import Header from './components/Header';
+import BottomNav from './components/BottomNav';
 import Footer from './components/Footer';
 import Feedback from './components/Feedback';
 import Home from './pages/Home';
@@ -118,6 +119,7 @@ export default function App() {
           </div>
           <Feedback />
           <Footer />
+          <BottomNav />
         </div>
       </MotionConfig>
     </BrowserRouter>
