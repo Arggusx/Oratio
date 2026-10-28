@@ -6,6 +6,7 @@ import { saints, intentions, formatFeast } from '../data/saints';
 import { saintImages } from '../data/imageCredits';
 import { normalizeText } from '../utils/liturgicalCalendar';
 import { LoadMoreButton } from './LoadMore';
+import FilterPanel from './FilterPanel';
 import { useLoadMore } from '../utils/useLoadMore';
 
 // Quantos santos aparecem antes do botão "Ver mais".
@@ -43,14 +44,14 @@ export default function SaintsDirectory() {
   const [query, setQuery] = useState('');
   const [activeIntention, setActiveIntention] = useState(null);
 
-  const shown = useMemo(() => {
+  const searched = useMemo(() => {
     const q = normalizeText(query);
-    return saints.filter((s) => {
-      const matchesIntention = !activeIntention || s.intentions.includes(activeIntention);
-      const matchesQuery = normalizeText(`${s.name} ${s.title} ${s.patronOf.join(' ')}`).includes(q);
-      return matchesIntention && matchesQuery;
-    });
-  }, [query, activeIntention]);
+    return saints.filter((s) => normalizeText(`${s.name} ${s.title} ${s.patronOf.join(' ')}`).includes(q));
+  }, [query]);
+  const shown = useMemo(
+    () => searched.filter((s) => !activeIntention || s.intentions.includes(activeIntention)),
+    [searched, activeIntention]
+  );
 
   // Com busca ou filtro ativo, mostra todos os resultados de uma vez.
   const isFiltering = query.trim() !== '' || activeIntention !== null;
@@ -69,21 +70,12 @@ export default function SaintsDirectory() {
         />
       </div>
 
-      <div className="intention-filter">
-        <p className="intention-filter-title">Para que você quer rezar?</p>
-        <div className="intention-filter-list">
-          {intentions.map((i) => (
-            <button
-              key={i.id}
-              className={`intention-chip ${activeIntention === i.id ? 'active' : ''}`}
-              onClick={() => setActiveIntention(activeIntention === i.id ? null : i.id)}
-              aria-pressed={activeIntention === i.id}
-            >
-              {i.label}
-            </button>
-          ))}
-        </div>
-      </div>
+      <FilterPanel
+        groups={[{ id: 'intention', label: 'Para que você quer rezar?', options: intentions }]}
+        values={{ intention: activeIntention }}
+        onApply={(v) => setActiveIntention(v.intention)}
+        countResults={(draft) => searched.filter((s) => !draft.intention || s.intentions.includes(draft.intention)).length}
+      />
 
       <div className="saints-grid">
         {listed.map((s, index) => (
