@@ -7223,60 +7223,14 @@ details[open] > summary .exam-chevron {
   font-weight: 700;
 }
 
-.bouquet-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-  gap: 1rem;
-  margin-top: 1.75rem;
-}
 
-.bouquet-card {
-  padding: 1.1rem 1.25rem;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-gold);
-  background:
-    radial-gradient(circle at 50% 0, color-mix(in srgb, #C77D9A 14%, transparent), transparent 60%),
-    var(--color-surface);
-  text-align: center;
-}
 
-.bouquet-flowers {
-  width: 7rem;
-  height: 3.5rem;
-}
 
-.bouquet-flowers .stem { fill: none; stroke: #5E8C63; stroke-width: 2; }
-.bouquet-flowers .rose { fill: #C2486A; }
-.bouquet-flowers .petal { fill: #E27A96; }
 
-.bouquet-card h3 {
-  margin: 0.3rem 0;
-  font-family: var(--font-serif);
-  font-size: 1.25rem;
-}
 
-.bouquet-card ul {
-  margin: 0.6rem 0;
-  padding: 0;
-  list-style: none;
-  line-height: 1.7;
-}
 
-.bouquet-intention,
-.bouquet-from {
-  margin: 0;
-  color: var(--color-text-soft);
-  font-size: 0.9rem;
-}
 
-.bouquet-message {
-  margin: 0.6rem 0;
-  font-style: italic;
-}
 
-.bouquet-actions {
-  justify-content: center;
-}
 
 @media print {
   body.print-bouquet * {
@@ -9462,4 +9416,173 @@ details[open] > summary .exam-chevron {
   .month-card {
     padding: 0.8rem;
   }
+}
+
+/* ---------- Cartão do buquê espiritual ---------- */
+.bouquet-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.bouquet-list > .bouquet-card {
+  flex: 0 1 21rem;
+}
+
+.bouquet-card {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 0.35rem;
+  padding: 1.6rem 1.4rem 1.2rem;
+  border-radius: 1.1rem;
+  border: 1px solid color-mix(in srgb, #C2486A 35%, var(--color-gold));
+  outline: 1px solid color-mix(in srgb, var(--color-gold) 55%, transparent);
+  outline-offset: -8px;
+  background:
+    radial-gradient(circle at 50% 18%, color-mix(in srgb, #F7D6E0 70%, transparent), transparent 55%),
+    radial-gradient(circle at 0% 100%, color-mix(in srgb, #E9C46A 22%, transparent), transparent 45%),
+    radial-gradient(circle at 100% 100%, color-mix(in srgb, #9B7BC4 18%, transparent), transparent 45%),
+    #FFFBF4;
+  color: #3A2A22;
+  text-align: center;
+  box-shadow: 0 14px 30px rgba(94, 59, 36, 0.12);
+  overflow: hidden;
+}
+
+/* Ramos nos cantos */
+.bouquet-card-corner {
+  position: absolute;
+  width: 5rem;
+  height: 5rem;
+  background:
+    radial-gradient(circle at 30% 30%, #C2486A 0 4px, transparent 5px),
+    radial-gradient(circle at 55% 18%, #E9C46A 0 3px, transparent 4px),
+    radial-gradient(circle at 18% 58%, #9B7BC4 0 3px, transparent 4px),
+    radial-gradient(ellipse at 40% 45%, #78A97D 0 7px, transparent 8px),
+    radial-gradient(ellipse at 22% 32%, #5E8C63 0 5px, transparent 6px);
+  opacity: 0.85;
+}
+
+.bouquet-card-corner.is-tl {
+  top: 0;
+  left: 0;
+}
+
+.bouquet-card-corner.is-br {
+  right: 0;
+  bottom: 0;
+  transform: rotate(180deg);
+}
+
+.bouquet-card-kicker {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #B84A13;
+}
+
+.bouquet-card h3 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.7rem;
+  line-height: 1.1;
+  color: #3A2A22;
+}
+
+.bouquet-card .bouquet-intention {
+  margin: 0;
+  font-style: italic;
+  color: #6B5A4E;
+}
+
+.bouquet-card .bouquet-vase {
+  width: 11rem;
+  margin: 0.2rem 0 -0.4rem;
+}
+
+.bouquet-card-offer {
+  margin: 0.2rem 0 0;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  color: #6B5A4E;
+}
+
+.bouquet-ribbons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
+  margin: 0.2rem 0 0.4rem;
+  padding: 0;
+  list-style: none;
+}
+
+.bouquet-ribbons li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.7rem;
+  border-radius: var(--radius-full);
+  border: 1px solid color-mix(in srgb, var(--flower) 55%, #D9C9B4);
+  background: color-mix(in srgb, var(--flower) 14%, #FFFBF4);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #3A2A22;
+}
+
+.bouquet-ribbon-dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--flower);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+
+.bouquet-card .bouquet-message {
+  margin: 0.3rem 0;
+  padding: 0 0.5rem;
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-style: italic;
+  line-height: 1.4;
+  color: #3A2A22;
+}
+
+.bouquet-card .bouquet-message::before {
+  content: '“';
+}
+
+.bouquet-card .bouquet-message::after {
+  content: '”';
+}
+
+.bouquet-card .bouquet-from {
+  margin: 0;
+  font-weight: 600;
+  color: #6B5A4E;
+}
+
+.bouquet-date {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #8C7A6B;
+}
+
+.bouquet-card .bouquet-actions {
+  width: 100%;
+  margin-top: 0.6rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed #D9C9B4;
+}
+
+.bouquet-card .fx-small-btn {
+  background: #FFFFFF;
+  border-color: #D9C9B4;
+  color: #3A2A22;
+}
+
+.bouquet-card .filter-clear-link {
+  color: #8C3A2A;
 }
