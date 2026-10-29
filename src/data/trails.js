@@ -1,5 +1,6 @@
-// Trilhas: uma etapa curta por dia. A etapa seguinte abre no dia seguinte, para dar tempo de rezar e viver
-// o que se aprendeu.
+// Trilhas: um caminho de ilhas, uma etapa em cada. A próxima ilha abre quando a atual é concluída;
+// a sugestão é fazer uma por dia, para dar tempo de rezar e viver o que se aprendeu.
+// "icon" escolhe o desenho que flutua sobre a ilha (ver components/TrailIsland.jsx).
 
 export const trails = [
   {
@@ -9,36 +10,43 @@ export const trails = [
     steps: [
       {
         title: 'Ritos iniciais',
+        icon: 'igreja',
         text: 'A Missa começa com o sinal da cruz e a saudação do padre. No ato penitencial, reconhecemos nossos pecados para nos aproximar de Deus com o coração limpo. Depois vem o Glória (fora do Advento e da Quaresma) e a oração do dia.',
         today: 'Na próxima Missa, chegue alguns minutos antes e reze em silêncio pelas suas intenções.',
       },
       {
         title: 'Liturgia da Palavra',
+        icon: 'biblia',
         text: 'Deus fala ao seu povo. Aos domingos há uma leitura do Antigo Testamento, o salmo, uma leitura das cartas dos apóstolos e o Evangelho, que se ouve de pé, porque é o próprio Cristo quem fala.',
         today: 'Leia antes o Evangelho do próximo domingo, na aba Leituras.',
       },
       {
         title: 'Homilia e Creio',
+        icon: 'pergaminho',
         text: 'Na homilia, o padre explica a Palavra e a liga à nossa vida. Em seguida, no Creio, toda a assembleia professa a fé da Igreja.',
         today: 'Reze o Creio devagar, pensando em cada frase.',
       },
       {
         title: 'Oração dos fiéis e ofertório',
+        icon: 'ofertas',
         text: 'Apresentamos a Deus as necessidades da Igreja e do mundo. No ofertório, o pão e o vinho são levados ao altar, e com eles oferecemos nosso trabalho, nossas alegrias e dores.',
         today: 'Escolha algo da sua semana para oferecer na próxima Missa.',
       },
       {
         title: 'Oração Eucarística e consagração',
+        icon: 'calice',
         text: 'É o coração da Missa. Pelas palavras de Jesus repetidas pelo padre e pela ação do Espírito Santo, o pão e o vinho se tornam o Corpo e o Sangue de Cristo. É o mesmo sacrifício da cruz, tornado presente.',
         today: 'Na consagração, olhe a hóstia e diga em silêncio: "Meu Senhor e meu Deus!"',
       },
       {
         title: 'Comunhão',
+        icon: 'hostia',
         text: 'Depois do Pai-Nosso e do abraço da paz, recebemos Jesus. Para comungar, é preciso estar em estado de graça (sem pecado grave não confessado) e fazer uma hora de jejum.',
         today: 'Depois de comungar, reserve um minuto de silêncio para conversar com Jesus.',
       },
       {
         title: 'Envio',
+        icon: 'pomba',
         text: 'A Missa termina com a bênção e o envio: "Ide em paz". A palavra Missa vem do latim missio, missão. Saímos para levar Cristo a quem encontramos.',
         today: 'Faça hoje um gesto concreto de caridade com alguém da sua casa ou do seu trabalho.',
       },
@@ -51,21 +59,25 @@ export const trails = [
     steps: [
       {
         title: 'Mãe de Deus',
+        icon: 'estrela',
         text: 'Proclamado no Concílio de Éfeso (431). Maria é Mãe de Jesus, que é verdadeiro Deus e verdadeiro homem; por isso é Mãe de Deus. Isabel a chamou de "a mãe do meu Senhor" (Lc 1,43).',
         today: 'Reze uma Ave-Maria prestando atenção em "Santa Maria, Mãe de Deus".',
       },
       {
         title: 'Virgindade perpétua',
+        icon: 'lirio',
         text: 'Maria permaneceu virgem antes, durante e depois do parto. Sua vida inteira foi dedicada a Deus. Os "irmãos de Jesus" citados nos Evangelhos eram parentes próximos, como era costume chamar na época.',
         today: 'Peça a Maria um coração inteiro para Deus.',
       },
       {
         title: 'Imaculada Conceição',
+        icon: 'lua',
         text: 'Definido por Pio IX em 1854. Desde o primeiro instante da sua existência, Maria foi preservada do pecado original, pelos méritos de Cristo. O anjo a saudou como "cheia de graça" (Lc 1,28).',
         today: 'Reze: "Ó Maria concebida sem pecado, rogai por nós que recorremos a vós."',
       },
       {
         title: 'Assunção',
+        icon: 'nuvens',
         text: 'Definido por Pio XII em 1950. Ao terminar a sua vida terrena, Maria foi levada ao céu de corpo e alma. Ela é sinal da esperança do que Deus prometeu a todos nós: a ressurreição.',
         today: 'Reze o 4º mistério glorioso do terço, a Assunção de Maria.',
       },

@@ -7740,3 +7740,225 @@ details[open] > summary .exam-chevron {
 .intention-report:hover {
   background: var(--color-border-soft);
 }
+
+/* ---------- Trilhas: caminho de ilhas ---------- */
+.trail-hint {
+  color: var(--color-text-soft);
+  font-size: 0.92rem;
+}
+
+.trail-map {
+  position: relative;
+  width: min(100%, 26rem);
+  margin: 1.5rem auto 2rem;
+}
+
+.trail-road {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.trail-road path {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-gold) 55%, transparent);
+  stroke-width: 4;
+  stroke-dasharray: 2 10;
+  stroke-linecap: round;
+}
+
+.trail-islands {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trail-island {
+  position: absolute;
+  width: 8.5rem;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.trail-island > button {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.trail-island > button:disabled {
+  cursor: default;
+}
+
+.trail-island > button:focus-visible {
+  outline: 3px solid var(--color-terracotta);
+  outline-offset: 4px;
+  border-radius: 50%;
+}
+
+/* Flutuar: cada ilha sobe e desce devagar, num tempo diferente das outras. */
+.trail-island-float {
+  display: block;
+  animation: island-float 4.2s ease-in-out calc(var(--i) * -0.7s) infinite;
+}
+
+@keyframes island-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+
+.trail-island-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  transition: transform 0.25s var(--ease-out), filter 0.25s;
+}
+
+.trail-island > button:not(:disabled):hover .trail-island-svg {
+  transform: scale(1.05);
+}
+
+.trail-island.is-current .trail-island-svg {
+  transform: scale(1.12);
+  filter: drop-shadow(0 0 14px color-mix(in srgb, var(--color-gold) 55%, transparent));
+}
+
+.trail-island.is-new .trail-island-svg {
+  animation: island-unlock 1.2s var(--ease-out);
+}
+
+@keyframes island-unlock {
+  0% { transform: scale(0.85); filter: drop-shadow(0 0 0 var(--color-gold)) grayscale(1); }
+  60% { transform: scale(1.22); filter: drop-shadow(0 0 22px var(--color-gold)); }
+  100% { transform: scale(1.12); }
+}
+
+/* Cores da ilha */
+.ti-shadow { fill: rgba(45, 36, 31, 0.18); }
+.ti-earth { fill: #9A6B47; }
+.ti-roots { fill: none; stroke: #7A5236; stroke-width: 3; stroke-linecap: round; }
+.ti-grass { fill: #5E8C63; }
+.ti-grass-top { fill: #78A97D; }
+.ti-fill { fill: #FFFDF9; stroke: #B28A42; stroke-width: 2; stroke-linejoin: round; }
+.ti-line { fill: none; stroke: #B28A42; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.ti-glow { fill: #F7E3A6; opacity: 0.55; }
+
+.is-done .ti-fill { fill: #FFF3CF; stroke: #C8963E; }
+.is-done .ti-glow { opacity: 0.9; }
+
+.is-locked .ti-earth,
+.is-locked .ti-roots,
+.is-locked .ti-grass,
+.is-locked .ti-grass-top,
+.is-locked .ti-icon {
+  filter: grayscale(1);
+  opacity: 0.45;
+}
+
+:root[data-theme='dark'] .ti-shadow { fill: rgba(0, 0, 0, 0.45); }
+
+/* Selos: concluída (check) e trancada (cadeado) */
+.trail-badge {
+  position: absolute;
+  top: 0.2rem;
+  right: 1rem;
+  display: grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  color: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+.trail-badge.is-done { background: #5E8C63; }
+.trail-badge.is-locked { background: #8C7E6B; }
+
+/* Balão da ilha da vez */
+.trail-bubble {
+  position: absolute;
+  top: -1.9rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--radius-full);
+  background: var(--color-terracotta);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: var(--shadow-md);
+  animation: bubble-bob 1.6s ease-in-out infinite;
+}
+
+.trail-bubble::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  border: 6px solid transparent;
+  border-bottom: 0;
+  border-top-color: var(--color-terracotta);
+  transform: translateX(-50%);
+}
+
+@keyframes bubble-bob {
+  50% { transform: translate(-50%, -4px); }
+}
+
+.trail-island-label {
+  display: grid;
+  margin-top: 0.1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--color-text);
+}
+
+.trail-island-label small {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-terracotta);
+}
+
+.trail-island.is-locked .trail-island-label {
+  color: var(--color-text-muted);
+}
+
+.trail-sheet-text {
+  line-height: 1.65;
+}
+
+.trail-sheet-done {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 700;
+  color: #5E8C63;
+}
+
+.trail-finish {
+  justify-items: start;
+}
+
+.trail-restart {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.novena-page .saint-back-link {
+  display: flex;
+  width: fit-content;
+  margin-bottom: 0.9rem;
+}
