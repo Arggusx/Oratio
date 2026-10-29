@@ -11,17 +11,6 @@ import { RewardReveal } from '../components/journey/Rewards';
 import { LEVELS } from '../data/quizBank';
 import { journey, useJourney } from '../utils/journeyStore';
 
-/** Bolinhas de progresso de uma trilha (uma por etapa). */
-export function TrailSteps({ trail, plan }) {
-  return (
-    <ol className="novena-beads is-sm" aria-label={`${plan?.done.length ?? 0} de ${trail.steps.length} etapas`}>
-      {trail.steps.map((_, i) => (
-        <li key={i} className={`novena-bead ${plan?.done.includes(i + 1) ? 'is-done' : ''}`} />
-      ))}
-    </ol>
-  );
-}
-
 function TrailProgress({ trail, progress }) {
   return (
     <span className="trail-card-progress">

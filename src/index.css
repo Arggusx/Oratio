@@ -6928,8 +6928,7 @@ details[open] > summary .exam-chevron {
   margin-top: 1.5rem;
 }
 
-.novena-card,
-.mission-item {
+.novena-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -6942,20 +6941,17 @@ details[open] > summary .exam-chevron {
   transition: border-color var(--duration-fast), box-shadow var(--duration-fast);
 }
 
-.novena-card:hover,
-.mission-item:hover {
+.novena-card:hover {
   border-color: var(--color-gold);
   box-shadow: var(--shadow-sm);
 }
 
-.novena-card-text,
-.mission-item > span {
+.novena-card-text {
   display: grid;
   gap: 0.2rem;
 }
 
-.novena-card-text span,
-.mission-item small {
+.novena-card-text span {
   color: var(--color-text-soft);
   font-size: 0.85rem;
 }
@@ -7068,24 +7064,8 @@ details[open] > summary .exam-chevron {
   font-size: 0.85rem;
 }
 
-.mission-list {
-  display: grid;
-  gap: 0.6rem;
-  margin: 0 0 1rem;
-  padding: 0;
-  list-style: none;
-}
 
-.mission-more {
-  margin: 0;
-  font-size: 0.9rem;
-  color: var(--color-text-soft);
-}
 
-.mission-more a {
-  color: var(--color-terracotta);
-  font-weight: 600;
-}
 
 /* Toques discretos: guardar santo e marcar milagre */
 .saint-collect,
@@ -9585,4 +9565,96 @@ details[open] > summary .exam-chevron {
 
 .bouquet-card .filter-clear-link {
   color: #8C3A2A;
+}
+
+/* ---------- Missões em cartões ---------- */
+.mission-group-title {
+  margin: 1.25rem 0 0.75rem;
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.mission-cards > li {
+  flex: 0 1 16rem;
+}
+
+.mission-card {
+  display: grid;
+  justify-items: start;
+  align-content: start;
+  gap: 0.45rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, var(--mission) 35%, var(--color-border));
+  border-top: 4px solid var(--mission);
+  background:
+    radial-gradient(circle at 100% 0, color-mix(in srgb, var(--mission) 14%, transparent), transparent 60%),
+    var(--color-surface);
+}
+
+.mission-card-kicker {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--mission);
+}
+
+.mission-card > strong {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  line-height: 1.2;
+}
+
+.mission-beads {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin: 0.2rem 0;
+}
+
+.mission-bead {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 50%;
+  border: 1.5px solid color-mix(in srgb, var(--mission) 70%, transparent);
+}
+
+.mission-bead.is-quiz {
+  border-radius: 0.2rem;
+  transform: rotate(45deg) scale(0.85);
+}
+
+.mission-bead.is-done {
+  background: var(--mission);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--mission) 60%, transparent);
+}
+
+.mission-bead.is-now {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 2px;
+}
+
+.mission-card-status {
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+
+.mission-card-hint {
+  color: var(--color-text-soft);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.mission-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.3rem;
+}
+
+.mission-card .journey-mark {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8rem;
 }

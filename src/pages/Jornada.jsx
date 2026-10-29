@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   ArrowRight,
+  Check,
   ChevronLeft,
   Flag,
   Flower2,
@@ -16,12 +17,10 @@ import {
 } from 'lucide-react';
 import PrayedTodayButton from '../components/PrayedTodayButton';
 import GameIntro from '../components/GameIntro';
-import { NovenaBeads } from './Novenas';
 import { novenas } from '../data/novenas';
 import { trails } from '../data/trails';
 import { completedIslands, islandProgress } from '../utils/islandProgress';
 
-import { TrailSteps } from './Trilhas';
 import SaintCollection from '../components/journey/SaintCollection';
 import MiracleMap from '../components/journey/MiracleMap';
 import SpiritualBouquet from '../components/journey/SpiritualBouquet';
@@ -124,77 +123,113 @@ function PrayerDiary() {
   );
 }
 
-/** Missões: novenas (e, mais adiante, trilhas) em andamento, cada uma com o seu progresso. */
+/** Cartão de uma missão: as contas com o progresso salvo e o que fazer em seguida. */
+function MissionCard({ kicker, title, color, beads, status, hint, to, cta, quick }) {
+  return (
+    <li className="mission-card" style={{ '--mission': color }}>
+      <span className="mission-card-kicker">{kicker}</span>
+      <strong>{title}</strong>
+      <span className="mission-beads" aria-label={status}>
+        {beads.map((b, i) => (
+          <span key={i} className={`mission-bead ${b.done ? 'is-done' : ''} ${b.now ? 'is-now' : ''} ${b.quiz ? 'is-quiz' : ''}`} />
+        ))}
+      </span>
+      <small className="mission-card-status">{status}</small>
+      {hint && <small className="mission-card-hint">{hint}</small>}
+      <span className="mission-card-actions">
+        {quick}
+        <Link to={to} className="fx-small-btn">
+          {cta}
+          <ArrowRight size={14} aria-hidden="true" />
+        </Link>
+      </span>
+    </li>
+  );
+}
+
+/**
+ * Missões: um cartão para cada novena e cada ilha, com as contas mostrando o progresso salvo.
+ * Tudo fica nesta tela; só sai daqui quando a pessoa escolhe o que quer fazer.
+ */
 function Missions() {
-  const { novenas: plans, trails: trailPlans } = useJourney();
-  const active = novenas.filter((n) => plans[n.id]);
-  const activeTrails = trails.filter((t) => trailPlans[t.id]);
-  const others = novenas.filter((n) => !plans[n.id]);
+  const state = useJourney();
+  const plans = state.novenas;
 
   return (
     <section className="journey-card" aria-labelledby="missions-title">
       <header className="journey-card-head">
         <h2 id="missions-title">Missões</h2>
-        <p>Novenas e trilhas que você começou. Cada conta acende quando você marca o dia.</p>
+        <p>Suas novenas e ilhas num só lugar. As contas mostram o que você já fez; escolha por onde seguir.</p>
       </header>
 
       <GameIntro
         id="missoes"
         steps={[
-          'Uma missão é uma novena (nove dias de oração) ou uma ilha das trilhas.',
-          'Comece uma novena na página dela e marque cada dia rezado: as nove contas vão acendendo.',
-          'Aqui você vê o que está em andamento e volta direto para o dia ou a parada seguinte.',
+          'Cada cartão é uma missão: uma novena (nove dias de oração) ou uma ilha das trilhas.',
+          'As contas acesas mostram o que você já fez; a conta com borda é a próxima.',
+          'Nas novenas começadas, marque o dia rezado aqui mesmo. Para ler o dia ou seguir na ilha, toque no botão do cartão.',
         ]}
       />
 
-      {active.length + activeTrails.length === 0 ? (
-        <p className="calendar-empty">Nenhuma novena ou trilha em andamento.</p>
-      ) : (
-        <ul className="mission-list">
-          {active.map((n) => (
-            <li key={n.id}>
-              <Link to={`/home/novenas/${n.id}`} className="mission-item">
-                <span>
-                  <strong>{n.title}</strong>
-                  <small>{plans[n.id].done.length} de 9 dias</small>
-                </span>
-                <NovenaBeads plan={plans[n.id]} size="sm" />
-              </Link>
-            </li>
-          ))}
-          {activeTrails.map((t) => (
-            <li key={t.id}>
-              <Link to={`/home/trilhas/${t.id}`} className="mission-item">
-                <span>
-                  <strong>{t.title}</strong>
-                  <small>
-                    {trailPlans[t.id].done.length} de {t.steps.length} etapas
-                  </small>
-                </span>
-                <TrailSteps trail={t} plan={trailPlans[t.id]} />
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
+      <h3 className="mission-group-title">Novenas</h3>
+      <ul className="card-list mission-cards">
+        {novenas.map((n) => {
+          const plan = plans[n.id];
+          const done = plan?.done ?? [];
+          const nextDay = [1, 2, 3, 4, 5, 6, 7, 8, 9].find((d) => !done.includes(d));
+          return (
+            <MissionCard
+              key={n.id}
+              kicker="Nove dias"
+              title={n.title}
+              color="#C8963E"
+              beads={Array.from({ length: 9 }, (_, i) => ({ done: done.includes(i + 1), now: plan && i + 1 === nextDay }))}
+              status={!plan ? 'Ainda não começou' : nextDay ? `${done.length} de 9 dias` : 'Novena concluída'}
+              hint={plan && nextDay ? `${nextDay}º dia: ${n.days[nextDay - 1][0]}` : n.when}
+              to={`/home/novenas/${n.id}`}
+              cta={!plan ? 'Começar' : nextDay ? 'Ler o dia' : 'Ver a novena'}
+              quick={
+                plan &&
+                nextDay && (
+                  <button type="button" className="journey-mark" onClick={() => journey.togglePlanDay('novenas', n.id, nextDay)}>
+                    <Check size={14} aria-hidden="true" /> Rezei o {nextDay}º dia
+                  </button>
+                )
+              }
+            />
+          );
+        })}
+      </ul>
 
-      {others.length > 0 && (
-        <p className="mission-more">
-          Começar outra:{' '}
-          {others.map((n, i) => (
-            <span key={n.id}>
-              {i > 0 && ' · '}
-              <Link to={`/home/novenas/${n.id}`}>{n.title.replace('Novena ', '')}</Link>
-            </span>
-          ))}{' '}
-          <Link to="/home/novenas" aria-label="Ver todas as novenas">
-            <ArrowRight size={14} />
-          </Link>
-        </p>
-      )}
-      <p className="mission-more">
-        Trilhas: <Link to="/home/trilhas">ver todas</Link>
-      </p>
+      <h3 className="mission-group-title">Ilhas</h3>
+      <ul className="card-list mission-cards">
+        {trails.map((t) => {
+          const progress = islandProgress(t, state);
+          return (
+            <MissionCard
+              key={t.id}
+              kicker="Ilha"
+              title={t.title}
+              color={t.color}
+              beads={progress.stops.map((st, i) => ({
+                done: progress.isDone(st),
+                now: progress.started && i === progress.nextIndex,
+                quiz: st.kind === 'quiz',
+              }))}
+              status={
+                progress.complete
+                  ? 'Ilha concluída'
+                  : progress.started
+                    ? `${progress.done} de ${progress.total} paradas`
+                    : 'Ainda não começou'
+              }
+              hint={progress.nextTitle ? `Próxima: ${progress.nextTitle}` : t.short}
+              to={`/home/trilhas/${t.id}`}
+              cta={progress.complete ? 'Ver a ilha' : progress.started ? 'Continuar' : 'Começar'}
+            />
+          );
+        })}
+      </ul>
     </section>
   );
 }
