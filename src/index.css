@@ -6928,8 +6928,7 @@ details[open] > summary .exam-chevron {
   margin-top: 1.5rem;
 }
 
-.novena-card,
-.mission-item {
+.novena-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -6942,20 +6941,17 @@ details[open] > summary .exam-chevron {
   transition: border-color var(--duration-fast), box-shadow var(--duration-fast);
 }
 
-.novena-card:hover,
-.mission-item:hover {
+.novena-card:hover {
   border-color: var(--color-gold);
   box-shadow: var(--shadow-sm);
 }
 
-.novena-card-text,
-.mission-item > span {
+.novena-card-text {
   display: grid;
   gap: 0.2rem;
 }
 
-.novena-card-text span,
-.mission-item small {
+.novena-card-text span {
   color: var(--color-text-soft);
   font-size: 0.85rem;
 }
@@ -7068,24 +7064,8 @@ details[open] > summary .exam-chevron {
   font-size: 0.85rem;
 }
 
-.mission-list {
-  display: grid;
-  gap: 0.6rem;
-  margin: 0 0 1rem;
-  padding: 0;
-  list-style: none;
-}
 
-.mission-more {
-  margin: 0;
-  font-size: 0.9rem;
-  color: var(--color-text-soft);
-}
 
-.mission-more a {
-  color: var(--color-terracotta);
-  font-weight: 600;
-}
 
 /* Toques discretos: guardar santo e marcar milagre */
 .saint-collect,
@@ -7125,35 +7105,9 @@ details[open] > summary .exam-chevron {
 
 
 /* Mapa dos milagres */
-.miracle-maps {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-  gap: 1rem;
-}
 
-.miracle-map {
-  margin: 0;
-  padding: 0.5rem;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border);
-  background: color-mix(in srgb, #6E8FD6 8%, var(--color-surface));
-}
 
-.miracle-map svg {
-  display: block;
-  width: 100%;
-  height: auto;
-}
 
-.miracle-map figcaption {
-  margin-top: 0.3rem;
-  text-align: center;
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--color-text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
 
 
 
@@ -7249,60 +7203,14 @@ details[open] > summary .exam-chevron {
   font-weight: 700;
 }
 
-.bouquet-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-  gap: 1rem;
-  margin-top: 1.75rem;
-}
 
-.bouquet-card {
-  padding: 1.1rem 1.25rem;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-gold);
-  background:
-    radial-gradient(circle at 50% 0, color-mix(in srgb, #C77D9A 14%, transparent), transparent 60%),
-    var(--color-surface);
-  text-align: center;
-}
 
-.bouquet-flowers {
-  width: 7rem;
-  height: 3.5rem;
-}
 
-.bouquet-flowers .stem { fill: none; stroke: #5E8C63; stroke-width: 2; }
-.bouquet-flowers .rose { fill: #C2486A; }
-.bouquet-flowers .petal { fill: #E27A96; }
 
-.bouquet-card h3 {
-  margin: 0.3rem 0;
-  font-family: var(--font-serif);
-  font-size: 1.25rem;
-}
 
-.bouquet-card ul {
-  margin: 0.6rem 0;
-  padding: 0;
-  list-style: none;
-  line-height: 1.7;
-}
 
-.bouquet-intention,
-.bouquet-from {
-  margin: 0;
-  color: var(--color-text-soft);
-  font-size: 0.9rem;
-}
 
-.bouquet-message {
-  margin: 0.6rem 0;
-  font-style: italic;
-}
 
-.bouquet-actions {
-  justify-content: center;
-}
 
 @media print {
   body.print-bouquet * {
@@ -7326,66 +7234,14 @@ details[open] > summary .exam-chevron {
   }
 }
 
-/* O ano como jornada */
-.year-journey {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 1.5rem;
-}
 
-.year-journey svg {
-  flex: none;
-  width: min(100%, 14rem);
-  height: auto;
-  color: var(--color-border);
-}
 
-.year-base {
-  fill: none;
-  stroke: var(--color-border-soft);
-  stroke-width: 18;
-  opacity: 0.4;
-}
 
-.year-day {
-  stroke-width: 0.9;
-  opacity: 0.35;
-}
 
-.year-day.is-done {
-  stroke-width: 2;
-  opacity: 1;
-}
 
-.year-seasons {
-  flex: 1 1 14rem;
-  display: grid;
-  gap: 0.7rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
 
-.year-seasons li {
-  display: grid;
-  grid-template-columns: 8.5rem 1fr auto;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 0.85rem;
-}
 
-.year-season-name {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
 
-.year-swatch {
-  width: 0.7rem;
-  height: 0.7rem;
-  border-radius: 3px;
-}
 
 .year-bar {
   height: 0.5rem;
@@ -7399,9 +7255,6 @@ details[open] > summary .exam-chevron {
   height: 100%;
 }
 
-.year-seasons small {
-  color: var(--color-text-muted);
-}
 
 /* Quiz da Escola da Fé */
 .quiz {
@@ -8504,22 +8357,8 @@ details[open] > summary .exam-chevron {
 }
 
 /* ---------- Mapa dos milagres (desenhado) ---------- */
-.miracle-map {
-  padding: 0;
-  overflow: hidden;
-  background: none;
-}
 
-.miracle-map svg {
-  border-radius: var(--radius-md) var(--radius-md) 0 0;
-}
 
-.miracle-map figcaption {
-  margin: 0;
-  padding: 0.45rem;
-  background: var(--color-surface);
-  border-top: 1px solid var(--color-border);
-}
 
 .map-sea {
   fill: #CFE0EA;
@@ -8883,4 +8722,989 @@ details[open] > summary .exam-chevron {
 
 .bouquet-vase-rim {
   fill: #9A6B47;
+}
+
+/* ---------- Mapa dos milagres: cartão grande e tela cheia ---------- */
+.map-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 1.1rem;
+  overflow: hidden;
+  background: none;
+  cursor: zoom-in;
+  box-shadow: var(--shadow-md);
+}
+
+.map-card svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.map-card-cta {
+  position: absolute;
+  right: 0.9rem;
+  bottom: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1rem;
+  border-radius: var(--radius-full);
+  background: var(--color-terracotta);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.2s var(--ease-out);
+}
+
+.map-card:hover .map-card-cta {
+  transform: translateY(-2px);
+}
+
+.map-viewer {
+  width: 100vw;
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: #CFE0EA;
+  overflow: hidden;
+}
+
+:root[data-theme='dark'] .map-viewer {
+  background: #142231;
+}
+
+.map-viewer::backdrop {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.map-viewer-canvas {
+  position: absolute;
+  inset: 0;
+  touch-action: none;
+  cursor: grab;
+}
+
+.map-viewer-canvas:active {
+  cursor: grabbing;
+}
+
+.map-viewer-canvas svg {
+  width: 100%;
+  height: 100%;
+}
+
+.map-viewer-controls {
+  position: absolute;
+  top: calc(0.9rem + env(safe-area-inset-top));
+  right: 0.9rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.map-viewer-controls button {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.8rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+}
+
+.map-viewer-controls button:last-child {
+  margin-top: 0.4rem;
+  background: var(--color-terracotta);
+  border-color: var(--color-terracotta);
+  color: #fff;
+}
+
+.map-viewer-hint {
+  position: absolute;
+  top: calc(0.9rem + env(safe-area-inset-top));
+  left: 0.9rem;
+  right: 4.5rem;
+  margin: 0;
+  padding: 0.45rem 0.8rem;
+  width: fit-content;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+  font-size: 0.78rem;
+  color: var(--color-text-soft);
+  pointer-events: none;
+}
+
+.map-viewer-info {
+  position: absolute;
+  left: 0.9rem;
+  right: 0.9rem;
+  bottom: calc(0.9rem + env(safe-area-inset-bottom));
+  max-width: 34rem;
+  margin: 0 auto;
+  max-height: 55dvh;
+  overflow-y: auto;
+}
+
+.map-info-card {
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.map-info-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+}
+
+/* ---------- Listas de cartões centralizadas ----------
+   Toda lista de cartões fica centralizada, inclusive a última linha incompleta. */
+.card-list {
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.9rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---------- Medalhão e molduras ---------- */
+.avatar-frame {
+  display: block;
+  flex: none;
+  overflow: visible;
+}
+
+.af-ring {
+  fill: var(--frame-accent);
+  stroke: var(--frame);
+  stroke-width: 4;
+}
+
+.af-inner {
+  fill: var(--color-surface);
+  stroke: var(--frame);
+  stroke-width: 1.5;
+}
+
+.af-line {
+  fill: none;
+  stroke: var(--frame);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.af-fill {
+  fill: var(--frame);
+}
+
+.af-text {
+  fill: var(--frame);
+  font-family: var(--font-serif);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.af-initial {
+  fill: var(--frame);
+  font-family: var(--font-serif);
+  font-size: 40px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+.af-dove {
+  fill: var(--frame);
+  opacity: 0.85;
+}
+
+.journey-profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.25rem 0 0;
+  padding: 1rem 1.1rem;
+  border-radius: 1.1rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.journey-profile-body {
+  display: grid;
+  gap: 0.55rem;
+  min-width: 0;
+}
+
+.journey-profile-name {
+  justify-self: start;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-text);
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.journey-profile-name small {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-terracotta);
+  text-decoration: underline;
+}
+
+.journey-profile .search {
+  padding-left: 1rem;
+}
+
+.journey-frames {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.journey-frame {
+  padding: 0.15rem;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+}
+
+.journey-frame:disabled {
+  cursor: not-allowed;
+  filter: grayscale(1);
+  opacity: 0.35;
+}
+
+.journey-frame.is-active {
+  border-color: var(--color-terracotta);
+}
+
+/* ---------- Passaporte do Peregrino ---------- */
+.passport-pages {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 0.9rem;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 27px, color-mix(in srgb, var(--color-gold) 14%, transparent) 27px 28px),
+    color-mix(in srgb, #F6EBD3 70%, var(--color-surface));
+  border: 1px solid color-mix(in srgb, var(--color-gold) 45%, var(--color-border));
+}
+
+:root[data-theme='dark'] .passport-pages {
+  background:
+    repeating-linear-gradient(0deg, transparent 0 27px, rgba(200, 150, 62, 0.08) 27px 28px),
+    #2A231C;
+}
+
+.passport-slot {
+  flex: 0 1 10rem;
+  color: inherit;
+}
+
+.stamp {
+  display: grid;
+  justify-items: center;
+  gap: 0.2rem;
+  padding: 0.9rem 0.6rem;
+  border-radius: 50% / 38%;
+  border: 2px dashed color-mix(in srgb, var(--color-text-muted) 45%, transparent);
+  text-align: center;
+  opacity: 0.6;
+}
+
+.stamp-art {
+  width: 4.5rem;
+  filter: grayscale(1);
+  opacity: 0.5;
+}
+
+.stamp strong {
+  font-size: 0.85rem;
+  line-height: 1.2;
+}
+
+.stamp small {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+}
+
+.stamp.is-stamped {
+  opacity: 1;
+  border: 3px double var(--stamp);
+  color: var(--stamp);
+  transform: rotate(var(--tilt));
+  background: color-mix(in srgb, var(--stamp) 6%, transparent);
+  animation: stamp-in 0.5s var(--ease-out) both;
+}
+
+.stamp.is-stamped .stamp-art {
+  filter: none;
+  opacity: 1;
+}
+
+.stamp.is-stamped strong {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.stamp.is-stamped small {
+  color: var(--stamp);
+}
+
+@keyframes stamp-in {
+  from { transform: rotate(var(--tilt)) scale(1.6); opacity: 0; }
+}
+
+/* ---------- Revelação de recompensa ---------- */
+.reward-reveal {
+  width: min(30rem, calc(100% - 2rem));
+  margin: auto;
+  padding: 1.75rem 1.5rem;
+  border: 1px solid var(--trail);
+  border-radius: 1.25rem;
+  background: var(--color-cream);
+  color: var(--color-text);
+  text-align: center;
+  max-height: 92dvh;
+  overflow: hidden auto;
+}
+
+.reward-reveal[open] {
+  display: grid;
+  justify-items: center;
+  gap: 0.6rem;
+  animation: filter-sheet-in 0.35s var(--ease-out);
+}
+
+.reward-reveal::backdrop {
+  background: rgba(20, 15, 10, 0.6);
+  backdrop-filter: blur(3px);
+}
+
+.reward-reveal h2 {
+  position: relative;
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+}
+
+.reward-reveal p {
+  position: relative;
+  margin: 0;
+  color: var(--color-text-soft);
+}
+
+.reward-reveal .eyebrow {
+  position: relative;
+}
+
+.reward-rays {
+  position: absolute;
+  left: 50%;
+  top: 35%;
+  width: 40rem;
+  height: 40rem;
+  margin: -20rem 0 0 -20rem;
+  background: repeating-conic-gradient(color-mix(in srgb, var(--trail) 9%, transparent) 0 8deg, transparent 8deg 20deg);
+  animation: rays-spin 40s linear infinite;
+  pointer-events: none;
+}
+
+.reward-items {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.25rem;
+  margin: 0.5rem 0;
+}
+
+.reward-items figure {
+  display: grid;
+  justify-items: center;
+  gap: 0.4rem;
+  width: 11rem;
+  margin: 0;
+}
+
+.reward-items figcaption {
+  font-size: 0.82rem;
+  color: var(--color-text-soft);
+}
+
+.reward-actions {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.glass-piece {
+  position: relative;
+  width: 7rem;
+  height: 7rem;
+  margin: 0.5rem 0;
+  clip-path: polygon(50% 0, 100% 38%, 82% 100%, 18% 100%, 0 38%);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.55), transparent 45%),
+    var(--glass);
+  box-shadow: inset 0 0 0 3px #3A2E26;
+  animation: glass-glow 2.4s ease-in-out infinite;
+}
+
+@keyframes glass-glow {
+  50% { filter: brightness(1.25) drop-shadow(0 0 12px var(--glass)); }
+}
+
+/* ---------- Santos do ano: rosácea e cartões de mês ---------- */
+.rose-window {
+  margin: 0 auto 1.5rem;
+  width: min(100%, 20rem);
+  text-align: center;
+}
+
+.rose-window svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.rose-window figcaption {
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+}
+
+.rose-frame {
+  fill: #3A2E26;
+}
+
+.rose-petal {
+  cursor: pointer;
+  outline: none;
+}
+
+.rose-petal path {
+  fill: color-mix(in srgb, #8C7E6B 55%, #2A231C);
+  stroke: #3A2E26;
+  stroke-width: 2.5;
+  transition: fill 0.4s;
+}
+
+.rose-petal.is-lit path {
+  fill: var(--glass);
+  filter: drop-shadow(0 0 4px var(--glass));
+}
+
+.rose-petal:hover path,
+.rose-petal:focus-visible path {
+  filter: brightness(1.25);
+}
+
+.rose-petal.is-now path {
+  stroke: var(--color-gold);
+}
+
+.rose-jewel {
+  fill: rgba(255, 255, 255, 0.18);
+}
+
+.rose-petal.is-lit .rose-jewel {
+  fill: rgba(255, 255, 255, 0.55);
+}
+
+.rose-label {
+  fill: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.rose-center {
+  fill: #F2D58A;
+  stroke: #3A2E26;
+  stroke-width: 3;
+}
+
+.rose-cross {
+  fill: none;
+  stroke: #8C6A3F;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.month-cards > li {
+  flex: 0 1 11.5rem;
+}
+
+.month-card {
+  display: grid;
+  justify-items: start;
+  gap: 0.55rem;
+  width: 100%;
+  height: 100%;
+  padding: 0.95rem;
+  border-radius: 1rem;
+  border: 1px solid var(--color-border);
+  border-top: 4px solid color-mix(in srgb, var(--glass) 70%, transparent);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.15s var(--ease-out), box-shadow 0.15s;
+}
+
+.month-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--glass) 22%, transparent);
+}
+
+.month-card.is-now {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 1px var(--color-gold);
+}
+
+.month-card.is-lit {
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--glass) 18%, transparent), transparent 70%),
+    var(--color-surface);
+}
+
+.month-card-head {
+  display: grid;
+}
+
+.month-card-head small {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+}
+
+.month-card.is-now .month-card-head small {
+  color: var(--color-terracotta);
+}
+
+.month-card-head strong {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  text-transform: capitalize;
+}
+
+.month-card-faces {
+  display: flex;
+  align-items: center;
+}
+
+.month-card-faces > span {
+  margin-right: -0.55rem;
+}
+
+.month-card-faces .saint-initial {
+  width: 2.1rem;
+  height: 2.1rem;
+  font-size: 0.85rem;
+  border: 2px solid var(--color-surface);
+}
+
+.month-card-faces > span:not(.is-collected) .saint-initial {
+  filter: grayscale(1) brightness(0.6);
+  opacity: 0.6;
+}
+
+.month-card-more {
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  border: 2px solid var(--color-surface);
+  background: var(--color-border-soft);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.month-card-status {
+  font-size: 0.8rem;
+  color: var(--color-text-soft);
+}
+
+.month-card.is-lit .month-card-status {
+  color: var(--glass);
+  font-weight: 700;
+}
+
+.month-sheet-hint {
+  margin: 0 0 1rem;
+  color: var(--color-text-soft);
+  line-height: 1.55;
+}
+
+.month-sheet .collection-grid > li {
+  flex: 0 1 8rem;
+}
+
+@media (max-width: 560px) {
+  .reward-reveal {
+    padding: 1.25rem 1rem;
+  }
+
+  .reward-items {
+    flex-wrap: nowrap;
+    gap: 0.6rem;
+  }
+
+  .reward-items figure {
+    width: 50%;
+  }
+
+  .reward-items .stamp-art {
+    width: 3.2rem;
+  }
+
+  .reward-items .avatar-frame {
+    width: 92px;
+    height: 92px;
+  }
+}
+
+@media (max-width: 560px) {
+  .month-cards > li {
+    flex-basis: 9rem;
+  }
+
+  .month-card {
+    padding: 0.8rem;
+  }
+}
+
+/* ---------- Cartão do buquê espiritual ---------- */
+.bouquet-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.bouquet-list > .bouquet-card {
+  flex: 0 1 21rem;
+}
+
+.bouquet-card {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 0.35rem;
+  padding: 1.6rem 1.4rem 1.2rem;
+  border-radius: 1.1rem;
+  border: 1px solid color-mix(in srgb, #C2486A 35%, var(--color-gold));
+  outline: 1px solid color-mix(in srgb, var(--color-gold) 55%, transparent);
+  outline-offset: -8px;
+  background:
+    radial-gradient(circle at 50% 18%, color-mix(in srgb, #F7D6E0 70%, transparent), transparent 55%),
+    radial-gradient(circle at 0% 100%, color-mix(in srgb, #E9C46A 22%, transparent), transparent 45%),
+    radial-gradient(circle at 100% 100%, color-mix(in srgb, #9B7BC4 18%, transparent), transparent 45%),
+    #FFFBF4;
+  color: #3A2A22;
+  text-align: center;
+  box-shadow: 0 14px 30px rgba(94, 59, 36, 0.12);
+  overflow: hidden;
+}
+
+/* Ramos nos cantos */
+.bouquet-card-corner {
+  position: absolute;
+  width: 5rem;
+  height: 5rem;
+  background:
+    radial-gradient(circle at 30% 30%, #C2486A 0 4px, transparent 5px),
+    radial-gradient(circle at 55% 18%, #E9C46A 0 3px, transparent 4px),
+    radial-gradient(circle at 18% 58%, #9B7BC4 0 3px, transparent 4px),
+    radial-gradient(ellipse at 40% 45%, #78A97D 0 7px, transparent 8px),
+    radial-gradient(ellipse at 22% 32%, #5E8C63 0 5px, transparent 6px);
+  opacity: 0.85;
+}
+
+.bouquet-card-corner.is-tl {
+  top: 0;
+  left: 0;
+}
+
+.bouquet-card-corner.is-br {
+  right: 0;
+  bottom: 0;
+  transform: rotate(180deg);
+}
+
+.bouquet-card-kicker {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #B84A13;
+}
+
+.bouquet-card h3 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.7rem;
+  line-height: 1.1;
+  color: #3A2A22;
+}
+
+.bouquet-card .bouquet-intention {
+  margin: 0;
+  font-style: italic;
+  color: #6B5A4E;
+}
+
+.bouquet-card .bouquet-vase {
+  width: 11rem;
+  margin: 0.2rem 0 -0.4rem;
+}
+
+.bouquet-card-offer {
+  margin: 0.2rem 0 0;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  color: #6B5A4E;
+}
+
+.bouquet-ribbons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
+  margin: 0.2rem 0 0.4rem;
+  padding: 0;
+  list-style: none;
+}
+
+.bouquet-ribbons li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.7rem;
+  border-radius: var(--radius-full);
+  border: 1px solid color-mix(in srgb, var(--flower) 55%, #D9C9B4);
+  background: color-mix(in srgb, var(--flower) 14%, #FFFBF4);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #3A2A22;
+}
+
+.bouquet-ribbon-dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--flower);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+
+.bouquet-card .bouquet-message {
+  margin: 0.3rem 0;
+  padding: 0 0.5rem;
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-style: italic;
+  line-height: 1.4;
+  color: #3A2A22;
+}
+
+.bouquet-card .bouquet-message::before {
+  content: '“';
+}
+
+.bouquet-card .bouquet-message::after {
+  content: '”';
+}
+
+.bouquet-card .bouquet-from {
+  margin: 0;
+  font-weight: 600;
+  color: #6B5A4E;
+}
+
+.bouquet-date {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #8C7A6B;
+}
+
+.bouquet-card .bouquet-actions {
+  width: 100%;
+  margin-top: 0.6rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed #D9C9B4;
+}
+
+.bouquet-card .fx-small-btn {
+  background: #FFFFFF;
+  border-color: #D9C9B4;
+  color: #3A2A22;
+}
+
+.bouquet-card .filter-clear-link {
+  color: #8C3A2A;
+}
+
+/* ---------- Missões em cartões ---------- */
+.mission-group-title {
+  margin: 1.25rem 0 0.75rem;
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.mission-cards > li {
+  flex: 0 1 16rem;
+}
+
+.mission-card {
+  display: grid;
+  justify-items: start;
+  align-content: start;
+  gap: 0.45rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, var(--mission) 35%, var(--color-border));
+  border-top: 4px solid var(--mission);
+  background:
+    radial-gradient(circle at 100% 0, color-mix(in srgb, var(--mission) 14%, transparent), transparent 60%),
+    var(--color-surface);
+}
+
+.mission-card-kicker {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--mission);
+}
+
+.mission-card > strong {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  line-height: 1.2;
+}
+
+.mission-beads {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin: 0.2rem 0;
+}
+
+.mission-bead {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 50%;
+  border: 1.5px solid color-mix(in srgb, var(--mission) 70%, transparent);
+}
+
+.mission-bead.is-quiz {
+  border-radius: 0.2rem;
+  transform: rotate(45deg) scale(0.85);
+}
+
+.mission-bead.is-done {
+  background: var(--mission);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--mission) 60%, transparent);
+}
+
+.mission-bead.is-now {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 2px;
+}
+
+.mission-card-status {
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+
+.mission-card-hint {
+  color: var(--color-text-soft);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.mission-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.3rem;
+}
+
+.mission-card .journey-mark {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8rem;
+}
+
+/* ---------- Listas de cartões centralizadas ----------
+   Toda lista de cartões fica centralizada, inclusive a última linha incompleta: as grades viram filas que quebram
+   linha (flex-wrap) com os cartões no centro. Todos os cartões de uma lista têm a mesma largura. */
+.library-grid,
+.saint-miracles,
+.miracles-grid,
+.feature-cards,
+.credits-list,
+.scroll-rail.is-static .scroll-rail-track,
+.collection-grid,
+.intention-wall,
+.journey-games,
+.trail-grid,
+.saints-grid,
+.symbols-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.library-grid > * { flex: 0 1 20rem; }
+.saint-miracles > * { flex: 0 1 20rem; }
+.miracles-grid > * { flex: 0 1 21rem; }
+.feature-cards > * { flex: 0 1 26rem; }
+.credits-list > * { flex: 0 1 21rem; }
+.scroll-rail.is-static .scroll-rail-track > * { flex: 0 1 20rem; }
+.collection-grid > * { flex: 0 1 7.5rem; }
+.intention-wall > * { flex: 0 1 19rem; }
+.journey-games > * { flex: 0 1 11rem; }
+.trail-grid > * { flex: 0 1 18rem; }
+.saints-grid > * { flex: 1 1 100%; }
+.symbols-grid > * { flex: 1 1 100%; }
+
+@media (min-width: 640px) {
+  .symbols-grid > * { flex-basis: calc(50% - 0.5rem); max-width: calc(50% - 0.5rem); }
+}
+
+@media (min-width: 720px) {
+  .saints-grid > * { flex-basis: calc(50% - 0.4rem); max-width: calc(50% - 0.4rem); }
+}
+
+@media (min-width: 1024px) {
+  .symbols-grid > * { flex-basis: calc(33.333% - 0.67rem); max-width: calc(33.333% - 0.67rem); }
+}
+
+@media (max-width: 480px) {
+  .miracles-grid > * { flex-basis: 100%; }
+  .journey-games > * { flex-basis: calc(50% - 0.4rem); }
 }

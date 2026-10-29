@@ -18,7 +18,7 @@ const OFFERINGS = [
 const MAX_FLOWERS = 15;
 
 /** O vaso que vai ganhando uma flor para cada oferta, enquanto a pessoa monta o buquê. */
-function BouquetVase({ items }) {
+function BouquetVase({ items, caption = true }) {
   const flowers = OFFERINGS.flatMap((o) => Array.from({ length: items[o.id] ?? 0 }, () => o.color)).slice(
     0,
     MAX_FLOWERS,
@@ -47,9 +47,11 @@ function BouquetVase({ items }) {
         <path className="bouquet-vase-body" d="M54 118h52l-8 44H62z" />
         <path className="bouquet-vase-rim" d="M50 112h60v8H50z" />
       </svg>
-      <figcaption>
-        {total === 0 ? 'Escolha as ofertas para encher o vaso' : `${total} ${total === 1 ? 'oferta' : 'ofertas'}`}
-      </figcaption>
+      {caption && (
+        <figcaption>
+          {total === 0 ? 'Escolha as ofertas para encher o vaso' : `${total} ${total === 1 ? 'oferta' : 'ofertas'}`}
+        </figcaption>
+      )}
     </figure>
   );
 }
@@ -73,21 +75,6 @@ function bouquetText(b) {
     .join('\n')
     .replace(/\n{3,}/g, '\n\n')
     .trim();
-}
-
-// Rosas desenhadas no topo do cartão.
-function Flowers() {
-  return (
-    <svg className="bouquet-flowers" viewBox="0 0 120 60" aria-hidden="true">
-      {[30, 60, 90].map((x, i) => (
-        <g key={x} transform={`translate(${x} ${i === 1 ? 18 : 26})`}>
-          <path className="stem" d={`M0 8 Q${i === 1 ? 0 : (i - 1) * -8} 26 ${(1 - i) * 10} 40`} />
-          <circle className="rose" r="9" />
-          <path className="petal" d="M-5 -1 Q0 -8 5 -1 Q0 4 -5 -1" />
-        </g>
-      ))}
-    </svg>
-  );
 }
 
 function BouquetCard({ bouquet, onRemove }) {
@@ -129,16 +116,31 @@ function BouquetCard({ bouquet, onRemove }) {
 
   return (
     <article className="bouquet-card" data-bouquet={bouquet.id}>
-      <Flowers />
-      <h3>Buquê espiritual para {bouquet.to}</h3>
-      {bouquet.intention && <p className="bouquet-intention">Intenção: {bouquet.intention}</p>}
-      <ul>
-        {describe(bouquet.items).map((l) => (
-          <li key={l}>{l}</li>
+      {/* O mesmo vaso que a pessoa montou, com uma flor para cada oferta */}
+      <span className="bouquet-card-corner is-tl" aria-hidden="true" />
+      <span className="bouquet-card-corner is-br" aria-hidden="true" />
+      <span className="bouquet-card-kicker">Buquê espiritual</span>
+      <h3>para {bouquet.to}</h3>
+      {bouquet.intention && <p className="bouquet-intention">{bouquet.intention}</p>}
+      <BouquetVase items={bouquet.items} caption={false} />
+      <p className="bouquet-card-offer">Ofereço a Deus por você</p>
+      <ul className="bouquet-ribbons">
+        {OFFERINGS.filter((o) => bouquet.items[o.id] > 0).map((o) => (
+          <li key={o.id} style={{ '--flower': o.color }}>
+            <span className="bouquet-ribbon-dot" aria-hidden="true" />
+            {bouquet.items[o.id]} {bouquet.items[o.id] === 1 ? o.one : o.many}
+          </li>
         ))}
       </ul>
-      {bouquet.message && <p className="bouquet-message">{bouquet.message}</p>}
+      {bouquet.message && <blockquote className="bouquet-message">{bouquet.message}</blockquote>}
       {bouquet.from && <p className="bouquet-from">Com carinho, {bouquet.from}</p>}
+      <p className="bouquet-date">
+        {new Date(`${bouquet.created}T12:00`).toLocaleDateString('pt-BR', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+        })}
+      </p>
       <div className="exam-export bouquet-actions">
         {canShare && (
           <button type="button" className="fx-small-btn" onClick={share}>
