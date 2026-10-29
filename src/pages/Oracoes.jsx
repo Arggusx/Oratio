@@ -4,6 +4,7 @@ import { ArrowRight, ChevronDown, ChevronRight, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 import RosaryGuide from '../components/RosaryGuide';
 import SaoBentoSection from '../components/SaoBentoSection';
+import ConfessionGuide from '../components/ConfessionGuide';
 import Candle from '../components/anim/Candle';
 import { AmenButton } from '../components/anim/AnimatedIcons';
 import { LoadMoreButton } from '../components/LoadMore';
@@ -73,6 +74,7 @@ const SECTIONS = [
   { id: 'terco', label: 'Terço Tradicional' },
   { id: 'nordico', label: 'Terço Nórdico' },
   { id: 'oracoes', label: 'Orações' },
+  { id: 'confissao', label: 'Confissão' },
 ];
 
 // Auréola sobre uma figura: ícone do cartão que leva à aba Santos.
@@ -83,18 +85,6 @@ function HaloIcon() {
       <circle cx="24" cy="19" r="6" className="figure" />
       <path d="M12 42c0-8 5.4-13.5 12-13.5S36 34 36 42" className="figure" />
       <path d="M24 31v8M20.5 34.5h7" className="figure" />
-    </svg>
-  );
-}
-
-// Estola cruzada sobre uma folha com marcas: ícone do cartão do exame de consciência.
-function ConfessionIcon() {
-  return (
-    <svg className="feature-card-icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-      <rect x="11" y="7" width="22" height="30" rx="3" className="figure" />
-      <path d="M16 16l2 2 4-4M16 25l2 2 4-4" className="halo" />
-      <path d="M26 17h3M26 26h3" className="figure" />
-      <path d="M30 30l7 11M37 30l-7 11" className="halo" />
     </svg>
   );
 }
@@ -184,29 +174,18 @@ export default function Oracoes() {
             transition={{ duration: 0.35 }}
             className="prayers-search-section"
           >
-            {/* ── Destaques: aba Santos e exame de consciência ── */}
-            <div className="feature-cards h-scroll">
-              <Link to="/home/escola-da-fe?secao=santos" className="feature-card">
-                <HaloIcon />
-                <span className="feature-card-text">
-                  <span className="feature-card-eyebrow">Santos e intercessores</span>
-                  <strong>Conheça a história de cada santo</strong>
-                  <span>
-                    {saints.length} santos, cada um com uma página própria: vida, data da festa e orações
-                  </span>
+            {/* ── Destaque: leva à aba Santos ── */}
+            <Link to="/home/escola-da-fe?secao=santos" className="feature-card">
+              <HaloIcon />
+              <span className="feature-card-text">
+                <span className="feature-card-eyebrow">Santos e intercessores</span>
+                <strong>Conheça a história de cada santo</strong>
+                <span>
+                  {saints.length} santos, cada um com uma página própria: vida, data da festa e orações
                 </span>
-                <ArrowRight size={20} className="feature-card-arrow" aria-hidden="true" />
-              </Link>
-              <Link to="/home/confissao" className="feature-card">
-                <ConfessionIcon />
-                <span className="feature-card-text">
-                  <span className="feature-card-eyebrow">Confissão</span>
-                  <strong>Exame de consciência</strong>
-                  <span>Marque o que se aplica a você, veja como se confessar e reze o Ato de Contrição</span>
-                </span>
-                <ArrowRight size={20} className="feature-card-arrow" aria-hidden="true" />
-              </Link>
-            </div>
+              </span>
+              <ArrowRight size={20} className="feature-card-arrow" aria-hidden="true" />
+            </Link>
 
             <SaoBentoSection />
 
@@ -259,6 +238,17 @@ export default function Oracoes() {
                 Nenhuma oração encontrada.
               </p>
             )}
+          </motion.div>
+        )}
+        {section === 'confissao' && (
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+            <header className="rosary-header">
+              <h2 className="rosary-title">Exame de consciência</h2>
+              <p className="rosary-intro">
+                Prepare-se para a confissão: reze, marque o que se aplica a você e leve a lista com você.
+              </p>
+            </header>
+            <ConfessionGuide />
           </motion.div>
         )}
       </div>

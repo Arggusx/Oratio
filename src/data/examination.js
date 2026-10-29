@@ -1,4 +1,4 @@
-// Exame de consciência organizado pelos Dez Mandamentos e pelos Mandamentos da Igreja.
+// Exame de consciência organizado pelos Dez Mandamentos, pelos Mandamentos da Igreja e pelos pecados capitais.
 // As perguntas são um roteiro para a memória, não uma lista completa: o que não estiver aqui pode ser escrito à mão.
 
 export const examination = [
@@ -78,22 +78,21 @@ export const examination = [
       },
       {
         id: 'm6',
-        title: '6º e 9º mandamentos',
-        subtitle: 'Não pecar contra a castidade e não desejar a mulher (ou o marido) do próximo',
+        title: '6º mandamento',
+        subtitle: 'Não pecar contra a castidade',
         items: [
           'Consumi pornografia',
           'Pratiquei atos impuros sozinho ou com outra pessoa',
           'Tive relações fora do matrimônio',
-          'Fui infiel ao meu cônjuge, em atos ou em pensamento consentido',
-          'Alimentei de propósito pensamentos ou desejos impuros',
+          'Fui infiel ao meu cônjuge',
           'Usei roupas, conversas ou mensagens para provocar desejos impuros',
           'Usei métodos contraceptivos no matrimônio',
         ],
       },
       {
         id: 'm7',
-        title: '7º e 10º mandamentos',
-        subtitle: 'Não roubar e não cobiçar as coisas alheias',
+        title: '7º mandamento',
+        subtitle: 'Não roubar',
         items: [
           'Roubei ou fiquei com algo que não era meu',
           'Não devolvi algo emprestado ou não paguei uma dívida',
@@ -101,7 +100,7 @@ export const examination = [
           'Sonegei impostos ou fraudei documentos',
           'Desperdicei dinheiro ou fui avarento com quem precisava',
           'Danifiquei o que é dos outros ou o que é público',
-          'Senti inveja dos bens ou do sucesso dos outros',
+          'Fui preguiçoso ou desonesto no trabalho ou nos estudos',
         ],
       },
       {
@@ -115,6 +114,28 @@ export const examination = [
           'Julguei os outros de forma precipitada',
           'Revelei segredos que me foram confiados',
           'Fui hipócrita ou fingi o que não sou',
+        ],
+      },
+      {
+        id: 'm9',
+        title: '9º mandamento',
+        subtitle: 'Não desejar a mulher (ou o marido) do próximo',
+        items: [
+          'Alimentei de propósito pensamentos ou desejos impuros',
+          'Desejei uma pessoa casada ou comprometida',
+          'Fui infiel em pensamento, consentindo em fantasias com outra pessoa',
+          'Procurei conteúdos, conversas ou situações que sabia que despertariam desejos impuros',
+        ],
+      },
+      {
+        id: 'm10',
+        title: '10º mandamento',
+        subtitle: 'Não cobiçar as coisas alheias',
+        items: [
+          'Senti inveja dos bens, do sucesso ou da vida dos outros',
+          'Fiquei feliz com o fracasso ou o prejuízo de alguém',
+          'Vivi insatisfeito, sempre querendo ter mais',
+          'Deixei o desejo de ter coisas tomar o lugar de Deus e da família',
         ],
       },
     ],
@@ -137,17 +158,62 @@ export const examination = [
       },
     ],
   },
-];
-
-// Pecados capitais: raízes dos outros pecados, úteis para olhar o que se repete.
-export const capitalSins = [
-  ['Soberba', 'Achar-me melhor que os outros, não aceitar correção, buscar aplausos.'],
-  ['Avareza', 'Apego exagerado ao dinheiro e às coisas.'],
-  ['Luxúria', 'Busca desordenada do prazer sexual.'],
-  ['Ira', 'Explosões de raiva, impaciência, desejo de vingança.'],
-  ['Gula', 'Excesso na comida e na bebida.'],
-  ['Inveja', 'Tristeza pelo bem dos outros.'],
-  ['Preguiça', 'Descuido das obrigações, inclusive as espirituais.'],
+  {
+    id: 'capitais',
+    title: 'Pecados capitais',
+    note: 'São as raízes dos outros pecados. Ver qual deles mais se repete ajuda a saber onde lutar.',
+    commandments: [
+      {
+        id: 'soberba',
+        title: 'Soberba',
+        subtitle: 'Achar-se melhor que os outros',
+        items: [
+          'Achei-me melhor que os outros ou os desprezei',
+          'Não aceitei correção nem admiti meus erros',
+          'Busquei elogios, aplausos ou ser o centro das atenções',
+        ],
+      },
+      {
+        id: 'avareza',
+        title: 'Avareza',
+        subtitle: 'Apego exagerado ao dinheiro e às coisas',
+        items: ['Fui apegado demais ao dinheiro ou às coisas', 'Deixei de ajudar quem precisava, podendo ajudar'],
+      },
+      {
+        id: 'luxuria',
+        title: 'Luxúria',
+        subtitle: 'Busca desordenada do prazer sexual',
+        items: ['Deixei-me dominar pela busca do prazer sexual', 'Tratei outra pessoa como objeto de prazer'],
+      },
+      {
+        id: 'ira',
+        title: 'Ira',
+        subtitle: 'Raiva descontrolada',
+        items: ['Tive explosões de raiva ou fui agressivo', 'Fui impaciente com as pessoas', 'Desejei vingança'],
+      },
+      {
+        id: 'gula',
+        title: 'Gula',
+        subtitle: 'Excesso na comida e na bebida',
+        items: ['Comi ou bebi em excesso', 'Desperdicei comida'],
+      },
+      {
+        id: 'inveja',
+        title: 'Inveja',
+        subtitle: 'Tristeza pelo bem dos outros',
+        items: ['Fiquei triste com o bem ou a alegria dos outros', 'Diminuí as conquistas de alguém por inveja'],
+      },
+      {
+        id: 'preguica',
+        title: 'Preguiça',
+        subtitle: 'Descuido das obrigações, inclusive as espirituais',
+        items: [
+          'Fui preguiçoso nas minhas obrigações de casa, do trabalho ou dos estudos',
+          'Deixei a oração e a vida espiritual de lado por comodismo',
+        ],
+      },
+    ],
+  },
 ];
 
 export const confessionSteps = [

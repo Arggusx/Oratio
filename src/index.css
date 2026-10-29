@@ -6369,16 +6369,14 @@ body {
   color: var(--color-terracotta);
 }
 
-.exam-group,
-.exam-capital {
+.exam-group {
   margin-bottom: 0.6rem;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-surface);
 }
 
-.exam-group summary,
-.exam-capital summary {
+.exam-group summary {
   display: flex;
   align-items: center;
   gap: 0.6rem;
@@ -6387,8 +6385,7 @@ body {
   list-style: none;
 }
 
-.exam-group summary::-webkit-details-marker,
-.exam-capital summary::-webkit-details-marker {
+.exam-group summary::-webkit-details-marker {
   display: none;
 }
 
@@ -6403,10 +6400,6 @@ body {
   font-size: 0.82rem;
 }
 
-.exam-capital summary {
-  justify-content: space-between;
-  font-weight: 600;
-}
 
 .exam-chevron {
   flex: none;
@@ -6509,27 +6502,9 @@ details[open] > summary .exam-chevron {
   flex: none;
 }
 
-.exam-capital > p,
-.exam-capital dl {
-  margin: 0;
-  padding: 0 1rem 0.8rem;
-  color: var(--color-text-soft);
-  line-height: 1.55;
-}
 
-.exam-capital dl div {
-  padding: 0.35rem 0;
-}
 
-.exam-capital dt {
-  font-weight: 700;
-  color: var(--color-text);
-}
 
-.exam-capital dd {
-  margin: 0;
-  font-size: 0.9rem;
-}
 
 .exam-summary {
   margin-top: 2.5rem;
@@ -6737,4 +6712,53 @@ details[open] > summary .exam-chevron {
 
 .cycle-badge.is-next {
   background: var(--color-gold-muted);
+}
+
+.exam-part-note {
+  margin: -0.2rem 0 0.7rem;
+  color: var(--color-text-soft);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.exam-export {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.1rem;
+  padding-top: 1rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-gold) 35%, transparent);
+}
+
+.exam-export-status {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-terracotta);
+}
+
+/* "Imprimir ou PDF": só a lista vai para o papel. */
+@media print {
+  body.print-exam * {
+    visibility: hidden;
+  }
+
+  body.print-exam .exam-summary,
+  body.print-exam .exam-summary * {
+    visibility: visible;
+  }
+
+  body.print-exam .exam-summary {
+    position: absolute;
+    inset: 0 0 auto;
+    border: 0;
+    background: #fff;
+    color: #000;
+  }
+
+  body.print-exam .exam-export,
+  body.print-exam .exam-summary-head button,
+  body.print-exam .exam-remove {
+    display: none;
+  }
 }
