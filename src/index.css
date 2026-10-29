@@ -7741,200 +7741,6 @@ details[open] > summary .exam-chevron {
   background: var(--color-border-soft);
 }
 
-/* ---------- Trilhas: caminho de ilhas ---------- */
-.trail-hint {
-  color: var(--color-text-soft);
-  font-size: 0.92rem;
-}
-
-.trail-map {
-  position: relative;
-  width: min(100%, 26rem);
-  margin: 1.5rem auto 2rem;
-}
-
-.trail-road {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-.trail-road path {
-  fill: none;
-  stroke: color-mix(in srgb, var(--color-gold) 55%, transparent);
-  stroke-width: 4;
-  stroke-dasharray: 2 10;
-  stroke-linecap: round;
-}
-
-.trail-islands {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.trail-island {
-  position: absolute;
-  width: 8.5rem;
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
-
-.trail-island > button {
-  position: relative;
-  display: block;
-  width: 100%;
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.trail-island > button:disabled {
-  cursor: default;
-}
-
-.trail-island > button:focus-visible {
-  outline: 3px solid var(--color-terracotta);
-  outline-offset: 4px;
-  border-radius: 50%;
-}
-
-/* Flutuar: cada ilha sobe e desce devagar, num tempo diferente das outras. */
-.trail-island-float {
-  display: block;
-  animation: island-float 4.2s ease-in-out calc(var(--i) * -0.7s) infinite;
-}
-
-@keyframes island-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-9px); }
-}
-
-.trail-island-svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  overflow: visible;
-  transition: transform 0.25s var(--ease-out), filter 0.25s;
-}
-
-.trail-island > button:not(:disabled):hover .trail-island-svg {
-  transform: scale(1.05);
-}
-
-.trail-island.is-current .trail-island-svg {
-  transform: scale(1.12);
-  filter: drop-shadow(0 0 14px color-mix(in srgb, var(--color-gold) 55%, transparent));
-}
-
-.trail-island.is-new .trail-island-svg {
-  animation: island-unlock 1.2s var(--ease-out);
-}
-
-@keyframes island-unlock {
-  0% { transform: scale(0.85); filter: drop-shadow(0 0 0 var(--color-gold)) grayscale(1); }
-  60% { transform: scale(1.22); filter: drop-shadow(0 0 22px var(--color-gold)); }
-  100% { transform: scale(1.12); }
-}
-
-/* Cores da ilha */
-.ti-shadow { fill: rgba(45, 36, 31, 0.18); }
-.ti-earth { fill: #9A6B47; }
-.ti-roots { fill: none; stroke: #7A5236; stroke-width: 3; stroke-linecap: round; }
-.ti-grass { fill: #5E8C63; }
-.ti-grass-top { fill: #78A97D; }
-.ti-fill { fill: #FFFDF9; stroke: #B28A42; stroke-width: 2; stroke-linejoin: round; }
-.ti-line { fill: none; stroke: #B28A42; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
-.ti-glow { fill: #F7E3A6; opacity: 0.55; }
-
-.is-done .ti-fill { fill: #FFF3CF; stroke: #C8963E; }
-.is-done .ti-glow { opacity: 0.9; }
-
-.is-locked .ti-earth,
-.is-locked .ti-roots,
-.is-locked .ti-grass,
-.is-locked .ti-grass-top,
-.is-locked .ti-icon {
-  filter: grayscale(1);
-  opacity: 0.45;
-}
-
-:root[data-theme='dark'] .ti-shadow { fill: rgba(0, 0, 0, 0.45); }
-
-/* Selos: concluída (check) e trancada (cadeado) */
-.trail-badge {
-  position: absolute;
-  top: 0.2rem;
-  right: 1rem;
-  display: grid;
-  place-items: center;
-  width: 1.6rem;
-  height: 1.6rem;
-  border-radius: 50%;
-  color: #fff;
-  box-shadow: var(--shadow-sm);
-}
-
-.trail-badge.is-done { background: #5E8C63; }
-.trail-badge.is-locked { background: #8C7E6B; }
-
-/* Balão da ilha da vez */
-.trail-bubble {
-  position: absolute;
-  top: -1.9rem;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 0.3rem 0.8rem;
-  border-radius: var(--radius-full);
-  background: var(--color-terracotta);
-  color: #fff;
-  font-size: 0.78rem;
-  font-weight: 700;
-  white-space: nowrap;
-  box-shadow: var(--shadow-md);
-  animation: bubble-bob 1.6s ease-in-out infinite;
-}
-
-.trail-bubble::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: -5px;
-  border: 6px solid transparent;
-  border-bottom: 0;
-  border-top-color: var(--color-terracotta);
-  transform: translateX(-50%);
-}
-
-@keyframes bubble-bob {
-  50% { transform: translate(-50%, -4px); }
-}
-
-.trail-island-label {
-  display: grid;
-  margin-top: 0.1rem;
-  font-size: 0.82rem;
-  font-weight: 600;
-  line-height: 1.25;
-  color: var(--color-text);
-}
-
-.trail-island-label small {
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--color-terracotta);
-}
-
-.trail-island.is-locked .trail-island-label {
-  color: var(--color-text-muted);
-}
-
 .trail-sheet-text {
   line-height: 1.65;
 }
@@ -8107,3 +7913,357 @@ details[open] > summary .exam-chevron {
   font: inherit;
   cursor: pointer;
 }
+
+/* ---------- Trilhas: escolher a ilha e o caminho ---------- */
+.trail-title-accent {
+  color: var(--color-gold);
+}
+
+.trail-card {
+  position: relative;
+  display: grid;
+  justify-items: start;
+  gap: 0.35rem;
+  padding: 1.25rem;
+  border-radius: 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--trail) 40%, var(--color-border));
+  background:
+    radial-gradient(circle at 30% 20%, color-mix(in srgb, var(--trail) 22%, transparent), transparent 60%),
+    var(--color-surface);
+  color: var(--color-text);
+  overflow: hidden;
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s;
+}
+
+.trail-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px color-mix(in srgb, var(--trail) 22%, transparent);
+}
+
+.trail-card > strong,
+.trail-card-body > strong {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+}
+
+.trail-card-desc {
+  color: var(--color-text-soft);
+  font-size: 0.92rem;
+}
+
+.trail-card-art {
+  justify-self: center;
+  width: min(100%, 12rem);
+  animation: island-float 4.6s ease-in-out infinite;
+}
+
+.trail-card.is-featured {
+  margin: 1.5rem 0 1rem;
+  padding: 1.5rem;
+}
+
+.trail-card.is-featured .trail-card-art {
+  width: min(100%, 15rem);
+}
+
+.trail-card-body {
+  display: grid;
+  gap: 0.45rem;
+  width: 100%;
+}
+
+@media (min-width: 720px) {
+  .trail-card.is-featured {
+    grid-template-columns: 1fr 1.1fr;
+    align-items: center;
+    gap: 1.5rem;
+  }
+}
+
+.trail-chip {
+  justify-self: start;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-full);
+  border: 1px solid color-mix(in srgb, var(--trail) 60%, transparent);
+  background: color-mix(in srgb, var(--trail) 14%, transparent);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.trail-card-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  margin-top: 0.3rem;
+}
+
+.trail-card-progress .year-bar {
+  flex: 1;
+}
+
+.trail-card-progress small {
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.trail-card-cta {
+  justify-content: center;
+  margin-top: 0.5rem;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1rem;
+}
+
+/* Página da trilha */
+.trail-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 1.1rem;
+  border: 1px solid color-mix(in srgb, var(--trail) 35%, var(--color-border));
+  background: var(--color-surface);
+}
+
+.trail-head h1 {
+  margin: 0.15rem 0 0;
+  font-family: var(--font-serif);
+  font-size: clamp(1.3rem, 4vw, 1.8rem);
+  line-height: 1.15;
+}
+
+.trail-head .fx-small-btn {
+  flex: none;
+}
+
+.trail-hint {
+  margin: 1rem 0 0;
+  color: var(--color-text-soft);
+  font-size: 0.95rem;
+}
+
+.trail-map {
+  position: relative;
+  width: min(100%, 34rem);
+  margin: 0.5rem auto 2rem;
+}
+
+.trail-road {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.trail-road path {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-text-muted) 45%, transparent);
+  stroke-width: 2.5;
+  stroke-dasharray: 3 7;
+  stroke-linecap: round;
+}
+
+.trail-road path.is-lit {
+  stroke: var(--trail);
+  stroke-width: 3;
+}
+
+.trail-hero {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: min(15rem, 62%);
+  transform: translateX(-50%);
+  filter: drop-shadow(0 0 24px color-mix(in srgb, var(--trail) 45%, transparent));
+}
+
+.trail-hero .trail-island-svg {
+  animation: island-float 5s ease-in-out infinite;
+}
+
+.trail-islands {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Cada parada: a ilha de um lado e o nome do outro */
+.trail-stop {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 62%;
+  transform: translateY(-50%);
+}
+
+.trail-stop.is-left {
+  left: 30%;
+  margin-left: -5.5rem;
+}
+
+.trail-stop.is-right {
+  right: 30%;
+  margin-right: -5.5rem;
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.trail-stop-island {
+  position: relative;
+  flex: none;
+  width: 11rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.trail-stop-island:disabled {
+  cursor: default;
+}
+
+.trail-stop-island:focus-visible {
+  outline: 3px solid var(--color-terracotta);
+  outline-offset: 4px;
+  border-radius: 50%;
+}
+
+.trail-island-float {
+  display: block;
+  animation: island-float 4.2s ease-in-out calc(var(--i) * -0.7s) infinite;
+}
+
+@keyframes island-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+
+.trail-island-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  transition: transform 0.25s var(--ease-out), filter 0.25s;
+}
+
+.trail-stop-island:not(:disabled):hover .trail-island-svg {
+  transform: scale(1.05);
+}
+
+.trail-stop.is-current .trail-island-svg {
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 16px color-mix(in srgb, var(--trail, var(--color-gold)) 60%, transparent));
+}
+
+.trail-stop.is-new .trail-island-svg {
+  animation: island-unlock 1.2s var(--ease-out);
+}
+
+@keyframes island-unlock {
+  0% { transform: scale(0.85); filter: grayscale(1); }
+  60% { transform: scale(1.18); filter: drop-shadow(0 0 22px var(--color-gold)); }
+  100% { transform: scale(1.08); }
+}
+
+.trail-stop-label {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.trail-stop-label small {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+}
+
+.trail-stop-label strong {
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+.trail-stop.is-current .trail-stop-label small {
+  color: var(--trail, var(--color-terracotta));
+}
+
+.trail-stop.is-locked .trail-stop-label {
+  opacity: 0.55;
+}
+
+@media (max-width: 560px) {
+  .trail-stop-island {
+    width: 8.5rem;
+  }
+
+  .trail-stop.is-left {
+    margin-left: -4.25rem;
+  }
+
+  .trail-stop.is-right {
+    margin-right: -4.25rem;
+  }
+
+  .trail-stop {
+    width: 74%;
+  }
+
+  .trail-stop-label strong {
+    font-size: 0.95rem;
+  }
+}
+
+/* Cores da ilha */
+.ti-shadow { fill: rgba(45, 36, 31, 0.18); }
+.ti-earth { fill: #9A6B47; }
+.ti-roots { fill: none; stroke: #7A5236; stroke-width: 3; stroke-linecap: round; }
+.ti-grass { fill: #5E8C63; }
+.ti-grass-top { fill: #78A97D; }
+.ti-fill { fill: #FFFDF9; stroke: var(--island, #B28A42); stroke-width: 2; stroke-linejoin: round; }
+.ti-line { fill: none; stroke: var(--island, #B28A42); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.ti-glow { fill: color-mix(in srgb, var(--island, #F7E3A6) 35%, #FFF6D8); opacity: 0.6; }
+
+.is-done .ti-fill { fill: #FFF3CF; }
+.is-done .ti-glow { opacity: 0.95; }
+
+.is-locked .ti-earth,
+.is-locked .ti-roots,
+.is-locked .ti-grass,
+.is-locked .ti-grass-top,
+.is-locked .ti-icon {
+  filter: grayscale(1);
+  opacity: 0.45;
+}
+
+:root[data-theme='dark'] .ti-shadow { fill: rgba(0, 0, 0, 0.45); }
+
+.trail-badge {
+  position: absolute;
+  top: 0.4rem;
+  right: 1.2rem;
+  display: grid;
+  place-items: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  color: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+.trail-badge.is-done { background: #5E8C63; }
+.trail-badge.is-locked { background: #8C7E6B; }

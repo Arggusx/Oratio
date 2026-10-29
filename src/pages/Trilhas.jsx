@@ -16,30 +16,65 @@ export function TrailSteps({ trail, plan }) {
   );
 }
 
+function TrailProgress({ trail, plan }) {
+  const done = plan?.done.length ?? 0;
+  return (
+    <span className="trail-card-progress">
+      <span className="year-bar">
+        <span style={{ width: `${(done / trail.steps.length) * 100}%`, background: trail.color }} />
+      </span>
+      <small>
+        {done}/{trail.steps.length}
+      </small>
+    </span>
+  );
+}
+
+/** "Escolha uma ilha": cada trilha é uma ilha. A que está em andamento fica em destaque. */
 function TrailList() {
   const { trails: plans } = useJourney();
+  const inProgress = trails.find((t) => plans[t.id] && plans[t.id].done.length < t.steps.length);
+  const featured = inProgress ?? trails.find((t) => !plans[t.id]) ?? trails[0];
+  const others = trails.filter((t) => t.id !== featured.id);
+  const featuredPlan = plans[featured.id];
+  const nextStep = featured.steps.find((_, i) => !featuredPlan?.done.includes(i + 1));
+
   return (
     <main className="page">
-      <div className="page-title-row">
-        <div>
-          <span className="eyebrow">Escola da Fé</span>
-          <h1 className="section-title">Trilhas da fé</h1>
-        </div>
-      </div>
+      <span className="eyebrow">Trilhas da fé · {trails.length}</span>
+      <h1 className="section-title">
+        Escolha uma <span className="trail-title-accent">ilha</span>
+      </h1>
       <p className="lead">
-        Caminhos de ilhas, uma etapa em cada, com algo para viver depois. A próxima ilha abre quando você conclui a
-        atual; a sugestão é fazer uma por dia.
+        Cada trilha é uma ilha, com uma etapa curta em cada parada. A próxima abre quando você conclui a atual; a
+        sugestão é fazer uma por dia.
       </p>
-      <div className="novena-list">
-        {trails.map((t) => (
-          <Link key={t.id} to={`/home/trilhas/${t.id}`} className="novena-card">
-            <span className="novena-card-text">
-              <strong>{t.title}</strong>
-              <span>
-                {t.steps.length} dias · {t.intro}
-              </span>
+
+      <Link to={`/home/trilhas/${featured.id}`} className="trail-card is-featured" style={{ '--trail': featured.color }}>
+        <span className="trail-card-art">
+          <TrailIsland icon={featured.icon} color={featured.color} />
+        </span>
+        <span className="trail-card-body">
+          <span className="trail-chip">{inProgress ? 'Em andamento' : 'Comece por aqui'}</span>
+          <strong>{featured.title}</strong>
+          <span className="trail-card-desc">{featured.short}</span>
+          <TrailProgress trail={featured} plan={featuredPlan} />
+          <span className="btn trail-card-cta">
+            {featuredPlan ? 'Continuar' : 'Começar'}
+            {nextStep && ` · ${nextStep.title}`}
+          </span>
+        </span>
+      </Link>
+
+      <div className="trail-grid">
+        {others.map((t) => (
+          <Link key={t.id} to={`/home/trilhas/${t.id}`} className="trail-card" style={{ '--trail': t.color }}>
+            <span className="trail-card-art">
+              <TrailIsland icon={t.icon} color={t.color} />
             </span>
-            {plans[t.id] ? <TrailSteps trail={t} plan={plans[t.id]} /> : <ArrowRight size={18} aria-hidden="true" />}
+            <strong>{t.title}</strong>
+            <span className="trail-card-desc">{t.short}</span>
+            <TrailProgress trail={t} plan={plans[t.id]} />
           </Link>
         ))}
       </div>
@@ -47,9 +82,8 @@ function TrailList() {
   );
 }
 
-// Deslocamento lateral de cada ilha (em % da largura do caminho): desce em ziguezague, como uma estrada.
-const ZIGZAG = [0, 22, 32, 22, 0, -22, -32, -22];
-const STEP_Y = 150; // distância vertical entre as ilhas, em px
+const STEP_Y = 175; // distância vertical entre as paradas, em px
+const HERO_H = 230; // espaço da ilha grande no topo
 
 /** Janela de uma etapa: o texto, o "para hoje" e o botão de concluir. */
 function StepSheet({ trail, index, done, onComplete, onClose }) {
@@ -104,8 +138,8 @@ function StepSheet({ trail, index, done, onComplete, onClose }) {
 }
 
 /**
- * A trilha como um caminho de ilhas flutuantes em ziguezague. Só a próxima ilha está aberta:
- * a seguinte libera quando a atual é concluída.
+ * A trilha: a ilha grande no topo e as paradas descendo, uma à esquerda e outra à direita.
+ * Só a próxima parada está aberta; a seguinte libera quando a atual é concluída.
  */
 function TrailPage({ trail }) {
   const { trails: plans } = useJourney();
@@ -116,7 +150,7 @@ function TrailPage({ trail }) {
   const islandRefs = useRef([]);
   const total = trail.steps.length;
   const finished = done.length === total;
-  // A ilha atual é a primeira ainda não concluída.
+  // A parada atual é a primeira ainda não concluída.
   const current = trail.steps.findIndex((_, i) => !done.includes(i + 1));
   const next = trails.find((t) => t.id !== trail.id && plans[t.id]?.done.length !== t.steps.length);
   const closeSheet = useCallback(() => setOpen(null), []);
@@ -130,7 +164,7 @@ function TrailPage({ trail }) {
     const day = open + 1;
     if (!done.includes(day)) journey.togglePlanDay('trails', trail.id, day);
     setOpen(null);
-    // Leva a pessoa até a ilha que acabou de abrir, com um brilho rápido.
+    // Leva a pessoa até a parada que acabou de abrir, com um brilho rápido.
     if (day < total) {
       setJustUnlocked(day);
       setTimeout(() => islandRefs.current[day]?.scrollIntoView({ block: 'center', behavior: 'smooth' }), 150);
@@ -138,37 +172,51 @@ function TrailPage({ trail }) {
     }
   };
 
-  const height = (total - 1) * STEP_Y + 170;
-  const points = trail.steps.map((_, i) => ({ x: 50 + ZIGZAG[i % ZIGZAG.length], y: i * STEP_Y + 70 }));
-  const roadPath = points
-    .map((p, i) => {
-      if (i === 0) return `M${p.x} ${p.y}`;
-      const prev = points[i - 1];
-      const midY = (prev.y + p.y) / 2;
-      return `C${prev.x} ${midY} ${p.x} ${midY} ${p.x} ${p.y}`;
-    })
+  // Paradas alternando: esquerda, direita, esquerda...
+  const points = trail.steps.map((_, i) => ({ x: i % 2 === 0 ? 30 : 70, y: HERO_H + i * STEP_Y + 80 }));
+  const height = HERO_H + (total - 1) * STEP_Y + 200;
+  const roadPath = [`M50 ${HERO_H - 20}`, `C50 ${HERO_H + 30} ${points[0].x} ${HERO_H + 20} ${points[0].x} ${points[0].y}`]
+    .concat(
+      points.slice(1).map((p, i) => {
+        const prev = points[i];
+        const midY = (prev.y + p.y) / 2;
+        return `C${prev.x} ${midY} ${p.x} ${midY} ${p.x} ${p.y}`;
+      })
+    )
     .join(' ');
+  // Até onde a estrada fica acesa: da ilha grande até a parada atual.
+  const litUntil = current === -1 ? total - 1 : current;
 
   return (
-    <main className="page novena-page trail-page">
-      <Link to="/home/trilhas" className="saint-back-link">
-        <ArrowLeft size={16} />
-        Todas as trilhas
-      </Link>
-      <span className="eyebrow">Trilha</span>
-      <h1 className="section-title">{trail.title}</h1>
-      <p className="lead">{trail.intro}</p>
-      <p className="trail-hint">
-        {plan
-          ? `${done.length} de ${total} etapas concluídas. A sugestão é fazer uma por dia.`
-          : 'Toque na primeira ilha para começar. A próxima abre quando você concluir a atual.'}
-      </p>
+    <main className="page trail-page" style={{ '--trail': trail.color }}>
+      <header className="trail-head">
+        <div>
+          <span className="eyebrow">
+            Trilha · {done.length}/{total} etapas
+          </span>
+          <h1>{trail.title}</h1>
+        </div>
+        <Link to="/home/trilhas" className="fx-small-btn">
+          <ArrowLeft size={16} aria-hidden="true" /> Ilhas
+        </Link>
+      </header>
+      <p className="trail-hint">{trail.intro}</p>
 
       <div className="trail-map" style={{ height }}>
-        {/* Estrada pontilhada que liga as ilhas */}
         <svg className="trail-road" viewBox={`0 0 100 ${height}`} preserveAspectRatio="none" aria-hidden="true">
           <path d={roadPath} vectorEffect="non-scaling-stroke" />
+          <path
+            className="is-lit"
+            d={roadPath}
+            vectorEffect="non-scaling-stroke"
+            pathLength="1"
+            style={{ strokeDasharray: `${(litUntil + 1) / (total + 0.4)} 1` }}
+          />
         </svg>
+
+        <div className="trail-hero">
+          <TrailIsland icon={trail.icon} color={trail.color} />
+        </div>
 
         <ol className="trail-islands">
           {trail.steps.map((step, i) => {
@@ -176,21 +224,25 @@ function TrailPage({ trail }) {
             const state = isDone ? 'done' : i === current ? 'current' : 'locked';
             const p = points[i];
             const status = { done: 'concluída', current: 'próxima', locked: 'trancada' }[state];
+            const side = i % 2 === 0 ? 'is-left' : 'is-right';
+            const kicker =
+              state === 'current' ? (plan ? 'Continuar aqui' : 'Começar aqui') : `Etapa ${String(i + 1).padStart(2, '0')}`;
             return (
               <li
                 key={step.title}
                 ref={(el) => (islandRefs.current[i] = el)}
-                className={`trail-island is-${state} ${justUnlocked === i ? 'is-new' : ''}`}
-                style={{ left: `${p.x}%`, top: p.y, '--i': i }}
+                className={`trail-stop is-${state} ${side} ${justUnlocked === i ? 'is-new' : ''}`}
+                style={{ top: p.y, '--i': i }}
               >
                 <button
                   type="button"
+                  className="trail-stop-island"
                   onClick={() => openStep(i)}
                   disabled={state === 'locked'}
                   aria-label={`Etapa ${i + 1}: ${step.title} (${status})`}
                 >
                   <span className="trail-island-float">
-                    <TrailIsland icon={step.icon} state={state} />
+                    <TrailIsland icon={step.icon} state={state} color={trail.color} />
                   </span>
                   {state === 'done' && (
                     <span className="trail-badge is-done" aria-hidden="true">
@@ -202,15 +254,10 @@ function TrailPage({ trail }) {
                       <Lock size={12} />
                     </span>
                   )}
-                  {state === 'current' && (
-                    <span className="trail-bubble" aria-hidden="true">
-                      {plan ? 'Continuar' : 'Começar'}
-                    </span>
-                  )}
                 </button>
-                <span className="trail-island-label" aria-hidden="true">
-                  <small>{i + 1}º dia</small>
-                  {step.title}
+                <span className="trail-stop-label" aria-hidden="true">
+                  <small>{kicker}</small>
+                  <strong>{step.title}</strong>
                 </span>
               </li>
             );
@@ -225,7 +272,7 @@ function TrailPage({ trail }) {
           </p>
           {next && (
             <Link to={`/home/trilhas/${next.id}`} className="btn">
-              Próxima trilha: {next.title}
+              Próxima ilha: {next.title}
               <ArrowRight size={16} aria-hidden="true" />
             </Link>
           )}
