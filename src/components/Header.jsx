@@ -7,6 +7,7 @@ const links = [
   ['Terço e Orações', '/home/oracoes'],
   ['Calendário', '/home/calendario'],
   ['Escola da Fé', '/home/escola-da-fe'],
+  ['Jornada', '/jornada'],
 ];
 
 // No celular, os links ficam na barra inferior (BottomNav); aqui sobram a marca e o tema.

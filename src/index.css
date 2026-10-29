@@ -329,7 +329,7 @@ h1, h2, h3, h4,
   right: 0;
   bottom: 0;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   padding: 0.35rem 0.25rem calc(0.35rem + env(safe-area-inset-bottom));
   background: rgba(253, 251, 247, 0.94);
   backdrop-filter: blur(16px);
@@ -6784,4 +6784,134 @@ details[open] > summary .exam-chevron {
   .confession-rail .page-title-row .section-title {
     font-size: 2rem;
   }
+}
+
+
+/* ---------- Jornada ---------- */
+.journey-card {
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+}
+
+.journey-card-head h2 {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+}
+
+.journey-card-head p {
+  margin: 0 0 1.1rem;
+  color: var(--color-text-soft);
+  line-height: 1.6;
+}
+
+.diary-grid {
+  display: grid;
+  gap: 0.4rem;
+  max-width: 26rem;
+}
+
+.diary-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.4rem;
+}
+
+.diary-head span {
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.diary-day {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  min-width: 0.9rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-border);
+  color: var(--color-gold-muted);
+}
+
+.diary-day.is-prayed {
+  border-color: var(--color-gold);
+  background: radial-gradient(circle at 40% 35%, #FFE8A3, var(--color-gold) 70%);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--color-gold) 60%, transparent);
+}
+
+.diary-day.is-grace {
+  border-style: dashed;
+  border-color: var(--color-gold);
+  background: color-mix(in srgb, var(--color-gold) 14%, transparent);
+}
+
+.diary-day.is-future {
+  opacity: 0.35;
+}
+
+.diary-day.is-today {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 2px;
+}
+
+.diary-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1rem 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8rem;
+  color: var(--color-text-soft);
+}
+
+.diary-legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.diary-legend .diary-day {
+  width: 1rem;
+}
+
+.journey-mark-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+
+.journey-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.65rem 1.1rem;
+  border-radius: var(--radius-full);
+  border: 1.5px dashed var(--color-gold);
+  background: transparent;
+  color: var(--color-text);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--duration-fast), border-color var(--duration-fast);
+}
+
+.journey-mark svg {
+  color: var(--color-gold-muted);
+}
+
+.journey-mark.is-done {
+  border-style: solid;
+  background: color-mix(in srgb, var(--color-gold) 18%, var(--color-surface));
+}
+
+.journey-mark-link {
+  color: var(--color-terracotta);
+  font-weight: 600;
+  font-size: 0.9rem;
 }

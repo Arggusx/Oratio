@@ -45,6 +45,11 @@ const PAGE_META = {
     title: 'Exame de consciência para a confissão — Oratio',
     description: 'Roteiro para se confessar: perguntas pelos Dez Mandamentos e preceitos da Igreja, lista para marcar, como se confessar e Ato de Contrição.',
   },
+  '/jornada': {
+    title: 'Jornada: seu caminho de oração — Oratio',
+    description: 'Seu progresso pessoal: dias de oração, novenas, coleção de santos e milagres visitados. Fica só no seu aparelho.',
+    noindex: true,
+  },
   '/creditos': {
     title: 'Créditos das imagens — Oratio',
     description: 'Autores e licenças das pinturas, ícones e fotografias de santos e de Nossa Senhora usadas no Oratio.',

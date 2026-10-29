@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { BookOpen, CalendarDays, GraduationCap, Home } from 'lucide-react';
+import { BookOpen, CalendarDays, Compass, GraduationCap, Home } from 'lucide-react';
 
 // Contas e cruz: ícone de "Terço e Orações" (o lucide não tem um terço).
 function RosaryIcon({ size = 22 }) {
@@ -22,6 +22,7 @@ const items = [
   { label: 'Terço', to: '/home/oracoes', Icon: RosaryIcon },
   { label: 'Calendário', to: '/home/calendario', Icon: CalendarDays },
   { label: 'Escola', to: '/home/escola-da-fe', Icon: GraduationCap },
+  { label: 'Jornada', to: '/jornada', Icon: Compass },
 ];
 
 /** Navegação principal no celular: fica fixa no rodapé da tela, ao alcance do polegar. */
