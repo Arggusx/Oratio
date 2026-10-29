@@ -2,18 +2,13 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { X } from 'lucide-react';
 import { saints, formatFeast } from '../../data/saints';
+import { GLASS, MONTHS, completeMonths, saintsOf } from '../../data/saintMonths';
 import { SaintInitial } from '../SaintsDirectory';
 import { journey, useJourney } from '../../utils/journeyStore';
 import GameIntro from '../GameIntro';
 
-const MONTHS = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
 const monthName = (m) => new Date(2026, Number(m) - 1, 1).toLocaleDateString('pt-BR', { month: 'long' });
 const thisMonth = String(new Date().getMonth() + 1).padStart(2, '0');
-
-// Cor do vidro de cada mês na rosácea, como os vitrais das catedrais.
-const GLASS = ['#2F5DA8', '#B23A2E', '#D9A21B', '#3F8C5A', '#7A3E9E', '#C8402A', '#2F7F9E', '#B8860B', '#9E2F5D', '#4F6FB5', '#6B8E23', '#A0522D'];
-
-const saintsOf = (m) => saints.filter((s) => s.feast.startsWith(m));
 
 /** A rosácea: uma pétala de vitral para cada mês; acende quando todos os santos do mês foram guardados. */
 function RoseWindow({ complete, onOpen }) {
@@ -169,7 +164,7 @@ export default function SaintCollection() {
   const [open, setOpen] = useState(null);
   const close = useCallback(() => setOpen(null), []);
 
-  const complete = MONTHS.filter((m) => saintsOf(m).every((s) => collected.includes(s.slug)));
+  const complete = completeMonths(collected);
   const reveal = complete.find((m) => !state.rewardsSeen.includes(`vitral:${m}`));
   const closeReveal = useCallback(() => reveal && journey.markRewardSeen(`vitral:${reveal}`), [reveal]);
   // O mês atual vem primeiro; depois os seguintes, dando a volta no ano.
