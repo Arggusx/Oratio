@@ -30,6 +30,7 @@ export const eucharisticMiracles = [
     link: EXHIBITION + 'scheda_b.html?nat=italia&wh=lanciano',
     place: 'Lanciano',
     country: 'Itália',
+    coords: [42.23, 14.39], // latitude, longitude (para o mapa da Jornada)
     year: 750,
     yearLabel: 'Século VIII',
     summary:
@@ -42,6 +43,7 @@ export const eucharisticMiracles = [
     link: EXHIBITION + 'scheda.html?nat=italia&wh=ferrara',
     place: 'Ferrara',
     country: 'Itália',
+    coords: [44.84, 11.62], // latitude, longitude (para o mapa da Jornada)
     year: 1171,
     yearLabel: '1171',
     summary:
@@ -54,6 +56,7 @@ export const eucharisticMiracles = [
     link: EXHIBITION + 'scheda_b.html?nat=spagna&wh=daroca',
     place: 'Daroca',
     country: 'Espanha',
+    coords: [41.11, -1.42], // latitude, longitude (para o mapa da Jornada)
     year: 1239,
     yearLabel: '1239',
     summary:
@@ -66,6 +69,7 @@ export const eucharisticMiracles = [
     link: EXHIBITION + 'scheda_b.html?nat=portogallo&wh=santarem',
     place: 'Santarém',
     country: 'Portugal',
+    coords: [39.24, -8.69], // latitude, longitude (para o mapa da Jornada)
     year: 1247,
     yearLabel: 'Século XIII',
     summary:
@@ -78,6 +82,7 @@ export const eucharisticMiracles = [
     link: EXHIBITION + 'scheda_b.html?nat=italia&wh=bolsena',
     place: 'Bolsena e Orvieto',
     country: 'Itália',
+    coords: [42.64, 11.99], // latitude, longitude (para o mapa da Jornada)
     year: 1263,
     yearLabel: '1263',
     summary:
@@ -90,6 +95,7 @@ export const eucharisticMiracles = [
     link: EXHIBITION + 'scheda_b.html?nat=germania&wh=walldurn',
     place: 'Walldürn',
     country: 'Alemanha',
+    coords: [49.58, 9.37], // latitude, longitude (para o mapa da Jornada)
     year: 1330,
     yearLabel: '1330',
     summary:
@@ -102,6 +108,7 @@ export const eucharisticMiracles = [
     link: EXHIBITION + 'scheda.html?nat=italia&wh=cascia',
     place: 'Cássia',
     country: 'Itália',
+    coords: [42.72, 13.01], // latitude, longitude (para o mapa da Jornada)
     year: 1330,
     yearLabel: '1330',
     summary:
@@ -114,6 +121,7 @@ export const eucharisticMiracles = [
     link: EXHIBITION + 'scheda_b.html?nat=olanda&wh=amsterdam',
     place: 'Amsterdã',
     country: 'Holanda',
+    coords: [52.37, 4.9], // latitude, longitude (para o mapa da Jornada)
     year: 1345,
     yearLabel: '1345',
     summary:
@@ -126,6 +134,7 @@ export const eucharisticMiracles = [
     link: EXHIBITION + 'scheda_b.html?nat=croazia&wh=ludbreg',
     place: 'Ludbreg',
     country: 'Croácia',
+    coords: [46.25, 16.62], // latitude, longitude (para o mapa da Jornada)
     year: 1411,
     yearLabel: '1411',
     summary:
@@ -138,6 +147,7 @@ export const eucharisticMiracles = [
     link: EXHIBITION + 'scheda.html?nat=francia&wh=faverney',
     place: 'Faverney',
     country: 'França',
+    coords: [47.77, 6.1], // latitude, longitude (para o mapa da Jornada)
     year: 1608,
     yearLabel: '1608',
     summary:
@@ -150,6 +160,7 @@ export const eucharisticMiracles = [
     link: EXHIBITION + 'scheda.html?nat=italia&wh=caterinadasiena',
     place: 'Siena',
     country: 'Itália',
+    coords: [43.32, 11.33], // latitude, longitude (para o mapa da Jornada)
     year: 1730,
     yearLabel: '1730',
     summary:
@@ -162,6 +173,7 @@ export const eucharisticMiracles = [
     link: EXHIBITION + 'scheda.html?nat=venezuela&wh=betania',
     place: 'Betânia',
     country: 'Venezuela',
+    coords: [10.16, -66.89], // latitude, longitude (para o mapa da Jornada)
     year: 1991,
     yearLabel: '1991',
     summary:
@@ -174,6 +186,7 @@ export const eucharisticMiracles = [
     link: EXHIBITION + 'scheda_c.html?nat=argentina&wh=buenosaires',
     place: 'Buenos Aires',
     country: 'Argentina',
+    coords: [-34.6, -58.38], // latitude, longitude (para o mapa da Jornada)
     year: 1996,
     yearLabel: '1992 a 1996',
     summary:
@@ -186,6 +199,7 @@ export const eucharisticMiracles = [
     link: EXHIBITION + 'scheda_b.html?nat=messico&wh=tixtla',
     place: 'Tixtla',
     country: 'México',
+    coords: [17.57, -99.4], // latitude, longitude (para o mapa da Jornada)
     year: 2006,
     yearLabel: '2006',
     summary:
@@ -198,6 +212,7 @@ export const eucharisticMiracles = [
     link: EXHIBITION + 'scheda_c.html?nat=polonia&wh=sokolka',
     place: 'Sokółka',
     country: 'Polônia',
+    coords: [53.41, 23.5], // latitude, longitude (para o mapa da Jornada)
     year: 2008,
     yearLabel: '2008',
     summary:
@@ -210,6 +225,7 @@ export const eucharisticMiracles = [
     link: EXHIBITION + 'scheda_b.html?nat=polonia&wh=legnica',
     place: 'Legnica',
     country: 'Polônia',
+    coords: [51.21, 16.16], // latitude, longitude (para o mapa da Jornada)
     year: 2013,
     yearLabel: '2013',
     summary:

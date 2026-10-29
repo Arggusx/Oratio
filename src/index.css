@@ -329,7 +329,7 @@ h1, h2, h3, h4,
   right: 0;
   bottom: 0;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   padding: 0.35rem 0.25rem calc(0.35rem + env(safe-area-inset-bottom));
   background: rgba(253, 251, 247, 0.94);
   backdrop-filter: blur(16px);
@@ -2305,6 +2305,11 @@ h1, h2, h3, h4,
 
   .subnav-segmented:has(> button:nth-child(4)) button {
     border-radius: var(--radius-md);
+  }
+
+  /* Cinco ou seis abas (ex.: Jornada): três por linha. */
+  .subnav-segmented:has(> button:nth-child(5)) {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -6784,4 +6789,2098 @@ details[open] > summary .exam-chevron {
   .confession-rail .page-title-row .section-title {
     font-size: 2rem;
   }
+}
+
+
+/* ---------- Jornada ---------- */
+.journey-card {
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+}
+
+.journey-card-head h2 {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+}
+
+.journey-card-head p {
+  margin: 0 0 1.1rem;
+  color: var(--color-text-soft);
+  line-height: 1.6;
+}
+
+.diary-grid {
+  display: grid;
+  gap: 0.4rem;
+  max-width: 26rem;
+}
+
+.diary-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.4rem;
+}
+
+.diary-head span {
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.diary-day {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  min-width: 0.9rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-border);
+  color: var(--color-gold-muted);
+}
+
+.diary-day.is-prayed {
+  border-color: var(--color-gold);
+  background: radial-gradient(circle at 40% 35%, #FFE8A3, var(--color-gold) 70%);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--color-gold) 60%, transparent);
+}
+
+.diary-day.is-grace {
+  border-style: dashed;
+  border-color: var(--color-gold);
+  background: color-mix(in srgb, var(--color-gold) 14%, transparent);
+}
+
+.diary-day.is-future {
+  opacity: 0.35;
+}
+
+.diary-day.is-today {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 2px;
+}
+
+.diary-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1rem 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8rem;
+  color: var(--color-text-soft);
+}
+
+.diary-legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.diary-legend .diary-day {
+  width: 1rem;
+}
+
+.journey-mark-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+
+.journey-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.65rem 1.1rem;
+  border-radius: var(--radius-full);
+  border: 1.5px dashed var(--color-gold);
+  background: transparent;
+  color: var(--color-text);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--duration-fast), border-color var(--duration-fast);
+}
+
+.journey-mark svg {
+  color: var(--color-gold-muted);
+}
+
+.journey-mark.is-done {
+  border-style: solid;
+  background: color-mix(in srgb, var(--color-gold) 18%, var(--color-surface));
+}
+
+.journey-mark-link {
+  color: var(--color-terracotta);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* ---------- Novenas ---------- */
+.novena-list {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.novena-card,
+.mission-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  transition: border-color var(--duration-fast), box-shadow var(--duration-fast);
+}
+
+.novena-card:hover,
+.mission-item:hover {
+  border-color: var(--color-gold);
+  box-shadow: var(--shadow-sm);
+}
+
+.novena-card-text,
+.mission-item > span {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.novena-card-text span,
+.mission-item small {
+  color: var(--color-text-soft);
+  font-size: 0.85rem;
+}
+
+.novena-beads {
+  display: flex;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.novena-bead {
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-gold);
+  transition: background 0.4s, box-shadow 0.4s;
+}
+
+.novena-beads.is-sm .novena-bead {
+  width: 0.7rem;
+  height: 0.7rem;
+}
+
+.novena-bead.is-done {
+  background: radial-gradient(circle at 40% 35%, #FFE8A3, var(--color-gold) 70%);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--color-gold) 60%, transparent);
+}
+
+.novena-bead.is-today {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 2px;
+}
+
+.novena-when {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.novena-progress {
+  display: grid;
+  justify-items: start;
+  gap: 0.6rem;
+  margin: 1.5rem 0;
+  padding: 1.1rem;
+  border: 1px solid var(--color-gold);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-gold) 8%, var(--color-surface));
+}
+
+.novena-progress p {
+  margin: 0;
+}
+
+.novena-progress .filter-clear-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.novena-prayer {
+  margin-bottom: 1.5rem;
+}
+
+.novena-days {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.novena-day {
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.novena-day.is-today {
+  border-color: var(--color-terracotta);
+}
+
+.novena-day.is-done {
+  border-color: var(--color-gold);
+}
+
+.novena-day-number {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-terracotta);
+}
+
+.novena-day h3 {
+  margin: 0.2rem 0 0.3rem;
+  font-size: 1.05rem;
+}
+
+.novena-day p {
+  margin: 0 0 0.6rem;
+  color: var(--color-text-soft);
+  line-height: 1.55;
+}
+
+.novena-day .journey-mark {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.85rem;
+}
+
+.mission-list {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.mission-more {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-text-soft);
+}
+
+.mission-more a {
+  color: var(--color-terracotta);
+  font-weight: 600;
+}
+
+/* Toques discretos: guardar santo e marcar milagre */
+.saint-collect,
+.miracle-visit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.6rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  border: 1px dashed var(--color-gold);
+  background: transparent;
+  color: var(--color-text-soft);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.saint-collect.is-done,
+.miracle-visit.is-done {
+  border-style: solid;
+  background: color-mix(in srgb, var(--color-gold) 16%, var(--color-surface));
+  color: var(--color-text);
+}
+
+/* Coleção de santos */
+.collection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+
+
+/* Mapa dos milagres */
+.miracle-maps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem;
+}
+
+.miracle-map {
+  margin: 0;
+  padding: 0.5rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: color-mix(in srgb, #6E8FD6 8%, var(--color-surface));
+}
+
+.miracle-map svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.miracle-map figcaption {
+  margin-top: 0.3rem;
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+
+
+
+
+
+
+
+
+/* Buquê espiritual */
+.bouquet-form {
+  display: grid;
+  gap: 0.9rem;
+  max-width: 34rem;
+}
+
+.bouquet-form label {
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.bouquet-form .search {
+  padding-left: 1rem;
+}
+
+.bouquet-form textarea.search {
+  resize: vertical;
+  border-radius: var(--radius-md);
+  padding-top: 0.7rem;
+}
+
+.bouquet-form .btn {
+  justify-self: start;
+}
+
+.bouquet-items {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.bouquet-items legend {
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.bouquet-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.45rem 0.6rem 0.45rem 0.9rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-surface);
+  font-size: 0.9rem;
+}
+
+.bouquet-item.is-on {
+  border-color: var(--color-gold);
+}
+
+.bouquet-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bouquet-stepper button {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.bouquet-stepper button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.bouquet-stepper output {
+  min-width: 1.5rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+.bouquet-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1rem;
+  margin-top: 1.75rem;
+}
+
+.bouquet-card {
+  padding: 1.1rem 1.25rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-gold);
+  background:
+    radial-gradient(circle at 50% 0, color-mix(in srgb, #C77D9A 14%, transparent), transparent 60%),
+    var(--color-surface);
+  text-align: center;
+}
+
+.bouquet-flowers {
+  width: 7rem;
+  height: 3.5rem;
+}
+
+.bouquet-flowers .stem { fill: none; stroke: #5E8C63; stroke-width: 2; }
+.bouquet-flowers .rose { fill: #C2486A; }
+.bouquet-flowers .petal { fill: #E27A96; }
+
+.bouquet-card h3 {
+  margin: 0.3rem 0;
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+}
+
+.bouquet-card ul {
+  margin: 0.6rem 0;
+  padding: 0;
+  list-style: none;
+  line-height: 1.7;
+}
+
+.bouquet-intention,
+.bouquet-from {
+  margin: 0;
+  color: var(--color-text-soft);
+  font-size: 0.9rem;
+}
+
+.bouquet-message {
+  margin: 0.6rem 0;
+  font-style: italic;
+}
+
+.bouquet-actions {
+  justify-content: center;
+}
+
+@media print {
+  body.print-bouquet * {
+    visibility: hidden;
+  }
+
+  body.print-bouquet .bouquet-card.is-printing,
+  body.print-bouquet .bouquet-card.is-printing * {
+    visibility: visible;
+  }
+
+  body.print-bouquet .bouquet-card.is-printing {
+    position: absolute;
+    inset: 0 0 auto;
+    background: #fff;
+    color: #000;
+  }
+
+  body.print-bouquet .bouquet-actions {
+    display: none;
+  }
+}
+
+/* O ano como jornada */
+.year-journey {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.year-journey svg {
+  flex: none;
+  width: min(100%, 14rem);
+  height: auto;
+  color: var(--color-border);
+}
+
+.year-base {
+  fill: none;
+  stroke: var(--color-border-soft);
+  stroke-width: 18;
+  opacity: 0.4;
+}
+
+.year-day {
+  stroke-width: 0.9;
+  opacity: 0.35;
+}
+
+.year-day.is-done {
+  stroke-width: 2;
+  opacity: 1;
+}
+
+.year-seasons {
+  flex: 1 1 14rem;
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.year-seasons li {
+  display: grid;
+  grid-template-columns: 8.5rem 1fr auto;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+}
+
+.year-season-name {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.year-swatch {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 3px;
+}
+
+.year-bar {
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--color-border-soft);
+  overflow: hidden;
+}
+
+.year-bar span {
+  display: block;
+  height: 100%;
+}
+
+.year-seasons small {
+  color: var(--color-text-muted);
+}
+
+/* Quiz da Escola da Fé */
+.quiz {
+  margin-top: 2.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--color-gold);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-gold) 7%, var(--color-surface));
+}
+
+.quiz-title {
+  margin: 0 0 0.4rem;
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+}
+
+.quiz-count {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-terracotta);
+}
+
+.quiz-question {
+  margin: 0.4rem 0 0.9rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.quiz-options {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.quiz-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.95rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.quiz-option:not(:disabled):hover {
+  border-color: var(--color-gold);
+}
+
+.quiz-option:disabled {
+  cursor: default;
+}
+
+.quiz-option.is-right {
+  border-color: #5E8C63;
+  background: color-mix(in srgb, #5E8C63 14%, var(--color-surface));
+}
+
+.quiz-option.is-wrong {
+  border-color: #B23A2E;
+  background: color-mix(in srgb, #B23A2E 10%, var(--color-surface));
+}
+
+.quiz-option.is-dim {
+  opacity: 0.55;
+}
+
+.quiz-why {
+  margin-top: 0.9rem;
+  line-height: 1.6;
+}
+
+.quiz-next {
+  display: flex;
+  margin-top: 0.8rem;
+}
+
+.quiz-end {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.quiz-end p {
+  margin: 0;
+}
+
+/* Trilhas */
+.novena-day.is-locked {
+  opacity: 0.6;
+}
+
+.trail-locked {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.trail-today {
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-gold) 10%, transparent);
+}
+
+/* ---------- Comunidade ---------- */
+.community-inline {
+  font-size: 0.88rem;
+  color: var(--color-text-soft);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--color-gold) 60%, transparent);
+  text-underline-offset: 3px;
+}
+
+.community-inline.is-block {
+  display: inline-block;
+  margin: 0.4rem 0 1rem;
+}
+
+.community-numbers {
+  display: grid;
+  gap: 1rem;
+  margin: 1.5rem 0 2.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--color-gold);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-gold) 8%, var(--color-surface));
+}
+
+.community-counter {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--color-gold-muted);
+}
+
+.community-counter p {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1.1rem;
+}
+
+.community-goal {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.community-goal-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.community-goal small,
+.community-novenas {
+  color: var(--color-text-soft);
+  font-size: 0.85rem;
+}
+
+.community-novenas {
+  margin: 0;
+  padding-left: 1.1rem;
+  line-height: 1.7;
+}
+
+.community-novenas a {
+  color: var(--color-terracotta);
+  font-weight: 600;
+}
+
+.intention-form {
+  display: grid;
+  gap: 0.6rem;
+  margin-bottom: 1.75rem;
+}
+
+.intention-form label {
+  font-weight: 600;
+}
+
+.intention-form textarea.search {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  resize: vertical;
+}
+
+.intention-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.intention-form-row .search {
+  flex: 1 1 12rem;
+  padding-left: 1rem;
+}
+
+.intention-form-note {
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.intention-form-error {
+  margin: 0;
+  color: #B23A2E;
+  font-weight: 600;
+}
+
+.intention-wall {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 0.9rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.intention-note {
+  display: grid;
+  gap: 0.6rem;
+  align-content: space-between;
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.intention-note p {
+  margin: 0;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.intention-note-foot {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.intention-note-foot small {
+  flex: 1;
+  color: var(--color-text-muted);
+}
+
+.intention-note .journey-mark {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.82rem;
+}
+
+.intention-count {
+  margin-left: 0.2rem;
+  padding: 0 0.4rem;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-gold) 25%, transparent);
+}
+
+.intention-report {
+  display: grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.intention-report:hover {
+  background: var(--color-border-soft);
+}
+
+.trail-sheet-text {
+  line-height: 1.65;
+}
+
+.trail-sheet-done {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 700;
+  color: #5E8C63;
+}
+
+.trail-finish {
+  justify-items: start;
+}
+
+.trail-restart {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.novena-page .saint-back-link {
+  display: flex;
+  width: fit-content;
+  margin-bottom: 0.9rem;
+}
+
+/* Jornada: tela inicial */
+.journey-today {
+  margin: 1.25rem 0 2rem;
+  padding: 1.1rem 1.25rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-gold);
+  background:
+    radial-gradient(circle at 100% 0, color-mix(in srgb, var(--color-gold) 22%, transparent), transparent 55%),
+    color-mix(in srgb, var(--color-surface) 92%, transparent);
+}
+
+.journey-today h2,
+.journey-games-title {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+}
+
+.journey-today ol {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: today;
+}
+
+.journey-today li a {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-soft);
+  color: var(--color-text);
+  counter-increment: today;
+  transition: border-color var(--duration-fast), transform var(--duration-fast);
+}
+
+.journey-today li a::before {
+  content: counter(today);
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  background: var(--color-terracotta);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.journey-today li a:hover {
+  border-color: var(--color-gold);
+  transform: translateX(3px);
+}
+
+.journey-today li a > span {
+  flex: 1;
+  display: grid;
+  gap: 0.1rem;
+}
+
+.journey-today small {
+  color: var(--color-text-soft);
+}
+
+.journey-today-done {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.journey-games {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+  gap: 0.8rem;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.journey-game {
+  display: grid;
+  justify-items: start;
+  gap: 0.35rem;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  border-radius: 1.1rem;
+  border: 1px solid color-mix(in srgb, var(--game) 35%, var(--color-border));
+  border-bottom-width: 4px;
+  background:
+    radial-gradient(circle at 100% 0, color-mix(in srgb, var(--game) 20%, transparent), transparent 65%),
+    var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.15s var(--ease-out), border-bottom-width 0.15s;
+}
+
+.journey-game:hover {
+  transform: translateY(-3px);
+}
+
+.journey-game:active {
+  transform: translateY(1px);
+  border-bottom-width: 2px;
+}
+
+.journey-game-icon {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.9rem;
+  background: var(--game);
+  color: #fff;
+  box-shadow: 0 4px 0 color-mix(in srgb, var(--game) 60%, #000);
+  margin-bottom: 0.3rem;
+}
+
+.journey-game strong {
+  font-size: 0.98rem;
+  line-height: 1.25;
+}
+
+.journey-game small {
+  color: var(--color-text-soft);
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+.journey-back {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* ---------- Trilhas: escolher a ilha e o caminho ---------- */
+.trail-title-accent {
+  color: var(--color-gold);
+}
+
+.trail-card {
+  position: relative;
+  display: grid;
+  justify-items: start;
+  gap: 0.35rem;
+  padding: 1.25rem;
+  border-radius: 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--trail) 40%, var(--color-border));
+  background:
+    radial-gradient(circle at 30% 20%, color-mix(in srgb, var(--trail) 22%, transparent), transparent 60%),
+    var(--color-surface);
+  color: var(--color-text);
+  overflow: hidden;
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s;
+}
+
+.trail-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px color-mix(in srgb, var(--trail) 22%, transparent);
+}
+
+.trail-card > strong,
+.trail-card-body > strong {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+}
+
+.trail-card-desc {
+  color: var(--color-text-soft);
+  font-size: 0.92rem;
+}
+
+.trail-card-art {
+  justify-self: center;
+  width: min(100%, 12rem);
+  animation: island-float 4.6s ease-in-out infinite;
+}
+
+.trail-card.is-featured {
+  margin: 1.5rem 0 1rem;
+  padding: 1.5rem;
+}
+
+.trail-card.is-featured .trail-card-art {
+  width: min(100%, 15rem);
+}
+
+.trail-card-body {
+  display: grid;
+  gap: 0.45rem;
+  width: 100%;
+}
+
+@media (min-width: 720px) {
+  .trail-card.is-featured {
+    grid-template-columns: 1fr 1.1fr;
+    align-items: center;
+    gap: 1.5rem;
+  }
+}
+
+.trail-chip {
+  justify-self: start;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-full);
+  border: 1px solid color-mix(in srgb, var(--trail) 60%, transparent);
+  background: color-mix(in srgb, var(--trail) 14%, transparent);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.trail-card-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  margin-top: 0.3rem;
+}
+
+.trail-card-progress .year-bar {
+  flex: 1;
+}
+
+.trail-card-progress small {
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.trail-card-cta {
+  justify-content: center;
+  margin-top: 0.5rem;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1rem;
+}
+
+/* Página da trilha */
+.trail-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 1.1rem;
+  border: 1px solid color-mix(in srgb, var(--trail) 35%, var(--color-border));
+  background: var(--color-surface);
+}
+
+.trail-head h1 {
+  margin: 0.15rem 0 0;
+  font-family: var(--font-serif);
+  font-size: clamp(1.3rem, 4vw, 1.8rem);
+  line-height: 1.15;
+}
+
+.trail-head .fx-small-btn {
+  flex: none;
+}
+
+.trail-hint {
+  margin: 1rem 0 0;
+  color: var(--color-text-soft);
+  font-size: 0.95rem;
+}
+
+.trail-map {
+  position: relative;
+  width: min(100%, 34rem);
+  margin: 0.5rem auto 2rem;
+}
+
+.trail-road {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.trail-road path {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-text-muted) 45%, transparent);
+  stroke-width: 2.5;
+  stroke-dasharray: 3 7;
+  stroke-linecap: round;
+}
+
+.trail-road path.is-lit {
+  stroke: var(--trail);
+  stroke-width: 3;
+}
+
+.trail-hero {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: min(15rem, 62%);
+  transform: translateX(-50%);
+  filter: drop-shadow(0 0 24px color-mix(in srgb, var(--trail) 45%, transparent));
+}
+
+.trail-hero .trail-island-svg {
+  animation: island-float 5s ease-in-out infinite;
+}
+
+.trail-islands {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Cada parada: a ilha de um lado e o nome do outro */
+.trail-stop {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 62%;
+  transform: translateY(-50%);
+}
+
+.trail-stop.is-left {
+  left: 30%;
+  margin-left: -5.5rem;
+}
+
+.trail-stop.is-right {
+  right: 30%;
+  margin-right: -5.5rem;
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.trail-stop-island {
+  position: relative;
+  flex: none;
+  width: 11rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.trail-stop-island:disabled {
+  cursor: default;
+}
+
+.trail-stop-island:focus-visible {
+  outline: 3px solid var(--color-terracotta);
+  outline-offset: 4px;
+  border-radius: 50%;
+}
+
+.trail-island-float {
+  display: block;
+  animation: island-float 4.2s ease-in-out calc(var(--i) * -0.7s) infinite;
+}
+
+@keyframes island-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+
+.trail-island-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  transition: transform 0.25s var(--ease-out), filter 0.25s;
+}
+
+.trail-stop-island:not(:disabled):hover .trail-island-svg {
+  transform: scale(1.05);
+}
+
+.trail-stop.is-current .trail-island-svg {
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 16px color-mix(in srgb, var(--trail, var(--color-gold)) 60%, transparent));
+}
+
+.trail-stop.is-new .trail-island-svg {
+  animation: island-unlock 1.2s var(--ease-out);
+}
+
+@keyframes island-unlock {
+  0% { transform: scale(0.85); filter: grayscale(1); }
+  60% { transform: scale(1.18); filter: drop-shadow(0 0 22px var(--color-gold)); }
+  100% { transform: scale(1.08); }
+}
+
+.trail-stop-label {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.trail-stop-label small {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+}
+
+.trail-stop-label strong {
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+.trail-stop.is-current .trail-stop-label small {
+  color: var(--trail, var(--color-terracotta));
+}
+
+.trail-stop.is-locked .trail-stop-label {
+  opacity: 0.55;
+}
+
+@media (max-width: 560px) {
+  .trail-stop-island {
+    width: 8.5rem;
+  }
+
+  .trail-stop.is-left {
+    margin-left: -4.25rem;
+  }
+
+  .trail-stop.is-right {
+    margin-right: -4.25rem;
+  }
+
+  .trail-stop {
+    width: 74%;
+  }
+
+  .trail-stop-label strong {
+    font-size: 0.95rem;
+  }
+}
+
+/* Cores da ilha */
+.ti-shadow { fill: rgba(45, 36, 31, 0.18); }
+.ti-earth { fill: #9A6B47; }
+.ti-roots { fill: none; stroke: #7A5236; stroke-width: 3; stroke-linecap: round; }
+.ti-grass { fill: #5E8C63; }
+.ti-grass-top { fill: #78A97D; }
+.ti-fill { fill: #FFFDF9; stroke: var(--island, #B28A42); stroke-width: 2; stroke-linejoin: round; }
+.ti-line { fill: none; stroke: var(--island, #B28A42); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.ti-glow { fill: color-mix(in srgb, var(--island, #F7E3A6) 35%, #FFF6D8); opacity: 0.6; }
+
+.is-done .ti-fill { fill: #FFF3CF; }
+.is-done .ti-glow { opacity: 0.95; }
+
+.is-locked .ti-earth,
+.is-locked .ti-roots,
+.is-locked .ti-grass,
+.is-locked .ti-grass-top,
+.is-locked .ti-icon {
+  filter: grayscale(1);
+  opacity: 0.45;
+}
+
+:root[data-theme='dark'] .ti-shadow { fill: rgba(0, 0, 0, 0.45); }
+
+.trail-badge {
+  position: absolute;
+  top: 0.4rem;
+  right: 1.2rem;
+  display: grid;
+  place-items: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  color: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+.trail-badge.is-done { background: #5E8C63; }
+.trail-badge.is-locked { background: #8C7E6B; }
+
+/* ---------- Ilhas de quiz ---------- */
+.trail-section-title {
+  margin: 2.5rem 0 0.25rem;
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+}
+
+.trail-section-title + .trail-grid {
+  margin-top: 1rem;
+}
+
+.trail-section-title + .trail-hint {
+  margin: 0 0 1rem;
+}
+
+.quiz-invite {
+  margin-top: 2.5rem;
+}
+
+@media (min-width: 720px) {
+  .quiz-invite {
+    grid-template-columns: 10rem 1fr;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .quiz-invite .trail-card-art {
+    width: 10rem;
+  }
+}
+
+.quiz-page .trail-head {
+  margin-bottom: 1.25rem;
+}
+
+.quiz-game,
+.quiz-result,
+.quiz-setup {
+  display: grid;
+  gap: 1rem;
+  max-width: 40rem;
+  margin: 0 auto;
+}
+
+.quiz-progress {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.quiz-progress span {
+  flex: 1;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: var(--color-border-soft);
+  transition: background 0.3s;
+}
+
+.quiz-progress span.is-now {
+  background: color-mix(in srgb, var(--trail) 45%, var(--color-border-soft));
+}
+
+.quiz-progress span.is-right {
+  background: #5E8C63;
+}
+
+.quiz-progress span.is-wrong {
+  background: #B23A2E;
+}
+
+.quiz-game .quiz-count {
+  margin: 0;
+  color: var(--trail);
+}
+
+.quiz-game .quiz-question {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(1.35rem, 4.5vw, 1.8rem);
+  line-height: 1.25;
+}
+
+.quiz-game .quiz-options {
+  gap: 0.65rem;
+}
+
+.quiz-game .quiz-option {
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-width: 2px;
+  border-bottom-width: 4px;
+  border-radius: 0.9rem;
+  font-size: 1rem;
+  transition: transform 0.12s, border-color 0.15s, background 0.15s;
+}
+
+.quiz-game .quiz-option:not(:disabled):hover {
+  border-color: var(--trail);
+  transform: translateY(-2px);
+}
+
+.quiz-game .quiz-option:not(:disabled):active {
+  transform: translateY(1px);
+  border-bottom-width: 2px;
+}
+
+.quiz-game .quiz-option > span:nth-child(2) {
+  flex: 1;
+}
+
+.quiz-letter {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.55rem;
+  border: 2px solid var(--color-border);
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+}
+
+.quiz-option.is-right .quiz-letter {
+  border-color: #5E8C63;
+  background: #5E8C63;
+  color: #fff;
+}
+
+.quiz-option.is-wrong .quiz-letter {
+  border-color: #B23A2E;
+  background: #B23A2E;
+  color: #fff;
+}
+
+.quiz-game .quiz-why {
+  margin: 0;
+  padding: 1rem 1.1rem;
+  border-radius: 0.9rem;
+  border: 1px solid;
+}
+
+.quiz-why.is-right {
+  border-color: #5E8C63;
+  background: color-mix(in srgb, #5E8C63 12%, var(--color-surface));
+}
+
+.quiz-why.is-wrong {
+  border-color: #B23A2E;
+  background: color-mix(in srgb, #B23A2E 9%, var(--color-surface));
+}
+
+.quiz-why p {
+  margin: 0.35rem 0 0;
+  line-height: 1.6;
+}
+
+.quiz-game .quiz-next {
+  display: inline-flex;
+  margin-top: 0.85rem;
+}
+
+.quiz-score {
+  display: grid;
+  justify-items: center;
+  gap: 0.35rem;
+  padding: 1.75rem 1rem;
+  border-radius: 1.1rem;
+  border: 1px solid var(--trail);
+  background:
+    radial-gradient(circle at 50% 0, color-mix(in srgb, var(--trail) 22%, transparent), transparent 65%),
+    var(--color-surface);
+  text-align: center;
+}
+
+.quiz-score strong {
+  font-family: var(--font-serif);
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.quiz-score span {
+  color: var(--color-text-soft);
+  max-width: 28rem;
+}
+
+.quiz-review h2 {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+}
+
+.quiz-review ul {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.quiz-review li {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-surface);
+  line-height: 1.5;
+}
+
+.quiz-review li > span:last-child {
+  color: var(--color-text-soft);
+  font-size: 0.92rem;
+}
+
+.quiz-review-answer {
+  color: #5E8C63;
+  font-weight: 700;
+}
+
+.quiz-result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.quiz-setup .filter-group {
+  border-bottom: 0;
+}
+
+.quiz-setup-note {
+  display: block;
+  margin-top: 0.5rem;
+  color: var(--color-text-muted);
+}
+
+.quiz-start {
+  justify-self: start;
+}
+
+/* ---------- Como funciona (todos os jogos) ---------- */
+.game-intro {
+  margin: 1.25rem 0;
+  padding: 1.1rem 1.25rem;
+  border-radius: 1rem;
+  border: 1px dashed var(--color-gold);
+  background: color-mix(in srgb, var(--color-gold) 8%, var(--color-surface));
+}
+
+.game-intro header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.game-intro header strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 1.05rem;
+}
+
+.game-intro ol {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+  padding-left: 1.3rem;
+  line-height: 1.55;
+}
+
+.game-intro-note {
+  margin: 0 0 0.75rem;
+  color: var(--color-text-soft);
+  font-size: 0.9rem;
+}
+
+.game-intro-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 1rem 0;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-soft);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.game-intro-toggle:hover {
+  border-color: var(--color-gold);
+  color: var(--color-text);
+}
+
+/* ---------- Mapa dos milagres (desenhado) ---------- */
+.miracle-map {
+  padding: 0;
+  overflow: hidden;
+  background: none;
+}
+
+.miracle-map svg {
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.miracle-map figcaption {
+  margin: 0;
+  padding: 0.45rem;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+}
+
+.map-sea {
+  fill: #CFE0EA;
+}
+
+.map-land {
+  fill: #EFE6D2;
+  stroke: #B9A47E;
+  stroke-width: 0.5;
+}
+
+.map-borders {
+  fill: none;
+  stroke: #C9B795;
+  stroke-width: 0.4;
+  stroke-dasharray: 1.5 1.5;
+}
+
+:root[data-theme='dark'] .map-sea { fill: #142231; }
+:root[data-theme='dark'] .map-land { fill: #2B241D; stroke: #5A4A36; }
+:root[data-theme='dark'] .map-borders { stroke: #4A3D2E; }
+
+.map-pin {
+  cursor: pointer;
+  outline: none;
+}
+
+.map-pin-hit {
+  fill: transparent;
+}
+
+.map-pin-ring {
+  fill: none;
+  stroke: var(--color-gold);
+  stroke-width: 0;
+  opacity: 0;
+}
+
+.map-pin-drop {
+  fill: #8C7E6B;
+  stroke: #fff;
+  stroke-width: 0.8;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transition: transform 0.2s var(--ease-out);
+}
+
+.map-pin-dot {
+  fill: #fff;
+}
+
+.map-pin:hover .map-pin-drop,
+.map-pin:focus-visible .map-pin-drop,
+.map-pin.is-selected .map-pin-drop {
+  transform: scale(1.3);
+}
+
+.map-pin.is-visited .map-pin-drop {
+  fill: var(--color-gold);
+  filter: drop-shadow(0 0 3px var(--color-gold));
+}
+
+.map-pin.is-visited .map-pin-ring {
+  stroke-width: 1.2;
+  animation: pin-ring 2.4s ease-out infinite;
+}
+
+.map-pin.is-selected .map-pin-drop {
+  fill: var(--color-terracotta);
+}
+
+@keyframes pin-ring {
+  from { r: 3; opacity: 0.9; }
+  to { r: 12; opacity: 0; }
+}
+
+.map-info {
+  margin-top: 1rem;
+}
+
+.map-info-card {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-gold);
+  background: var(--color-surface);
+  animation: fadeIn 0.3s var(--ease-out);
+}
+
+.map-info-card h3 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+}
+
+.map-info-card h3 small {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.map-info-card p {
+  margin: 0;
+  line-height: 1.6;
+  color: var(--color-text-soft);
+}
+
+.map-info-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.map-info-actions .miracle-visit {
+  margin-top: 0;
+}
+
+.map-info-link {
+  color: var(--color-terracotta);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.map-hint {
+  margin: 0;
+  color: var(--color-text-soft);
+}
+
+.map-credit {
+  margin: 0.75rem 0 0;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.trail-random-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.75rem;
+  padding: 0.65rem 1.1rem;
+  border-radius: var(--radius-full);
+  border: 1px dashed var(--color-gold);
+  color: var(--color-text);
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.trail-random-link:hover {
+  background: color-mix(in srgb, var(--color-gold) 12%, transparent);
+}
+
+/* ---------- Jogos: velas, cartas e vaso ---------- */
+/* Caminho de oração com velas */
+.diary-day {
+  aspect-ratio: auto;
+  border: 0;
+  border-radius: 0.5rem;
+  padding: 0.15rem 0;
+  background: color-mix(in srgb, var(--color-border-soft) 45%, transparent);
+}
+
+.diary-day.is-prayed,
+.diary-day.is-grace {
+  background: color-mix(in srgb, var(--color-gold) 14%, transparent);
+  box-shadow: none;
+}
+
+.diary-candle {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 2.4rem;
+}
+
+.diary-candle-body {
+  fill: #EDE3D2;
+  stroke: #C9B795;
+  stroke-width: 0.8;
+}
+
+.diary-candle-wick {
+  stroke: #6B5B4A;
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+.diary-candle-flame {
+  fill: #F2B544;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: candle-flicker 1.4s ease-in-out infinite alternate;
+}
+
+.diary-candle-halo {
+  fill: #FFE8A3;
+  opacity: 0.45;
+}
+
+.diary-candle-star {
+  fill: var(--color-gold);
+}
+
+.is-prayed .diary-candle-body,
+.diary-legend li:first-child .diary-candle-body {
+  fill: #FFF6E0;
+}
+
+.is-empty .diary-candle-body,
+.is-future .diary-candle-body {
+  fill: color-mix(in srgb, #EDE3D2 60%, transparent);
+}
+
+.diary-legend .diary-candle {
+  width: 0.9rem;
+}
+
+:root[data-theme='dark'] .diary-candle-body { fill: #4A3F33; stroke: #6B5B4A; }
+:root[data-theme='dark'] .is-prayed .diary-candle-body { fill: #F3E7CF; }
+
+/* Coleção: cartas que viram */
+.collection-filters {
+  margin-bottom: 1rem;
+}
+
+.collection-grid {
+  grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+}
+
+.collection-card {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  perspective: 600px;
+}
+
+.collection-card-inner {
+  position: relative;
+  display: grid;
+  width: 100%;
+  min-height: 9.5rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.5s var(--ease-out);
+}
+
+.collection-card.is-flipped .collection-card-inner {
+  transform: rotateY(180deg);
+}
+
+.collection-face {
+  grid-area: 1 / 1;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 0.3rem;
+  padding: 0.75rem 0.5rem;
+  border-radius: 0.9rem;
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-surface);
+  font-size: 0.75rem;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--color-text-muted);
+  backface-visibility: hidden;
+}
+
+.collection-face strong {
+  font-size: 0.8rem;
+  color: var(--color-text);
+}
+
+.collection-face.is-back {
+  transform: rotateY(180deg);
+  border-color: var(--color-gold);
+  background: color-mix(in srgb, var(--color-gold) 10%, var(--color-surface));
+}
+
+.collection-card.is-collected .collection-face.is-front {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-gold) 40%, transparent), 0 6px 14px rgba(94, 59, 36, 0.08);
+}
+
+.collection-card:not(.is-collected) .collection-face.is-front .saint-initial {
+  filter: grayscale(1) brightness(0.55) contrast(0.8);
+  opacity: 0.55;
+}
+
+.collection-card-link {
+  justify-self: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--color-terracotta);
+}
+
+/* Buquê: vaso que se enche de flores */
+.bouquet-layout {
+  display: grid;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+@media (min-width: 760px) {
+  .bouquet-layout {
+    grid-template-columns: 15rem 1fr;
+  }
+
+  .bouquet-vase {
+    position: sticky;
+    top: 6rem;
+  }
+}
+
+.bouquet-vase {
+  margin: 0;
+  justify-self: center;
+  width: min(100%, 15rem);
+  text-align: center;
+}
+
+.bouquet-vase svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.bouquet-vase figcaption {
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+}
+
+.bouquet-stem {
+  fill: none;
+  stroke: #5E8C63;
+  stroke-width: 2;
+}
+
+.bouquet-flower {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: flower-grow 0.45s var(--ease-out) both;
+}
+
+.bouquet-flower-center {
+  fill: #E3B55A;
+}
+
+@keyframes flower-grow {
+  from { transform: scale(0.3); opacity: 0; }
+}
+
+.bouquet-vase-body {
+  fill: #B88A5A;
+}
+
+.bouquet-vase-rim {
+  fill: #9A6B47;
 }

@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { ArrowLeft, ArrowRight, ChevronDown, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import MassGesturesSection from '../components/MassGesturesSection';
 import SymbolsSection from '../components/SymbolsSection';
 import MiraclesCatalog from '../components/MiraclesCatalog';
@@ -13,8 +13,45 @@ import { LoadMoreButton } from '../components/LoadMore';
 import { useLoadMore } from '../utils/useLoadMore';
 import { eucharisticMiracles } from '../data/eucharisticMiracles';
 import Angel from '../components/anim/Angel';
+import TrailIsland from '../components/TrailIsland';
+import { getTrail, trails } from '../data/trails';
 
 const countryCount = new Set(eucharisticMiracles.map((m) => m.country)).size;
+
+// Cada aba convida para a ilha do mesmo assunto, onde estão as etapas e o quiz.
+const ISLAND_FOR_SECTION = { curiosidades: 'sete-sacramentos', missa: 'missa-7-dias', simbolos: 'simbolos', santos: 'santos' };
+
+function QuizInvite({ section }) {
+  const island = getTrail(ISLAND_FOR_SECTION[section]);
+  if (!island) return null;
+  return (
+    <Link to={`/home/trilhas/${island.id}`} className="trail-card quiz-invite" style={{ '--trail': island.color }}>
+      <span className="trail-card-art">
+        <TrailIsland icon={island.icon} color={island.color} />
+      </span>
+      <span className="trail-card-body">
+        <span className="trail-chip">Ilha · etapas e quiz</span>
+        <strong>{island.title}</strong>
+        <span className="trail-card-desc">
+          Siga o caminho da ilha: etapas curtas e um quiz que fica mais difícil, até o desafio final.
+        </span>
+      </span>
+    </Link>
+  );
+}
+
+// Caminho com marcos: ícone do cartão das trilhas.
+function TrailIcon() {
+  return (
+    <svg className="feature-card-icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+      <path d="M8 40c10 0 6-12 16-12s6-12 16-12" className="figure" />
+      <circle cx="8" cy="40" r="3" className="halo" />
+      <circle cx="24" cy="28" r="3" className="halo" />
+      <circle cx="40" cy="16" r="3" className="figure" />
+      <path d="M40 13V5l6 3-6 3" className="figure" />
+    </svg>
+  );
+}
 
 // Ostensório: a Hóstia no centro de raios dourados, sobre a base.
 function MonstranceIcon() {
@@ -249,6 +286,15 @@ function CuriosidadesSection() {
           </span>
           <ArrowRight size={20} className="feature-card-arrow" aria-hidden="true" />
         </button>
+        <Link to="/home/trilhas" className="feature-card">
+          <TrailIcon />
+          <span className="feature-card-text">
+            <span className="feature-card-eyebrow">Uma etapa por dia</span>
+            <strong>Trilhas da fé</strong>
+            <span>{trails.map((t) => t.title).join(' · ')}</span>
+          </span>
+          <ArrowRight size={20} className="feature-card-arrow" aria-hidden="true" />
+        </Link>
       </div>
 
       {/* ── Search bar ── */}
@@ -425,6 +471,8 @@ export default function EscolaDaFe() {
         {section === 'simbolos' && <SymbolsSection />}
         {section === 'curiosidades' && <CuriosidadesSection />}
         {section === 'santos' && <SantosSection />}
+        {/* No fim de cada aba, um convite para a ilha de quiz do assunto */}
+        <QuizInvite section={section} />
       </motion.div>
     </main>
   );

@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 import Feedback from './components/Feedback';
 import Home from './pages/Home';
 import usePageMeta from './utils/usePageMeta';
+import { SeasonContext, useSeasonTheme } from './utils/useSeasonTheme';
 import Angel from './components/anim/Angel';
 import SiteBackground from './components/anim/SiteBackground';
 import RosaryLoader from './components/anim/RosaryLoader';
@@ -23,6 +24,11 @@ const Santo = lazy(() => import('./pages/Santo'));
 const Privacidade = lazy(() => import('./pages/Privacidade'));
 const Creditos = lazy(() => import('./pages/Creditos'));
 const Confissao = lazy(() => import('./pages/Confissao'));
+const Jornada = lazy(() => import('./pages/Jornada'));
+const Novenas = lazy(() => import('./pages/Novenas'));
+const Trilhas = lazy(() => import('./pages/Trilhas'));
+const Quiz = lazy(() => import('./pages/Quiz'));
+const Comunidade = lazy(() => import('./pages/Comunidade'));
 
 function NotFound() {
   return (
@@ -52,7 +58,7 @@ function PageFallback() {
 const pageVariants = {
   initial: { opacity: 0, y: 16 },
   animate: { opacity: 1, y: 0 },
-  exit:    { opacity: 0, y: -10 },
+  exit: { opacity: 0, y: -10 },
 };
 
 const pageTransition = {
@@ -96,6 +102,14 @@ function AnimatedRoutes() {
             <Route path="/privacidade" element={<Privacidade />} />
             <Route path="/creditos" element={<Creditos />} />
             <Route path="/home/confissao" element={<Confissao />} />
+            <Route path="/jornada" element={<Jornada />} />
+            <Route path="/comunidade" element={<Comunidade />} />
+            <Route path="/home/novenas" element={<Novenas />} />
+            <Route path="/home/novenas/:id" element={<Novenas />} />
+            <Route path="/home/trilhas" element={<Trilhas />} />
+            <Route path="/home/trilhas/:id" element={<Trilhas />} />
+            <Route path="/home/trilhas/:id/quiz/:level" element={<Quiz />} />
+            <Route path="/home/quiz/aleatorio" element={<Quiz />} />
             <Route path="/home/misterio/foco/:tipo/:id" element={<FocusMystery />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
@@ -106,24 +120,29 @@ function AnimatedRoutes() {
 }
 
 export default function App() {
+  // Tema do tempo litúrgico (Advento, Natal, Quaresma, Páscoa...): troca cores e enfeites sozinho.
+  const season = useSeasonTheme();
+
   return (
-    <BrowserRouter>
-      {/* reducedMotion="user": as animações do Framer Motion seguem a preferência do sistema. */}
-      <MotionConfig reducedMotion="user">
-        <div className="app-shell">
-          <SiteBackground />
-          <a href="#conteudo" className="skip-link">
-            Pular para o conteúdo
-          </a>
-          <Header />
-          <div id="conteudo" tabIndex={-1} className="content-anchor">
-            <AnimatedRoutes />
+    <SeasonContext.Provider value={season}>
+      <BrowserRouter>
+        {/* reducedMotion="user": as animações do Framer Motion seguem a preferência do sistema. */}
+        <MotionConfig reducedMotion="user">
+          <div className="app-shell">
+            <SiteBackground />
+            <a href="#conteudo" className="skip-link">
+              Pular para o conteúdo
+            </a>
+            <Header />
+            <div id="conteudo" tabIndex={-1} className="content-anchor">
+              <AnimatedRoutes />
+            </div>
+            <Feedback />
+            <Footer />
+            <BottomNav />
           </div>
-          <Feedback />
-          <Footer />
-          <BottomNav />
-        </div>
-      </MotionConfig>
-    </BrowserRouter>
+        </MotionConfig>
+      </BrowserRouter>
+    </SeasonContext.Provider>
   );
 }

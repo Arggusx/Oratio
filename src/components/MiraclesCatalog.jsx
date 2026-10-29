@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ExternalLink, MapPin } from 'lucide-react';
+import { ExternalLink, MapPin, MapPinCheck } from 'lucide-react';
+import { journey, useJourney } from '../utils/journeyStore';
 import { eucharisticMiracles, ERAS, RECOGNITION } from '../data/eucharisticMiracles';
 import { LoadMoreButton } from './LoadMore';
 import { useLoadMore } from '../utils/useLoadMore';
@@ -27,6 +28,7 @@ function matchesFilters(m, { country, era }) {
 
 /** Catálogo de milagres eucarísticos, no espírito da exposição de São Carlo Acutis. */
 export default function MiraclesCatalog() {
+  const { miracles: visited } = useJourney();
   const [filters, setFilters] = useState({ country: null, era: null });
 
   const shown = useMemo(() => byYear.filter((m) => matchesFilters(m, filters)), [filters]);
@@ -82,12 +84,28 @@ export default function MiraclesCatalog() {
               <span>{m.whereToSee}</span>
             </p>
             {m.link && (
-              <a className="miracle-link" href={m.link} target="_blank" rel="noopener noreferrer">
+              <a
+                className="miracle-link"
+                href={m.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => journey.markMiracle(m.id)}
+              >
                 Ver fotos e detalhes na exposição de Carlo
                 <ExternalLink size={14} aria-hidden="true" />
                 <span className="sr-only"> (abre em nova aba)</span>
               </a>
             )}
+            {/* Marca o milagre no mapa da Jornada (também acontece ao abrir as fotos). */}
+            <button
+              type="button"
+              className={`miracle-visit ${visited.includes(m.id) ? 'is-done' : ''}`}
+              onClick={() => journey.markMiracle(m.id, !visited.includes(m.id))}
+              aria-pressed={visited.includes(m.id)}
+            >
+              <MapPinCheck size={14} aria-hidden="true" />
+              {visited.includes(m.id) ? 'No seu mapa' : 'Marcar no meu mapa'}
+            </button>
           </motion.article>
         ))}
         {shown.length === 0 && <p className="lead">Nenhum milagre deste país nesta época.</p>}
