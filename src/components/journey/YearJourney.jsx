@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { addDays, getLiturgicalSeason, makeDate, toKey } from '../../utils/liturgicalCalendar';
 import { useJourney } from '../../utils/journeyStore';
+import GameIntro from '../GameIntro';
 
 const COLORS = {
   advento: '#7A5A9E',
@@ -56,6 +57,15 @@ export default function YearJourney() {
         <h2 id="year-title">O ano como jornada</h2>
         <p>Cada dia rezado acende um tracinho no anel, na cor do tempo litúrgico. Aos poucos, o ano se preenche.</p>
       </header>
+
+      <GameIntro
+        id="ano"
+        steps={[
+          'O anel é o ano inteiro, começando em janeiro no topo e girando no sentido do relógio.',
+          'Cada dia em que você marca o terço acende um tracinho, na cor do tempo litúrgico daquele dia.',
+          'Ao lado, veja quanto de cada tempo (Advento, Natal, Quaresma, Páscoa e Tempo Comum) você já acompanhou rezando.',
+        ]}
+      />
 
       <div className="year-journey">
         <svg viewBox="0 0 220 220" width="220" height="220" role="img" aria-label={`${prayedCount} dias de oração em ${year}`}>

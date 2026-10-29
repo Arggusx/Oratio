@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Check, RotateCcw, Shuffle, X } from 'lucide-react';
 import IslandPath from '../components/IslandPath';
+import GameIntro from '../components/GameIntro';
 import TrailIsland from '../components/TrailIsland';
 import { getTrail, trails, trailStops } from '../data/trails';
 import { LEVELS } from '../data/quizBank';
@@ -207,6 +208,15 @@ function TrailPage({ trail }) {
         </Link>
       </header>
       <p className="trail-hint">{trail.intro}</p>
+
+      <GameIntro
+        id="trilha"
+        steps={[
+          'Toque na ilha que está brilhando para abrir a etapa. Leia, faça o "Para hoje" e toque em "Concluí esta etapa".',
+          'Pelo caminho há paradas de quiz (o ponto de interrogação) sobre o assunto da ilha: fácil, médio, difícil e o desafio final.',
+          'Cada parada só abre depois da anterior. A sugestão é avançar uma etapa por dia, com calma.',
+        ]}
+      />
 
       <IslandPath
         color={trail.color}

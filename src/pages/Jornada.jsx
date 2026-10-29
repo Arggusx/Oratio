@@ -11,10 +11,10 @@ import {
   Map as MapIcon,
   Orbit,
   PartyPopper,
-  Sparkles,
   Sunrise,
 } from 'lucide-react';
 import PrayedTodayButton from '../components/PrayedTodayButton';
+import GameIntro from '../components/GameIntro';
 import { NovenaBeads } from './Novenas';
 import { novenas } from '../data/novenas';
 import { trails, trailStops } from '../data/trails';
@@ -54,7 +54,20 @@ const SECTIONS = [
 const weekdayInitials = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
 const dayLabel = (date) => date.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
 
-/** Diário de oração: as últimas semanas, com os dias rezados acesos e uma graça por semana. */
+/** Vela do caminho de oração: acesa (rezou), com estrela (graça), apagada ou ainda por vir. */
+function DiaryCandle({ status }) {
+  return (
+    <svg viewBox="0 0 20 32" className="diary-candle" aria-hidden="true" focusable="false">
+      {status === 'prayed' && <ellipse className="diary-candle-halo" cx="10" cy="8" rx="9" ry="9" />}
+      {status === 'prayed' && <path className="diary-candle-flame" d="M10 2c3 4 4 6 0 10-4-4-3-6 0-10z" />}
+      {status === 'grace' && <path className="diary-candle-star" d="M10 3l1.6 3.4 3.6.4-2.7 2.4.8 3.6L10 11l-3.3 1.8.8-3.6-2.7-2.4 3.6-.4z" />}
+      <path className="diary-candle-wick" d="M10 12v3" />
+      <rect className="diary-candle-body" x="6" y="15" width="8" height="15" rx="1.5" />
+    </svg>
+  );
+}
+
+/** Diário de oração: as últimas semanas, com uma vela acesa em cada dia rezado e uma graça por semana. */
 function PrayerDiary() {
   const { prayedDays } = useJourney();
   const weeks = prayerWeeks(prayedDays);
@@ -63,11 +76,17 @@ function PrayerDiary() {
     <section className="journey-card" aria-labelledby="diary-title">
       <header className="journey-card-head">
         <h2 id="diary-title">Caminho de oração</h2>
-        <p>
-          Cada dia em que você reza o terço acende uma luz. Faltou um dia? Em cada semana, uma <strong>graça</strong>{' '}
-          cobre um dia vazio: o caminho continua.
-        </p>
+        <p>Cada dia em que você reza o terço acende uma vela. Seis semanas de caminho, sempre recomeçando.</p>
       </header>
+
+      <GameIntro
+        id="diario"
+        steps={[
+          'Reze o terço e, no fim, toque em "Marcar terço de hoje" (ou aqui embaixo).',
+          'A vela do dia acende. As velas formam o seu caminho das últimas seis semanas.',
+          'Faltou um dia? Em cada semana, uma graça (a estrelinha) cobre um dia vazio. Não há castigo: o caminho continua.',
+        ]}
+      />
 
       <div className="diary-grid" role="table" aria-label="Dias rezados nas últimas semanas">
         <div className="diary-row diary-head" role="row">
@@ -91,7 +110,7 @@ function PrayerDiary() {
                   ]
                 }`}
               >
-                {day.status === 'grace' && <Sparkles size={12} aria-hidden="true" />}
+                <DiaryCandle status={day.status} />
               </span>
             ))}
           </div>
@@ -100,16 +119,13 @@ function PrayerDiary() {
 
       <ul className="diary-legend" aria-hidden="true">
         <li>
-          <span className="diary-day is-prayed" /> Rezou
+          <DiaryCandle status="prayed" /> Rezou
         </li>
         <li>
-          <span className="diary-day is-grace">
-            <Sparkles size={10} />
-          </span>{' '}
-          Graça
+          <DiaryCandle status="grace" /> Graça
         </li>
         <li>
-          <span className="diary-day is-empty" /> Sem marcação
+          <DiaryCandle status="empty" /> Sem marcação
         </li>
       </ul>
 
@@ -131,6 +147,15 @@ function Missions() {
         <h2 id="missions-title">Missões</h2>
         <p>Novenas e trilhas que você começou. Cada conta acende quando você marca o dia.</p>
       </header>
+
+      <GameIntro
+        id="missoes"
+        steps={[
+          'Uma missão é uma novena (nove dias de oração) ou uma ilha das trilhas.',
+          'Comece uma novena na página dela e marque cada dia rezado: as nove contas vão acendendo.',
+          'Aqui você vê o que está em andamento e volta direto para o dia ou a parada seguinte.',
+        ]}
+      />
 
       {active.length + activeTrails.length === 0 ? (
         <p className="calendar-empty">Nenhuma novena ou trilha em andamento.</p>

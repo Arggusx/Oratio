@@ -4,6 +4,7 @@ import { getNovena, novenas } from '../data/novenas';
 import { getSaint } from '../data/saints';
 import { journey, planDayToday, useJourney } from '../utils/journeyStore';
 import { plural, useCommunityStats } from '../utils/community';
+import GameIntro from '../components/GameIntro';
 
 /** Nove contas que acendem conforme os dias rezados; a de hoje fica marcada. */
 export function NovenaBeads({ plan, size = 'md' }) {
@@ -86,6 +87,15 @@ function NovenaPage({ novena }) {
           {!plan && 'Comece hoje e reze junto.'}
         </p>
       )}
+
+      <GameIntro
+        id="novena"
+        steps={[
+          'Toque em "Começar esta novena" no dia em que quiser começar.',
+          'A cada dia, leia o tema, reze a oração da novena e toque em "Rezei este dia": uma das nove contas acende.',
+          'Esqueceu um dia? Marque quando rezar; o importante é chegar ao fim. O progresso aparece em Jornada > Missões.',
+        ]}
+      />
 
       <section className="novena-progress" aria-label="Seu progresso nesta novena">
         {plan ? (
