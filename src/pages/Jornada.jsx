@@ -4,11 +4,15 @@ import { ArrowRight, Sparkles } from 'lucide-react';
 import PrayedTodayButton from '../components/PrayedTodayButton';
 import { NovenaBeads } from './Novenas';
 import { novenas } from '../data/novenas';
+import SaintCollection from '../components/journey/SaintCollection';
+import MiracleMap from '../components/journey/MiracleMap';
 import { prayerWeeks, useJourney } from '../utils/journeyStore';
 
 const SECTIONS = [
   { id: 'diario', label: 'Diário' },
   { id: 'missoes', label: 'Missões' },
+  { id: 'colecao', label: 'Coleção' },
+  { id: 'mapa', label: 'Mapa' },
 ];
 
 const weekdayInitials = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
@@ -168,6 +172,8 @@ export default function Jornada() {
       <motion.div key={section} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
         {section === 'diario' && <PrayerDiary />}
         {section === 'missoes' && <Missions />}
+        {section === 'colecao' && <SaintCollection />}
+        {section === 'mapa' && <MiracleMap />}
       </motion.div>
     </main>
   );

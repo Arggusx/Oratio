@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
-import { ArrowLeft, CalendarDays, ChevronDown } from 'lucide-react';
+import { ArrowLeft, BookmarkCheck, BookmarkPlus, CalendarDays, ChevronDown } from 'lucide-react';
 import { AmenButton, CopyCheckIcon } from '../components/anim/AnimatedIcons';
 import { getSaint, formatFeast, intentionLabel } from '../data/saints';
 import { prayers } from '../data/prayers';
@@ -8,6 +8,7 @@ import SaoBentoSection from '../components/SaoBentoSection';
 import { SaintInitial } from '../components/SaintsDirectory';
 import ImageCredit from '../components/ImageCredit';
 import { saintImages } from '../data/imageCredits';
+import { journey, useJourney } from '../utils/journeyStore';
 
 function SaintPrayer({ prayer, defaultOpen }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -59,6 +60,23 @@ function SaintPrayer({ prayer, defaultOpen }) {
   );
 }
 
+// Toque discreto: guarda o santo na coleção da Jornada.
+function CollectButton({ slug }) {
+  const { saints: collected } = useJourney();
+  const has = collected.includes(slug);
+  return (
+    <button
+      type="button"
+      className={`saint-collect ${has ? 'is-done' : ''}`}
+      onClick={() => journey.toggleSaint(slug)}
+      aria-pressed={has}
+    >
+      {has ? <BookmarkCheck size={15} aria-hidden="true" /> : <BookmarkPlus size={15} aria-hidden="true" />}
+      {has ? 'Na sua coleção' : 'Guardar na coleção'}
+    </button>
+  );
+}
+
 export default function Santo() {
   const { slug } = useParams();
   const saint = getSaint(slug);
@@ -103,6 +121,7 @@ export default function Santo() {
             {saint.lifespan && <span>{saint.lifespan}</span>}
           </p>
           {saint.feastNote && <p className="saint-hero-note">{saint.feastNote}</p>}
+          <CollectButton slug={saint.slug} />
         </div>
       </header>
       <ImageCredit image={saintImages[saint.slug]} className="saint-image-credit" />

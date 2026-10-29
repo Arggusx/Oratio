@@ -7081,3 +7081,139 @@ details[open] > summary .exam-chevron {
   color: var(--color-terracotta);
   font-weight: 600;
 }
+
+/* Toques discretos: guardar santo e marcar milagre */
+.saint-collect,
+.miracle-visit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.6rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  border: 1px dashed var(--color-gold);
+  background: transparent;
+  color: var(--color-text-soft);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.saint-collect.is-done,
+.miracle-visit.is-done {
+  border-style: solid;
+  background: color-mix(in srgb, var(--color-gold) 16%, var(--color-surface));
+  color: var(--color-text);
+}
+
+/* Coleção de santos */
+.collection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.collection-card {
+  display: grid;
+  justify-items: center;
+  gap: 0.4rem;
+  padding: 0.75rem 0.4rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.collection-card:not(.is-collected) .saint-initial {
+  filter: grayscale(1) brightness(0.55) contrast(0.8);
+  opacity: 0.55;
+}
+
+.collection-card.is-collected {
+  border-color: var(--color-gold);
+  color: var(--color-text);
+  font-weight: 600;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-gold) 40%, transparent);
+}
+
+/* Mapa dos milagres */
+.miracle-maps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem;
+}
+
+.miracle-map {
+  margin: 0;
+  padding: 0.5rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: color-mix(in srgb, #6E8FD6 8%, var(--color-surface));
+}
+
+.miracle-map svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.miracle-map figcaption {
+  margin-top: 0.3rem;
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.map-grid line {
+  stroke: var(--color-border);
+  stroke-width: 0.6;
+  stroke-dasharray: 2 3;
+}
+
+.map-pin {
+  cursor: pointer;
+  outline: none;
+}
+
+.map-pin-hit {
+  fill: transparent;
+}
+
+.map-pin-dot {
+  fill: var(--color-surface);
+  stroke: var(--color-gold-muted);
+  stroke-width: 1.6;
+  transition: r 0.2s;
+}
+
+.map-pin.is-visited .map-pin-dot {
+  fill: var(--color-gold);
+  stroke: #FFE8A3;
+  filter: drop-shadow(0 0 4px var(--color-gold));
+}
+
+.map-pin.is-selected .map-pin-dot,
+.map-pin:focus-visible .map-pin-dot {
+  stroke: var(--color-terracotta);
+  stroke-width: 2.4;
+}
+
+.map-info {
+  margin: 0.9rem 0 0;
+  color: var(--color-text-soft);
+  font-size: 0.9rem;
+}
+
+.map-info a {
+  color: var(--color-terracotta);
+  font-weight: 600;
+}
