@@ -6521,53 +6521,6 @@ details[open] > summary .exam-chevron {
 }
 
 
-/* ---------- Scroll horizontal no celular ----------
-   Listas de cartões paralelos (anos do ciclo, grupos de mistérios, destaques, legenda) viram uma fileira
-   que se arrasta para o lado, com um pedaço do próximo cartão aparecendo como dica. */
-@media (max-width: 767px) {
-  .h-scroll {
-    --bleed: 1rem;
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 0.75rem;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scroll-snap-type: x mandatory;
-    scroll-padding-inline: var(--bleed);
-    margin-inline: calc(var(--bleed) * -1);
-    padding: 0.25rem var(--bleed) 0.75rem;
-    scrollbar-width: none;
-  }
-
-  .h-scroll::-webkit-scrollbar {
-    display: none;
-  }
-
-  .h-scroll > * {
-    flex: 0 0 85%;
-    min-width: 0;
-    scroll-snap-align: start;
-  }
-
-  .h-scroll.is-chips {
-    gap: 0.5rem;
-    scroll-snap-type: none;
-  }
-
-  .h-scroll.is-chips > * {
-    flex: none;
-    white-space: nowrap;
-  }
-
-  .cycles .h-scroll {
-    --bleed: 1.5rem;
-  }
-
-  .h-scroll:focus-visible {
-    outline: 2px solid var(--color-terracotta);
-    outline-offset: 2px;
-  }
-}
 
 .filter-option-count {
   font-weight: 400;
@@ -6709,4 +6662,95 @@ details[open] > summary .exam-chevron {
   body.print-exam .exam-remove {
     display: none;
   }
+}
+
+
+/* ---------- Trilho lateral (ScrollRail) ----------
+   Rolar a página para baixo move os cartões para o lado enquanto a seção fica parada na tela. */
+.scroll-rail {
+  position: relative;
+  margin: 2rem 0;
+}
+
+.scroll-rail-sticky {
+  position: sticky;
+  top: 5rem;
+}
+
+.scroll-rail-viewport {
+  overflow: hidden;
+  padding: 0.5rem 0.25rem 0.75rem;
+  margin: -0.5rem -0.25rem 0;
+}
+
+.scroll-rail-track {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  will-change: transform;
+}
+
+.scroll-rail.is-active .scroll-rail-track > * {
+  flex: 0 0 min(82vw, 23rem);
+  margin: 0;
+}
+
+.scroll-rail-progress {
+  height: 3px;
+  margin-top: 0.4rem;
+  border-radius: 3px;
+  background: var(--color-border-soft);
+  overflow: hidden;
+}
+
+.scroll-rail-progress span {
+  display: block;
+  height: 100%;
+  background: var(--color-terracotta);
+  transform-origin: left;
+}
+
+/* Quando tudo cabe na tela, ou com "reduzir movimento", os cartões ficam numa grade comum. */
+.scroll-rail.is-static .scroll-rail-track {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  width: auto;
+}
+
+/* Passos da confissão como cartões do trilho */
+.confession-step {
+  position: relative;
+  display: grid;
+  gap: 0.35rem;
+  align-content: start;
+  min-height: 11rem;
+  padding: 1.1rem 1.1rem 1.1rem 3.6rem;
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  line-height: 1.55;
+}
+
+.confession-step-number {
+  position: absolute;
+  left: 1rem;
+  top: 1.05rem;
+  display: grid;
+  place-items: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 50%;
+  background: var(--color-terracotta);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.confession-step > span:last-child {
+  color: var(--color-text-soft);
+  font-size: 0.92rem;
+}
+
+.confession-rail {
+  margin: 0 0 2.5rem;
 }

@@ -139,7 +139,7 @@ export default function Santo() {
       {saint.miracles && (
         <section className="saint-section">
           <h2 className="saint-section-title">Milagres reconhecidos</h2>
-          <div className="saint-miracles h-scroll">
+          <div className="saint-miracles">
             {saint.miracles.map((miracle, i) => (
               <article key={miracle.title} className="saint-miracle">
                 <span className="saint-miracle-label">{i + 1}º milagre</span>

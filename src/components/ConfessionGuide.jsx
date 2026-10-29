@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Check, ChevronDown, Copy, Download, Plus, Printer, Share2, ShieldCheck, Trash2, X } from 'lucide-react';
 import { examination, confessionSteps } from '../data/examination';
 import { prayers } from '../data/prayers';
+import ScrollRail from './ScrollRail';
 
 const contrition = prayers.find((p) => p.id === 'ato-de-contricao');
 
@@ -114,14 +115,18 @@ export default function ConfessionGuide() {
 
       <section className="confession-steps" aria-labelledby="confession-steps-title">
         <h2 id="confession-steps-title" className="saint-section-title">Como se confessar</h2>
-        <ol>
-          {confessionSteps.map(([title, text]) => (
-            <li key={title}>
-              <strong>{title}</strong>
+        <ScrollRail label="Os passos da confissão" className="confession-rail">
+          {confessionSteps.map(([title, text], i) => (
+            <article key={title} className="confession-step">
+              <span className="confession-step-number" aria-hidden="true">{i + 1}</span>
+              <strong>
+                <span className="sr-only">Passo {i + 1}: </span>
+                {title}
+              </strong>
               <span>{text}</span>
-            </li>
+            </article>
           ))}
-        </ol>
+        </ScrollRail>
       </section>
 
       <section aria-labelledby="exam-title">

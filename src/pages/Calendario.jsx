@@ -160,7 +160,7 @@ export default function Calendario() {
         </div>
       </div>
 
-      <div className="calendar-legend h-scroll is-chips" role="group" aria-label="Filtrar por legenda">
+      <div className="calendar-legend" role="group" aria-label="Filtrar por legenda">
         {LEGEND.map((item) => (
           <button
             key={item.id}
