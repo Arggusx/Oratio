@@ -7178,50 +7178,13 @@ details[open] > summary .exam-chevron {
   letter-spacing: 0.06em;
 }
 
-.map-grid line {
-  stroke: var(--color-border);
-  stroke-width: 0.6;
-  stroke-dasharray: 2 3;
-}
 
-.map-pin {
-  cursor: pointer;
-  outline: none;
-}
 
-.map-pin-hit {
-  fill: transparent;
-}
 
-.map-pin-dot {
-  fill: var(--color-surface);
-  stroke: var(--color-gold-muted);
-  stroke-width: 1.6;
-  transition: r 0.2s;
-}
 
-.map-pin.is-visited .map-pin-dot {
-  fill: var(--color-gold);
-  stroke: #FFE8A3;
-  filter: drop-shadow(0 0 4px var(--color-gold));
-}
 
-.map-pin.is-selected .map-pin-dot,
-.map-pin:focus-visible .map-pin-dot {
-  stroke: var(--color-terracotta);
-  stroke-width: 2.4;
-}
 
-.map-info {
-  margin: 0.9rem 0 0;
-  color: var(--color-text-soft);
-  font-size: 0.9rem;
-}
 
-.map-info a {
-  color: var(--color-terracotta);
-  font-weight: 600;
-}
 
 /* Buquê espiritual */
 .bouquet-form {
@@ -8561,4 +8524,157 @@ details[open] > summary .exam-chevron {
 .game-intro-toggle:hover {
   border-color: var(--color-gold);
   color: var(--color-text);
+}
+
+/* ---------- Mapa dos milagres (desenhado) ---------- */
+.miracle-map {
+  padding: 0;
+  overflow: hidden;
+  background: none;
+}
+
+.miracle-map svg {
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.miracle-map figcaption {
+  margin: 0;
+  padding: 0.45rem;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+}
+
+.map-sea {
+  fill: #CFE0EA;
+}
+
+.map-land {
+  fill: #EFE6D2;
+  stroke: #B9A47E;
+  stroke-width: 0.5;
+}
+
+.map-borders {
+  fill: none;
+  stroke: #C9B795;
+  stroke-width: 0.4;
+  stroke-dasharray: 1.5 1.5;
+}
+
+:root[data-theme='dark'] .map-sea { fill: #142231; }
+:root[data-theme='dark'] .map-land { fill: #2B241D; stroke: #5A4A36; }
+:root[data-theme='dark'] .map-borders { stroke: #4A3D2E; }
+
+.map-pin {
+  cursor: pointer;
+  outline: none;
+}
+
+.map-pin-hit {
+  fill: transparent;
+}
+
+.map-pin-ring {
+  fill: none;
+  stroke: var(--color-gold);
+  stroke-width: 0;
+  opacity: 0;
+}
+
+.map-pin-drop {
+  fill: #8C7E6B;
+  stroke: #fff;
+  stroke-width: 0.8;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transition: transform 0.2s var(--ease-out);
+}
+
+.map-pin-dot {
+  fill: #fff;
+}
+
+.map-pin:hover .map-pin-drop,
+.map-pin:focus-visible .map-pin-drop,
+.map-pin.is-selected .map-pin-drop {
+  transform: scale(1.3);
+}
+
+.map-pin.is-visited .map-pin-drop {
+  fill: var(--color-gold);
+  filter: drop-shadow(0 0 3px var(--color-gold));
+}
+
+.map-pin.is-visited .map-pin-ring {
+  stroke-width: 1.2;
+  animation: pin-ring 2.4s ease-out infinite;
+}
+
+.map-pin.is-selected .map-pin-drop {
+  fill: var(--color-terracotta);
+}
+
+@keyframes pin-ring {
+  from { r: 3; opacity: 0.9; }
+  to { r: 12; opacity: 0; }
+}
+
+.map-info {
+  margin-top: 1rem;
+}
+
+.map-info-card {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-gold);
+  background: var(--color-surface);
+  animation: fadeIn 0.3s var(--ease-out);
+}
+
+.map-info-card h3 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+}
+
+.map-info-card h3 small {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.map-info-card p {
+  margin: 0;
+  line-height: 1.6;
+  color: var(--color-text-soft);
+}
+
+.map-info-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.map-info-actions .miracle-visit {
+  margin-top: 0;
+}
+
+.map-info-link {
+  color: var(--color-terracotta);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.map-hint {
+  margin: 0;
+  color: var(--color-text-soft);
+}
+
+.map-credit {
+  margin: 0.75rem 0 0;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
 }

@@ -1,27 +1,22 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { MapPin, MapPinCheck } from 'lucide-react';
 import { eucharisticMiracles } from '../../data/eucharisticMiracles';
-import { useJourney } from '../../utils/journeyStore';
+import { miracleMapRegions } from '../../data/miracleMapRegions';
+import { journey, useJourney } from '../../utils/journeyStore';
+import GameIntro from '../GameIntro';
 
-// Dois recortes do mapa (latitude e longitude), onde estão os milagres do catálogo.
-const REGIONS = [
-  { id: 'americas', label: 'Américas', lat: [-40, 25], lng: [-110, -50] },
-  { id: 'europa', label: 'Europa', lat: [37, 55], lng: [-11, 26] },
-];
+const project = (region, [lat, lng]) => ({ x: (lng - region.lng0) * region.k, y: (region.lat1 - lat) * region.k });
 
-const W = 300;
-const H = 220;
+const inRegion = (region, [lat, lng]) => {
+  const { x, y } = project(region, [lat, lng]);
+  return x >= 0 && x <= region.width && y >= 0 && y <= region.height;
+};
 
-function project(region, [lat, lng]) {
-  const x = ((lng - region.lng[0]) / (region.lng[1] - region.lng[0])) * W;
-  const y = ((region.lat[1] - lat) / (region.lat[1] - region.lat[0])) * H;
-  return { x, y };
-}
-
-const inRegion = (region, [lat, lng]) =>
-  lat >= region.lat[0] && lat <= region.lat[1] && lng >= region.lng[0] && lng <= region.lng[1];
-
-/** Mapa de peregrinação: os milagres eucarísticos visitados no catálogo aparecem acesos. */
+/**
+ * Mapa de peregrinação: os continentes e as fronteiras desenhados (Natural Earth) e, por cima, um alfinete para
+ * cada milagre eucarístico do catálogo. Os visitados acendem; um toque mostra o milagre.
+ */
 export default function MiracleMap() {
   const { miracles: visited } = useJourney();
   const [selected, setSelected] = useState(null);
@@ -32,30 +27,30 @@ export default function MiracleMap() {
       <header className="journey-card-head">
         <h2 id="map-title">Mapa dos milagres</h2>
         <p>
-          Cada milagre eucarístico que você visita no catálogo da Escola da Fé acende no mapa, como numa peregrinação.
-          Você já visitou {visited.length} de {eucharisticMiracles.length}.
+          Uma peregrinação pelos lugares onde a Igreja reconhece milagres eucarísticos. Você já visitou{' '}
+          <strong>
+            {visited.length} de {eucharisticMiracles.length}
+          </strong>
+          .
         </p>
       </header>
 
+      <GameIntro
+        id="mapa"
+        steps={[
+          'Cada alfinete é um lugar onde aconteceu um milagre eucarístico.',
+          'Toque num alfinete para ler o que aconteceu ali e onde as relíquias estão hoje.',
+          'Marque como visitado depois de ler, ou abra as fotos da exposição de São Carlo Acutis: o alfinete acende no mapa.',
+        ]}
+      />
+
       <div className="miracle-maps">
-        {REGIONS.map((region) => (
-          <figure key={region.id} className="miracle-map">
-            <svg viewBox={`0 0 ${W} ${H}`} role="group" aria-label={`Milagres: ${region.label}`}>
-              {/* Paralelos e meridianos a cada 10 graus */}
-              <g className="map-grid">
-                {Array.from({ length: 20 }, (_, i) => {
-                  const lng = Math.ceil(region.lng[0] / 10) * 10 + i * 10;
-                  if (lng > region.lng[1]) return null;
-                  const { x } = project(region, [region.lat[0], lng]);
-                  return <line key={`v${lng}`} x1={x} x2={x} y1="0" y2={H} />;
-                })}
-                {Array.from({ length: 20 }, (_, i) => {
-                  const lat = Math.ceil(region.lat[0] / 10) * 10 + i * 10;
-                  if (lat > region.lat[1]) return null;
-                  const { y } = project(region, [lat, region.lng[0]]);
-                  return <line key={`h${lat}`} x1="0" x2={W} y1={y} y2={y} />;
-                })}
-              </g>
+        {Object.entries(miracleMapRegions).map(([id, region]) => (
+          <figure key={id} className="miracle-map">
+            <svg viewBox={`0 0 ${region.width} ${region.height}`} role="group" aria-label={`Milagres: ${region.label}`}>
+              <rect className="map-sea" width={region.width} height={region.height} />
+              <path className="map-land" d={region.land} />
+              <path className="map-borders" d={region.borders} />
               {eucharisticMiracles
                 .filter((m) => inRegion(region, m.coords))
                 .map((m) => {
@@ -72,8 +67,10 @@ export default function MiracleMap() {
                       onClick={() => setSelected(m.id)}
                       onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && setSelected(m.id)}
                     >
-                      <circle className="map-pin-hit" r="12" />
-                      <circle className="map-pin-dot" r={seen ? 5 : 4} />
+                      <circle className="map-pin-hit" r="11" />
+                      <circle className="map-pin-ring" r="7" />
+                      <path className="map-pin-drop" d="M0 0c-4-5-6-8-6-11a6 6 0 0 1 12 0c0 3-2 6-6 11z" />
+                      <circle className="map-pin-dot" cy="-11" r="2.2" />
                     </g>
                   );
                 })}
@@ -83,19 +80,39 @@ export default function MiracleMap() {
         ))}
       </div>
 
-      <p className="map-info" aria-live="polite">
+      <div className="map-info" aria-live="polite">
         {current ? (
-          <>
-            <strong>
-              {current.place} ({current.country})
-            </strong>{' '}
-            · {current.yearLabel} · {visited.includes(current.id) ? 'visitado' : 'ainda não visitado'}.{' '}
-            <Link to="/home/escola-da-fe">Ver no catálogo</Link>
-          </>
+          <article className="map-info-card">
+            <span className="miracle-year">{current.yearLabel}</span>
+            <h3>
+              {current.place} <small>({current.country})</small>
+            </h3>
+            <p>{current.summary}</p>
+            <p className="miracle-where">
+              <MapPin size={14} aria-hidden="true" />
+              <span>{current.whereToSee}</span>
+            </p>
+            <div className="map-info-actions">
+              <button
+                type="button"
+                className={`miracle-visit ${visited.includes(current.id) ? 'is-done' : ''}`}
+                onClick={() => journey.markMiracle(current.id, !visited.includes(current.id))}
+                aria-pressed={visited.includes(current.id)}
+              >
+                <MapPinCheck size={14} aria-hidden="true" />
+                {visited.includes(current.id) ? 'Visitado' : 'Marcar como visitado'}
+              </button>
+              <Link to="/home/escola-da-fe" className="map-info-link">
+                Ver o catálogo
+              </Link>
+            </div>
+          </article>
         ) : (
-          'Toque num ponto para ver o milagre.'
+          <p className="map-hint">Toque num alfinete para ver o milagre.</p>
         )}
-      </p>
+      </div>
+
+      <p className="map-credit">Mapa: Natural Earth (domínio público).</p>
     </section>
   );
 }
