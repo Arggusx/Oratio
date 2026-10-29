@@ -7125,35 +7125,9 @@ details[open] > summary .exam-chevron {
 
 
 /* Mapa dos milagres */
-.miracle-maps {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-  gap: 1rem;
-}
 
-.miracle-map {
-  margin: 0;
-  padding: 0.5rem;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border);
-  background: color-mix(in srgb, #6E8FD6 8%, var(--color-surface));
-}
 
-.miracle-map svg {
-  display: block;
-  width: 100%;
-  height: auto;
-}
 
-.miracle-map figcaption {
-  margin-top: 0.3rem;
-  text-align: center;
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--color-text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
 
 
 
@@ -8504,22 +8478,8 @@ details[open] > summary .exam-chevron {
 }
 
 /* ---------- Mapa dos milagres (desenhado) ---------- */
-.miracle-map {
-  padding: 0;
-  overflow: hidden;
-  background: none;
-}
 
-.miracle-map svg {
-  border-radius: var(--radius-md) var(--radius-md) 0 0;
-}
 
-.miracle-map figcaption {
-  margin: 0;
-  padding: 0.45rem;
-  background: var(--color-surface);
-  border-top: 1px solid var(--color-border);
-}
 
 .map-sea {
   fill: #CFE0EA;
@@ -8883,4 +8843,146 @@ details[open] > summary .exam-chevron {
 
 .bouquet-vase-rim {
   fill: #9A6B47;
+}
+
+/* ---------- Mapa dos milagres: cartão grande e tela cheia ---------- */
+.map-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 1.1rem;
+  overflow: hidden;
+  background: none;
+  cursor: zoom-in;
+  box-shadow: var(--shadow-md);
+}
+
+.map-card svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.map-card-cta {
+  position: absolute;
+  right: 0.9rem;
+  bottom: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1rem;
+  border-radius: var(--radius-full);
+  background: var(--color-terracotta);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.2s var(--ease-out);
+}
+
+.map-card:hover .map-card-cta {
+  transform: translateY(-2px);
+}
+
+.map-viewer {
+  width: 100vw;
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: #CFE0EA;
+  overflow: hidden;
+}
+
+:root[data-theme='dark'] .map-viewer {
+  background: #142231;
+}
+
+.map-viewer::backdrop {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.map-viewer-canvas {
+  position: absolute;
+  inset: 0;
+  touch-action: none;
+  cursor: grab;
+}
+
+.map-viewer-canvas:active {
+  cursor: grabbing;
+}
+
+.map-viewer-canvas svg {
+  width: 100%;
+  height: 100%;
+}
+
+.map-viewer-controls {
+  position: absolute;
+  top: calc(0.9rem + env(safe-area-inset-top));
+  right: 0.9rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.map-viewer-controls button {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.8rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+}
+
+.map-viewer-controls button:last-child {
+  margin-top: 0.4rem;
+  background: var(--color-terracotta);
+  border-color: var(--color-terracotta);
+  color: #fff;
+}
+
+.map-viewer-hint {
+  position: absolute;
+  top: calc(0.9rem + env(safe-area-inset-top));
+  left: 0.9rem;
+  right: 4.5rem;
+  margin: 0;
+  padding: 0.45rem 0.8rem;
+  width: fit-content;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+  font-size: 0.78rem;
+  color: var(--color-text-soft);
+  pointer-events: none;
+}
+
+.map-viewer-info {
+  position: absolute;
+  left: 0.9rem;
+  right: 0.9rem;
+  bottom: calc(0.9rem + env(safe-area-inset-bottom));
+  max-width: 34rem;
+  margin: 0 auto;
+  max-height: 55dvh;
+  overflow-y: auto;
+}
+
+.map-info-card {
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.map-info-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
 }
