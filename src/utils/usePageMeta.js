@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { getSaint } from '../data/saints';
+import { getNovena } from '../data/novenas';
 
 export const SITE_URL = 'https://oratio-daily-dev.vercel.app';
 
@@ -45,6 +46,10 @@ const PAGE_META = {
     title: 'Exame de consciência para a confissão — Oratio',
     description: 'Roteiro para se confessar: perguntas pelos Dez Mandamentos e preceitos da Igreja, lista para marcar, como se confessar e Ato de Contrição.',
   },
+  '/home/novenas': {
+    title: 'Novenas: nove dias de oração — Oratio',
+    description: 'Novena ao Espírito Santo, de Natal, a Nossa Senhora Aparecida e a Santo Antônio, com um tema para cada dia e a oração da novena.',
+  },
   '/jornada': {
     title: 'Jornada: seu caminho de oração — Oratio',
     description: 'Seu progresso pessoal: dias de oração, novenas, coleção de santos e milagres visitados. Fica só no seu aparelho.',
@@ -77,6 +82,13 @@ function metaFor(rawPathname) {
 
   if (/^\/home\/misterio\/foco\/[^/]+\/[^/]+$/.test(pathname)) {
     return { title: 'Rezar o mistério em modo foco — Oratio', description: DEFAULT_META.description };
+  }
+
+  const novenaMatch = pathname.match(/^\/home\/novenas\/([^/]+)$/);
+  if (novenaMatch) {
+    const novena = getNovena(novenaMatch[1]);
+    if (!novena) return NOT_FOUND_META;
+    return { title: `${novena.title}: os nove dias — Oratio`, description: novena.intro };
   }
 
   // Rota inexistente: o servidor responde 200 (é um SPA), então avisamos os

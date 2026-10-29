@@ -6915,3 +6915,169 @@ details[open] > summary .exam-chevron {
   font-weight: 600;
   font-size: 0.9rem;
 }
+
+/* ---------- Novenas ---------- */
+.novena-list {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.novena-card,
+.mission-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  transition: border-color var(--duration-fast), box-shadow var(--duration-fast);
+}
+
+.novena-card:hover,
+.mission-item:hover {
+  border-color: var(--color-gold);
+  box-shadow: var(--shadow-sm);
+}
+
+.novena-card-text,
+.mission-item > span {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.novena-card-text span,
+.mission-item small {
+  color: var(--color-text-soft);
+  font-size: 0.85rem;
+}
+
+.novena-beads {
+  display: flex;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.novena-bead {
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-gold);
+  transition: background 0.4s, box-shadow 0.4s;
+}
+
+.novena-beads.is-sm .novena-bead {
+  width: 0.7rem;
+  height: 0.7rem;
+}
+
+.novena-bead.is-done {
+  background: radial-gradient(circle at 40% 35%, #FFE8A3, var(--color-gold) 70%);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--color-gold) 60%, transparent);
+}
+
+.novena-bead.is-today {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 2px;
+}
+
+.novena-when {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.novena-progress {
+  display: grid;
+  justify-items: start;
+  gap: 0.6rem;
+  margin: 1.5rem 0;
+  padding: 1.1rem;
+  border: 1px solid var(--color-gold);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-gold) 8%, var(--color-surface));
+}
+
+.novena-progress p {
+  margin: 0;
+}
+
+.novena-progress .filter-clear-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.novena-prayer {
+  margin-bottom: 1.5rem;
+}
+
+.novena-days {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.novena-day {
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.novena-day.is-today {
+  border-color: var(--color-terracotta);
+}
+
+.novena-day.is-done {
+  border-color: var(--color-gold);
+}
+
+.novena-day-number {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-terracotta);
+}
+
+.novena-day h3 {
+  margin: 0.2rem 0 0.3rem;
+  font-size: 1.05rem;
+}
+
+.novena-day p {
+  margin: 0 0 0.6rem;
+  color: var(--color-text-soft);
+  line-height: 1.55;
+}
+
+.novena-day .journey-mark {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.85rem;
+}
+
+.mission-list {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.mission-more {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-text-soft);
+}
+
+.mission-more a {
+  color: var(--color-terracotta);
+  font-weight: 600;
+}

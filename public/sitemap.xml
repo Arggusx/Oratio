@@ -319,6 +319,36 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://oratio-daily-dev.vercel.app/home/novenas</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://oratio-daily-dev.vercel.app/home/novenas/espirito-santo</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://oratio-daily-dev.vercel.app/home/novenas/natal</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://oratio-daily-dev.vercel.app/home/novenas/aparecida</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://oratio-daily-dev.vercel.app/home/novenas/santo-antonio</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://oratio-daily-dev.vercel.app/home/escola-da-fe?secao=missa</loc>
     <lastmod>2026-10-29</lastmod>
     <changefreq>monthly</changefreq>

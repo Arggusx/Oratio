@@ -25,6 +25,7 @@ const Privacidade = lazy(() => import('./pages/Privacidade'));
 const Creditos = lazy(() => import('./pages/Creditos'));
 const Confissao = lazy(() => import('./pages/Confissao'));
 const Jornada = lazy(() => import('./pages/Jornada'));
+const Novenas = lazy(() => import('./pages/Novenas'));
 
 function NotFound() {
   return (
@@ -99,6 +100,8 @@ function AnimatedRoutes() {
             <Route path="/creditos" element={<Creditos />} />
             <Route path="/home/confissao" element={<Confissao />} />
             <Route path="/jornada" element={<Jornada />} />
+            <Route path="/home/novenas" element={<Novenas />} />
+            <Route path="/home/novenas/:id" element={<Novenas />} />
             <Route path="/home/misterio/foco/:tipo/:id" element={<FocusMystery />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

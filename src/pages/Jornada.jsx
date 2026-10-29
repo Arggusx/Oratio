@@ -1,10 +1,15 @@
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Sparkles } from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react';
 import PrayedTodayButton from '../components/PrayedTodayButton';
+import { NovenaBeads } from './Novenas';
+import { novenas } from '../data/novenas';
 import { prayerWeeks, useJourney } from '../utils/journeyStore';
 
-const SECTIONS = [{ id: 'diario', label: 'Diário' }];
+const SECTIONS = [
+  { id: 'diario', label: 'Diário' },
+  { id: 'missoes', label: 'Missões' },
+];
 
 const weekdayInitials = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
 const dayLabel = (date) => date.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
@@ -73,6 +78,55 @@ function PrayerDiary() {
   );
 }
 
+/** Missões: novenas (e, mais adiante, trilhas) em andamento, cada uma com o seu progresso. */
+function Missions() {
+  const { novenas: plans } = useJourney();
+  const active = novenas.filter((n) => plans[n.id]);
+  const others = novenas.filter((n) => !plans[n.id]);
+
+  return (
+    <section className="journey-card" aria-labelledby="missions-title">
+      <header className="journey-card-head">
+        <h2 id="missions-title">Missões</h2>
+        <p>Novenas que você começou. Cada conta acende quando você marca o dia rezado.</p>
+      </header>
+
+      {active.length === 0 ? (
+        <p className="calendar-empty">Nenhuma novena em andamento.</p>
+      ) : (
+        <ul className="mission-list">
+          {active.map((n) => (
+            <li key={n.id}>
+              <Link to={`/home/novenas/${n.id}`} className="mission-item">
+                <span>
+                  <strong>{n.title}</strong>
+                  <small>{plans[n.id].done.length} de 9 dias</small>
+                </span>
+                <NovenaBeads plan={plans[n.id]} size="sm" />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {others.length > 0 && (
+        <p className="mission-more">
+          Começar outra:{' '}
+          {others.map((n, i) => (
+            <span key={n.id}>
+              {i > 0 && ' · '}
+              <Link to={`/home/novenas/${n.id}`}>{n.title.replace('Novena ', '')}</Link>
+            </span>
+          ))}{' '}
+          <Link to="/home/novenas" aria-label="Ver todas as novenas">
+            <ArrowRight size={14} />
+          </Link>
+        </p>
+      )}
+    </section>
+  );
+}
+
 /**
  * Jornada: o progresso pessoal de oração e de estudo, guardado só neste aparelho.
  * Nada de pontos nem ranking: as luzes, a coleção e o mapa são lembranças do caminho.
@@ -113,6 +167,7 @@ export default function Jornada() {
 
       <motion.div key={section} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
         {section === 'diario' && <PrayerDiary />}
+        {section === 'missoes' && <Missions />}
       </motion.div>
     </main>
   );
