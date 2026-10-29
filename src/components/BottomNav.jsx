@@ -19,7 +19,7 @@ function RosaryIcon({ size = 22 }) {
 const items = [
   { label: 'Início', to: '/', Icon: Home },
   { label: 'Leituras', to: '/home/leituras', Icon: BookOpen },
-  { label: 'Orações', to: '/home/oracoes', Icon: RosaryIcon },
+  { label: 'Terço', to: '/home/oracoes', Icon: RosaryIcon },
   { label: 'Calendário', to: '/home/calendario', Icon: CalendarDays },
   { label: 'Escola', to: '/home/escola-da-fe', Icon: GraduationCap },
 ];

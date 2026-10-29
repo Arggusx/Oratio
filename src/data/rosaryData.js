@@ -160,26 +160,6 @@ export const traditionalRosaryData = {
   introduction: 'O Santo Terço é uma contemplação dos mistérios da salvação através da oração vocal e mental, recomendada pela Virgem Maria em diversas aparições.',
   mysteriesList: mysteriesData,
   // Resumo do roteiro em três momentos, exibido antes do passo a passo.
-  practicalStructure: [
-    {
-      id: 'inicio',
-      title: 'Início',
-      prayers: 'Sinal da Cruz, Creio, Pai Nosso e 3 Ave-Marias',
-      text: 'Faça o oferecimento geral do terço e mencione os seus principais agradecimentos.',
-    },
-    {
-      id: 'dezenas',
-      title: 'Nas dezenas',
-      prayers: 'Da 1ª à 5ª dezena',
-      text: 'Antes de cada Pai Nosso, anuncie o mistério do dia e acrescente um pedido ou oferecimento específico para aquela dezena.',
-    },
-    {
-      id: 'final',
-      title: 'No final',
-      prayers: 'Agradecimento final e Salve-Rainha',
-      text: 'Agradeça a oportunidade de ter rezado e confie as suas intenções às mãos de Nossa Senhora.',
-    },
-  ],
   steps: [
     {
       id: 'step-1',
