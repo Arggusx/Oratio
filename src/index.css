@@ -7300,66 +7300,14 @@ details[open] > summary .exam-chevron {
   }
 }
 
-/* O ano como jornada */
-.year-journey {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 1.5rem;
-}
 
-.year-journey svg {
-  flex: none;
-  width: min(100%, 14rem);
-  height: auto;
-  color: var(--color-border);
-}
 
-.year-base {
-  fill: none;
-  stroke: var(--color-border-soft);
-  stroke-width: 18;
-  opacity: 0.4;
-}
 
-.year-day {
-  stroke-width: 0.9;
-  opacity: 0.35;
-}
 
-.year-day.is-done {
-  stroke-width: 2;
-  opacity: 1;
-}
 
-.year-seasons {
-  flex: 1 1 14rem;
-  display: grid;
-  gap: 0.7rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
 
-.year-seasons li {
-  display: grid;
-  grid-template-columns: 8.5rem 1fr auto;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 0.85rem;
-}
 
-.year-season-name {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
 
-.year-swatch {
-  width: 0.7rem;
-  height: 0.7rem;
-  border-radius: 3px;
-}
 
 .year-bar {
   height: 0.5rem;
@@ -7373,9 +7321,6 @@ details[open] > summary .exam-chevron {
   height: 100%;
 }
 
-.year-seasons small {
-  color: var(--color-text-muted);
-}
 
 /* Quiz da Escola da Fé */
 .quiz {
@@ -8985,4 +8930,536 @@ details[open] > summary .exam-chevron {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
+}
+
+/* ---------- Listas de cartões centralizadas ----------
+   Toda lista de cartões fica centralizada, inclusive a última linha incompleta. */
+.card-list {
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.9rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---------- Medalhão e molduras ---------- */
+.avatar-frame {
+  display: block;
+  flex: none;
+  overflow: visible;
+}
+
+.af-ring {
+  fill: var(--frame-accent);
+  stroke: var(--frame);
+  stroke-width: 4;
+}
+
+.af-inner {
+  fill: var(--color-surface);
+  stroke: var(--frame);
+  stroke-width: 1.5;
+}
+
+.af-line {
+  fill: none;
+  stroke: var(--frame);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.af-fill {
+  fill: var(--frame);
+}
+
+.af-text {
+  fill: var(--frame);
+  font-family: var(--font-serif);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.af-initial {
+  fill: var(--frame);
+  font-family: var(--font-serif);
+  font-size: 40px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+.af-dove {
+  fill: var(--frame);
+  opacity: 0.85;
+}
+
+.journey-profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.25rem 0 0;
+  padding: 1rem 1.1rem;
+  border-radius: 1.1rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.journey-profile-body {
+  display: grid;
+  gap: 0.55rem;
+  min-width: 0;
+}
+
+.journey-profile-name {
+  justify-self: start;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-text);
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.journey-profile-name small {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-terracotta);
+  text-decoration: underline;
+}
+
+.journey-profile .search {
+  padding-left: 1rem;
+}
+
+.journey-frames {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.journey-frame {
+  padding: 0.15rem;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+}
+
+.journey-frame:disabled {
+  cursor: not-allowed;
+  filter: grayscale(1);
+  opacity: 0.35;
+}
+
+.journey-frame.is-active {
+  border-color: var(--color-terracotta);
+}
+
+/* ---------- Passaporte do Peregrino ---------- */
+.passport-pages {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 0.9rem;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 27px, color-mix(in srgb, var(--color-gold) 14%, transparent) 27px 28px),
+    color-mix(in srgb, #F6EBD3 70%, var(--color-surface));
+  border: 1px solid color-mix(in srgb, var(--color-gold) 45%, var(--color-border));
+}
+
+:root[data-theme='dark'] .passport-pages {
+  background:
+    repeating-linear-gradient(0deg, transparent 0 27px, rgba(200, 150, 62, 0.08) 27px 28px),
+    #2A231C;
+}
+
+.passport-slot {
+  flex: 0 1 10rem;
+  color: inherit;
+}
+
+.stamp {
+  display: grid;
+  justify-items: center;
+  gap: 0.2rem;
+  padding: 0.9rem 0.6rem;
+  border-radius: 50% / 38%;
+  border: 2px dashed color-mix(in srgb, var(--color-text-muted) 45%, transparent);
+  text-align: center;
+  opacity: 0.6;
+}
+
+.stamp-art {
+  width: 4.5rem;
+  filter: grayscale(1);
+  opacity: 0.5;
+}
+
+.stamp strong {
+  font-size: 0.85rem;
+  line-height: 1.2;
+}
+
+.stamp small {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+}
+
+.stamp.is-stamped {
+  opacity: 1;
+  border: 3px double var(--stamp);
+  color: var(--stamp);
+  transform: rotate(var(--tilt));
+  background: color-mix(in srgb, var(--stamp) 6%, transparent);
+  animation: stamp-in 0.5s var(--ease-out) both;
+}
+
+.stamp.is-stamped .stamp-art {
+  filter: none;
+  opacity: 1;
+}
+
+.stamp.is-stamped strong {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.stamp.is-stamped small {
+  color: var(--stamp);
+}
+
+@keyframes stamp-in {
+  from { transform: rotate(var(--tilt)) scale(1.6); opacity: 0; }
+}
+
+/* ---------- Revelação de recompensa ---------- */
+.reward-reveal {
+  width: min(30rem, calc(100% - 2rem));
+  margin: auto;
+  padding: 1.75rem 1.5rem;
+  border: 1px solid var(--trail);
+  border-radius: 1.25rem;
+  background: var(--color-cream);
+  color: var(--color-text);
+  text-align: center;
+  max-height: 92dvh;
+  overflow: hidden auto;
+}
+
+.reward-reveal[open] {
+  display: grid;
+  justify-items: center;
+  gap: 0.6rem;
+  animation: filter-sheet-in 0.35s var(--ease-out);
+}
+
+.reward-reveal::backdrop {
+  background: rgba(20, 15, 10, 0.6);
+  backdrop-filter: blur(3px);
+}
+
+.reward-reveal h2 {
+  position: relative;
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+}
+
+.reward-reveal p {
+  position: relative;
+  margin: 0;
+  color: var(--color-text-soft);
+}
+
+.reward-reveal .eyebrow {
+  position: relative;
+}
+
+.reward-rays {
+  position: absolute;
+  left: 50%;
+  top: 35%;
+  width: 40rem;
+  height: 40rem;
+  margin: -20rem 0 0 -20rem;
+  background: repeating-conic-gradient(color-mix(in srgb, var(--trail) 9%, transparent) 0 8deg, transparent 8deg 20deg);
+  animation: rays-spin 40s linear infinite;
+  pointer-events: none;
+}
+
+.reward-items {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.25rem;
+  margin: 0.5rem 0;
+}
+
+.reward-items figure {
+  display: grid;
+  justify-items: center;
+  gap: 0.4rem;
+  width: 11rem;
+  margin: 0;
+}
+
+.reward-items figcaption {
+  font-size: 0.82rem;
+  color: var(--color-text-soft);
+}
+
+.reward-actions {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.glass-piece {
+  position: relative;
+  width: 7rem;
+  height: 7rem;
+  margin: 0.5rem 0;
+  clip-path: polygon(50% 0, 100% 38%, 82% 100%, 18% 100%, 0 38%);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.55), transparent 45%),
+    var(--glass);
+  box-shadow: inset 0 0 0 3px #3A2E26;
+  animation: glass-glow 2.4s ease-in-out infinite;
+}
+
+@keyframes glass-glow {
+  50% { filter: brightness(1.25) drop-shadow(0 0 12px var(--glass)); }
+}
+
+/* ---------- Santos do ano: rosácea e cartões de mês ---------- */
+.rose-window {
+  margin: 0 auto 1.5rem;
+  width: min(100%, 20rem);
+  text-align: center;
+}
+
+.rose-window svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.rose-window figcaption {
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+}
+
+.rose-frame {
+  fill: #3A2E26;
+}
+
+.rose-petal {
+  cursor: pointer;
+  outline: none;
+}
+
+.rose-petal path {
+  fill: color-mix(in srgb, #8C7E6B 55%, #2A231C);
+  stroke: #3A2E26;
+  stroke-width: 2.5;
+  transition: fill 0.4s;
+}
+
+.rose-petal.is-lit path {
+  fill: var(--glass);
+  filter: drop-shadow(0 0 4px var(--glass));
+}
+
+.rose-petal:hover path,
+.rose-petal:focus-visible path {
+  filter: brightness(1.25);
+}
+
+.rose-petal.is-now path {
+  stroke: var(--color-gold);
+}
+
+.rose-jewel {
+  fill: rgba(255, 255, 255, 0.18);
+}
+
+.rose-petal.is-lit .rose-jewel {
+  fill: rgba(255, 255, 255, 0.55);
+}
+
+.rose-label {
+  fill: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.rose-center {
+  fill: #F2D58A;
+  stroke: #3A2E26;
+  stroke-width: 3;
+}
+
+.rose-cross {
+  fill: none;
+  stroke: #8C6A3F;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.month-cards > li {
+  flex: 0 1 11.5rem;
+}
+
+.month-card {
+  display: grid;
+  justify-items: start;
+  gap: 0.55rem;
+  width: 100%;
+  height: 100%;
+  padding: 0.95rem;
+  border-radius: 1rem;
+  border: 1px solid var(--color-border);
+  border-top: 4px solid color-mix(in srgb, var(--glass) 70%, transparent);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.15s var(--ease-out), box-shadow 0.15s;
+}
+
+.month-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--glass) 22%, transparent);
+}
+
+.month-card.is-now {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 1px var(--color-gold);
+}
+
+.month-card.is-lit {
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--glass) 18%, transparent), transparent 70%),
+    var(--color-surface);
+}
+
+.month-card-head {
+  display: grid;
+}
+
+.month-card-head small {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+}
+
+.month-card.is-now .month-card-head small {
+  color: var(--color-terracotta);
+}
+
+.month-card-head strong {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  text-transform: capitalize;
+}
+
+.month-card-faces {
+  display: flex;
+  align-items: center;
+}
+
+.month-card-faces > span {
+  margin-right: -0.55rem;
+}
+
+.month-card-faces .saint-initial {
+  width: 2.1rem;
+  height: 2.1rem;
+  font-size: 0.85rem;
+  border: 2px solid var(--color-surface);
+}
+
+.month-card-faces > span:not(.is-collected) .saint-initial {
+  filter: grayscale(1) brightness(0.6);
+  opacity: 0.6;
+}
+
+.month-card-more {
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  border: 2px solid var(--color-surface);
+  background: var(--color-border-soft);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.month-card-status {
+  font-size: 0.8rem;
+  color: var(--color-text-soft);
+}
+
+.month-card.is-lit .month-card-status {
+  color: var(--glass);
+  font-weight: 700;
+}
+
+.month-sheet-hint {
+  margin: 0 0 1rem;
+  color: var(--color-text-soft);
+  line-height: 1.55;
+}
+
+.month-sheet .collection-grid > li {
+  flex: 0 1 8rem;
+}
+
+@media (max-width: 560px) {
+  .reward-reveal {
+    padding: 1.25rem 1rem;
+  }
+
+  .reward-items {
+    flex-wrap: nowrap;
+    gap: 0.6rem;
+  }
+
+  .reward-items figure {
+    width: 50%;
+  }
+
+  .reward-items .stamp-art {
+    width: 3.2rem;
+  }
+
+  .reward-items .avatar-frame {
+    width: 92px;
+    height: 92px;
+  }
+}
+
+@media (max-width: 560px) {
+  .month-cards > li {
+    flex-basis: 9rem;
+  }
+
+  .month-card {
+    padding: 0.8rem;
+  }
 }

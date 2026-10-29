@@ -18,6 +18,8 @@ const EMPTY = {
   quizzes: {}, // { [tema]: { answered: n, correct: n } } (quiz antigo das abas da Escola)
   quizLevels: {}, // { [ilha]: [níveis concluídos] } nas ilhas de quiz
   seenIntros: [], // jogos cuja explicação "Como funciona" a pessoa já viu
+  profile: { name: '', frame: 'simples' }, // nome (opcional) e moldura do medalhão da Jornada
+  rewardsSeen: [], // recompensas cuja revelação já foi mostrada (ex.: 'ilha:biblia', 'vitral:10')
 };
 
 function read() {
@@ -107,6 +109,12 @@ export const journey = {
     const passed = state.quizLevels[island] ?? [];
     if (passed.includes(level)) return;
     write({ ...state, quizLevels: { ...state.quizLevels, [island]: [...passed, level] } });
+  },
+  setProfile(changes) {
+    write({ ...state, profile: { ...state.profile, ...changes } });
+  },
+  markRewardSeen(id) {
+    if (!state.rewardsSeen.includes(id)) write({ ...state, rewardsSeen: [...state.rewardsSeen, id] });
   },
   markIntroSeen(game) {
     if (!state.seenIntros.includes(game)) write({ ...state, seenIntros: [...state.seenIntros, game] });

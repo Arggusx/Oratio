@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -9,36 +10,25 @@ import {
   Library,
   Lightbulb,
   Map as MapIcon,
-  Orbit,
   PartyPopper,
+  Stamp,
   Sunrise,
 } from 'lucide-react';
 import PrayedTodayButton from '../components/PrayedTodayButton';
 import GameIntro from '../components/GameIntro';
 import { NovenaBeads } from './Novenas';
 import { novenas } from '../data/novenas';
-import { trails, trailStops } from '../data/trails';
-import { LEVELS } from '../data/quizBank';
+import { trails } from '../data/trails';
+import { completedIslands, islandProgress } from '../utils/islandProgress';
 
-/** Próxima parada de uma ilha (etapa ou quiz) e o progresso, considerando as duas coisas. */
-function nextStop(trail, trailPlans, quizLevels) {
-  const lessons = trailPlans[trail.id]?.done ?? [];
-  const passed = quizLevels?.[trail.id] ?? [];
-  const stops = trailStops(trail);
-  const isDone = (st) => (st.kind === 'lesson' ? lessons.includes(st.day) : passed.includes(st.level));
-  const next = stops.find((st) => !isDone(st));
-  return {
-    done: stops.filter(isDone).length,
-    total: stops.length,
-    title: next ? (next.kind === 'lesson' ? next.step.title : LEVELS.find((l) => l.id === next.level).title) : null,
-  };
-}
 import { TrailSteps } from './Trilhas';
 import SaintCollection from '../components/journey/SaintCollection';
 import MiracleMap from '../components/journey/MiracleMap';
 import SpiritualBouquet from '../components/journey/SpiritualBouquet';
-import YearJourney from '../components/journey/YearJourney';
-import { prayerWeeks, todayKey, useJourney } from '../utils/journeyStore';
+import Passport from '../components/journey/Passport';
+import { AvatarFrame } from '../components/journey/Rewards';
+import { allFrames, islandRewards } from '../data/rewards';
+import { journey, prayerWeeks, todayKey, useJourney } from '../utils/journeyStore';
 import { saints } from '../data/saints';
 import { eucharisticMiracles } from '../data/eucharisticMiracles';
 
@@ -48,7 +38,7 @@ const SECTIONS = [
   { id: 'colecao', label: 'Coleção' },
   { id: 'mapa', label: 'Mapa' },
   { id: 'buque', label: 'Buquê' },
-  { id: 'ano', label: 'Ano' },
+  { id: 'passaporte', label: 'Passaporte' },
 ];
 
 const weekdayInitials = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
@@ -222,9 +212,9 @@ function todayActions({ prayedDays, novenas: novenaPlans, trails: trailPlans, qu
     }
   }
   for (const t of trails) {
-    const next = trailPlans[t.id] && nextStop(t, trailPlans, quizLevels);
-    if (next?.title) {
-      actions.push({ to: `/home/trilhas/${t.id}`, title: `${t.title}: próxima parada`, hint: next.title });
+    const next = trailPlans[t.id] && islandProgress(t, { trails: trailPlans, quizLevels });
+    if (next?.nextTitle) {
+      actions.push({ to: `/home/trilhas/${t.id}`, title: `${t.title}: próxima parada`, hint: next.nextTitle });
     }
   }
   if (actions.length < 3 && !Object.keys(trailPlans).length) {
@@ -236,8 +226,9 @@ function todayActions({ prayedDays, novenas: novenaPlans, trails: trailPlans, qu
 /** Os "jogos" da Jornada, cada um com um desenho, uma cor e o estado atual em uma linha. */
 function games(state) {
   const activeNovena = novenas.find((n) => state.novenas[n.id] && state.novenas[n.id].done.length < 9);
-  const activeTrail = trails.find((t) => state.trails[t.id] && nextStop(t, state.trails, state.quizLevels).title);
-  const trailProgress = activeTrail && nextStop(activeTrail, state.trails, state.quizLevels);
+  const activeTrail = trails.find((t) => state.trails[t.id] && !islandProgress(t, state).complete);
+  const trailProgress = activeTrail && islandProgress(activeTrail, state);
+  const islandsDone = completedIslands(state).length;
   const quizDone = Object.values(state.quizLevels ?? {}).reduce((n, levels) => n + levels.length, 0);
   return [
     {
@@ -268,10 +259,10 @@ function games(state) {
     },
     {
       id: 'colecao',
-      title: 'Coleção de santos',
+      title: 'Santos do ano',
       Icon: Library,
       color: '#7A5A9E',
-      status: `${state.saints.length} de ${saints.length} guardados`,
+      status: `${state.saints.length} de ${saints.length} santos guardados`,
     },
     {
       id: 'mapa',
@@ -296,22 +287,78 @@ function games(state) {
       status: state.bouquets.length ? `${state.bouquets.length} buquê(s) montado(s)` : 'Ofereça orações por alguém',
     },
     {
-      id: 'ano',
-      title: 'O ano como jornada',
-      Icon: Orbit,
-      color: '#3F6B45',
-      status: 'O anel se preenche',
+      id: 'passaporte',
+      title: 'Passaporte do Peregrino',
+      Icon: Stamp,
+      color: '#8C6A3F',
+      status: islandsDone ? `${islandsDone} de ${trails.length} carimbos` : 'Um carimbo por ilha concluída',
     },
   ];
 }
 
-/** Tela inicial da Jornada: "Para hoje" e os cartões de cada jogo. */
+/** Medalhão do peregrino: nome (opcional) e a moldura escolhida entre as ganhas nas ilhas. */
+function ProfileCard() {
+  const state = useJourney();
+  const { name, frame } = state.profile;
+  const earned = ['simples', ...completedIslands(state).map((t) => islandRewards[t.id].frame.id)];
+  const [editing, setEditing] = useState(false);
+
+  return (
+    <section className="journey-profile" aria-label="Seu medalhão">
+      <AvatarFrame frameId={frame} name={name} size={92} />
+      <div className="journey-profile-body">
+        {editing ? (
+          <input
+            className="search"
+            defaultValue={name}
+            maxLength={24}
+            placeholder="Seu nome (opcional)"
+            aria-label="Seu nome"
+            autoFocus
+            onBlur={(e) => {
+              journey.setProfile({ name: e.target.value.trim() });
+              setEditing(false);
+            }}
+            onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
+          />
+        ) : (
+          <button type="button" className="journey-profile-name" onClick={() => setEditing(true)}>
+            {name || 'Peregrino'} <small>editar</small>
+          </button>
+        )}
+        <div className="journey-frames" role="group" aria-label="Escolher moldura">
+          {allFrames.map((f) => {
+            const has = earned.includes(f.id);
+            const trail = trails.find((t) => islandRewards[t.id]?.frame.id === f.id);
+            return (
+              <button
+                key={f.id}
+                type="button"
+                className={`journey-frame ${frame === f.id ? 'is-active' : ''}`}
+                disabled={!has}
+                onClick={() => journey.setProfile({ frame: f.id })}
+                title={has ? f.name : `Conclua a ilha "${trail?.title}" para ganhar`}
+                aria-label={has ? `Usar ${f.name}` : `${f.name}: conclua a ilha ${trail?.title}`}
+                aria-pressed={frame === f.id}
+              >
+                <AvatarFrame frameId={f.id} size={40} />
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** Tela inicial da Jornada: o medalhão, "Para hoje" e os cartões de cada jogo. */
 function JourneyHome({ onOpen }) {
   const state = useJourney();
   const actions = todayActions(state);
 
   return (
     <>
+      <ProfileCard />
       <section className="journey-today" aria-labelledby="today-title">
         <h2 id="today-title">Para hoje</h2>
         {actions.length === 0 ? (
@@ -398,7 +445,7 @@ export default function Jornada() {
             {section.id === 'colecao' && <SaintCollection />}
             {section.id === 'mapa' && <MiracleMap />}
             {section.id === 'buque' && <SpiritualBouquet />}
-            {section.id === 'ano' && <YearJourney />}
+            {section.id === 'passaporte' && <Passport />}
           </motion.div>
         </>
       ) : (

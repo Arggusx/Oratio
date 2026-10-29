@@ -4,7 +4,10 @@ import { ArrowLeft, ArrowRight, Check, RotateCcw, Shuffle, X } from 'lucide-reac
 import IslandPath from '../components/IslandPath';
 import GameIntro from '../components/GameIntro';
 import TrailIsland from '../components/TrailIsland';
-import { getTrail, trails, trailStops } from '../data/trails';
+import { getTrail, trails } from '../data/trails';
+import { islandProgress } from '../utils/islandProgress';
+import { islandRewards } from '../data/rewards';
+import { RewardReveal } from '../components/journey/Rewards';
 import { LEVELS } from '../data/quizBank';
 import { journey, useJourney } from '../utils/journeyStore';
 
@@ -17,17 +20,6 @@ export function TrailSteps({ trail, plan }) {
       ))}
     </ol>
   );
-}
-
-/** Paradas de uma ilha (etapas e quizzes) e quantas já foram concluídas. */
-function stopProgress(trail, { trails: plans, quizLevels }) {
-  const stops = trailStops(trail);
-  const lessons = plans[trail.id]?.done ?? [];
-  const passed = quizLevels[trail.id] ?? [];
-  const isDone = (st) => (st.kind === 'lesson' ? lessons.includes(st.day) : passed.includes(st.level));
-  const next = stops.find((st) => !isDone(st));
-  const nextTitle = next ? (next.kind === 'lesson' ? next.step.title : LEVELS.find((l) => l.id === next.level).title) : null;
-  return { total: stops.length, done: stops.filter(isDone).length, nextTitle, started: Boolean(plans[trail.id]) };
 }
 
 function TrailProgress({ trail, progress }) {
@@ -46,7 +38,7 @@ function TrailProgress({ trail, progress }) {
 /** "Escolha uma ilha": cada trilha é uma ilha. A que está em andamento fica em destaque. */
 function TrailList() {
   const state = useJourney();
-  const progress = Object.fromEntries(trails.map((t) => [t.id, stopProgress(t, state)]));
+  const progress = Object.fromEntries(trails.map((t) => [t.id, islandProgress(t, state)]));
   const inProgress = trails.find((t) => progress[t.id].started && progress[t.id].done < progress[t.id].total);
   const featured = inProgress ?? trails.find((t) => !progress[t.id].started) ?? trails[0];
   const others = trails.filter((t) => t.id !== featured.id);
@@ -159,20 +151,22 @@ function StepSheet({ trail, index, done, onComplete, onClose }) {
  */
 function TrailPage({ trail }) {
   const navigate = useNavigate();
-  const { trails: plans, quizLevels } = useJourney();
+  const state = useJourney();
+  const plans = state.trails;
   const plan = plans[trail.id];
   const done = plan?.done ?? [];
-  const passed = quizLevels[trail.id] ?? [];
   const [open, setOpen] = useState(null);
   const [justUnlocked, setJustUnlocked] = useState(null);
   const islandRefs = useRef([]);
   // O caminho mistura as etapas de leitura com as paradas de quiz (fácil, médio, difícil e desafio final).
-  const stops = trailStops(trail);
-  const isDone = (st) => (st.kind === 'lesson' ? done.includes(st.day) : passed.includes(st.level));
-  const current = stops.findIndex((st) => !isDone(st));
-  const finished = current === -1;
+  const { stops, isDone, nextIndex: current, complete: finished } = islandProgress(trail, state);
   const next = trails.find((t) => t.id !== trail.id && !plans[t.id]);
   const closeSheet = useCallback(() => setOpen(null), []);
+  // Recompensa da ilha: aparece uma vez, quando a ilha é concluída.
+  const reward = islandRewards[trail.id];
+  const rewardId = `ilha:${trail.id}`;
+  const showReward = finished && reward && !state.rewardsSeen.includes(rewardId);
+  const closeReward = useCallback(() => journey.markRewardSeen(rewardId), [rewardId]);
 
   const openStop = (i) => {
     const st = stops[i];
@@ -256,6 +250,15 @@ function TrailPage({ trail }) {
         <button type="button" className="filter-clear-link trail-restart" onClick={() => journey.stopPlan('trails', trail.id)}>
           <RotateCcw size={14} aria-hidden="true" /> Recomeçar a trilha do zero
         </button>
+      )}
+
+      {showReward && (
+        <RewardReveal
+          trail={trail}
+          reward={reward}
+          onClose={closeReward}
+          onUseFrame={() => journey.setProfile({ frame: reward.frame.id })}
+        />
       )}
 
       {open !== null && (
