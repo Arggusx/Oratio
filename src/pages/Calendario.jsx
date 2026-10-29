@@ -130,6 +130,8 @@ export default function Calendario() {
         Domingos de preceito, dias santos de guarda, principais celebrações da Igreja e feriados nacionais do Brasil.
       </p>
 
+      <LiturgicalCycles />
+
       <div className="calendar-toolbar">
         <div className="calendar-year-nav">
           <button className="calendar-icon-btn" onClick={() => changeYear(-1)} aria-label="Ano anterior">
@@ -321,7 +323,6 @@ export default function Calendario() {
         })}
       </div>
 
-      <LiturgicalCycles />
 
       <p className="calendar-footnote">
         Datas conforme o calendário litúrgico da CNBB. Solenidades transferidas para o domingo no Brasil (Epifania,
