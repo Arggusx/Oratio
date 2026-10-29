@@ -2,6 +2,9 @@ import { useEffect } from 'react';
 import { getSaint } from '../data/saints';
 import { getNovena } from '../data/novenas';
 import { getTrail } from '../data/trails';
+import { getQuizIsland } from '../data/quizBank';
+
+const QUIZ_DESCRIPTION = 'Quatro níveis, do fácil ao desafio final, com quatro alternativas e a explicação de cada resposta.';
 
 export const SITE_URL = 'https://oratio-daily-dev.vercel.app';
 
@@ -52,8 +55,8 @@ const PAGE_META = {
     description: 'Novena ao Espírito Santo, de Natal, a Nossa Senhora Aparecida e a Santo Antônio, com um tema para cada dia e a oração da novena.',
   },
   '/home/trilhas': {
-    title: 'Trilhas da fé: uma etapa por dia — Oratio',
-    description: 'Conheça a Missa em 7 dias e os 4 dogmas de Maria, com uma etapa curta por dia e algo para viver depois.',
+    title: 'Trilhas e quizzes da fé — Oratio',
+    description: 'Escolha uma ilha: trilhas sobre a Missa, os sacramentos e Maria, com uma etapa por dia, e quizzes do fácil ao desafio final.',
   },
   '/comunidade': {
     title: 'Comunidade: mural de intenções e terços de hoje — Oratio',
@@ -98,6 +101,16 @@ function metaFor(rawPathname) {
     const novena = getNovena(novenaMatch[1]);
     if (!novena) return NOT_FOUND_META;
     return { title: `${novena.title}: os nove dias — Oratio`, description: novena.intro };
+  }
+
+  const quizMatch = pathname.match(/^\/home\/quiz\/([^/]+)(?:\/(\d+))?$/);
+  if (quizMatch) {
+    if (quizMatch[1] === 'aleatorio') {
+      return { title: 'Desafio aleatório: quiz católico — Oratio', description: QUIZ_DESCRIPTION };
+    }
+    const island = getQuizIsland(quizMatch[1]);
+    if (!island) return NOT_FOUND_META;
+    return { title: `${island.title}: quiz católico — Oratio`, description: `${island.short} ${QUIZ_DESCRIPTION}` };
   }
 
   const trailMatch = pathname.match(/^\/home\/trilhas\/([^/]+)$/);

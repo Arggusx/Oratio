@@ -13,10 +13,30 @@ import { LoadMoreButton } from '../components/LoadMore';
 import { useLoadMore } from '../utils/useLoadMore';
 import { eucharisticMiracles } from '../data/eucharisticMiracles';
 import Angel from '../components/anim/Angel';
-import Quiz from '../components/Quiz';
+import TrailIsland from '../components/TrailIsland';
+import { getQuizIsland } from '../data/quizBank';
 import { trails } from '../data/trails';
 
 const countryCount = new Set(eucharisticMiracles.map((m) => m.country)).size;
+
+const QUIZ_FOR_SECTION = { curiosidades: 'fe', missa: 'missa', simbolos: 'simbolos', santos: 'santos' };
+
+function QuizInvite({ section }) {
+  const island = getQuizIsland(QUIZ_FOR_SECTION[section]);
+  if (!island) return null;
+  return (
+    <Link to={`/home/quiz/${island.id}`} className="trail-card quiz-invite" style={{ '--trail': island.color }}>
+      <span className="trail-card-art">
+        <TrailIsland icon={island.icon} color={island.color} />
+      </span>
+      <span className="trail-card-body">
+        <span className="trail-chip">Quiz</span>
+        <strong>Teste o que você aprendeu na {island.title}</strong>
+        <span className="trail-card-desc">Quatro níveis, do fácil ao desafio final, com a explicação de cada resposta.</span>
+      </span>
+    </Link>
+  );
+}
 
 // Caminho com marcos: ícone do cartão das trilhas.
 function TrailIcon() {
@@ -449,8 +469,8 @@ export default function EscolaDaFe() {
         {section === 'simbolos' && <SymbolsSection />}
         {section === 'curiosidades' && <CuriosidadesSection />}
         {section === 'santos' && <SantosSection />}
-        {/* Quiz curto no fim de cada aba */}
-        <Quiz key={`quiz-${section}`} topic={section} />
+        {/* No fim de cada aba, um convite para a ilha de quiz do assunto */}
+        <QuizInvite section={section} />
       </motion.div>
     </main>
   );

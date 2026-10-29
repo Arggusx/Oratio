@@ -198,7 +198,7 @@ function todayActions({ prayedDays, novenas: novenaPlans, trails: trailPlans }) 
 function games(state) {
   const activeNovena = novenas.find((n) => state.novenas[n.id] && state.novenas[n.id].done.length < 9);
   const activeTrail = trails.find((t) => state.trails[t.id] && state.trails[t.id].done.length < t.steps.length);
-  const quizDone = Object.keys(state.quizzes).length;
+  const quizDone = Object.values(state.quizLevels ?? {}).reduce((n, levels) => n + levels.length, 0);
   return [
     {
       id: 'diario',
@@ -242,11 +242,11 @@ function games(state) {
     },
     {
       id: 'quiz',
-      to: '/home/escola-da-fe',
-      title: 'Quiz da Escola',
+      to: '/home/trilhas',
+      title: 'Ilhas de quiz',
       Icon: Lightbulb,
       color: '#D98B2B',
-      status: quizDone ? `${quizDone} de 4 temas feitos` : '4 temas para testar',
+      status: quizDone ? `${quizDone} níveis concluídos` : '6 ilhas, do fácil ao desafio',
     },
     {
       id: 'buque',

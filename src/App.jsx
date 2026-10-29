@@ -27,6 +27,7 @@ const Confissao = lazy(() => import('./pages/Confissao'));
 const Jornada = lazy(() => import('./pages/Jornada'));
 const Novenas = lazy(() => import('./pages/Novenas'));
 const Trilhas = lazy(() => import('./pages/Trilhas'));
+const QuizIlhas = lazy(() => import('./pages/QuizIlhas'));
 const Comunidade = lazy(() => import('./pages/Comunidade'));
 
 function NotFound() {
@@ -107,6 +108,8 @@ function AnimatedRoutes() {
             <Route path="/home/novenas/:id" element={<Novenas />} />
             <Route path="/home/trilhas" element={<Trilhas />} />
             <Route path="/home/trilhas/:id" element={<Trilhas />} />
+            <Route path="/home/quiz/:island" element={<QuizIlhas />} />
+            <Route path="/home/quiz/:island/:level" element={<QuizIlhas />} />
             <Route path="/home/misterio/foco/:tipo/:id" element={<FocusMystery />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

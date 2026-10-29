@@ -15,7 +15,9 @@ const EMPTY = {
   miracles: [], // ids dos milagres visitados
   bouquets: [], // buquês espirituais criados
   trails: {}, // { [id]: { start: 'AAAA-MM-DD', done: [1, 2, ...] } }
-  quizzes: {}, // { [tema]: { answered: n, correct: n } }
+  quizzes: {}, // { [tema]: { answered: n, correct: n } } (quiz antigo das abas da Escola)
+  quizLevels: {}, // { [ilha]: [níveis concluídos] } nas ilhas de quiz
+  seenIntros: [], // jogos cuja explicação "Como funciona" a pessoa já viu
 };
 
 function read() {
@@ -100,6 +102,14 @@ export const journey = {
   },
   removeBouquet(id) {
     write({ ...state, bouquets: state.bouquets.filter((b) => b.id !== id) });
+  },
+  passQuizLevel(island, level) {
+    const passed = state.quizLevels[island] ?? [];
+    if (passed.includes(level)) return;
+    write({ ...state, quizLevels: { ...state.quizLevels, [island]: [...passed, level] } });
+  },
+  markIntroSeen(game) {
+    if (!state.seenIntros.includes(game)) write({ ...state, seenIntros: [...state.seenIntros, game] });
   },
   saveQuiz(topic, answered, correct) {
     write({ ...state, quizzes: { ...state.quizzes, [topic]: { answered, correct } } });

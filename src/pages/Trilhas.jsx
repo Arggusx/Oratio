@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Check, Lock, RotateCcw, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, RotateCcw, X } from 'lucide-react';
+import IslandPath from '../components/IslandPath';
+import { QuizIslandCards } from './QuizIlhas';
 import TrailIsland from '../components/TrailIsland';
 import { getTrail, trails } from '../data/trails';
 import { journey, useJourney } from '../utils/journeyStore';
@@ -41,7 +43,7 @@ function TrailList() {
 
   return (
     <main className="page">
-      <span className="eyebrow">Trilhas da fé · {trails.length}</span>
+      <span className="eyebrow">Trilhas e quizzes</span>
       <h1 className="section-title">
         Escolha uma <span className="trail-title-accent">ilha</span>
       </h1>
@@ -66,6 +68,7 @@ function TrailList() {
         </span>
       </Link>
 
+      <h2 className="trail-section-title">Trilhas da fé</h2>
       <div className="trail-grid">
         {others.map((t) => (
           <Link key={t.id} to={`/home/trilhas/${t.id}`} className="trail-card" style={{ '--trail': t.color }}>
@@ -78,12 +81,11 @@ function TrailList() {
           </Link>
         ))}
       </div>
+
+      <QuizIslandCards />
     </main>
   );
 }
-
-const STEP_Y = 175; // distância vertical entre as paradas, em px
-const HERO_H = 230; // espaço da ilha grande no topo
 
 /** Janela de uma etapa: o texto, o "para hoje" e o botão de concluir. */
 function StepSheet({ trail, index, done, onComplete, onClose }) {
@@ -172,21 +174,6 @@ function TrailPage({ trail }) {
     }
   };
 
-  // Paradas alternando: esquerda, direita, esquerda...
-  const points = trail.steps.map((_, i) => ({ x: i % 2 === 0 ? 30 : 70, y: HERO_H + i * STEP_Y + 80 }));
-  const height = HERO_H + (total - 1) * STEP_Y + 200;
-  const roadPath = [`M50 ${HERO_H - 20}`, `C50 ${HERO_H + 30} ${points[0].x} ${HERO_H + 20} ${points[0].x} ${points[0].y}`]
-    .concat(
-      points.slice(1).map((p, i) => {
-        const prev = points[i];
-        const midY = (prev.y + p.y) / 2;
-        return `C${prev.x} ${midY} ${p.x} ${midY} ${p.x} ${p.y}`;
-      })
-    )
-    .join(' ');
-  // Até onde a estrada fica acesa: da ilha grande até a parada atual.
-  const litUntil = current === -1 ? total - 1 : current;
-
   return (
     <main className="page trail-page" style={{ '--trail': trail.color }}>
       <header className="trail-head">
@@ -202,68 +189,24 @@ function TrailPage({ trail }) {
       </header>
       <p className="trail-hint">{trail.intro}</p>
 
-      <div className="trail-map" style={{ height }}>
-        <svg className="trail-road" viewBox={`0 0 100 ${height}`} preserveAspectRatio="none" aria-hidden="true">
-          <path d={roadPath} vectorEffect="non-scaling-stroke" />
-          <path
-            className="is-lit"
-            d={roadPath}
-            vectorEffect="non-scaling-stroke"
-            pathLength="1"
-            style={{ strokeDasharray: `${(litUntil + 1) / (total + 0.4)} 1` }}
-          />
-        </svg>
-
-        <div className="trail-hero">
-          <TrailIsland icon={trail.icon} color={trail.color} />
-        </div>
-
-        <ol className="trail-islands">
-          {trail.steps.map((step, i) => {
-            const isDone = done.includes(i + 1);
-            const state = isDone ? 'done' : i === current ? 'current' : 'locked';
-            const p = points[i];
-            const status = { done: 'concluída', current: 'próxima', locked: 'trancada' }[state];
-            const side = i % 2 === 0 ? 'is-left' : 'is-right';
-            const kicker =
-              state === 'current' ? (plan ? 'Continuar aqui' : 'Começar aqui') : `Etapa ${String(i + 1).padStart(2, '0')}`;
-            return (
-              <li
-                key={step.title}
-                ref={(el) => (islandRefs.current[i] = el)}
-                className={`trail-stop is-${state} ${side} ${justUnlocked === i ? 'is-new' : ''}`}
-                style={{ top: p.y, '--i': i }}
-              >
-                <button
-                  type="button"
-                  className="trail-stop-island"
-                  onClick={() => openStep(i)}
-                  disabled={state === 'locked'}
-                  aria-label={`Etapa ${i + 1}: ${step.title} (${status})`}
-                >
-                  <span className="trail-island-float">
-                    <TrailIsland icon={step.icon} state={state} color={trail.color} />
-                  </span>
-                  {state === 'done' && (
-                    <span className="trail-badge is-done" aria-hidden="true">
-                      <Check size={14} />
-                    </span>
-                  )}
-                  {state === 'locked' && (
-                    <span className="trail-badge is-locked" aria-hidden="true">
-                      <Lock size={12} />
-                    </span>
-                  )}
-                </button>
-                <span className="trail-stop-label" aria-hidden="true">
-                  <small>{kicker}</small>
-                  <strong>{step.title}</strong>
-                </span>
-              </li>
-            );
-          })}
-        </ol>
-      </div>
+      <IslandPath
+        color={trail.color}
+        heroIcon={trail.icon}
+        stops={trail.steps.map((step, i) => {
+          const state = done.includes(i + 1) ? 'done' : i === current ? 'current' : 'locked';
+          return {
+            key: step.title,
+            icon: step.icon,
+            title: step.title,
+            state,
+            kicker:
+              state === 'current' ? (plan ? 'Continuar aqui' : 'Começar aqui') : `Etapa ${String(i + 1).padStart(2, '0')}`,
+          };
+        })}
+        onSelect={openStep}
+        justUnlocked={justUnlocked}
+        stopRefs={islandRefs}
+      />
 
       {finished && (
         <section className="novena-progress trail-finish">
