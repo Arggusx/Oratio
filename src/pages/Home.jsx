@@ -31,7 +31,6 @@ export default function Home() {
       >
         <TwinkleCrosses />
         <Dove />
-        <Dove second />
         <motion.div className="hero-copy" variants={fadeUp}>
           <div className="hero-mark">
             <LogoDraw size={64} showName={false} />

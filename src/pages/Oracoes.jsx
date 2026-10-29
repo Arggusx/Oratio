@@ -130,11 +130,7 @@ export default function Oracoes() {
           <span className="eyebrow">Um caminho de oração</span>
           <h1 className="section-title">Terço e Orações</h1>
         </div>
-        <div className="candles">
-          <Candle />
-          <Candle />
-          <Candle />
-        </div>
+        <Candle />
       </div>
       <p className="lead">
         Aprenda a rezar passo a passo, escolha sua devoção ou consulte orações tradicionais.
@@ -187,8 +183,6 @@ export default function Oracoes() {
               <ArrowRight size={20} className="feature-card-arrow" aria-hidden="true" />
             </Link>
 
-            <SaoBentoSection />
-
             {/* ── Busca e filtros ── */}
             <div className="search-wrapper">
               <Search size={16} className="search-icon" />
@@ -232,6 +226,9 @@ export default function Oracoes() {
             </div>
 
             <LoadMoreButton remaining={remaining} onClick={showMore} label="Ver mais orações" />
+
+            {/* São Bento vem depois da lista, para a busca ficar logo no começo da aba. */}
+            <SaoBentoSection />
 
             {filtered.length === 0 && (
               <p className="lead" style={{ textAlign: 'center', marginTop: '2rem' }}>

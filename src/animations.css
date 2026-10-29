@@ -342,16 +342,7 @@
 }
 
 /* ── Três velas em Terço e Orações ── */
-.candles {
-  display: flex;
-  align-items: flex-end;
-  gap: 0.35rem;
-}
 
-.candles .candle:nth-child(2) svg { width: 40px; height: 96px; }
-.candles .candle:nth-child(1) .candle-flame,
-.candles .candle:nth-child(3) .candle-flame { animation-duration: 1.3s; }
-.candles .candle:nth-child(3) .candle-flame { animation-delay: 0.4s; }
 
 /* ── Auréola no retrato da página do santo ── */
 .saint-initial.is-large {

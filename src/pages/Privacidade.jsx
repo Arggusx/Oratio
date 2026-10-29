@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import Candle from '../components/anim/Candle';
 
 // Canal de contato do responsável pelo site (exigido pela LGPD, art. 41).
 const CONTACT_EMAIL = 'dougclasher9@gmail.com';
@@ -13,7 +12,6 @@ export default function Privacidade() {
           <span className="eyebrow">Transparência</span>
           <h1 className="section-title">Política de Privacidade</h1>
         </div>
-        <Candle />
       </div>
       <p className="lead">
         O Oratio é um site de oração e não exige cadastro. Esta página explica, de forma simples, quais dados podem
