@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 import Feedback from './components/Feedback';
 import Home from './pages/Home';
 import usePageMeta from './utils/usePageMeta';
+import { SeasonContext, useSeasonTheme } from './utils/useSeasonTheme';
 import Angel from './components/anim/Angel';
 import SiteBackground from './components/anim/SiteBackground';
 import RosaryLoader from './components/anim/RosaryLoader';
@@ -52,7 +53,7 @@ function PageFallback() {
 const pageVariants = {
   initial: { opacity: 0, y: 16 },
   animate: { opacity: 1, y: 0 },
-  exit:    { opacity: 0, y: -10 },
+  exit: { opacity: 0, y: -10 },
 };
 
 const pageTransition = {
@@ -106,24 +107,29 @@ function AnimatedRoutes() {
 }
 
 export default function App() {
+  // Tema do tempo litúrgico (Advento, Natal, Quaresma, Páscoa...): troca cores e enfeites sozinho.
+  const season = useSeasonTheme();
+
   return (
-    <BrowserRouter>
-      {/* reducedMotion="user": as animações do Framer Motion seguem a preferência do sistema. */}
-      <MotionConfig reducedMotion="user">
-        <div className="app-shell">
-          <SiteBackground />
-          <a href="#conteudo" className="skip-link">
-            Pular para o conteúdo
-          </a>
-          <Header />
-          <div id="conteudo" tabIndex={-1} className="content-anchor">
-            <AnimatedRoutes />
+    <SeasonContext.Provider value={season}>
+      <BrowserRouter>
+        {/* reducedMotion="user": as animações do Framer Motion seguem a preferência do sistema. */}
+        <MotionConfig reducedMotion="user">
+          <div className="app-shell">
+            <SiteBackground />
+            <a href="#conteudo" className="skip-link">
+              Pular para o conteúdo
+            </a>
+            <Header />
+            <div id="conteudo" tabIndex={-1} className="content-anchor">
+              <AnimatedRoutes />
+            </div>
+            <Feedback />
+            <Footer />
+            <BottomNav />
           </div>
-          <Feedback />
-          <Footer />
-          <BottomNav />
-        </div>
-      </MotionConfig>
-    </BrowserRouter>
+        </MotionConfig>
+      </BrowserRouter>
+    </SeasonContext.Provider>
   );
 }

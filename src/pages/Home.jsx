@@ -7,6 +7,7 @@ import TwinkleCrosses from '../components/anim/TwinkleCrosses';
 import LogoDraw from '../components/anim/LogoDraw';
 import HandwritingText from '../components/anim/HandwritingText';
 import PrayerNow from '../components/anim/PrayerNow';
+import SeasonOrnament from '../components/anim/SeasonOrnament';
 
 const stagger = {
   animate: {
@@ -37,6 +38,7 @@ export default function Home() {
             <span className="eyebrow">Um instante para o sagrado</span>
           </div>
           {/* O título é escrito “à mão”; o texto real fica para leitores de tela e buscadores. */}
+          <SeasonOrnament />
           <h1 className="display hero-title-hand">
             <span className="sr-only">Reze com calma. Viva com fé.</span>
             <HandwritingText />
