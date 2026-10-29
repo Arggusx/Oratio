@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { getSaint } from '../data/saints';
 import { getNovena } from '../data/novenas';
+import { getTrail } from '../data/trails';
 
 export const SITE_URL = 'https://oratio-daily-dev.vercel.app';
 
@@ -50,6 +51,10 @@ const PAGE_META = {
     title: 'Novenas: nove dias de oração — Oratio',
     description: 'Novena ao Espírito Santo, de Natal, a Nossa Senhora Aparecida e a Santo Antônio, com um tema para cada dia e a oração da novena.',
   },
+  '/home/trilhas': {
+    title: 'Trilhas da fé: uma etapa por dia — Oratio',
+    description: 'Conheça a Missa em 7 dias e os 4 dogmas de Maria, com uma etapa curta por dia e algo para viver depois.',
+  },
   '/jornada': {
     title: 'Jornada: seu caminho de oração — Oratio',
     description: 'Seu progresso pessoal: dias de oração, novenas, coleção de santos e milagres visitados. Fica só no seu aparelho.',
@@ -89,6 +94,13 @@ function metaFor(rawPathname) {
     const novena = getNovena(novenaMatch[1]);
     if (!novena) return NOT_FOUND_META;
     return { title: `${novena.title}: os nove dias — Oratio`, description: novena.intro };
+  }
+
+  const trailMatch = pathname.match(/^\/home\/trilhas\/([^/]+)$/);
+  if (trailMatch) {
+    const trail = getTrail(trailMatch[1]);
+    if (!trail) return NOT_FOUND_META;
+    return { title: `${trail.title} — Oratio`, description: trail.intro };
   }
 
   // Rota inexistente: o servidor responde 200 (é um SPA), então avisamos os

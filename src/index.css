@@ -7462,3 +7462,112 @@ details[open] > summary .exam-chevron {
 .year-seasons small {
   color: var(--color-text-muted);
 }
+
+/* Quiz da Escola da Fé */
+.quiz {
+  margin-top: 2.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--color-gold);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-gold) 7%, var(--color-surface));
+}
+
+.quiz-title {
+  margin: 0 0 0.4rem;
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+}
+
+.quiz-count {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-terracotta);
+}
+
+.quiz-question {
+  margin: 0.4rem 0 0.9rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.quiz-options {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.quiz-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.95rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.quiz-option:not(:disabled):hover {
+  border-color: var(--color-gold);
+}
+
+.quiz-option:disabled {
+  cursor: default;
+}
+
+.quiz-option.is-right {
+  border-color: #5E8C63;
+  background: color-mix(in srgb, #5E8C63 14%, var(--color-surface));
+}
+
+.quiz-option.is-wrong {
+  border-color: #B23A2E;
+  background: color-mix(in srgb, #B23A2E 10%, var(--color-surface));
+}
+
+.quiz-option.is-dim {
+  opacity: 0.55;
+}
+
+.quiz-why {
+  margin-top: 0.9rem;
+  line-height: 1.6;
+}
+
+.quiz-next {
+  display: flex;
+  margin-top: 0.8rem;
+}
+
+.quiz-end {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.quiz-end p {
+  margin: 0;
+}
+
+/* Trilhas */
+.novena-day.is-locked {
+  opacity: 0.6;
+}
+
+.trail-locked {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.trail-today {
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-gold) 10%, transparent);
+}

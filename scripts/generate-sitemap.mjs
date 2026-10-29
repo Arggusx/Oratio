@@ -3,6 +3,7 @@
 import { writeFileSync } from 'node:fs';
 import { saints } from '../src/data/saints.js';
 import { novenas } from '../src/data/novenas.js';
+import { trails } from '../src/data/trails.js';
 
 const SITE_URL = 'https://oratio-daily-dev.vercel.app';
 const today = new Date().toISOString().slice(0, 10);
@@ -19,6 +20,8 @@ const pages = [
   { path: '/home/confissao', changefreq: 'monthly', priority: '0.7' },
   { path: '/home/novenas', changefreq: 'monthly', priority: '0.7' },
   ...novenas.map((n) => ({ path: `/home/novenas/${n.id}`, changefreq: 'yearly', priority: '0.6' })),
+  { path: '/home/trilhas', changefreq: 'monthly', priority: '0.6' },
+  ...trails.map((t) => ({ path: `/home/trilhas/${t.id}`, changefreq: 'yearly', priority: '0.5' })),
   { path: '/home/escola-da-fe?secao=missa', changefreq: 'monthly', priority: '0.6' },
   { path: '/home/escola-da-fe?secao=simbolos', changefreq: 'monthly', priority: '0.6' },
   { path: '/privacidade', changefreq: 'yearly', priority: '0.2' },

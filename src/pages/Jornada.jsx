@@ -4,6 +4,8 @@ import { ArrowRight, Sparkles } from 'lucide-react';
 import PrayedTodayButton from '../components/PrayedTodayButton';
 import { NovenaBeads } from './Novenas';
 import { novenas } from '../data/novenas';
+import { trails } from '../data/trails';
+import { TrailSteps } from './Trilhas';
 import SaintCollection from '../components/journey/SaintCollection';
 import MiracleMap from '../components/journey/MiracleMap';
 import SpiritualBouquet from '../components/journey/SpiritualBouquet';
@@ -88,19 +90,20 @@ function PrayerDiary() {
 
 /** Missões: novenas (e, mais adiante, trilhas) em andamento, cada uma com o seu progresso. */
 function Missions() {
-  const { novenas: plans } = useJourney();
+  const { novenas: plans, trails: trailPlans } = useJourney();
   const active = novenas.filter((n) => plans[n.id]);
+  const activeTrails = trails.filter((t) => trailPlans[t.id]);
   const others = novenas.filter((n) => !plans[n.id]);
 
   return (
     <section className="journey-card" aria-labelledby="missions-title">
       <header className="journey-card-head">
         <h2 id="missions-title">Missões</h2>
-        <p>Novenas que você começou. Cada conta acende quando você marca o dia rezado.</p>
+        <p>Novenas e trilhas que você começou. Cada conta acende quando você marca o dia.</p>
       </header>
 
-      {active.length === 0 ? (
-        <p className="calendar-empty">Nenhuma novena em andamento.</p>
+      {active.length + activeTrails.length === 0 ? (
+        <p className="calendar-empty">Nenhuma novena ou trilha em andamento.</p>
       ) : (
         <ul className="mission-list">
           {active.map((n) => (
@@ -111,6 +114,19 @@ function Missions() {
                   <small>{plans[n.id].done.length} de 9 dias</small>
                 </span>
                 <NovenaBeads plan={plans[n.id]} size="sm" />
+              </Link>
+            </li>
+          ))}
+          {activeTrails.map((t) => (
+            <li key={t.id}>
+              <Link to={`/home/trilhas/${t.id}`} className="mission-item">
+                <span>
+                  <strong>{t.title}</strong>
+                  <small>
+                    {trailPlans[t.id].done.length} de {t.steps.length} etapas
+                  </small>
+                </span>
+                <TrailSteps trail={t} plan={trailPlans[t.id]} />
               </Link>
             </li>
           ))}
@@ -131,6 +147,9 @@ function Missions() {
           </Link>
         </p>
       )}
+      <p className="mission-more">
+        Trilhas: <Link to="/home/trilhas">ver todas</Link>
+      </p>
     </section>
   );
 }
