@@ -104,18 +104,26 @@ export default function ConfessionGuide() {
 
   return (
     <div className="confession-guide">
-      <p className="confession-privacy">
-        <ShieldCheck size={18} aria-hidden="true" />
-        <span>
-          <strong>Nada do que você marcar é salvo nem enviado.</strong> A lista fica só nesta tela e some quando você
-          fecha ou recarrega a página. Se quiser levá-la com você, use os botões de exportar no fim: o arquivo fica
-          no seu aparelho.
-        </span>
-      </p>
-
       <section className="confession-steps" aria-labelledby="confession-steps-title">
-        <h2 id="confession-steps-title" className="saint-section-title">Como se confessar</h2>
-        <ScrollRail label="Os passos da confissão" className="confession-rail">
+        <ScrollRail
+          label="Os passos da confissão"
+          className="confession-rail"
+          intro={
+            <>
+              <p className="confession-privacy">
+                <ShieldCheck size={18} aria-hidden="true" />
+                <span>
+                  <strong>Nada do que você marcar é salvo nem enviado.</strong> A lista fica só nesta tela e some
+                  quando você fecha ou recarrega a página. Se quiser levá-la com você, use os botões de exportar no
+                  fim: o arquivo fica no seu aparelho.
+                </span>
+              </p>
+              <h2 id="confession-steps-title" className="saint-section-title">
+                Como se confessar
+              </h2>
+            </>
+          }
+        >
           {confessionSteps.map(([title, text], i) => (
             <article key={title} className="confession-step">
               <span className="confession-step-number" aria-hidden="true">{i + 1}</span>

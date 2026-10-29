@@ -6754,3 +6754,12 @@ details[open] > summary .exam-chevron {
 .confession-rail {
   margin: 0 0 2.5rem;
 }
+
+/* Na confissão, o aviso e o título ficam parados junto com os passos. */
+.confession-rail .confession-privacy {
+  margin: 0 0 1.25rem;
+}
+
+.confession-rail .saint-section-title {
+  margin-top: 0;
+}
