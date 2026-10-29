@@ -6763,3 +6763,25 @@ details[open] > summary .exam-chevron {
 .confession-rail .saint-section-title {
   margin-top: 0;
 }
+
+.confession-rail .rosary-header,
+.confession-rail .lead {
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 767px) {
+  .confession-rail .confession-privacy {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.8rem;
+    line-height: 1.45;
+  }
+
+  .confession-rail .rosary-header,
+  .confession-rail .lead {
+    margin-bottom: 0.6rem;
+  }
+
+  .confession-rail .page-title-row .section-title {
+    font-size: 2rem;
+  }
+}
