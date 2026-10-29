@@ -2306,6 +2306,11 @@ h1, h2, h3, h4,
   .subnav-segmented:has(> button:nth-child(4)) button {
     border-radius: var(--radius-md);
   }
+
+  /* Cinco ou seis abas (ex.: Jornada): três por linha. */
+  .subnav-segmented:has(> button:nth-child(5)) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 @media (max-width: 380px) {
@@ -7216,4 +7221,244 @@ details[open] > summary .exam-chevron {
 .map-info a {
   color: var(--color-terracotta);
   font-weight: 600;
+}
+
+/* Buquê espiritual */
+.bouquet-form {
+  display: grid;
+  gap: 0.9rem;
+  max-width: 34rem;
+}
+
+.bouquet-form label {
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.bouquet-form .search {
+  padding-left: 1rem;
+}
+
+.bouquet-form textarea.search {
+  resize: vertical;
+  border-radius: var(--radius-md);
+  padding-top: 0.7rem;
+}
+
+.bouquet-form .btn {
+  justify-self: start;
+}
+
+.bouquet-items {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.bouquet-items legend {
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.bouquet-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.45rem 0.6rem 0.45rem 0.9rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-surface);
+  font-size: 0.9rem;
+}
+
+.bouquet-item.is-on {
+  border-color: var(--color-gold);
+}
+
+.bouquet-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bouquet-stepper button {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.bouquet-stepper button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.bouquet-stepper output {
+  min-width: 1.5rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+.bouquet-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1rem;
+  margin-top: 1.75rem;
+}
+
+.bouquet-card {
+  padding: 1.1rem 1.25rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-gold);
+  background:
+    radial-gradient(circle at 50% 0, color-mix(in srgb, #C77D9A 14%, transparent), transparent 60%),
+    var(--color-surface);
+  text-align: center;
+}
+
+.bouquet-flowers {
+  width: 7rem;
+  height: 3.5rem;
+}
+
+.bouquet-flowers .stem { fill: none; stroke: #5E8C63; stroke-width: 2; }
+.bouquet-flowers .rose { fill: #C2486A; }
+.bouquet-flowers .petal { fill: #E27A96; }
+
+.bouquet-card h3 {
+  margin: 0.3rem 0;
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+}
+
+.bouquet-card ul {
+  margin: 0.6rem 0;
+  padding: 0;
+  list-style: none;
+  line-height: 1.7;
+}
+
+.bouquet-intention,
+.bouquet-from {
+  margin: 0;
+  color: var(--color-text-soft);
+  font-size: 0.9rem;
+}
+
+.bouquet-message {
+  margin: 0.6rem 0;
+  font-style: italic;
+}
+
+.bouquet-actions {
+  justify-content: center;
+}
+
+@media print {
+  body.print-bouquet * {
+    visibility: hidden;
+  }
+
+  body.print-bouquet .bouquet-card.is-printing,
+  body.print-bouquet .bouquet-card.is-printing * {
+    visibility: visible;
+  }
+
+  body.print-bouquet .bouquet-card.is-printing {
+    position: absolute;
+    inset: 0 0 auto;
+    background: #fff;
+    color: #000;
+  }
+
+  body.print-bouquet .bouquet-actions {
+    display: none;
+  }
+}
+
+/* O ano como jornada */
+.year-journey {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.year-journey svg {
+  flex: none;
+  width: min(100%, 14rem);
+  height: auto;
+  color: var(--color-border);
+}
+
+.year-base {
+  fill: none;
+  stroke: var(--color-border-soft);
+  stroke-width: 18;
+  opacity: 0.4;
+}
+
+.year-day {
+  stroke-width: 0.9;
+  opacity: 0.35;
+}
+
+.year-day.is-done {
+  stroke-width: 2;
+  opacity: 1;
+}
+
+.year-seasons {
+  flex: 1 1 14rem;
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.year-seasons li {
+  display: grid;
+  grid-template-columns: 8.5rem 1fr auto;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+}
+
+.year-season-name {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.year-swatch {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 3px;
+}
+
+.year-bar {
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--color-border-soft);
+  overflow: hidden;
+}
+
+.year-bar span {
+  display: block;
+  height: 100%;
+}
+
+.year-seasons small {
+  color: var(--color-text-muted);
 }

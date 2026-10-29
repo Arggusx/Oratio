@@ -6,6 +6,8 @@ import { NovenaBeads } from './Novenas';
 import { novenas } from '../data/novenas';
 import SaintCollection from '../components/journey/SaintCollection';
 import MiracleMap from '../components/journey/MiracleMap';
+import SpiritualBouquet from '../components/journey/SpiritualBouquet';
+import YearJourney from '../components/journey/YearJourney';
 import { prayerWeeks, useJourney } from '../utils/journeyStore';
 
 const SECTIONS = [
@@ -13,6 +15,8 @@ const SECTIONS = [
   { id: 'missoes', label: 'Missões' },
   { id: 'colecao', label: 'Coleção' },
   { id: 'mapa', label: 'Mapa' },
+  { id: 'buque', label: 'Buquê' },
+  { id: 'ano', label: 'Ano' },
 ];
 
 const weekdayInitials = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
@@ -174,6 +178,8 @@ export default function Jornada() {
         {section === 'missoes' && <Missions />}
         {section === 'colecao' && <SaintCollection />}
         {section === 'mapa' && <MiracleMap />}
+        {section === 'buque' && <SpiritualBouquet />}
+        {section === 'ano' && <YearJourney />}
       </motion.div>
     </main>
   );
