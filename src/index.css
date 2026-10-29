@@ -9072,6 +9072,36 @@ details[open] > summary .exam-chevron {
   from { transform: rotate(var(--tilt)) scale(1.6); opacity: 0; }
 }
 
+/* No celular, os carimbos ficam menores e em duas colunas. */
+@media (max-width: 560px) {
+  .passport-pages {
+    gap: 0.7rem 0.5rem;
+    padding: 0.9rem 0.6rem;
+  }
+
+  .passport-slot {
+    flex: 0 1 calc(50% - 0.25rem);
+    max-width: 9rem;
+  }
+
+  .stamp {
+    padding: 0.6rem 0.35rem;
+    gap: 0.1rem;
+  }
+
+  .stamp-art {
+    width: 2.9rem;
+  }
+
+  .stamp strong {
+    font-size: 0.74rem;
+  }
+
+  .stamp small {
+    font-size: 0.64rem;
+  }
+}
+
 /* ---------- Revelação de recompensa ---------- */
 .reward-reveal {
   width: min(30rem, calc(100% - 2rem));
