@@ -6645,3 +6645,13 @@ details[open] > summary .exam-chevron {
     outline-offset: 2px;
   }
 }
+
+.filter-option-count {
+  font-weight: 400;
+  opacity: 0.75;
+}
+
+.filter-group-options .intention-chip:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

@@ -16,7 +16,7 @@ const countries = Object.entries(
 ).sort(([a], [b]) => a.localeCompare(b, 'pt-BR'));
 
 const filterGroups = [
-  { id: 'country', label: 'País', options: countries.map(([name, count]) => ({ id: name, label: `${name} (${count})` })) },
+  { id: 'country', label: 'País', options: countries.map(([name]) => ({ id: name, label: name })) },
   { id: 'era', label: 'Época', options: ERAS.map((e) => ({ id: e.id, label: e.label })) },
 ];
 

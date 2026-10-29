@@ -80,15 +80,19 @@ export default function FilterPanel({ groups, values, onApply, countResults }) {
               <div className="filter-group-options">
                 {g.options.map((o) => {
                   const selected = draft[g.id] === o.id;
+                  // Quantos resultados esta opção traria junto com o que já está escolhido nos outros grupos.
+                  const optionCount = countResults?.({ ...draft, [g.id]: o.id });
                   return (
                     <button
                       key={o.id}
                       type="button"
                       className={`intention-chip ${selected ? 'active' : ''}`}
                       aria-pressed={selected}
+                      disabled={optionCount === 0 && !selected}
                       onClick={() => setDraft({ ...draft, [g.id]: selected ? null : o.id })}
                     >
                       {o.label}
+                      {optionCount !== undefined && <span className="filter-option-count"> ({optionCount})</span>}
                     </button>
                   );
                 })}
