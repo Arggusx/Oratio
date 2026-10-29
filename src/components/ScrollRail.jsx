@@ -8,6 +8,15 @@ const cardWidth = () => Math.min(window.innerWidth * 0.82, 23 * parseFloat(getCo
 // Abaixo disso, o trilho andaria tão pouco que não vale a pena: os cartões ficam numa grade comum.
 const MIN_DISTANCE = 120;
 
+// Posição em que a seção gruda: centralizada no espaço visível entre o topo fixo e a barra inferior (celular).
+function centeredTop(height) {
+  const header = document.querySelector('.site-header')?.offsetHeight ?? 0;
+  const bottomNav = document.querySelector('.bottom-nav');
+  const footer = bottomNav && getComputedStyle(bottomNav).display !== 'none' ? bottomNav.offsetHeight : 0;
+  const free = window.innerHeight - header - footer;
+  return header + Math.max(12, (free - height) / 2);
+}
+
 /**
  * Trilho lateral: enquanto a pessoa rola a página para baixo (roda do mouse ou dedo), a seção fica parada na
  * tela e os cartões andam para o lado; ao chegar ao último, a página volta a rolar normalmente.
@@ -18,6 +27,7 @@ export default function ScrollRail({ children, label, className = '' }) {
   const trackRef = useRef(null);
   const [distance, setDistance] = useState(0);
   const [railHeight, setRailHeight] = useState(0);
+  const [stickyTop, setStickyTop] = useState(null);
   const [progress, setProgress] = useState(0);
   const [reduced] = useState(prefersReducedMotion);
 
@@ -32,13 +42,27 @@ export default function ScrollRail({ children, label, className = '' }) {
       const needed = count * cardWidth() + (count - 1) * GAP - track.parentElement.clientWidth;
       setDistance(needed > MIN_DISTANCE ? needed : 0);
       setRailHeight(sticky.offsetHeight);
+      setStickyTop(centeredTop(sticky.offsetHeight));
     };
     measure();
     const observer = new ResizeObserver(measure);
     observer.observe(track.parentElement);
     observer.observe(sticky);
-    return () => observer.disconnect();
+    window.addEventListener('resize', measure);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', measure);
+    };
   }, [reduced]);
+
+  // Ao virar trilho, a altura muda (de grade para fileira): recentraliza na hora.
+  const active = !reduced && distance > 0;
+  useEffect(() => {
+    if (!active) return;
+    const sticky = outerRef.current.firstElementChild;
+    setRailHeight(sticky.offsetHeight);
+    setStickyTop(centeredTop(sticky.offsetHeight));
+  }, [active]);
 
   // A rolagem vertical vira deslocamento lateral, 1 para 1.
   useEffect(() => {
@@ -71,8 +95,6 @@ export default function ScrollRail({ children, label, className = '' }) {
     };
   }, [reduced, distance]);
 
-  const active = !reduced && distance > 0;
-
   return (
     <section
       ref={outerRef}
@@ -81,7 +103,7 @@ export default function ScrollRail({ children, label, className = '' }) {
       style={active ? { height: railHeight + distance } : undefined}
       aria-label={label}
     >
-      <div className="scroll-rail-sticky">
+      <div className="scroll-rail-sticky" style={active && stickyTop !== null ? { top: stickyTop } : undefined}>
         <div className="scroll-rail-viewport">
           <div ref={trackRef} className="scroll-rail-track">
             {children}
