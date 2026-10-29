@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate, Link, useLocation } from 'react
 import { lazy, Suspense, useEffect } from 'react';
 import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
 import Header from './components/Header';
+import BottomNav from './components/BottomNav';
 import Footer from './components/Footer';
 import Feedback from './components/Feedback';
 import Home from './pages/Home';
@@ -21,6 +22,7 @@ const Santos = lazy(() => import('./pages/Santos'));
 const Santo = lazy(() => import('./pages/Santo'));
 const Privacidade = lazy(() => import('./pages/Privacidade'));
 const Creditos = lazy(() => import('./pages/Creditos'));
+const Confissao = lazy(() => import('./pages/Confissao'));
 
 function NotFound() {
   return (
@@ -93,6 +95,7 @@ function AnimatedRoutes() {
             <Route path="/home/santos/:slug" element={<Santo />} />
             <Route path="/privacidade" element={<Privacidade />} />
             <Route path="/creditos" element={<Creditos />} />
+            <Route path="/home/confissao" element={<Confissao />} />
             <Route path="/home/misterio/foco/:tipo/:id" element={<FocusMystery />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
@@ -118,6 +121,7 @@ export default function App() {
           </div>
           <Feedback />
           <Footer />
+          <BottomNav />
         </div>
       </MotionConfig>
     </BrowserRouter>

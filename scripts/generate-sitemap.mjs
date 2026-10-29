@@ -15,6 +15,7 @@ const pages = [
   { path: '/home/santos', changefreq: 'weekly', priority: '0.8' },
   ...saints.map((s) => ({ path: `/home/santos/${s.slug}`, changefreq: 'monthly', priority: '0.7' })),
   { path: '/home/escola-da-fe', changefreq: 'weekly', priority: '0.7' },
+  { path: '/home/confissao', changefreq: 'monthly', priority: '0.7' },
   { path: '/home/escola-da-fe?secao=missa', changefreq: 'monthly', priority: '0.6' },
   { path: '/home/escola-da-fe?secao=simbolos', changefreq: 'monthly', priority: '0.6' },
   { path: '/privacidade', changefreq: 'yearly', priority: '0.2' },

@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { mysteriesData } from '../data/mysteries';
 import Candle from '../components/anim/Candle';
+import ScrollRail from '../components/ScrollRail';
 
 const mysteries = Object.values(mysteriesData);
 
@@ -31,7 +32,7 @@ export default function Misterios() {
         Conheça, estude e contemple a história por trás de cada dia de oração.
       </p>
 
-      <section className="card-grid">
+      <ScrollRail label="Os quatro grupos de mistérios" className="mysteries-rail">
         {mysteries.map((mystery, i) => (
           <motion.article
             className="mystery-card"
@@ -59,7 +60,7 @@ export default function Misterios() {
             </div>
           </motion.article>
         ))}
-      </section>
+      </ScrollRail>
     </main>
   );
 }

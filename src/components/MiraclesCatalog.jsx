@@ -5,8 +5,8 @@ import { ExternalLink, MapPin } from 'lucide-react';
 import { eucharisticMiracles, ERAS, RECOGNITION } from '../data/eucharisticMiracles';
 import { LoadMoreButton } from './LoadMore';
 import { useLoadMore } from '../utils/useLoadMore';
+import FilterPanel from './FilterPanel';
 
-const ALL = 'todos';
 const PAGE_SIZE = 6;
 
 const byYear = [...eucharisticMiracles].sort((a, b) => a.year - b.year);
@@ -15,39 +15,24 @@ const countries = Object.entries(
   byYear.reduce((acc, m) => ({ ...acc, [m.country]: (acc[m.country] ?? 0) + 1 }), {})
 ).sort(([a], [b]) => a.localeCompare(b, 'pt-BR'));
 
-function FilterChips({ label, options, value, onChange }) {
-  return (
-    <div className="miracles-filter" role="group" aria-label={label}>
-      <span className="miracles-filter-label">{label}</span>
-      <div className="miracles-filter-list">
-        {options.map((o) => (
-          <button
-            key={o.id}
-            type="button"
-            className={`category ${value === o.id ? 'active' : ''}`}
-            aria-pressed={value === o.id}
-            onClick={() => onChange(o.id)}
-          >
-            {o.label}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
+const filterGroups = [
+  { id: 'country', label: 'País', options: countries.map(([name]) => ({ id: name, label: name })) },
+  { id: 'era', label: 'Época', options: ERAS.map((e) => ({ id: e.id, label: e.label })) },
+];
+
+function matchesFilters(m, { country, era }) {
+  const eraTest = ERAS.find((e) => e.id === era)?.test;
+  return (!country || m.country === country) && (!eraTest || eraTest(m.year));
 }
 
 /** Catálogo de milagres eucarísticos, no espírito da exposição de São Carlo Acutis. */
 export default function MiraclesCatalog() {
-  const [country, setCountry] = useState(ALL);
-  const [era, setEra] = useState(ALL);
+  const [filters, setFilters] = useState({ country: null, era: null });
 
-  const shown = useMemo(() => {
-    const eraTest = ERAS.find((e) => e.id === era)?.test;
-    return byYear.filter((m) => (country === ALL || m.country === country) && (!eraTest || eraTest(m.year)));
-  }, [country, era]);
+  const shown = useMemo(() => byYear.filter((m) => matchesFilters(m, filters)), [filters]);
 
   const { listed, remaining, showMore } = useLoadMore(shown, PAGE_SIZE, {
-    showAll: country !== ALL || era !== ALL,
+    showAll: Object.values(filters).some(Boolean),
   });
 
   return (
@@ -65,20 +50,11 @@ export default function MiraclesCatalog() {
         </blockquote>
       </header>
 
-      <FilterChips
-        label="País"
-        value={country}
-        onChange={setCountry}
-        options={[
-          { id: ALL, label: `Todos (${byYear.length})` },
-          ...countries.map(([name, count]) => ({ id: name, label: `${name} (${count})` })),
-        ]}
-      />
-      <FilterChips
-        label="Época"
-        value={era}
-        onChange={setEra}
-        options={[{ id: ALL, label: 'Todas' }, ...ERAS.map((e) => ({ id: e.id, label: e.label }))]}
+      <FilterPanel
+        groups={filterGroups}
+        values={filters}
+        onApply={setFilters}
+        countResults={(draft) => byYear.filter((m) => matchesFilters(m, draft)).length}
       />
 
       <p className="miracles-count" aria-live="polite">

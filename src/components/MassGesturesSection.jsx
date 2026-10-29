@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Info } from 'lucide-react';
+import ScrollRail from './ScrollRail';
 import {
   IhsIcon,
   MaryIcon,
@@ -75,7 +76,7 @@ export default function MassGesturesSection() {
         </p>
       </header>
 
-      <div className="mass-gestures-grid">
+      <ScrollRail label="Gestos da Missa" className="mass-rail">
         {gestures.map((g, index) => (
           <motion.article
             key={g.id}
@@ -112,7 +113,7 @@ export default function MassGesturesSection() {
             </div>
           </motion.article>
         ))}
-      </div>
+      </ScrollRail>
 
       <p className="mass-source">Fonte: Instrução Geral do Missal Romano, nn. 137, 274 e 275.</p>
     </section>

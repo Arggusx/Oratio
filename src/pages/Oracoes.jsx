@@ -4,9 +4,11 @@ import { ArrowRight, ChevronDown, ChevronRight, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 import RosaryGuide from '../components/RosaryGuide';
 import SaoBentoSection from '../components/SaoBentoSection';
+import ConfessionGuide from '../components/ConfessionGuide';
 import Candle from '../components/anim/Candle';
 import { AmenButton } from '../components/anim/AnimatedIcons';
 import { LoadMoreButton } from '../components/LoadMore';
+import FilterPanel from '../components/FilterPanel';
 import { useLoadMore } from '../utils/useLoadMore';
 import { traditionalRosaryData, nordicRosaryData } from '../data/rosaryData';
 import { prayers, moments } from '../data/prayers';
@@ -52,12 +54,27 @@ function PrayerAccordion({ prayer, isOpen, onToggle }) {
 // Quantas orações aparecem antes do botão "Ver mais".
 const PRAYERS_PAGE_SIZE = 10;
 
-const categories = ['Todas', 'Diárias', 'Marianas', 'Santos', 'Sacramentais', 'Terço'];
+const categories = ['Diárias', 'Marianas', 'Santos', 'Sacramentais', 'Terço'];
+
+const filterGroups = [
+  { id: 'category', label: 'Categoria', options: categories.map((c) => ({ id: c, label: c })) },
+  { id: 'moment', label: 'Quando rezar?', options: moments },
+  { id: 'intention', label: 'Para que você quer rezar?', options: intentions },
+];
+
+function matchesFilters(p, { category, moment, intention }) {
+  return (
+    (!category || p.category === category) &&
+    (!moment || p.moments?.includes(moment)) &&
+    (!intention || p.intentions?.includes(intention))
+  );
+}
 
 const SECTIONS = [
   { id: 'terco', label: 'Terço Tradicional' },
   { id: 'nordico', label: 'Terço Nórdico' },
   { id: 'oracoes', label: 'Orações' },
+  { id: 'confissao', label: 'Confissão' },
 ];
 
 // Auréola sobre uma figura: ícone do cartão que leva à aba Santos.
@@ -81,32 +98,27 @@ export default function Oracoes() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const [query, setQuery] = useState('');
-  const [activeCategory, setActiveCategory] = useState('Todas');
-  const [activeIntention, setActiveIntention] = useState(null);
-  const [activeMoment, setActiveMoment] = useState(null);
+  const [filters, setFilters] = useState({ category: null, moment: null, intention: null });
   const [openId, setOpenId] = useState(null);
 
-  const filtered = useMemo(() => {
+  // A busca vale também para a contagem que aparece no botão "Aplicar filtros".
+  const searched = useMemo(() => {
     const q = normalizeText(query);
     return prayers.filter((p) => {
       const saintName = p.saint ? getSaint(p.saint)?.name ?? '' : '';
-      const matchesCategory = activeCategory === 'Todas' || p.category === activeCategory;
-      const matchesIntention = !activeIntention || p.intentions?.includes(activeIntention);
-      const matchesMoment = !activeMoment || p.moments?.includes(activeMoment);
-      const matchesQuery = normalizeText(`${p.category} ${p.title} ${p.text} ${saintName}`).includes(q);
-      return matchesCategory && matchesIntention && matchesMoment && matchesQuery;
+      return normalizeText(`${p.category} ${p.title} ${p.text} ${saintName}`).includes(q);
     });
-  }, [query, activeCategory, activeIntention, activeMoment]);
+  }, [query]);
+  const filtered = useMemo(() => searched.filter((p) => matchesFilters(p, filters)), [searched, filters]);
 
   // Com busca ou filtro ativo, mostra todas as orações encontradas.
-  const isFiltering =
-    query.trim() !== '' || activeCategory !== 'Todas' || activeIntention !== null || activeMoment !== null;
+  const isFiltering = query.trim() !== '' || Object.values(filters).some(Boolean);
   const { listed: listedPrayers, remaining, showMore } = useLoadMore(filtered, PRAYERS_PAGE_SIZE, {
     showAll: isFiltering,
   });
 
   // Santos ligados à intenção escolhida aparecem em destaque.
-  const intentionSaints = activeIntention ? saints.filter((s) => s.intentions.includes(activeIntention)) : [];
+  const intentionSaints = filters.intention ? saints.filter((s) => s.intentions.includes(filters.intention)) : [];
 
   // A aba Santos mudou para a Escola da Fé.
   if (searchParams.get('secao') === 'santos') return <Navigate to="/home/escola-da-fe?secao=santos" replace />;
@@ -189,49 +201,12 @@ export default function Oracoes() {
               />
             </div>
 
-            <div className="faq-categories">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  className={`category ${activeCategory === cat ? 'active' : ''}`}
-                  onClick={() => setActiveCategory(cat)}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-
-            <div className="intention-filter">
-              <p className="intention-filter-title">Quando rezar?</p>
-              <div className="intention-filter-list">
-                {moments.map((m) => (
-                  <button
-                    key={m.id}
-                    className={`intention-chip ${activeMoment === m.id ? 'active' : ''}`}
-                    onClick={() => setActiveMoment(activeMoment === m.id ? null : m.id)}
-                    aria-pressed={activeMoment === m.id}
-                  >
-                    {m.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="intention-filter">
-              <p className="intention-filter-title">Para que você quer rezar?</p>
-              <div className="intention-filter-list">
-                {intentions.map((i) => (
-                  <button
-                    key={i.id}
-                    className={`intention-chip ${activeIntention === i.id ? 'active' : ''}`}
-                    onClick={() => setActiveIntention(activeIntention === i.id ? null : i.id)}
-                    aria-pressed={activeIntention === i.id}
-                  >
-                    {i.label}
-                  </button>
-                ))}
-              </div>
-            </div>
+            <FilterPanel
+              groups={filterGroups}
+              values={filters}
+              onApply={setFilters}
+              countResults={(draft) => searched.filter((p) => matchesFilters(p, draft)).length}
+            />
 
             {intentionSaints.length > 0 && (
               <p className="intention-saints">
@@ -263,6 +238,17 @@ export default function Oracoes() {
                 Nenhuma oração encontrada.
               </p>
             )}
+          </motion.div>
+        )}
+        {section === 'confissao' && (
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+            <header className="rosary-header">
+              <h2 className="rosary-title">Exame de consciência</h2>
+              <p className="rosary-intro">
+                Prepare-se para a confissão: reze, marque o que se aplica a você e leve a lista com você.
+              </p>
+            </header>
+            <ConfessionGuide />
           </motion.div>
         )}
       </div>
