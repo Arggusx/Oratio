@@ -55,6 +55,10 @@ const PAGE_META = {
     title: 'Trilhas da fé: uma etapa por dia — Oratio',
     description: 'Conheça a Missa em 7 dias e os 4 dogmas de Maria, com uma etapa curta por dia e algo para viver depois.',
   },
+  '/comunidade': {
+    title: 'Comunidade: mural de intenções e terços de hoje — Oratio',
+    description: 'Reze pelos pedidos de outras pessoas, veja quantos rezaram o terço hoje e acompanhe as novenas em grupo e as metas da comunidade, sem identificar ninguém.',
+  },
   '/jornada': {
     title: 'Jornada: seu caminho de oração — Oratio',
     description: 'Seu progresso pessoal: dias de oração, novenas, coleção de santos e milagres visitados. Fica só no seu aparelho.',

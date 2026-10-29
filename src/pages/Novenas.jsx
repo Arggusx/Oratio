@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, Check, Play, RotateCcw } from 'lucide-react';
 import { getNovena, novenas } from '../data/novenas';
 import { getSaint } from '../data/saints';
 import { journey, planDayToday, useJourney } from '../utils/journeyStore';
+import { plural, useCommunityStats } from '../utils/community';
 
 /** Nove contas que acendem conforme os dias rezados; a de hoje fica marcada. */
 export function NovenaBeads({ plan, size = 'md' }) {
@@ -59,6 +60,8 @@ function NovenaPage({ novena }) {
   const today = planDayToday(plan);
   const saint = novena.saint ? getSaint(novena.saint) : null;
   const finished = plan?.done.length === 9;
+  const stats = useCommunityStats();
+  const together = stats?.novenas[novena.id] ?? 0;
 
   return (
     <main className="page novena-page">
@@ -75,6 +78,13 @@ function NovenaPage({ novena }) {
           Conheça {saint.name}
           <ArrowRight size={15} />
         </Link>
+      )}
+
+      {together > 0 && (
+        <p className="community-inline is-block">
+          {plural(together, 'pessoa está fazendo', 'pessoas estão fazendo')} esta novena com você.{' '}
+          {!plan && 'Comece hoje e reze junto.'}
+        </p>
       )}
 
       <section className="novena-progress" aria-label="Seu progresso nesta novena">

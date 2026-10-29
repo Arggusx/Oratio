@@ -175,6 +175,9 @@ export default function Jornada() {
         Acompanhe seu caminho: os dias de oração, as missões em andamento e o que você já descobriu. Fica tudo só
         neste aparelho, sem pontos e sem ranking.
       </p>
+      <Link to="/comunidade" className="community-inline is-block">
+        Veja quem está rezando com você e o mural de intenções na Comunidade
+      </Link>
 
       {SECTIONS.length > 1 && (
         <div className="subnav-segmented" role="tablist" aria-label="Seções da Jornada">

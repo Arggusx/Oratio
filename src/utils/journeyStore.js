@@ -1,5 +1,6 @@
 import { useSyncExternalStore } from 'react';
 import { addDays, fromKey, startOfDay, toKey } from './liturgicalCalendar';
+import { community } from './community';
 
 /**
  * Progresso da Jornada, guardado só neste aparelho (localStorage). Nada é enviado a servidor.
@@ -65,7 +66,10 @@ export const todayKey = () => toKey(new Date());
 
 export const journey = {
   togglePrayedToday() {
+    const marking = !state.prayedDays.includes(todayKey());
     write({ ...state, prayedDays: toggleIn(state.prayedDays, todayKey()) });
+    // Conta, anonimamente, no "hoje, N pessoas rezaram o terço".
+    if (marking) community.mark('terco');
   },
   toggleSaint(slug) {
     write({ ...state, saints: toggleIn(state.saints, slug) });
@@ -81,7 +85,10 @@ export const journey = {
   togglePlanDay(kind, id, day) {
     const plan = state[kind][id];
     if (!plan) return;
+    const marking = !plan.done.includes(day);
     write({ ...state, [kind]: { ...state[kind], [id]: { ...plan, done: toggleIn(plan.done, day) } } });
+    // Conta, anonimamente, nas "N pessoas estão fazendo esta novena".
+    if (marking && kind === 'novenas') community.mark('novena', id);
   },
   stopPlan(kind, id) {
     const rest = { ...state[kind] };

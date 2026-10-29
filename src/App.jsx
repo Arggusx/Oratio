@@ -27,6 +27,7 @@ const Confissao = lazy(() => import('./pages/Confissao'));
 const Jornada = lazy(() => import('./pages/Jornada'));
 const Novenas = lazy(() => import('./pages/Novenas'));
 const Trilhas = lazy(() => import('./pages/Trilhas'));
+const Comunidade = lazy(() => import('./pages/Comunidade'));
 
 function NotFound() {
   return (
@@ -101,6 +102,7 @@ function AnimatedRoutes() {
             <Route path="/creditos" element={<Creditos />} />
             <Route path="/home/confissao" element={<Confissao />} />
             <Route path="/jornada" element={<Jornada />} />
+            <Route path="/comunidade" element={<Comunidade />} />
             <Route path="/home/novenas" element={<Novenas />} />
             <Route path="/home/novenas/:id" element={<Novenas />} />
             <Route path="/home/trilhas" element={<Trilhas />} />

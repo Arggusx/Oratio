@@ -355,6 +355,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://oratio-daily-dev.vercel.app/comunidade</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://oratio-daily-dev.vercel.app/home/trilhas/missa-7-dias</loc>
     <lastmod>2026-10-29</lastmod>
     <changefreq>yearly</changefreq>

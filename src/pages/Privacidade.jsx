@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 // Canal de contato do responsável pelo site (exigido pela LGPD, art. 41).
 const CONTACT_EMAIL = 'dougclasher9@gmail.com';
-const LAST_UPDATE = '28 de outubro de 2026';
+const LAST_UPDATE = '29 de outubro de 2026';
 
 export default function Privacidade() {
   return (
@@ -46,9 +46,10 @@ export default function Privacidade() {
         <h3>Dados guardados no seu próprio aparelho</h3>
         <p>
           O site guarda algumas preferências no armazenamento local do seu navegador (<em>localStorage</em>): o tema
-          claro ou escuro, a data em que você recomeçou a leitura diária e cópias das leituras já carregadas, para
-          abrir mais rápido. Essas informações <strong>ficam apenas no seu aparelho</strong> e não são enviadas para
-          nós. Você pode apagá-las a qualquer momento limpando os dados do site nas configurações do navegador.
+          claro ou escuro, a data em que você recomeçou a leitura diária, cópias das leituras já carregadas, para
+          abrir mais rápido, e o progresso da <strong>Jornada</strong> (dias de oração, novenas, trilhas, coleção,
+          mapa, buquês espirituais e respostas dos quizzes). Essas informações <strong>ficam apenas no seu
+          aparelho</strong> e não são enviadas para nós. Você pode apagá-las a qualquer momento limpando os dados do site nas configurações do navegador.
         </p>
 
         <h3>Registros técnicos de acesso</h3>
@@ -56,6 +57,21 @@ export default function Privacidade() {
           Como qualquer site, o Oratio é hospedado num provedor (Vercel), que registra automaticamente dados de
           acesso, como endereço IP, data e hora e a página acessada, para manter o serviço funcionando e seguro. O
           mesmo vale para a nossa API de leituras, também hospedada na Vercel.
+        </p>
+
+        <h3>Comunidade</h3>
+        <p>
+          Para mostrar números como “hoje, 342 pessoas rezaram o terço” e “1.240 pessoas estão fazendo esta novena”,
+          quando você marca um terço ou um dia de novena o site envia à nossa API só o tipo da marcação e um código
+          aleatório criado no seu aparelho. Esse código não contém nenhum dado seu, e a API guarda apenas uma versão
+          embaralhada dele (hash com chave secreta). O endereço IP também só é guardado embaralhado, com uma chave que
+          muda todo dia, para limitar envios abusivos.
+        </p>
+        <p>
+          No <strong>mural de intenções</strong>, o pedido e o primeiro nome (opcional) que você escrever ficam
+          <strong> públicos</strong> por 30 dias. Não escreva sobrenome, endereço, telefone ou detalhes que identifiquem
+          alguém; links, e-mails e telefones são removidos automaticamente. Pedidos impróprios podem ser denunciados e
+          saem do mural.
         </p>
 
         <h3>Estatísticas de visitas</h3>
@@ -97,7 +113,8 @@ export default function Privacidade() {
         <h2>5. Por quanto tempo guardamos</h2>
         <p>
           As mensagens do formulário de feedback são guardadas pelo tempo necessário para analisá-las, por no máximo
-          12 meses, e depois apagadas. Os registros técnicos de acesso são mantidos pelos provedores de hospedagem
+          12 meses, e depois apagadas. Os pedidos do mural deixam de aparecer depois de 30 dias e são apagados em
+          até 12 meses; as marcações anônimas da Comunidade são mantidas só como contagem. Os registros técnicos de acesso são mantidos pelos provedores de hospedagem
           conforme suas próprias políticas e as exigências legais.
         </p>
       </section>
