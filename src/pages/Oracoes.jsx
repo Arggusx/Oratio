@@ -242,13 +242,16 @@ export default function Oracoes() {
         )}
         {section === 'confissao' && (
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-            <header className="rosary-header">
-              <h2 className="rosary-title">Exame de consciência</h2>
-              <p className="rosary-intro">
-                Prepare-se para a confissão: reze, marque o que se aplica a você e leve a lista com você.
-              </p>
-            </header>
-            <ConfessionGuide />
+            <ConfessionGuide
+              header={
+                <header className="rosary-header">
+                  <h2 className="rosary-title">Exame de consciência</h2>
+                  <p className="rosary-intro">
+                    Prepare-se para a confissão: reze, marque o que se aplica a você e leve a lista com você.
+                  </p>
+                </header>
+              }
+            />
           </motion.div>
         )}
       </div>

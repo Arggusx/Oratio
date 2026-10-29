@@ -29,9 +29,10 @@ function listAsText(selected, custom) {
  * Exame de consciência: a pessoa marca o que se aplica a ela e pode escrever o que não estiver na lista.
  * Nada é salvo nem enviado: a lista existe só enquanto a página está aberta. Exportar (copiar, baixar,
  * imprimir ou compartilhar) acontece no próprio aparelho, por escolha da pessoa.
- * Usado na página /home/confissao e na aba Confissão de Terço e Orações.
+ * Usado na página /home/confissao e na aba Confissão de Terço e Orações. "header" é o título de quem usa:
+ * ele fica parado no meio da tela junto com os passos da confissão.
  */
-export default function ConfessionGuide() {
+export default function ConfessionGuide({ header = null }) {
   const [exported, setExported] = useState('');
   const [checked, setChecked] = useState(() => new Set());
   const [custom, setCustom] = useState([]);
@@ -104,18 +105,27 @@ export default function ConfessionGuide() {
 
   return (
     <div className="confession-guide">
-      <p className="confession-privacy">
-        <ShieldCheck size={18} aria-hidden="true" />
-        <span>
-          <strong>Nada do que você marcar é salvo nem enviado.</strong> A lista fica só nesta tela e some quando você
-          fecha ou recarrega a página. Se quiser levá-la com você, use os botões de exportar no fim: o arquivo fica
-          no seu aparelho.
-        </span>
-      </p>
-
       <section className="confession-steps" aria-labelledby="confession-steps-title">
-        <h2 id="confession-steps-title" className="saint-section-title">Como se confessar</h2>
-        <ScrollRail label="Os passos da confissão" className="confession-rail">
+        <ScrollRail
+          label="Os passos da confissão"
+          className="confession-rail"
+          intro={
+            <>
+              {header}
+              <p className="confession-privacy">
+                <ShieldCheck size={18} aria-hidden="true" />
+                <span>
+                  <strong>Nada do que você marcar é salvo nem enviado.</strong> A lista fica só nesta tela e some
+                  quando você fecha ou recarrega a página. Se quiser levá-la com você, use os botões de exportar no
+                  fim: o arquivo fica no seu aparelho.
+                </span>
+              </p>
+              <h2 id="confession-steps-title" className="saint-section-title">
+                Como se confessar
+              </h2>
+            </>
+          }
+        >
           {confessionSteps.map(([title, text], i) => (
             <article key={title} className="confession-step">
               <span className="confession-step-number" aria-hidden="true">{i + 1}</span>

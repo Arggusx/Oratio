@@ -21,8 +21,9 @@ function centeredTop(height) {
  * Trilho lateral: enquanto a pessoa rola a página para baixo (roda do mouse ou dedo), a seção fica parada na
  * tela e os cartões andam para o lado; ao chegar ao último, a página volta a rolar normalmente.
  * Se tudo já cabe na largura, ou se a pessoa pediu menos movimento, os cartões ficam numa grade comum.
+ * "intro" (opcional) é o conteúdo que fica parado junto com os cartões, logo acima deles (ex.: o título).
  */
-export default function ScrollRail({ children, label, className = '' }) {
+export default function ScrollRail({ children, label, className = '', intro = null }) {
   const outerRef = useRef(null);
   const trackRef = useRef(null);
   const [distance, setDistance] = useState(0);
@@ -104,6 +105,7 @@ export default function ScrollRail({ children, label, className = '' }) {
       aria-label={label}
     >
       <div className="scroll-rail-sticky" style={active && stickyTop !== null ? { top: stickyTop } : undefined}>
+        {intro}
         <div className="scroll-rail-viewport">
           <div ref={trackRef} className="scroll-rail-track">
             {children}
