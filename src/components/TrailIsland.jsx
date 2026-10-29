@@ -93,6 +93,20 @@ const ICONS = {
       <path className="ti-fill" d="M-6-12l3 4h-6zM6-12l3 4h-6z" />
     </>
   ),
+  pergunta: (
+    <>
+      <circle className="ti-glow" cx="0" cy="0" r="17" />
+      <circle className="ti-fill" cx="0" cy="0" r="13" />
+      <path className="ti-line" d="M-4.5-4a4.5 4.5 0 1 1 6 4.2c-1.2.5-1.5 1.2-1.5 2.6M0 7.5v.5" />
+    </>
+  ),
+  coroa: (
+    <>
+      <circle className="ti-glow" cx="0" cy="-2" r="18" />
+      <path className="ti-fill" d="M-16 10l-2-18 9 8 9-14 9 14 9-8-2 18z" />
+      <path className="ti-line" d="M-14 15h28M0-8v2" />
+    </>
+  ),
   nuvens: (
     <>
       <circle className="ti-glow" cx="0" cy="-8" r="12" />

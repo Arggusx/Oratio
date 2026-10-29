@@ -17,7 +17,22 @@ import {
 import PrayedTodayButton from '../components/PrayedTodayButton';
 import { NovenaBeads } from './Novenas';
 import { novenas } from '../data/novenas';
-import { trails } from '../data/trails';
+import { trails, trailStops } from '../data/trails';
+import { LEVELS } from '../data/quizBank';
+
+/** Próxima parada de uma ilha (etapa ou quiz) e o progresso, considerando as duas coisas. */
+function nextStop(trail, trailPlans, quizLevels) {
+  const lessons = trailPlans[trail.id]?.done ?? [];
+  const passed = quizLevels?.[trail.id] ?? [];
+  const stops = trailStops(trail);
+  const isDone = (st) => (st.kind === 'lesson' ? lessons.includes(st.day) : passed.includes(st.level));
+  const next = stops.find((st) => !isDone(st));
+  return {
+    done: stops.filter(isDone).length,
+    total: stops.length,
+    title: next ? (next.kind === 'lesson' ? next.step.title : LEVELS.find((l) => l.id === next.level).title) : null,
+  };
+}
 import { TrailSteps } from './Trilhas';
 import SaintCollection from '../components/journey/SaintCollection';
 import MiracleMap from '../components/journey/MiracleMap';
@@ -170,7 +185,7 @@ function Missions() {
 }
 
 /** Próximas ações do dia (no máximo três): o que fazer agora, sem precisar procurar. */
-function todayActions({ prayedDays, novenas: novenaPlans, trails: trailPlans }) {
+function todayActions({ prayedDays, novenas: novenaPlans, trails: trailPlans, quizLevels }) {
   const actions = [];
   if (!prayedDays.includes(todayKey())) {
     actions.push({ to: '/home/oracoes', title: 'Rezar o terço de hoje', hint: 'No fim, toque em “Marcar terço de hoje”' });
@@ -182,14 +197,13 @@ function todayActions({ prayedDays, novenas: novenaPlans, trails: trailPlans }) 
     }
   }
   for (const t of trails) {
-    const plan = trailPlans[t.id];
-    if (plan && plan.done.length < t.steps.length) {
-      const step = t.steps.find((_, i) => !plan.done.includes(i + 1));
-      actions.push({ to: `/home/trilhas/${t.id}`, title: `${t.title}: próxima ilha`, hint: step.title });
+    const next = trailPlans[t.id] && nextStop(t, trailPlans, quizLevels);
+    if (next?.title) {
+      actions.push({ to: `/home/trilhas/${t.id}`, title: `${t.title}: próxima parada`, hint: next.title });
     }
   }
   if (actions.length < 3 && !Object.keys(trailPlans).length) {
-    actions.push({ to: `/home/trilhas/${trails[0].id}`, title: `Começar a trilha “${trails[0].title}”`, hint: 'Uma ilha por dia' });
+    actions.push({ to: `/home/trilhas/${trails[0].id}`, title: `Começar a ilha “${trails[0].title}”`, hint: 'Etapas curtas e quiz' });
   }
   return actions.slice(0, 3);
 }
@@ -197,7 +211,8 @@ function todayActions({ prayedDays, novenas: novenaPlans, trails: trailPlans }) 
 /** Os "jogos" da Jornada, cada um com um desenho, uma cor e o estado atual em uma linha. */
 function games(state) {
   const activeNovena = novenas.find((n) => state.novenas[n.id] && state.novenas[n.id].done.length < 9);
-  const activeTrail = trails.find((t) => state.trails[t.id] && state.trails[t.id].done.length < t.steps.length);
+  const activeTrail = trails.find((t) => state.trails[t.id] && nextStop(t, state.trails, state.quizLevels).title);
+  const trailProgress = activeTrail && nextStop(activeTrail, state.trails, state.quizLevels);
   const quizDone = Object.values(state.quizLevels ?? {}).reduce((n, levels) => n + levels.length, 0);
   return [
     {
@@ -223,7 +238,7 @@ function games(state) {
       Icon: Footprints,
       color: '#5E8C63',
       status: activeTrail
-        ? `${state.trails[activeTrail.id].done.length} de ${activeTrail.steps.length} ilhas`
+        ? `${trailProgress.done} de ${trailProgress.total} paradas`
         : 'Caminho de ilhas',
     },
     {
@@ -242,11 +257,11 @@ function games(state) {
     },
     {
       id: 'quiz',
-      to: '/home/trilhas',
-      title: 'Ilhas de quiz',
+      to: '/home/quiz/aleatorio',
+      title: 'Desafio aleatório',
       Icon: Lightbulb,
       color: '#D98B2B',
-      status: quizDone ? `${quizDone} níveis concluídos` : '6 ilhas, do fácil ao desafio',
+      status: quizDone ? `${quizDone} quizzes das ilhas feitos` : 'Perguntas de todas as ilhas',
     },
     {
       id: 'buque',

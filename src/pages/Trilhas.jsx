@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Link, Navigate, useParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Check, RotateCcw, X } from 'lucide-react';
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
+import { ArrowLeft, ArrowRight, Check, RotateCcw, Shuffle, X } from 'lucide-react';
 import IslandPath from '../components/IslandPath';
-import { QuizIslandCards } from './QuizIlhas';
 import TrailIsland from '../components/TrailIsland';
-import { getTrail, trails } from '../data/trails';
+import { getTrail, trails, trailStops } from '../data/trails';
+import { LEVELS } from '../data/quizBank';
 import { journey, useJourney } from '../utils/journeyStore';
 
 /** Bolinhas de progresso de uma trilha (uma por etapa). */
@@ -18,15 +18,25 @@ export function TrailSteps({ trail, plan }) {
   );
 }
 
-function TrailProgress({ trail, plan }) {
-  const done = plan?.done.length ?? 0;
+/** Paradas de uma ilha (etapas e quizzes) e quantas já foram concluídas. */
+function stopProgress(trail, { trails: plans, quizLevels }) {
+  const stops = trailStops(trail);
+  const lessons = plans[trail.id]?.done ?? [];
+  const passed = quizLevels[trail.id] ?? [];
+  const isDone = (st) => (st.kind === 'lesson' ? lessons.includes(st.day) : passed.includes(st.level));
+  const next = stops.find((st) => !isDone(st));
+  const nextTitle = next ? (next.kind === 'lesson' ? next.step.title : LEVELS.find((l) => l.id === next.level).title) : null;
+  return { total: stops.length, done: stops.filter(isDone).length, nextTitle, started: Boolean(plans[trail.id]) };
+}
+
+function TrailProgress({ trail, progress }) {
   return (
     <span className="trail-card-progress">
       <span className="year-bar">
-        <span style={{ width: `${(done / trail.steps.length) * 100}%`, background: trail.color }} />
+        <span style={{ width: `${(progress.done / progress.total) * 100}%`, background: trail.color }} />
       </span>
       <small>
-        {done}/{trail.steps.length}
+        {progress.done}/{progress.total}
       </small>
     </span>
   );
@@ -34,22 +44,22 @@ function TrailProgress({ trail, plan }) {
 
 /** "Escolha uma ilha": cada trilha é uma ilha. A que está em andamento fica em destaque. */
 function TrailList() {
-  const { trails: plans } = useJourney();
-  const inProgress = trails.find((t) => plans[t.id] && plans[t.id].done.length < t.steps.length);
-  const featured = inProgress ?? trails.find((t) => !plans[t.id]) ?? trails[0];
+  const state = useJourney();
+  const progress = Object.fromEntries(trails.map((t) => [t.id, stopProgress(t, state)]));
+  const inProgress = trails.find((t) => progress[t.id].started && progress[t.id].done < progress[t.id].total);
+  const featured = inProgress ?? trails.find((t) => !progress[t.id].started) ?? trails[0];
   const others = trails.filter((t) => t.id !== featured.id);
-  const featuredPlan = plans[featured.id];
-  const nextStep = featured.steps.find((_, i) => !featuredPlan?.done.includes(i + 1));
+  const featuredProgress = progress[featured.id];
 
   return (
     <main className="page">
-      <span className="eyebrow">Trilhas e quizzes</span>
+      <span className="eyebrow">Trilhas da fé · {trails.length} ilhas</span>
       <h1 className="section-title">
         Escolha uma <span className="trail-title-accent">ilha</span>
       </h1>
       <p className="lead">
-        Cada trilha é uma ilha, com uma etapa curta em cada parada. A próxima abre quando você conclui a atual; a
-        sugestão é fazer uma por dia.
+        Cada assunto é uma ilha. No caminho há etapas curtas para ler e paradas de quiz que ficam mais difíceis, até o
+        desafio final. A próxima parada abre quando você conclui a atual.
       </p>
 
       <Link to={`/home/trilhas/${featured.id}`} className="trail-card is-featured" style={{ '--trail': featured.color }}>
@@ -60,15 +70,15 @@ function TrailList() {
           <span className="trail-chip">{inProgress ? 'Em andamento' : 'Comece por aqui'}</span>
           <strong>{featured.title}</strong>
           <span className="trail-card-desc">{featured.short}</span>
-          <TrailProgress trail={featured} plan={featuredPlan} />
+          <TrailProgress trail={featured} progress={featuredProgress} />
           <span className="btn trail-card-cta">
-            {featuredPlan ? 'Continuar' : 'Começar'}
-            {nextStep && ` · ${nextStep.title}`}
+            {featuredProgress.started ? 'Continuar' : 'Começar'}
+            {featuredProgress.nextTitle && ` · ${featuredProgress.nextTitle}`}
           </span>
         </span>
       </Link>
 
-      <h2 className="trail-section-title">Trilhas da fé</h2>
+      <h2 className="trail-section-title">Outras ilhas</h2>
       <div className="trail-grid">
         {others.map((t) => (
           <Link key={t.id} to={`/home/trilhas/${t.id}`} className="trail-card" style={{ '--trail': t.color }}>
@@ -77,12 +87,15 @@ function TrailList() {
             </span>
             <strong>{t.title}</strong>
             <span className="trail-card-desc">{t.short}</span>
-            <TrailProgress trail={t} plan={plans[t.id]} />
+            <TrailProgress trail={t} progress={progress[t.id]} />
           </Link>
         ))}
       </div>
 
-      <QuizIslandCards />
+      <Link to="/home/quiz/aleatorio" className="trail-random-link">
+        <Shuffle size={16} aria-hidden="true" />
+        Desafio aleatório: misture as perguntas de todas as ilhas
+      </Link>
     </main>
   );
 }
@@ -144,22 +157,27 @@ function StepSheet({ trail, index, done, onComplete, onClose }) {
  * Só a próxima parada está aberta; a seguinte libera quando a atual é concluída.
  */
 function TrailPage({ trail }) {
-  const { trails: plans } = useJourney();
+  const navigate = useNavigate();
+  const { trails: plans, quizLevels } = useJourney();
   const plan = plans[trail.id];
   const done = plan?.done ?? [];
+  const passed = quizLevels[trail.id] ?? [];
   const [open, setOpen] = useState(null);
   const [justUnlocked, setJustUnlocked] = useState(null);
   const islandRefs = useRef([]);
-  const total = trail.steps.length;
-  const finished = done.length === total;
-  // A parada atual é a primeira ainda não concluída.
-  const current = trail.steps.findIndex((_, i) => !done.includes(i + 1));
-  const next = trails.find((t) => t.id !== trail.id && plans[t.id]?.done.length !== t.steps.length);
+  // O caminho mistura as etapas de leitura com as paradas de quiz (fácil, médio, difícil e desafio final).
+  const stops = trailStops(trail);
+  const isDone = (st) => (st.kind === 'lesson' ? done.includes(st.day) : passed.includes(st.level));
+  const current = stops.findIndex((st) => !isDone(st));
+  const finished = current === -1;
+  const next = trails.find((t) => t.id !== trail.id && !plans[t.id]);
   const closeSheet = useCallback(() => setOpen(null), []);
 
-  const openStep = (i) => {
+  const openStop = (i) => {
+    const st = stops[i];
     if (!plan) journey.startPlan('trails', trail.id);
-    setOpen(i);
+    if (st.kind === 'quiz') navigate(`/home/trilhas/${trail.id}/quiz/${st.level}`);
+    else setOpen(st.index);
   };
 
   const complete = () => {
@@ -167,9 +185,10 @@ function TrailPage({ trail }) {
     if (!done.includes(day)) journey.togglePlanDay('trails', trail.id, day);
     setOpen(null);
     // Leva a pessoa até a parada que acabou de abrir, com um brilho rápido.
-    if (day < total) {
-      setJustUnlocked(day);
-      setTimeout(() => islandRefs.current[day]?.scrollIntoView({ block: 'center', behavior: 'smooth' }), 150);
+    const nextStop = stops.findIndex((st) => st.kind === 'lesson' && st.day === day) + 1;
+    if (nextStop < stops.length) {
+      setJustUnlocked(nextStop);
+      setTimeout(() => islandRefs.current[nextStop]?.scrollIntoView({ block: 'center', behavior: 'smooth' }), 150);
       setTimeout(() => setJustUnlocked(null), 1800);
     }
   };
@@ -179,7 +198,7 @@ function TrailPage({ trail }) {
       <header className="trail-head">
         <div>
           <span className="eyebrow">
-            Trilha · {done.length}/{total} etapas
+            Ilha · {stops.filter(isDone).length}/{stops.length} paradas
           </span>
           <h1>{trail.title}</h1>
         </div>
@@ -192,18 +211,19 @@ function TrailPage({ trail }) {
       <IslandPath
         color={trail.color}
         heroIcon={trail.icon}
-        stops={trail.steps.map((step, i) => {
-          const state = done.includes(i + 1) ? 'done' : i === current ? 'current' : 'locked';
+        stops={stops.map((st, i) => {
+          const state = isDone(st) ? 'done' : i === current ? 'current' : 'locked';
+          const level = st.kind === 'quiz' ? LEVELS.find((l) => l.id === st.level) : null;
+          const label = level ? `Quiz · ${level.size} perguntas` : `Etapa ${String(st.day).padStart(2, '0')}`;
           return {
-            key: step.title,
-            icon: step.icon,
-            title: step.title,
+            key: level ? `quiz-${level.id}` : st.step.title,
+            icon: level ? level.icon : st.step.icon,
+            title: level ? level.title : st.step.title,
             state,
-            kicker:
-              state === 'current' ? (plan ? 'Continuar aqui' : 'Começar aqui') : `Etapa ${String(i + 1).padStart(2, '0')}`,
+            kicker: state === 'current' ? (plan ? 'Continuar aqui' : 'Começar aqui') : label,
           };
         })}
-        onSelect={openStep}
+        onSelect={openStop}
         justUnlocked={justUnlocked}
         stopRefs={islandRefs}
       />

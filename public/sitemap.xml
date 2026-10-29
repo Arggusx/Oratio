@@ -355,42 +355,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/quiz/missa</loc>
-    <lastmod>2026-10-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/quiz/biblia</loc>
-    <lastmod>2026-10-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/quiz/maria</loc>
-    <lastmod>2026-10-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/quiz/santos</loc>
-    <lastmod>2026-10-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/quiz/simbolos</loc>
-    <lastmod>2026-10-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/quiz/fe</loc>
-    <lastmod>2026-10-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://oratio-daily-dev.vercel.app/comunidade</loc>
     <lastmod>2026-10-29</lastmod>
     <changefreq>daily</changefreq>
@@ -410,6 +374,24 @@
   </url>
   <url>
     <loc>https://oratio-daily-dev.vercel.app/home/trilhas/sete-sacramentos</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://oratio-daily-dev.vercel.app/home/trilhas/biblia</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://oratio-daily-dev.vercel.app/home/trilhas/santos</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://oratio-daily-dev.vercel.app/home/trilhas/simbolos</loc>
     <lastmod>2026-10-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>

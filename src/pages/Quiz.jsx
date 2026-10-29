@@ -1,10 +1,9 @@
 import { useMemo, useState } from 'react';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, CheckCircle2, RotateCcw, Shuffle, XCircle } from 'lucide-react';
-import IslandPath from '../components/IslandPath';
 import GameIntro from '../components/GameIntro';
-import TrailIsland from '../components/TrailIsland';
-import { LEVELS, buildRound, getQuizIsland, quizIslands } from '../data/quizBank';
+import { LEVELS, QUIZ_TOPICS, buildRound } from '../data/quizBank';
+import { getTrail, trailStops } from '../data/trails';
 import { journey, useJourney } from '../utils/journeyStore';
 
 const LETTERS = ['A', 'B', 'C', 'D'];
@@ -48,8 +47,8 @@ function QuizRound({ round, color, pass, onRestart, onPassed, exitTo, exitLabel,
             {pass === undefined
               ? 'acertos'
               : passed
-                ? 'Nível concluído! O próximo nível abriu.'
-                : `Para abrir o próximo nível, acerte pelo menos ${pass}. Tente de novo: as perguntas mudam de ordem.`}
+                ? 'Concluído! A próxima parada do caminho abriu.'
+                : `Para seguir no caminho, acerte pelo menos ${pass}. Tente de novo: as perguntas mudam de ordem.`}
           </span>
         </div>
 
@@ -134,104 +133,64 @@ function QuizRound({ round, color, pass, onRestart, onPassed, exitTo, exitLabel,
   );
 }
 
-/** A ilha de um assunto: os níveis como paradas, do fácil ao desafio final. */
-function QuizIslandPage({ island }) {
+/**
+ * Uma parada de quiz dentro de uma trilha: perguntas do assunto da ilha, no nível daquela parada.
+ * Só abre quando a parada anterior do caminho foi concluída.
+ */
+function TrailQuizPage({ trail, level }) {
   const navigate = useNavigate();
-  const { quizLevels } = useJourney();
-  const passed = quizLevels[island.id] ?? [];
-  const current = LEVELS.findIndex((l) => !passed.includes(l.id));
-
-  return (
-    <main className="page trail-page" style={{ '--trail': island.color }}>
-      <header className="trail-head">
-        <div>
-          <span className="eyebrow">
-            Quiz · {passed.length}/{LEVELS.length} níveis
-          </span>
-          <h1>{island.title}</h1>
-        </div>
-        <Link to="/home/trilhas" className="fx-small-btn">
-          <ArrowLeft size={16} aria-hidden="true" /> Ilhas
-        </Link>
-      </header>
-
-      <GameIntro
-        id="quiz"
-        steps={[
-          'Cada ilha tem quatro níveis: fácil, médio, difícil e um desafio final que mistura tudo.',
-          'Em cada pergunta há quatro alternativas. Depois de responder, aparece a explicação, acertando ou não.',
-          'Acerte pelo menos 3 de 4 (ou 5 de 6 no desafio final) para abrir o próximo nível.',
-          'Errou? É só jogar de novo: as perguntas e as alternativas mudam de ordem, e nada se perde.',
-        ]}
-      />
-
-      <IslandPath
-        color={island.color}
-        heroIcon={island.icon}
-        stops={LEVELS.map((level, i) => {
-          const state = passed.includes(level.id) ? 'done' : i === current ? 'current' : 'locked';
-          return {
-            key: level.id,
-            icon: level.icon,
-            title: level.title,
-            state,
-            kicker: state === 'current' ? 'Jogar agora' : `Nível ${level.id} · ${level.size} perguntas`,
-          };
-        })}
-        onSelect={(i) => navigate(`/home/quiz/${island.id}/${LEVELS[i].id}`)}
-      />
-    </main>
-  );
-}
-
-/** Um nível de uma ilha, em tela própria. */
-function QuizLevelPage({ island, level }) {
-  const navigate = useNavigate();
-  const { quizLevels } = useJourney();
+  const { trails: plans, quizLevels } = useJourney();
   const [seed, setSeed] = useState(0);
   const round = useMemo(
-    () => buildRound({ topic: island.id, level: level.id, size: level.size, mixed: level.mixed }),
+    () => buildRound({ topic: trail.quizTopic, level: level.id, size: level.size, mixed: level.mixed }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [island.id, level.id, seed]
+    [trail.id, level.id, seed]
   );
-  const unlocked = level.id === 1 || (quizLevels[island.id] ?? []).includes(level.id - 1);
-  if (!unlocked) return <Navigate to={`/home/quiz/${island.id}`} replace />;
-  const nextLevel = LEVELS.find((l) => l.id === level.id + 1);
+
+  // A parada anterior no caminho precisa estar concluída.
+  const stops = trailStops(trail);
+  const position = stops.findIndex((st) => st.kind === 'quiz' && st.level === level.id);
+  const before = stops[position - 1];
+  const passed = quizLevels[trail.id] ?? [];
+  const lessonsDone = plans[trail.id]?.done ?? [];
+  const unlocked =
+    !before || (before.kind === 'lesson' ? lessonsDone.includes(before.day) : passed.includes(before.level));
+  if (!unlocked) return <Navigate to={`/home/trilhas/${trail.id}`} replace />;
 
   return (
-    <main className="page quiz-page" style={{ '--trail': island.color }}>
+    <main className="page quiz-page" style={{ '--trail': trail.color }}>
       <header className="trail-head">
         <div>
-          <span className="eyebrow">
-            {island.title} · Nível {level.id}
-          </span>
+          <span className="eyebrow">{trail.title}</span>
           <h1>{level.title}</h1>
         </div>
-        <Link to={`/home/quiz/${island.id}`} className="fx-small-btn">
+        <Link to={`/home/trilhas/${trail.id}`} className="fx-small-btn">
           <ArrowLeft size={16} aria-hidden="true" /> Ilha
         </Link>
       </header>
+      <GameIntro
+        id="quiz"
+        steps={[
+          'Pelo caminho da ilha há quatro paradas de quiz: fácil, médio, difícil e o desafio final, que mistura tudo.',
+          'Cada pergunta tem quatro alternativas. Depois de responder, aparece a explicação, acertando ou não.',
+          'Acerte pelo menos 3 de 4 (ou 5 de 6 no desafio final) para seguir no caminho.',
+          'Errou? É só jogar de novo: as perguntas e as alternativas mudam de ordem, e nada se perde.',
+        ]}
+      />
       <QuizRound
         key={seed}
         round={round}
-        color={island.color}
+        color={trail.color}
         pass={level.pass}
-        onPassed={() => journey.passQuizLevel(island.id, level.id)}
+        onPassed={() => journey.passQuizLevel(trail.id, level.id)}
         onRestart={() => setSeed(seed + 1)}
-        exitTo={`/home/quiz/${island.id}`}
+        exitTo={`/home/trilhas/${trail.id}`}
         exitLabel="Voltar à ilha"
         nextAction={
-          nextLevel ? (
-            <button type="button" className="btn" onClick={() => navigate(`/home/quiz/${island.id}/${nextLevel.id}`)}>
-              Próximo nível: {nextLevel.title}
-              <ArrowRight size={16} aria-hidden="true" />
-            </button>
-          ) : (
-            <Link to="/home/trilhas" className="btn">
-              Escolher outra ilha
-              <ArrowRight size={16} aria-hidden="true" />
-            </Link>
-          )
+          <button type="button" className="btn" onClick={() => navigate(`/home/trilhas/${trail.id}`)}>
+            Continuar o caminho
+            <ArrowRight size={16} aria-hidden="true" />
+          </button>
         }
       />
     </main>
@@ -254,7 +213,7 @@ function RandomQuizPage() {
   const [seed, setSeed] = useState(0);
 
   const start = () => {
-    const chosen = topics.length ? topics : quizIslands.map((i) => i.id);
+    const chosen = topics.length ? topics : QUIZ_TOPICS.map((t) => t.id);
     const parts = chosen.flatMap((topic) =>
       buildRound({ topic, level: difficulty === 'misto' ? null : difficulty, size: 99, mixed: difficulty === 'misto' })
     );
@@ -301,15 +260,15 @@ function RandomQuizPage() {
           <fieldset className="filter-group">
             <legend>Assuntos</legend>
             <div className="filter-group-options">
-              {quizIslands.map((i) => (
+              {QUIZ_TOPICS.map((t) => (
                 <button
-                  key={i.id}
+                  key={t.id}
                   type="button"
-                  className={`intention-chip ${topics.includes(i.id) ? 'active' : ''}`}
-                  aria-pressed={topics.includes(i.id)}
-                  onClick={() => toggleTopic(i.id)}
+                  className={`intention-chip ${topics.includes(t.id) ? 'active' : ''}`}
+                  aria-pressed={topics.includes(t.id)}
+                  onClick={() => toggleTopic(t.id)}
                 >
-                  {i.title.replace(/^Ilha (da|do|dos|de) /, '')}
+                  {t.label}
                 </button>
               ))}
             </div>
@@ -356,53 +315,12 @@ function RandomQuizPage() {
   );
 }
 
-export default function QuizIlhas() {
-  const { island: islandId, level: levelId } = useParams();
-  if (islandId === 'aleatorio') return <RandomQuizPage />;
-  const island = getQuizIsland(islandId);
-  if (!island) return <Navigate to="/home/trilhas" replace />;
-  if (!levelId) return <QuizIslandPage island={island} />;
+/** Rotas do quiz: /home/trilhas/:id/quiz/:level (parada de quiz numa ilha) e /home/quiz/aleatorio. */
+export default function Quiz() {
+  const { id, level: levelId } = useParams();
+  if (!id) return <RandomQuizPage />;
+  const trail = getTrail(id);
   const level = LEVELS.find((l) => String(l.id) === levelId);
-  if (!level) return <Navigate to={`/home/quiz/${island.id}`} replace />;
-  return <QuizLevelPage island={island} level={level} />;
-}
-
-/** Cartões das ilhas de quiz, na tela "Escolha uma ilha". */
-export function QuizIslandCards() {
-  const { quizLevels } = useJourney();
-  return (
-    <>
-      <h2 className="trail-section-title">Ilhas de quiz</h2>
-      <p className="trail-hint">Teste o que você sabe, do fácil ao desafio final, ou monte uma partida aleatória.</p>
-      <div className="trail-grid">
-        <Link to="/home/quiz/aleatorio" className="trail-card is-random" style={{ '--trail': '#B84A13' }}>
-          <span className="trail-card-art">
-            <TrailIsland icon="estrela" color="#B84A13" />
-          </span>
-          <strong>Desafio aleatório</strong>
-          <span className="trail-card-desc">Escolha os assuntos, a dificuldade e quantas perguntas.</span>
-        </Link>
-        {quizIslands.map((i) => {
-          const done = (quizLevels[i.id] ?? []).length;
-          return (
-            <Link key={i.id} to={`/home/quiz/${i.id}`} className="trail-card" style={{ '--trail': i.color }}>
-              <span className="trail-card-art">
-                <TrailIsland icon={i.icon} color={i.color} />
-              </span>
-              <strong>{i.title}</strong>
-              <span className="trail-card-desc">{i.short}</span>
-              <span className="trail-card-progress">
-                <span className="year-bar">
-                  <span style={{ width: `${(done / LEVELS.length) * 100}%`, background: i.color }} />
-                </span>
-                <small>
-                  {done}/{LEVELS.length}
-                </small>
-              </span>
-            </Link>
-          );
-        })}
-      </div>
-    </>
-  );
+  if (!trail || !level) return <Navigate to="/home/trilhas" replace />;
+  return <TrailQuizPage trail={trail} level={level} />;
 }

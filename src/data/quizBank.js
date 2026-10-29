@@ -1,21 +1,23 @@
-// Ilhas de quiz: cada assunto é uma ilha, e cada parada é um nível (fácil, médio, difícil e um desafio final).
+// Quiz das ilhas: no caminho de cada trilha há paradas de quiz do assunto da ilha, que ficam mais difíceis
+// (fácil, médio, difícil e um desafio final). Também há o desafio aleatório, que mistura os assuntos.
 // Em cada pergunta, "a" é a resposta certa e "w" são as erradas; o jogo embaralha a ordem das perguntas e das
 // alternativas a cada partida. "why" aparece depois da resposta, acertando ou não.
 
 export const LEVELS = [
-  { id: 1, title: 'Fácil', icon: 'estrela', size: 4, pass: 3 },
-  { id: 2, title: 'Médio', icon: 'pergaminho', size: 4, pass: 3 },
-  { id: 3, title: 'Difícil', icon: 'chaves', size: 4, pass: 3 },
-  { id: 4, title: 'Desafio final', icon: 'calice', size: 6, pass: 5, mixed: true },
+  { id: 1, title: 'Quiz fácil', icon: 'pergunta', size: 4, pass: 3 },
+  { id: 2, title: 'Quiz médio', icon: 'pergunta', size: 4, pass: 3 },
+  { id: 3, title: 'Quiz difícil', icon: 'pergunta', size: 4, pass: 3 },
+  { id: 4, title: 'Desafio final', icon: 'coroa', size: 6, pass: 5, mixed: true },
 ];
 
-export const quizIslands = [
-  { id: 'missa', title: 'Ilha da Missa', short: 'Partes, gestos, cores e palavras da Missa.', icon: 'igreja', color: '#C8963E' },
-  { id: 'biblia', title: 'Ilha da Bíblia', short: 'Livros, personagens e passagens.', icon: 'biblia', color: '#8C6A3F' },
-  { id: 'maria', title: 'Ilha de Maria', short: 'Dogmas, aparições e a vida de Nossa Senhora.', icon: 'lua', color: '#4F7BB5' },
-  { id: 'santos', title: 'Ilha dos Santos', short: 'Quem é quem e por que são lembrados.', icon: 'lirio', color: '#7A5A9E' },
-  { id: 'simbolos', title: 'Ilha dos Símbolos', short: 'O que os sinais cristãos querem dizer.', icon: 'pomba', color: '#3F8C8A' },
-  { id: 'fe', title: 'Ilha da Fé', short: 'Sacramentos, doutrina e história da Igreja.', icon: 'hostia', color: '#B84A13' },
+// Assuntos do banco, ligados às ilhas das trilhas (campo quizTopic em data/trails.js).
+export const QUIZ_TOPICS = [
+  { id: 'missa', label: 'Missa' },
+  { id: 'biblia', label: 'Bíblia' },
+  { id: 'maria', label: 'Maria' },
+  { id: 'santos', label: 'Santos' },
+  { id: 'simbolos', label: 'Símbolos' },
+  { id: 'fe', label: 'Sacramentos e fé' },
 ];
 
 export const quizBank = [
@@ -124,4 +126,3 @@ export function buildRound({ topic = null, level = null, size = 5, mixed = false
     });
 }
 
-export const getQuizIsland = (id) => quizIslands.find((i) => i.id === id);

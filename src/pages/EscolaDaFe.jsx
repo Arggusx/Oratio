@@ -14,25 +14,27 @@ import { useLoadMore } from '../utils/useLoadMore';
 import { eucharisticMiracles } from '../data/eucharisticMiracles';
 import Angel from '../components/anim/Angel';
 import TrailIsland from '../components/TrailIsland';
-import { getQuizIsland } from '../data/quizBank';
-import { trails } from '../data/trails';
+import { getTrail, trails } from '../data/trails';
 
 const countryCount = new Set(eucharisticMiracles.map((m) => m.country)).size;
 
-const QUIZ_FOR_SECTION = { curiosidades: 'fe', missa: 'missa', simbolos: 'simbolos', santos: 'santos' };
+// Cada aba convida para a ilha do mesmo assunto, onde estão as etapas e o quiz.
+const ISLAND_FOR_SECTION = { curiosidades: 'sete-sacramentos', missa: 'missa-7-dias', simbolos: 'simbolos', santos: 'santos' };
 
 function QuizInvite({ section }) {
-  const island = getQuizIsland(QUIZ_FOR_SECTION[section]);
+  const island = getTrail(ISLAND_FOR_SECTION[section]);
   if (!island) return null;
   return (
-    <Link to={`/home/quiz/${island.id}`} className="trail-card quiz-invite" style={{ '--trail': island.color }}>
+    <Link to={`/home/trilhas/${island.id}`} className="trail-card quiz-invite" style={{ '--trail': island.color }}>
       <span className="trail-card-art">
         <TrailIsland icon={island.icon} color={island.color} />
       </span>
       <span className="trail-card-body">
-        <span className="trail-chip">Quiz</span>
-        <strong>Teste o que você aprendeu na {island.title}</strong>
-        <span className="trail-card-desc">Quatro níveis, do fácil ao desafio final, com a explicação de cada resposta.</span>
+        <span className="trail-chip">Ilha · etapas e quiz</span>
+        <strong>{island.title}</strong>
+        <span className="trail-card-desc">
+          Siga o caminho da ilha: etapas curtas e um quiz que fica mais difícil, até o desafio final.
+        </span>
       </span>
     </Link>
   );

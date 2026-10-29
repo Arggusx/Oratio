@@ -8678,3 +8678,20 @@ details[open] > summary .exam-chevron {
   font-size: 0.75rem;
   color: var(--color-text-muted);
 }
+
+.trail-random-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.75rem;
+  padding: 0.65rem 1.1rem;
+  border-radius: var(--radius-full);
+  border: 1px dashed var(--color-gold);
+  color: var(--color-text);
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.trail-random-link:hover {
+  background: color-mix(in srgb, var(--color-gold) 12%, transparent);
+}
