@@ -18,7 +18,7 @@ const OFFERINGS = [
 const MAX_FLOWERS = 15;
 
 /** O vaso que vai ganhando uma flor para cada oferta, enquanto a pessoa monta o buquê. */
-function BouquetVase({ items, caption = true }) {
+export function BouquetVase({ items, caption = true }) {
   const flowers = OFFERINGS.flatMap((o) => Array.from({ length: items[o.id] ?? 0 }, () => o.color)).slice(
     0,
     MAX_FLOWERS,

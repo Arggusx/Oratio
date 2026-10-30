@@ -13,7 +13,7 @@ const MAX_ZOOM = 8;
 const project = ([lat, lng]) => ({ x: (lng - MAP.lng0) * MAP.k, y: (MAP.lat1 - lat) * MAP.k });
 
 /** O desenho do mapa com os alfinetes. "scale" mantém os alfinetes do mesmo tamanho em qualquer zoom. */
-function MapDrawing({ view, visited, selected, onSelect, scale = 1, interactive = true }) {
+export function MapDrawing({ view = FULL, visited, selected, onSelect, scale = 1, interactive = true }) {
   return (
     <svg
       viewBox={`${view.x} ${view.y} ${view.w} ${view.h}`}
