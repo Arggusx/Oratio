@@ -20,16 +20,19 @@
   --color-gold:        #C8963E;
   --color-gold-light:  #D4A84F;
   --color-gold-muted:  #B28A42;
+  /* O dourado claro só serve de enfeite (2,6:1 sobre o creme); texto dourado usa este tom (6,5:1). */
+  --color-gold-text:   #7A5520;
 
-  /* Colors — Text */
+  /* Colors — Text
+     Dois papéis: texto e texto suave. Os nomes antigos (soft, pale, faint, light)
+     continuam valendo, mas apontam para o texto suave (5,9:1 sobre o creme). */
   --color-charcoal:    #2D241F;
   --color-text:        #332A25;
   --color-text-muted:  #705E52;
-  --color-text-soft:   #5F5047;
-  /* Tons ajustados para contraste mínimo de 4,5:1 (WCAG AA) também sobre o fundo creme. */
-  --color-text-pale:   #82654E;
-  --color-text-faint:  #82654E;
-  --color-text-light:  #806D60;
+  --color-text-soft:   var(--color-text-muted);
+  --color-text-pale:   var(--color-text-muted);
+  --color-text-faint:  var(--color-text-muted);
+  --color-text-light:  var(--color-text-muted);
 
   /* Colors — Borders & Surfaces */
   --color-border:      #E7DCD0;
@@ -76,12 +79,15 @@
   --space-2xl: 3rem;
   --space-3xl: 4rem;
 
-  /* Radii */
-  --radius-sm:   0.5rem;
-  --radius-md:   0.65rem;
-  --radius-lg:   1rem;
-  --radius-xl:   1.1rem;
+  /* Radii — três tamanhos e a pílula: 12 px (campos e itens), 18 px (cartões), 22 px (destaques). */
+  --radius-sm:   0.75rem;
+  --radius-md:   0.75rem;
+  --radius-lg:   1.125rem;
+  --radius-xl:   1.375rem;
   --radius-full: 999px;
+
+  /* Alvos de toque */
+  --control-height: 3rem;
 
   /* Shadows */
   --shadow-sm:   0 2px 8px rgba(94, 59, 36, 0.04);
@@ -208,11 +214,12 @@ h1, h2, h3, h4,
   border: 0;
   border-radius: var(--radius-full);
   cursor: pointer;
-  padding: 0.85rem 1.5rem;
+  min-height: var(--control-height);
+  padding: 0.7rem 1.5rem;
   background: var(--color-terracotta);
   color: #FFFAF4;
   font-weight: 700;
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   letter-spacing: 0.01em;
   transition:
     transform var(--duration-fast) var(--ease-out),
@@ -3905,14 +3912,11 @@ h1, h2, h3, h4,
   --color-gold:        #D9AE5C;
   --color-gold-light:  #E3BD72;
   --color-gold-muted:  #C9A15A;
+  --color-gold-text:   #E3BD72;
 
   --color-charcoal:    #F3E9DE;
   --color-text:        #E6DAD0;
   --color-text-muted:  #BBA99A;
-  --color-text-soft:   #CDBFB3;
-  --color-text-pale:   #A8937F;
-  --color-text-faint:  #9C8773;
-  --color-text-light:  #A8968A;
 
   --color-border:      #3A2E26;
   --color-border-soft: #30261F;
@@ -6924,27 +6928,73 @@ details[open] > summary .exam-chevron {
   margin: 1.5rem 0;
 }
 
+/* "Marcar terço de hoje" é a ação principal do dia: botão cheio, como o .btn.
+   A borda tracejada antiga parecia botão desativado. Depois de marcado, vira um selo dourado suave. */
 .journey-mark {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.45rem;
-  padding: 0.65rem 1.1rem;
+  min-height: var(--control-height);
+  padding: 0.6rem 1.25rem;
   border-radius: var(--radius-full);
-  border: 1.5px dashed var(--color-gold);
-  background: transparent;
-  color: var(--color-text);
-  font-weight: 600;
+  border: 1.5px solid var(--color-terracotta);
+  background: var(--color-terracotta);
+  color: #FFFAF4;
+  font-weight: 700;
   cursor: pointer;
-  transition: background var(--duration-fast), border-color var(--duration-fast);
+  transition: background var(--duration-fast), border-color var(--duration-fast), color var(--duration-fast);
 }
 
-.journey-mark svg {
-  color: var(--color-gold-muted);
+.journey-mark:hover {
+  background: var(--color-terracotta-dark);
+  border-color: var(--color-terracotta-dark);
 }
 
 .journey-mark.is-done {
-  border-style: solid;
+  border-color: var(--color-gold);
   background: color-mix(in srgb, var(--color-gold) 18%, var(--color-surface));
+  color: var(--color-text);
+}
+
+.journey-mark.is-done svg {
+  color: var(--color-gold-text);
+}
+
+/* Dentro de listas (dias da novena, intenções, missões) o botão é contornado, para não pesar. */
+.novena-day .journey-mark:not(.is-done),
+.intention-note .journey-mark:not(.is-done),
+.mission-card .journey-mark:not(.is-done) {
+  min-height: 2.5rem;
+  border-color: var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.novena-day .journey-mark:not(.is-done):hover,
+.intention-note .journey-mark:not(.is-done):hover,
+.mission-card .journey-mark:not(.is-done):hover {
+  border-color: var(--color-terracotta);
+  color: var(--color-terracotta-dark);
+}
+
+:root[data-theme='dark'] .journey-mark:not(.is-done) {
+  background: #B84A13;
+  border-color: #B84A13;
+  color: #FFF7EF;
+}
+
+:root[data-theme='dark'] .journey-mark:not(.is-done):hover {
+  background: #CF5E24;
+  border-color: #CF5E24;
+}
+
+:root[data-theme='dark'] .novena-day .journey-mark:not(.is-done),
+:root[data-theme='dark'] .intention-note .journey-mark:not(.is-done),
+:root[data-theme='dark'] .mission-card .journey-mark:not(.is-done) {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text);
 }
 
 .journey-mark-link {
@@ -7748,7 +7798,7 @@ details[open] > summary .exam-chevron {
 
 /* ---------- Trilhas: escolher a ilha e o caminho ---------- */
 .trail-title-accent {
-  color: var(--color-gold);
+  color: var(--color-gold-text);
 }
 
 .trail-card {
@@ -10497,7 +10547,7 @@ details[open] > summary .exam-chevron {
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--color-gold);
+  color: var(--color-gold-text);
 }
 
 .hierarchy-step-body > p {
