@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { GraduationCap } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
+import SeasonChip from './SeasonChip';
 
 const links = [
   ['Início', '/'],
@@ -32,6 +33,7 @@ export default function Header() {
         </div>
 
         <div className="nav-actions">
+          <SeasonChip />
           {/* No celular a Escola da Fé não cabe na barra inferior: fica aqui, ao lado do tema. */}
           <NavLink
             to="/home/escola-da-fe"

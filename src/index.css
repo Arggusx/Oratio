@@ -2867,6 +2867,77 @@ h1, h2, h3, h4,
   gap: 0.25rem;
 }
 
+/* Etiqueta do tempo litúrgico: ponto na cor do dia e fundo no mesmo tom, bem claro. */
+.season-chip {
+  --chip: var(--liturgical-verde);
+  --chip-text: #3D5E42;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2rem;
+  padding: 0 0.7rem;
+  margin-right: 0.25rem;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--chip) 14%, var(--color-surface));
+  color: var(--chip-text);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background var(--duration-fast);
+}
+
+.season-chip:hover {
+  background: color-mix(in srgb, var(--chip) 24%, var(--color-surface));
+}
+
+.season-chip-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--chip);
+}
+
+.season-chip-roxo { --chip: var(--liturgical-roxo); --chip-text: #5A3F61; }
+.season-chip-vermelho { --chip: var(--liturgical-vermelho); --chip-text: #8A3730; }
+.season-chip-branco { --chip: var(--color-gold); --chip-text: var(--color-gold-text); }
+
+:root[data-theme='dark'] .season-chip { --chip-text: #B9D3BC; }
+:root[data-theme='dark'] .season-chip-roxo { --chip-text: #D2BCD8; }
+:root[data-theme='dark'] .season-chip-vermelho { --chip-text: #EBB3AC; }
+:root[data-theme='dark'] .season-chip-branco { --chip-text: var(--color-gold-text); }
+
+.season-chip-short {
+  display: none;
+}
+
+/* No celular, o nome curto ("Comum", "Advento"), para a marca não ser espremida. */
+@media (max-width: 479px) {
+  .season-chip {
+    padding: 0 0.6rem;
+    margin-right: 0;
+  }
+
+  .season-chip-full {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .season-chip-short {
+    display: inline;
+  }
+}
+
+/* Em telas muito estreitas fica só o ponto. */
+@media (max-width: 339px) {
+  .season-chip-short {
+    display: none;
+  }
+}
+
 .header-icon-link {
   display: grid;
   place-items: center;
