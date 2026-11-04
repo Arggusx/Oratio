@@ -4,7 +4,8 @@
 // atual é concluída.
 // "icon" escolhe o desenho que flutua sobre a ilha (ver components/TrailIsland.jsx).
 // "quizTopic" liga a ilha ao banco de perguntas (data/quizBank.js).
-import { LEVELS } from './quizLevels';
+// Com ".js": este arquivo também é lido pelo Node no gerador do sitemap, que exige a extensão.
+import { LEVELS } from './quizLevels.js';
 
 export const trails = [
   {
