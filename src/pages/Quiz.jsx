@@ -2,11 +2,11 @@ import { useMemo, useState } from 'react';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, CheckCircle2, ChevronLeft, RotateCcw, Shuffle, XCircle } from 'lucide-react';
 import GameIntro from '../components/GameIntro';
-import { LEVELS, QUIZ_TOPICS, buildRound } from '../data/quizBank';
+import { DIFFICULTY_LABEL, LEVELS, QUIZ_TOPICS, buildRound } from '../data/quizBank';
 import { getTrail, trailStops } from '../data/trails';
 import { journey, useJourney } from '../utils/journeyStore';
 
-const LETTERS = ['A', 'B', 'C', 'D'];
+const LETTERS = ['A', 'B', 'C', 'D', 'E'];
 
 /** Uma partida: pergunta por pergunta, com a explicação logo depois de responder e a revisão no fim. */
 function QuizRound({ round, color, pass, onRestart, onPassed, exitTo, exitLabel, nextAction }) {
@@ -95,7 +95,7 @@ function QuizRound({ round, color, pass, onRestart, onPassed, exitTo, exitLabel,
         ))}
       </div>
       <p className="quiz-count">
-        Pergunta {index + 1} de {round.length} · {['', 'fácil', 'médio', 'difícil'][q.level]}
+        Pergunta {index + 1} de {round.length} · {DIFFICULTY_LABEL[q.level]}
       </p>
       <h2 className="quiz-question">{q.q}</h2>
 
@@ -144,7 +144,7 @@ function TrailQuizPage({ trail, level }) {
   const { trails: plans, quizLevels } = useJourney();
   const [seed, setSeed] = useState(0);
   const round = useMemo(
-    () => buildRound({ topic: trail.quizTopic, level: level.id, size: level.size, mixed: level.mixed }),
+    () => buildRound({ topic: trail.quizTopic, levels: level.levels, size: level.size }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [trail.id, level.id, seed]
   );
@@ -173,9 +173,9 @@ function TrailQuizPage({ trail, level }) {
       <GameIntro
         id="quiz"
         steps={[
-          'Pelo caminho da ilha há quatro paradas de quiz: fácil, médio, difícil e o desafio final, que mistura tudo.',
-          'Cada pergunta tem quatro alternativas. Depois de responder, aparece a explicação, acertando ou não.',
-          'Acerte pelo menos 3 de 4 (ou 5 de 6 no desafio final) para seguir no caminho.',
+          'Depois do estudo da ilha, o caminho tem cinco quizzes, cada um mais difícil que o anterior, até o desafio final.',
+          'Cada pergunta tem cinco alternativas. Depois de responder, aparece a explicação, acertando ou não.',
+          `Para seguir no caminho, acerte pelo menos ${level.pass} de ${level.size} neste quiz.`,
           'Errou? É só jogar de novo: as perguntas e as alternativas mudam de ordem, e nada se perde.',
         ]}
       />
@@ -217,7 +217,7 @@ function RandomQuizPage() {
   const start = () => {
     const chosen = topics.length ? topics : QUIZ_TOPICS.map((t) => t.id);
     const parts = chosen.flatMap((topic) =>
-      buildRound({ topic, level: difficulty === 'misto' ? null : difficulty, size: 99, mixed: difficulty === 'misto' })
+      buildRound({ topic, level: difficulty === 'misto' ? null : difficulty, size: 99 })
     );
     // Embaralha as perguntas de todos os assuntos juntos e corta no tamanho escolhido.
     const mixed = parts.sort(() => Math.random() - 0.5).slice(0, size);

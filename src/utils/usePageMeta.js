@@ -3,7 +3,7 @@ import { getSaint } from '../data/saints';
 import { getNovena } from '../data/novenas';
 import { getTrail } from '../data/trails';
 
-const QUIZ_DESCRIPTION = 'Perguntas com quatro alternativas e a explicação de cada resposta, do fácil ao desafio final.';
+const QUIZ_DESCRIPTION = 'Perguntas com cinco alternativas e a explicação de cada resposta, do fácil ao desafio final.';
 
 export const SITE_URL = 'https://oratio-daily-dev.vercel.app';
 
