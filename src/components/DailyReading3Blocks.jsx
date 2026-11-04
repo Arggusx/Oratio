@@ -308,7 +308,7 @@ export default function DailyReading3Blocks() {
   const isToday = selectedKey === todayKey;
 
   return (
-    <section className="daily-reading-section">
+    <section className="daily-reading-section" id="leitura-do-dia">
       <div className="daily-reading-header">
         <div className="daily-reading-title-box">
           <span className="eyebrow verse-eyebrow">Leitura Diária</span>

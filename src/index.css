@@ -473,16 +473,153 @@ h1, h2, h3, h4,
   transform: scale(1.03);
 }
 
+.hero-image {
+  border-radius: var(--radius-xl);
+  box-shadow: 0 14px 30px rgba(94, 59, 36, 0.14);
+}
+
+/* Escurece a parte de baixo da foto para o texto do terço de hoje ficar legível. */
 .hero-image::after {
   content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(
     180deg,
-    transparent 50%,
-    rgba(45, 36, 31, 0.08) 100%
+    rgba(45, 36, 31, 0) 30%,
+    rgba(45, 36, 31, 0.84) 100%
   );
   pointer-events: none;
+}
+
+.hero-image-caption {
+  position: absolute;
+  z-index: 1;
+  left: 1.1rem;
+  right: 1.1rem;
+  bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+}
+
+.hero-image-kicker {
+  color: #F1E3B8;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero-image-caption strong {
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: #FFFAF4;
+  margin-bottom: 0.6rem;
+}
+
+/* Botão claro sobre a foto escura (nos dois temas). */
+.btn.btn-on-photo,
+:root[data-theme='dark'] .btn.btn-on-photo {
+  background: #FFFAF4;
+  color: #96380D;
+}
+
+.btn.btn-on-photo:hover,
+:root[data-theme='dark'] .btn.btn-on-photo:hover {
+  background: #FFFFFF;
+}
+
+/* "Para hoje" na página inicial: três linhas num cartão, com o que já foi feito riscado. */
+.home-today {
+  margin-top: 2rem;
+}
+
+.home-today h2 {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.home-today ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+.home-today li + li {
+  border-top: 1px solid var(--color-border-soft);
+}
+
+.home-today a {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-height: 3.5rem;
+  padding: 0.7rem 0.9rem;
+  color: var(--color-text);
+  transition: background var(--duration-fast);
+}
+
+.home-today a:hover {
+  background: color-mix(in srgb, var(--color-gold) 8%, var(--color-surface));
+}
+
+.home-today a > svg {
+  flex: none;
+  color: var(--color-text-muted);
+}
+
+.home-today-check {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.65rem;
+  height: 1.65rem;
+  border-radius: 50%;
+  border: 2px solid var(--color-gold);
+  color: #FFFAF4;
+}
+
+.home-today li.is-done .home-today-check {
+  border-color: var(--color-terracotta);
+  background: var(--color-terracotta);
+}
+
+.home-today-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.home-today-text strong {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.home-today-text small {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+.home-today li.is-done strong {
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+  text-decoration-color: var(--color-gold);
+}
+
+@media (min-width: 768px) {
+  .home-today {
+    max-width: 36rem;
+  }
 }
 
 
