@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { BookOpen, CalendarDays, Compass, GraduationCap, Home } from 'lucide-react';
+import { BookOpen, CalendarDays, Compass, Home } from 'lucide-react';
 
 // Contas e cruz: ícone de "Terço e Orações" (o lucide não tem um terço).
 function RosaryIcon({ size = 22 }) {
@@ -16,12 +16,12 @@ function RosaryIcon({ size = 22 }) {
   );
 }
 
+// Cinco itens com o Terço no meio, em destaque. A Escola da Fé fica no topo (Header) no celular.
 const items = [
   { label: 'Início', to: '/', Icon: Home },
   { label: 'Leituras', to: '/home/leituras', Icon: BookOpen },
-  { label: 'Terço', to: '/home/oracoes', Icon: RosaryIcon },
+  { label: 'Terço', to: '/home/oracoes', Icon: RosaryIcon, main: true },
   { label: 'Calendário', to: '/home/calendario', Icon: CalendarDays },
-  { label: 'Escola', to: '/home/escola-da-fe', Icon: GraduationCap },
   { label: 'Jornada', to: '/jornada', Icon: Compass },
 ];
 
@@ -29,9 +29,20 @@ const items = [
 export default function BottomNav() {
   return (
     <nav className="bottom-nav" aria-label="Menu principal">
-      {items.map(({ label, to, Icon }) => (
-        <NavLink key={to} to={to} end={to === '/'} className={({ isActive }) => (isActive ? 'active' : '')}>
-          <Icon size={22} aria-hidden="true" />
+      {items.map(({ label, to, Icon, main }) => (
+        <NavLink
+          key={to}
+          to={to}
+          end={to === '/'}
+          className={({ isActive }) => [main ? 'bottom-nav-main' : '', isActive ? 'active' : ''].join(' ').trim()}
+        >
+          {main ? (
+            <span className="bottom-nav-main-circle">
+              <Icon size={24} aria-hidden="true" />
+            </span>
+          ) : (
+            <Icon size={22} aria-hidden="true" />
+          )}
           <span>{label}</span>
         </NavLink>
       ))}

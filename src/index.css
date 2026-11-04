@@ -20,16 +20,19 @@
   --color-gold:        #C8963E;
   --color-gold-light:  #D4A84F;
   --color-gold-muted:  #B28A42;
+  /* O dourado claro só serve de enfeite (2,6:1 sobre o creme); texto dourado usa este tom (6,5:1). */
+  --color-gold-text:   #7A5520;
 
-  /* Colors — Text */
+  /* Colors — Text
+     Dois papéis: texto e texto suave. Os nomes antigos (soft, pale, faint, light)
+     continuam valendo, mas apontam para o texto suave (5,9:1 sobre o creme). */
   --color-charcoal:    #2D241F;
   --color-text:        #332A25;
   --color-text-muted:  #705E52;
-  --color-text-soft:   #5F5047;
-  /* Tons ajustados para contraste mínimo de 4,5:1 (WCAG AA) também sobre o fundo creme. */
-  --color-text-pale:   #82654E;
-  --color-text-faint:  #82654E;
-  --color-text-light:  #806D60;
+  --color-text-soft:   var(--color-text-muted);
+  --color-text-pale:   var(--color-text-muted);
+  --color-text-faint:  var(--color-text-muted);
+  --color-text-light:  var(--color-text-muted);
 
   /* Colors — Borders & Surfaces */
   --color-border:      #E7DCD0;
@@ -76,12 +79,15 @@
   --space-2xl: 3rem;
   --space-3xl: 4rem;
 
-  /* Radii */
-  --radius-sm:   0.5rem;
-  --radius-md:   0.65rem;
-  --radius-lg:   1rem;
-  --radius-xl:   1.1rem;
+  /* Radii — três tamanhos e a pílula: 12 px (campos e itens), 18 px (cartões), 22 px (destaques). */
+  --radius-sm:   0.75rem;
+  --radius-md:   0.75rem;
+  --radius-lg:   1.125rem;
+  --radius-xl:   1.375rem;
   --radius-full: 999px;
+
+  /* Alvos de toque */
+  --control-height: 3rem;
 
   /* Shadows */
   --shadow-sm:   0 2px 8px rgba(94, 59, 36, 0.04);
@@ -208,11 +214,12 @@ h1, h2, h3, h4,
   border: 0;
   border-radius: var(--radius-full);
   cursor: pointer;
-  padding: 0.85rem 1.5rem;
+  min-height: var(--control-height);
+  padding: 0.7rem 1.5rem;
   background: var(--color-terracotta);
   color: #FFFAF4;
   font-weight: 700;
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   letter-spacing: 0.01em;
   transition:
     transform var(--duration-fast) var(--ease-out),
@@ -329,7 +336,8 @@ h1, h2, h3, h4,
   right: 0;
   bottom: 0;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(5, 1fr);
+  align-items: end;
   padding: 0.35rem 0.25rem calc(0.35rem + env(safe-area-inset-bottom));
   background: rgba(253, 251, 247, 0.94);
   backdrop-filter: blur(16px);
@@ -345,7 +353,8 @@ h1, h2, h3, h4,
   align-items: center;
   gap: 0.15rem;
   min-height: 3.1rem;
-  justify-content: center;
+  justify-content: flex-end;
+  padding-bottom: 0.2rem;
   border-radius: var(--radius-md);
   color: var(--color-text-soft);
   font-size: 0.68rem;
@@ -378,6 +387,44 @@ h1, h2, h3, h4,
 .bottom-nav a.active::before {
   opacity: 0.13;
   transform: scale(1);
+}
+
+/* Terço no centro: círculo cheio que sobe um pouco acima da barra. */
+.bottom-nav a.bottom-nav-main::before {
+  display: none;
+}
+
+.bottom-nav-main-circle {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-top: -1.6rem;
+  border-radius: 50%;
+  border: 4px solid var(--color-cream);
+  background: var(--color-terracotta);
+  color: #FFFAF4;
+  box-shadow: 0 8px 18px rgba(156, 70, 29, 0.32);
+  transition: transform var(--duration-fast) var(--ease-out), background var(--duration-fast);
+}
+
+.bottom-nav a.bottom-nav-main svg {
+  margin-top: 0;
+}
+
+.bottom-nav a.bottom-nav-main:active .bottom-nav-main-circle {
+  transform: scale(0.94);
+}
+
+.bottom-nav a.bottom-nav-main.active .bottom-nav-main-circle {
+  background: var(--color-terracotta-dark);
+}
+
+:root[data-theme='dark'] .bottom-nav-main-circle,
+:root[data-theme='dark'] .bottom-nav a.bottom-nav-main.active .bottom-nav-main-circle {
+  background: #B84A13;
+  color: #FFF7EF;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45);
 }
 
 /* O conteúdo e o botão de feedback não ficam escondidos atrás da barra. */
@@ -427,16 +474,153 @@ h1, h2, h3, h4,
   transform: scale(1.03);
 }
 
+.hero-image {
+  border-radius: var(--radius-xl);
+  box-shadow: 0 14px 30px rgba(94, 59, 36, 0.14);
+}
+
+/* Escurece a parte de baixo da foto para o texto do terço de hoje ficar legível. */
 .hero-image::after {
   content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(
     180deg,
-    transparent 50%,
-    rgba(45, 36, 31, 0.08) 100%
+    rgba(45, 36, 31, 0) 30%,
+    rgba(45, 36, 31, 0.84) 100%
   );
   pointer-events: none;
+}
+
+.hero-image-caption {
+  position: absolute;
+  z-index: 1;
+  left: 1.1rem;
+  right: 1.1rem;
+  bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+}
+
+.hero-image-kicker {
+  color: #F1E3B8;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero-image-caption strong {
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: #FFFAF4;
+  margin-bottom: 0.6rem;
+}
+
+/* Botão claro sobre a foto escura (nos dois temas). */
+.btn.btn-on-photo,
+:root[data-theme='dark'] .btn.btn-on-photo {
+  background: #FFFAF4;
+  color: #96380D;
+}
+
+.btn.btn-on-photo:hover,
+:root[data-theme='dark'] .btn.btn-on-photo:hover {
+  background: #FFFFFF;
+}
+
+/* "Para hoje" na página inicial: três linhas num cartão, com o que já foi feito riscado. */
+.home-today {
+  margin-top: 2rem;
+}
+
+.home-today h2 {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.home-today ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+.home-today li + li {
+  border-top: 1px solid var(--color-border-soft);
+}
+
+.home-today a {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-height: 3.5rem;
+  padding: 0.7rem 0.9rem;
+  color: var(--color-text);
+  transition: background var(--duration-fast);
+}
+
+.home-today a:hover {
+  background: color-mix(in srgb, var(--color-gold) 8%, var(--color-surface));
+}
+
+.home-today a > svg {
+  flex: none;
+  color: var(--color-text-muted);
+}
+
+.home-today-check {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.65rem;
+  height: 1.65rem;
+  border-radius: 50%;
+  border: 2px solid var(--color-gold);
+  color: #FFFAF4;
+}
+
+.home-today li.is-done .home-today-check {
+  border-color: var(--color-terracotta);
+  background: var(--color-terracotta);
+}
+
+.home-today-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.home-today-text strong {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.home-today-text small {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+.home-today li.is-done strong {
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+  text-decoration-color: var(--color-gold);
+}
+
+@media (min-width: 768px) {
+  .home-today {
+    max-width: 36rem;
+  }
 }
 
 
@@ -581,130 +765,20 @@ h1, h2, h3, h4,
   border-color: var(--accent);
 }
 
-/* ---------- 9.5. FOCUS MODE ---------- */
-.focus-mode-container {
-  min-height: 100vh;
-  background-color: var(--color-cream-light);
-  display: flex;
-  flex-direction: column;
-  padding: var(--space-xl) var(--space-md);
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.focus-header {
-  text-align: center;
-  color: var(--color-text-faint);
-  font-size: var(--text-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: var(--space-xl);
-  font-weight: 600;
-}
-
-.focus-mystery-title {
-  text-align: center;
-  margin-bottom: var(--space-md);
-}
-
-.focus-mystery-title h1 {
-  font-size: 2.2rem;
-  color: var(--color-charcoal);
-  margin-bottom: var(--space-sm);
-}
-
-.focus-meditation {
-  text-align: center;
-  color: var(--color-text-soft);
-  font-size: 1.05rem;
-  line-height: 1.6;
-  margin-bottom: var(--space-2xl);
-}
-
-.focus-prayer-card {
-  background-color: var(--focus-bg);
-  padding: 2rem 1.5rem;
-  border-radius: var(--radius-lg);
-  text-align: center;
-  margin-bottom: auto;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.02);
-}
-
-.focus-prayer-card p {
-  font-size: 1.15rem;
-  line-height: 1.8;
+/* Botão contornado, para a ação secundária ao lado da principal. */
+.btn.btn-secondary,
+:root[data-theme='dark'] .btn.btn-secondary {
+  background: var(--color-surface);
   color: var(--color-text);
+  border: 1.5px solid var(--color-border);
 }
 
-.focus-clause {
-  display: block;
-  font-style: italic;
-  font-weight: 600;
-  color: var(--accent);
-  margin: 1rem 0;
-  font-size: 1.2rem;
+.btn.btn-secondary:hover,
+:root[data-theme='dark'] .btn.btn-secondary:hover {
+  background: var(--color-surface);
+  border-color: var(--color-terracotta);
+  box-shadow: none;
 }
-
-.focus-bottom-bar {
-  margin-top: var(--space-3xl);
-  padding-bottom: var(--space-md);
-}
-
-.beads-counter {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: var(--space-xl);
-}
-
-.bead {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background-color: #E0DCD6;
-  transition: background-color 0.3s ease;
-}
-
-.bead.filled {
-  background-color: var(--accent);
-}
-
-.focus-navigation {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.btn-nav {
-  padding: 0.8rem 1.2rem;
-  border-radius: var(--radius-full);
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  background: transparent;
-  transition: all 0.2s ease;
-}
-
-.btn-prev {
-  color: var(--color-text-faint);
-}
-
-.btn-prev:hover {
-  background: rgba(0,0,0,0.05);
-}
-
-.btn-next {
-  background-color: var(--accent);
-  color: white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.btn-next:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.05);
-}
-
 
 /* ---------- 10. LEITURAS — TABS & READINGS ---------- */
 .tabs {
@@ -801,6 +875,12 @@ h1, h2, h3, h4,
 }
 
 .focus-overlay .focus-header {
+  text-align: center;
+  color: var(--color-text-faint);
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
   max-width: 850px;
   margin: 0 auto var(--space-md);
   display: flex;
@@ -2036,23 +2116,117 @@ h1, h2, h3, h4,
   margin-bottom: 0.6rem;
 }
 
+/* A Palavra em letra de livro, maior e sem itálico, para ler com calma. */
 .reading-block-text {
   font-family: var(--font-serif);
-  font-size: 1.02rem;
-  font-style: italic;
-  line-height: 1.6;
-  color: var(--color-text-soft);
+  font-size: 1.2rem;
+  line-height: 1.55;
+  color: var(--color-text);
   margin: 0 0 1.25rem 0;
   flex: 1;
-  border-left: 2px solid var(--color-gold-muted);
-  padding-left: 0.75rem;
 }
 
+.reading-block-count {
+  flex: none;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+/* Abas dos trechos: a barrinha acende nos trechos já lidos; o aberto fica em destaque. */
+.reading-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  max-width: 44rem;
+  margin: 0 auto 1rem;
+}
+
+.reading-steps button {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-height: 2.75rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  font: inherit;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  line-height: 1.25;
+  cursor: pointer;
+}
+
+.reading-steps button span {
+  height: 4px;
+  border-radius: var(--radius-full);
+  background: var(--color-border);
+  transition: background var(--duration-mid);
+}
+
+.reading-steps button.is-seen span {
+  background: var(--color-terracotta);
+}
+
+.reading-steps button.is-active {
+  color: var(--color-terracotta-dark);
+  font-weight: 700;
+}
+
+.reading-steps button:hover {
+  color: var(--color-terracotta-dark);
+}
+
+/* Um cartão por vez, centralizado e numa largura boa de ler. */
+.reading-blocks-grid.reading-blocks-single {
+  display: block;
+  max-width: 44rem;
+  margin: 0 auto;
+}
+
+.reading-blocks-single .reading-block-card:hover {
+  transform: none;
+}
+
+.reading-blocks-single .reading-block-actions {
+  flex-wrap: wrap;
+  margin-top: auto;
+}
+
+.btn.reading-next-btn {
+  margin-left: auto;
+  min-height: 2.75rem;
+  padding: 0.55rem 1.2rem;
+  font-size: 0.88rem;
+}
+
+.reading-finished {
+  flex: 1 1 14rem;
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  text-align: right;
+}
+
+@media (max-width: 479px) {
+  .btn.reading-next-btn {
+    flex: 1 1 100%;
+    margin-left: 0;
+  }
+
+  .reading-finished {
+    text-align: left;
+  }
+}
+
+/* Interpretação num quadro de tom quente, sem a borda tracejada. */
 .block-interpretation {
   margin: 0 0 1.1rem;
   background: var(--color-cream-warm);
-  border: 1px dashed var(--color-border);
-  border-radius: var(--radius-md);
+  border: 0;
+  border-radius: var(--radius-lg);
   color: var(--color-text);
 }
 
@@ -2819,6 +2993,99 @@ h1, h2, h3, h4,
   display: flex;
   align-items: center;
   gap: 0.25rem;
+}
+
+/* Etiqueta do tempo litúrgico: ponto na cor do dia e fundo no mesmo tom, bem claro. */
+.season-chip {
+  --chip: var(--liturgical-verde);
+  --chip-text: #3D5E42;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2rem;
+  padding: 0 0.7rem;
+  margin-right: 0.25rem;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--chip) 14%, var(--color-surface));
+  color: var(--chip-text);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background var(--duration-fast);
+}
+
+.season-chip:hover {
+  background: color-mix(in srgb, var(--chip) 24%, var(--color-surface));
+}
+
+.season-chip-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--chip);
+}
+
+.season-chip-roxo { --chip: var(--liturgical-roxo); --chip-text: #5A3F61; }
+.season-chip-vermelho { --chip: var(--liturgical-vermelho); --chip-text: #8A3730; }
+.season-chip-branco { --chip: var(--color-gold); --chip-text: var(--color-gold-text); }
+
+:root[data-theme='dark'] .season-chip { --chip-text: #B9D3BC; }
+:root[data-theme='dark'] .season-chip-roxo { --chip-text: #D2BCD8; }
+:root[data-theme='dark'] .season-chip-vermelho { --chip-text: #EBB3AC; }
+:root[data-theme='dark'] .season-chip-branco { --chip-text: var(--color-gold-text); }
+
+.season-chip-short {
+  display: none;
+}
+
+/* No celular, o nome curto ("Comum", "Advento"), para a marca não ser espremida. */
+@media (max-width: 479px) {
+  .season-chip {
+    padding: 0 0.6rem;
+    margin-right: 0;
+  }
+
+  .season-chip-full {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .season-chip-short {
+    display: inline;
+  }
+}
+
+/* Em telas muito estreitas fica só o ponto. */
+@media (max-width: 339px) {
+  .season-chip-short {
+    display: none;
+  }
+}
+
+.header-icon-link {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  color: var(--color-text-muted);
+  transition: color var(--duration-fast), background var(--duration-fast);
+}
+
+.header-icon-link:hover,
+.header-icon-link.active {
+  color: var(--color-terracotta);
+  background: color-mix(in srgb, var(--color-terracotta) 10%, transparent);
+}
+
+@media (min-width: 768px) {
+  .header-icon-link {
+    display: none;
+  }
 }
 
 .theme-toggle {
@@ -3905,14 +4172,11 @@ h1, h2, h3, h4,
   --color-gold:        #D9AE5C;
   --color-gold-light:  #E3BD72;
   --color-gold-muted:  #C9A15A;
+  --color-gold-text:   #E3BD72;
 
   --color-charcoal:    #F3E9DE;
   --color-text:        #E6DAD0;
   --color-text-muted:  #BBA99A;
-  --color-text-soft:   #CDBFB3;
-  --color-text-pale:   #A8937F;
-  --color-text-faint:  #9C8773;
-  --color-text-light:  #A8968A;
 
   --color-border:      #3A2E26;
   --color-border-soft: #30261F;
@@ -3978,11 +4242,6 @@ body {
   color: var(--color-text-soft);
 }
 
-:root[data-theme='dark'] .bead {
-  background-color: #3A2E26;
-}
-
-:root[data-theme='dark'] .btn-prev:hover,
 :root[data-theme='dark'] .modal-close:hover {
   background: rgba(255, 255, 255, 0.06);
 }
@@ -4031,10 +4290,6 @@ body {
 
 :root[data-theme='dark'] .mystery-card {
   --bg-soft: color-mix(in srgb, var(--accent) 14%, var(--color-surface));
-}
-
-:root[data-theme='dark'] .focus-prayer-card {
-  background: color-mix(in srgb, var(--accent) 14%, var(--color-surface));
 }
 
 .reading-card .reading-eyebrow {
@@ -6924,27 +7179,73 @@ details[open] > summary .exam-chevron {
   margin: 1.5rem 0;
 }
 
+/* "Marcar terço de hoje" é a ação principal do dia: botão cheio, como o .btn.
+   A borda tracejada antiga parecia botão desativado. Depois de marcado, vira um selo dourado suave. */
 .journey-mark {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.45rem;
-  padding: 0.65rem 1.1rem;
+  min-height: var(--control-height);
+  padding: 0.6rem 1.25rem;
   border-radius: var(--radius-full);
-  border: 1.5px dashed var(--color-gold);
-  background: transparent;
-  color: var(--color-text);
-  font-weight: 600;
+  border: 1.5px solid var(--color-terracotta);
+  background: var(--color-terracotta);
+  color: #FFFAF4;
+  font-weight: 700;
   cursor: pointer;
-  transition: background var(--duration-fast), border-color var(--duration-fast);
+  transition: background var(--duration-fast), border-color var(--duration-fast), color var(--duration-fast);
 }
 
-.journey-mark svg {
-  color: var(--color-gold-muted);
+.journey-mark:hover {
+  background: var(--color-terracotta-dark);
+  border-color: var(--color-terracotta-dark);
 }
 
 .journey-mark.is-done {
-  border-style: solid;
+  border-color: var(--color-gold);
   background: color-mix(in srgb, var(--color-gold) 18%, var(--color-surface));
+  color: var(--color-text);
+}
+
+.journey-mark.is-done svg {
+  color: var(--color-gold-text);
+}
+
+/* Dentro de listas (dias da novena, intenções, missões) o botão é contornado, para não pesar. */
+.novena-day .journey-mark:not(.is-done),
+.intention-note .journey-mark:not(.is-done),
+.mission-card .journey-mark:not(.is-done) {
+  min-height: 2.5rem;
+  border-color: var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.novena-day .journey-mark:not(.is-done):hover,
+.intention-note .journey-mark:not(.is-done):hover,
+.mission-card .journey-mark:not(.is-done):hover {
+  border-color: var(--color-terracotta);
+  color: var(--color-terracotta-dark);
+}
+
+:root[data-theme='dark'] .journey-mark:not(.is-done) {
+  background: #B84A13;
+  border-color: #B84A13;
+  color: #FFF7EF;
+}
+
+:root[data-theme='dark'] .journey-mark:not(.is-done):hover {
+  background: #CF5E24;
+  border-color: #CF5E24;
+}
+
+:root[data-theme='dark'] .novena-day .journey-mark:not(.is-done),
+:root[data-theme='dark'] .intention-note .journey-mark:not(.is-done),
+:root[data-theme='dark'] .mission-card .journey-mark:not(.is-done) {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text);
 }
 
 .journey-mark-link {
@@ -7748,7 +8049,7 @@ details[open] > summary .exam-chevron {
 
 /* ---------- Trilhas: escolher a ilha e o caminho ---------- */
 .trail-title-accent {
-  color: var(--color-gold);
+  color: var(--color-gold-text);
 }
 
 .trail-card {
@@ -10497,7 +10798,7 @@ details[open] > summary .exam-chevron {
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--color-gold);
+  color: var(--color-gold-text);
 }
 
 .hierarchy-step-body > p {

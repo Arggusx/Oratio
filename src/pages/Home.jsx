@@ -8,6 +8,9 @@ import LogoDraw from '../components/anim/LogoDraw';
 import HandwritingText from '../components/anim/HandwritingText';
 import PrayerNow from '../components/anim/PrayerNow';
 import SeasonOrnament from '../components/anim/SeasonOrnament';
+import HomeToday from '../components/HomeToday';
+import { MYSTERY_TITLES } from '../data/mysteryTitles';
+import { getTodayMysteryKey } from '../utils/liturgicalCalendar';
 
 const stagger = {
   animate: {
@@ -47,12 +50,9 @@ export default function Home() {
             Um refúgio diário para o silêncio, a contemplação dos mistérios
             e a Palavra que sustenta o caminho.
           </p>
-          <Link className="btn" to="/home/oracoes">
-            Começar a rezar o terço
-            <ArrowRight size={17} />
-          </Link>
         </motion.div>
 
+        {/* Cartão do terço de hoje: a foto com o mistério do dia e o botão por cima. */}
         <motion.div className="hero-image" variants={fadeUp}>
           <img
             src="/img2/img-terco.webp"
@@ -60,8 +60,18 @@ export default function Home() {
             height="408"
             alt="Mãos segurando um terço em oração"
           />
+          <div className="hero-image-caption">
+            <span className="hero-image-kicker">Terço de hoje · ~20 min</span>
+            <strong>{MYSTERY_TITLES[getTodayMysteryKey()]}</strong>
+            <Link className="btn btn-on-photo" to="/home/oracoes">
+              Começar a rezar
+              <ArrowRight size={17} aria-hidden="true" />
+            </Link>
+          </div>
         </motion.div>
       </motion.section>
+
+      <HomeToday />
 
       {/* ── Oração do momento do dia, escrita com uma pena ── */}
       <PrayerNow />

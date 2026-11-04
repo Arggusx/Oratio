@@ -1,10 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ChevronLeft, ChevronRight, BookOpen } from 'lucide-react';
 import { rosaryLoop, rosaryPendant } from '../../utils/rosaryShape';
+import { ORDINAL_WORDS } from '../../data/rosaryData';
 
 /**
  * Terço interativo do passo a passo: o terço se monta ao aparecer; tocar numa parte mostra,
  * ao lado, o que rezar nela. "Anterior" e "Próximo" percorrem o terço na ordem da oração.
+ *
+ * No passo das dezenas, o próprio desenho vira o contador: a pessoa reza dezena por dezena,
+ * com o mistério e a Ave-Maria (com a cláusula) ao lado, e as contas acendem uma a uma.
  *
  * Passos do terço tradicional → partes:
  *   0–2 cruz (Sinal da Cruz, oferecimento, Creio) · 3 conta grande (Pai-Nosso)
@@ -12,36 +16,86 @@ import { rosaryLoop, rosaryPendant } from '../../utils/rosaryShape';
  */
 const CX = 120;
 const PART_OF_STEP = ['cruz', 'cruz', 'cruz', 'pai', 'aves', 'gloria', 'dezenas', 'medalha'];
+const DECADES_STEP = PART_OF_STEP.indexOf('dezenas');
+const AVES = 10;
 
-export default function RosaryExplorer({ steps, activeIndex, onOpenStep }) {
+const MYSTERY_ADJECTIVE = { gozosos: 'gozoso', luminosos: 'luminoso', dolorosos: 'doloroso', gloriosos: 'glorioso' };
+/** "1º Mistério: A Anunciação" → "A Anunciação". */
+const shortName = (name) => name.split(': ').slice(1).join(': ') || name;
+const capitalize = (text) => text.charAt(0).toUpperCase() + text.slice(1);
+
+export default function RosaryExplorer({ steps, activeIndex, onOpenStep, mysteryKey, mystery }) {
   const [picked, setPicked] = useState(null);
   const [assembled, setAssembled] = useState(false);
+  const [decade, setDecade] = useState(0); // 0 a 4
+  const [aves, setAves] = useState(0); // Ave-Marias rezadas na dezena atual
 
   useEffect(() => {
     const t = setTimeout(() => setAssembled(true), 400);
     return () => clearTimeout(t);
   }, []);
 
-  const { loop, pendant } = useMemo(
-    () => ({
-      loop: rosaryLoop({ cx: CX, top: 14, bottom: 206, width: 176, gap: 15 }),
-      pendant: rosaryPendant({ cx: CX, top: 214, step: 16 }),
-    }),
-    []
-  );
+  // Trocou o grupo de mistérios: recomeça as dezenas.
+  useEffect(() => {
+    setDecade(0);
+    setAves(0);
+  }, [mysteryKey]);
+
+  const { loop, pendant } = useMemo(() => {
+    const shape = rosaryLoop({ cx: CX, top: 14, bottom: 206, width: 176, gap: 15 });
+    // Posição de cada conta pequena dentro da sua dezena (0 a 9), para acender na ordem.
+    const seen = {};
+    const beads = shape.beads.map((b) => {
+      if (b.large) return b;
+      seen[b.decade] = (seen[b.decade] ?? 0) + 1;
+      return { ...b, ave: seen[b.decade] - 1 };
+    });
+    return { loop: { ...shape, beads }, pendant: rosaryPendant({ cx: CX, top: 214, step: 16 }) };
+  }, []);
 
   // Sem escolha no terço, acompanha o passo aberto na lista (ou começa pela cruz).
   const current = picked ?? Math.max(activeIndex, 0);
   const step = steps[current];
   const currentPart = PART_OF_STEP[current];
+  const praying = current === DECADES_STEP && Boolean(mystery);
   const partDone = (part) => PART_OF_STEP.slice(0, current + 1).includes(part);
-  const cls = (part) => `rosary-x-part ${partDone(part) ? 'is-done' : ''} ${currentPart === part ? 'is-current' : ''}`;
+  // Rezando as dezenas, cada conta do laço mostra o próprio estado; o grupo não fica todo aceso.
+  const cls = (part) =>
+    praying && part === 'dezenas'
+      ? 'rosary-x-part is-praying'
+      : `rosary-x-part ${partDone(part) ? 'is-done' : ''} ${currentPart === part ? 'is-current' : ''}`;
   const pick = (part) => setPicked(PART_OF_STEP.indexOf(part));
+
+  const beadCls = (b) => {
+    if (!praying) return 'rosary-x-bead';
+    const lit = b.decade < decade || (b.decade === decade && (b.large ? true : b.ave < aves));
+    return `rosary-x-bead ${lit ? 'is-lit' : ''} ${b.decade === decade ? 'is-this-decade' : ''}`;
+  };
 
   const p = Object.fromEntries(pendant.beads.map((b) => [b.id, b]));
 
+  // Avança uma Ave-Maria; completa a dezena e passa para a próxima; depois da quinta, vai ao encerramento.
+  const nextAve = () => {
+    if (aves < AVES) setAves(aves + 1);
+    else if (decade < 4) {
+      setDecade(decade + 1);
+      setAves(0);
+    } else setPicked(DECADES_STEP + 1);
+  };
+
+  const prevAve = () => {
+    if (aves > 0) setAves(aves - 1);
+    else if (decade > 0) {
+      setDecade(decade - 1);
+      setAves(AVES);
+    } else setPicked(DECADES_STEP - 1);
+  };
+
+  const m = praying ? mystery.mysteries[decade] : null;
+  const nextLabel = aves < AVES ? 'Rezei a Ave-Maria' : decade < 4 ? 'Próxima dezena' : 'Ir para o encerramento';
+
   return (
-    <section className="rosary-x" aria-label="Terço interativo">
+    <section className="rosary-x" aria-label="Terço interativo" style={mystery ? { '--accent': mystery.color } : undefined}>
       <div className={`rosary-x-figure fx-assembly ${assembled ? '' : 'is-exploded'}`}>
         <svg viewBox="0 0 240 320" role="group" aria-label="Toque numa parte do terço">
           <path className="rosary-x-string" d={`M${CX} ${loop.medal.y + 10}V${pendant.cross.y}`} />
@@ -51,7 +105,7 @@ export default function RosaryExplorer({ steps, activeIndex, onOpenStep }) {
             <path className="rosary-x-hit-stroke" d={loop.d} />
             <path className="rosary-x-string" d={loop.d} />
             {loop.beads.map((b) => (
-              <circle key={b.order} className="rosary-x-bead" cx={b.x} cy={b.y} r={b.large ? 6.2 : 4} />
+              <circle key={b.order} className={beadCls(b)} cx={b.x} cy={b.y} r={b.large ? 6.2 : 4} />
             ))}
           </g>
 
@@ -88,34 +142,92 @@ export default function RosaryExplorer({ steps, activeIndex, onOpenStep }) {
       <div className="rosary-x-info" aria-live="polite">
         <span className="rosary-x-count">
           Passo {current + 1} de {steps.length}
+          {praying && ` · ${decade + 1}ª dezena de 5`}
         </span>
-        <span className="rosary-x-tags">
-          <span className="bead-tag">{step.bead}</span>
-          {step.beadBadge && <span className="action-tag">{step.beadBadge}</span>}
-        </span>
-        <h4>{step.action}</h4>
-        <p>{step.summary}</p>
 
-        <div className="rosary-x-actions">
-          <button type="button" className="fx-small-btn" onClick={() => setPicked(Math.max(current - 1, 0))} disabled={current === 0}>
-            <ChevronLeft size={16} aria-hidden="true" />
-            Anterior
-          </button>
-          <button
-            type="button"
-            className="fx-small-btn"
-            onClick={() => setPicked(Math.min(current + 1, steps.length - 1))}
-            disabled={current === steps.length - 1}
-          >
-            Próximo
-            <ChevronRight size={16} aria-hidden="true" />
-          </button>
-          <button type="button" className="rosary-x-open" onClick={() => onOpenStep(step.id)}>
-            <BookOpen size={16} aria-hidden="true" />
-            Ver a oração deste passo
-          </button>
-        </div>
-        <p className="rosary-x-hint">Toque numa parte do terço para ver o que rezar nela.</p>
+        {praying ? (
+          <div className="rosary-x-decade">
+            <div className="rosary-x-decades" aria-hidden="true">
+              {mystery.mysteries.map((item, i) => (
+                <span key={item.id} className={i < decade ? 'done' : i === decade ? 'current' : ''} />
+              ))}
+            </div>
+            <span className="rosary-x-kicker">
+              {capitalize(ORDINAL_WORDS[decade])} mistério {MYSTERY_ADJECTIVE[mysteryKey]}
+            </span>
+            <h4>{shortName(m.name)}</h4>
+            <p className="rosary-x-meditation">{m.text}</p>
+
+            <p className="rosary-x-prayer">
+              {aves === 0 ? (
+                <>Anuncie o mistério, faça o seu pedido para esta dezena e reze o <strong>Pai-Nosso</strong> na conta grande.</>
+              ) : aves < AVES ? (
+                <>
+                  Ave Maria, cheia de graça, o Senhor é convosco, bendita sois vós entre as mulheres e bendito é o fruto do
+                  vosso ventre, Jesus,
+                  <span className="rosary-x-clause">{m.clause}</span>
+                  Santa Maria, Mãe de Deus, rogai por nós pecadores, agora e na hora da nossa morte. Amém.
+                </>
+              ) : (
+                <>Dezena completa. Reze o <strong>Glória ao Pai</strong> e a <strong>Jaculatória de Fátima</strong>.</>
+              )}
+            </p>
+
+            <div className="rosary-x-counter">
+              <strong>{aves}</strong>
+              <span>de 10 Ave-Marias</span>
+            </div>
+
+            <div className="rosary-x-actions">
+              <button type="button" className="fx-small-btn" onClick={prevAve}>
+                <ChevronLeft size={16} aria-hidden="true" />
+                Voltar
+              </button>
+              <button type="button" className="rosary-x-open rosary-x-next" onClick={nextAve}>
+                {nextLabel}
+                <ChevronRight size={16} aria-hidden="true" />
+              </button>
+            </div>
+            <button type="button" className="rosary-x-link" onClick={() => onOpenStep(step.id)}>
+              <BookOpen size={15} aria-hidden="true" />
+              Ver o roteiro completo das dezenas
+            </button>
+          </div>
+        ) : (
+          <>
+            <span className="rosary-x-tags">
+              <span className="bead-tag">{step.bead}</span>
+              {step.beadBadge && <span className="action-tag">{step.beadBadge}</span>}
+            </span>
+            <h4>{step.action}</h4>
+            <p>{step.summary}</p>
+
+            <div className="rosary-x-actions">
+              <button type="button" className="fx-small-btn" onClick={() => setPicked(Math.max(current - 1, 0))} disabled={current === 0}>
+                <ChevronLeft size={16} aria-hidden="true" />
+                Anterior
+              </button>
+              <button
+                type="button"
+                className="fx-small-btn"
+                onClick={() => setPicked(Math.min(current + 1, steps.length - 1))}
+                disabled={current === steps.length - 1}
+              >
+                Próximo
+                <ChevronRight size={16} aria-hidden="true" />
+              </button>
+              <button type="button" className="rosary-x-open" onClick={() => onOpenStep(step.id)}>
+                <BookOpen size={16} aria-hidden="true" />
+                Ver a oração deste passo
+              </button>
+            </div>
+            <p className="rosary-x-hint">
+              {current === DECADES_STEP - 1
+                ? 'No próximo passo você reza as dezenas aqui mesmo, conta por conta.'
+                : 'Toque numa parte do terço para ver o que rezar nela.'}
+            </p>
+          </>
+        )}
       </div>
     </section>
   );

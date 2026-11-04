@@ -91,8 +91,8 @@ function metaFor(rawPathname) {
     };
   }
 
-  if (/^\/home\/misterio\/foco\/[^/]+\/[^/]+$/.test(pathname)) {
-    return { title: 'Rezar o mistério em modo foco — Oratio', description: DEFAULT_META.description };
+  if (/^\/home\/misterio\/foco\//.test(pathname)) {
+    return { title: 'Como rezar o terço e orações católicas — Oratio', description: DEFAULT_META.description };
   }
 
   const novenaMatch = pathname.match(/^\/home\/novenas\/([^/]+)$/);
