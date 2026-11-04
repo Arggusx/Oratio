@@ -1,86 +1,83 @@
 import { useEffect, useRef } from 'react';
+import { buildFrameLayers } from '../../data/frameLayers';
 import { Link } from 'react-router-dom';
 import TrailIsland from '../TrailIsland';
 import { DEFAULT_FRAME, allFrames } from '../../data/rewards';
 
-// Enfeites de cada moldura, distribuídos em volta do círculo.
-function motifs(frame, r) {
-  const around = (n, render, offset = -Math.PI / 2) =>
-    Array.from({ length: n }, (_, i) => {
-      const a = offset + (i / n) * Math.PI * 2;
-      return render(60 + r * Math.cos(a), 60 + r * Math.sin(a), (a * 180) / Math.PI + 90, i);
-    });
-  switch (frame.motif) {
-    case 'cruzes':
-      return around(8, (x, y, rot, i) => (
-        <path key={i} d={`M${x} ${y - 4}v8M${x - 3} ${y - 1.5}h6`} transform={`rotate(${rot} ${x} ${y})`} className="af-line" />
-      ));
-    case 'estrelas':
-      return around(12, (x, y, rot, i) => (
-        <path
-          key={i}
-          d={`M${x} ${y - 3.6}l1 2.3 2.5.3-1.9 1.7.6 2.5-2.2-1.3-2.2 1.3.6-2.5-1.9-1.7 2.5-.3z`}
-          className="af-fill"
-        />
-      ));
-    case 'sete':
-      return around(7, (x, y, rot, i) => <circle key={i} cx={x} cy={y} r="3" className="af-fill" />);
-    case 'alfa':
-      return [
-        <text key="a" x="11" y="64" className="af-text">
-          Α
-        </text>,
-        <text key="o" x="101" y="64" className="af-text">
-          Ω
-        </text>,
-        ...around(10, (x, y, rot, i) => <circle key={i} cx={x} cy={y} r="1.6" className="af-fill" />, -Math.PI / 2 + 0.3),
-      ];
-    case 'raios':
-      return around(24, (x, y, rot, i) => (
-        <path key={i} d={`M${x} ${y - (i % 2 ? 2.5 : 4.5)}v${i % 2 ? 5 : 9}`} transform={`rotate(${rot} ${x} ${y})`} className="af-line" />
-      ));
-    case 'peixes':
-      return around(6, (x, y, rot, i) => (
-        <path
-          key={i}
-          d={`M${x - 5} ${y}q5-5 9 0q-4 5-9 0zM${x + 4} ${y}l3-2.5v5z`}
-          transform={`rotate(${rot + 90} ${x} ${y})`}
-          className="af-fill"
-        />
-      ));
-    default:
-      return null;
-  }
-}
+// As duas camadas SVG (trás e frente) de cada moldura, montadas uma vez só.
+const LAYERS = buildFrameLayers(allFrames);
 
-/** Medalhão da Jornada: a inicial do nome (ou uma pomba) dentro da moldura escolhida. */
-export function AvatarFrame({ frameId, name, size = 96 }) {
+// Pomba no lugar da inicial, quando a pessoa não pôs o nome.
+const DOVE =
+  'M38 64c10-8 24-10 36-5 4 1 7 0 9-3 2 2 2 5 0 7-3 3-7 4-11 4-8 0-15 2-20 6l-7-1 4-3c-5-1-8-3-11-5zM58 60c-2-9-8-15-17-18 4 7 6 13 9 20z';
+
+/**
+ * Medalhão da Jornada: a inicial do nome (ou uma pomba) dentro da moldura escolhida.
+ * A pilha é: camada de trás (o anel e as partículas) → avatar → camada da frente (selos e brilhos).
+ * As animações são SMIL, dentro do próprio SVG; ficam pausadas quando o medalhão sai da tela,
+ * quando "animate" é falso (moldura bloqueada) ou quando a pessoa prefere menos movimento.
+ */
+export function AvatarFrame({ frameId, name, size = 96, animate = true }) {
   const frame = allFrames.find((f) => f.id === frameId) ?? DEFAULT_FRAME;
+  const layers = LAYERS[frame.id] ?? LAYERS[DEFAULT_FRAME.id];
   const initial = name?.trim().charAt(0).toUpperCase();
+  const boxRef = useRef(null);
+  const backRef = useRef(null);
+  const frontRef = useRef(null);
+
+  useEffect(() => {
+    const svgs = [backRef.current, frontRef.current].filter(Boolean);
+    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const play = (on) =>
+      svgs.forEach((svg) => {
+        if (on) svg.unpauseAnimations?.();
+        else svg.pauseAnimations?.();
+      });
+    if (!animate || reduced) {
+      play(false);
+      return undefined;
+    }
+    if (typeof IntersectionObserver === 'undefined') return undefined;
+    const observer = new IntersectionObserver(([entry]) => play(entry.isIntersecting));
+    observer.observe(boxRef.current);
+    return () => observer.disconnect();
+  }, [animate, frame.id]);
+
   return (
-    <svg
-      viewBox="0 0 120 120"
-      width={size}
-      height={size}
+    <span
+      ref={boxRef}
       className="avatar-frame"
-      style={{ '--frame': frame.color, '--frame-accent': frame.accent }}
+      style={{ width: size, height: size, '--frame': frame.color, '--frame-accent': frame.accent }}
       aria-hidden="true"
-      focusable="false"
     >
-      <circle cx="60" cy="60" r="56" className="af-ring" />
-      <circle cx="60" cy="60" r="44" className="af-inner" />
-      {motifs(frame, 50)}
-      {initial ? (
-        <text x="60" y="73" className="af-initial">
-          {initial}
-        </text>
-      ) : (
-        <path
-          className="af-dove"
-          d="M38 64c10-8 24-10 36-5 4 1 7 0 9-3 2 2 2 5 0 7-3 3-7 4-11 4-8 0-15 2-20 6l-7-1 4-3c-5-1-8-3-11-5zM58 60c-2-9-8-15-17-18 4 7 6 13 9 20z"
+      <svg
+        ref={backRef}
+        className="af-fx"
+        viewBox="-40 -40 180 180"
+        focusable="false"
+        dangerouslySetInnerHTML={{ __html: layers.tras }}
+      />
+      <span className="af-avatar">
+        {initial ? (
+          <span className="af-initial" style={{ fontSize: size * 0.42 }}>
+            {initial}
+          </span>
+        ) : (
+          <svg viewBox="30 36 60 40" className="af-dove" focusable="false">
+            <path d={DOVE} />
+          </svg>
+        )}
+      </span>
+      {layers.frente && (
+        <svg
+          ref={frontRef}
+          className="af-fx is-front"
+          viewBox="-40 -40 180 180"
+          focusable="false"
+          dangerouslySetInnerHTML={{ __html: layers.frente }}
         />
       )}
-    </svg>
+    </span>
   );
 }
 

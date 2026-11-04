@@ -8899,52 +8899,49 @@ details[open] > summary .exam-chevron {
   list-style: none;
 }
 
-/* ---------- Medalhão e molduras ---------- */
+/* ---------- Medalhão e molduras ----------
+   Pilha: SVG de trás (anel e partículas) → avatar → SVG da frente (selos e brilhos).
+   O SVG tem viewBox -40 -40 180 180: o anel (0..100) ocupa o tamanho do medalhão e
+   o resto sai para fora, por isso o SVG é 180% do medalhão, deslocado -40%. */
 .avatar-frame {
-  display: block;
+  position: relative;
+  display: inline-block;
   flex: none;
+  vertical-align: middle;
+}
+
+.af-fx {
+  position: absolute;
+  left: -40%;
+  top: -40%;
+  width: 180%;
+  height: 180%;
   overflow: visible;
+  pointer-events: none;
 }
 
-.af-ring {
-  fill: var(--frame-accent);
-  stroke: var(--frame);
-  stroke-width: 4;
-}
-
-.af-inner {
-  fill: var(--color-surface);
-  stroke: var(--frame);
-  stroke-width: 1.5;
-}
-
-.af-line {
-  fill: none;
-  stroke: var(--frame);
-  stroke-width: 2;
-  stroke-linecap: round;
-}
-
-.af-fill {
-  fill: var(--frame);
-}
-
-.af-text {
-  fill: var(--frame);
-  font-family: var(--font-serif);
-  font-size: 13px;
-  font-weight: 700;
+.af-avatar {
+  position: absolute;
+  inset: 8%;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--frame-accent) 55%, transparent), transparent 70%),
+    var(--color-surface);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--frame) 45%, transparent);
+  overflow: hidden;
 }
 
 .af-initial {
-  fill: var(--frame);
   font-family: var(--font-serif);
-  font-size: 40px;
   font-weight: 700;
-  text-anchor: middle;
+  line-height: 1;
+  color: var(--frame);
 }
 
 .af-dove {
+  width: 70%;
   fill: var(--frame);
   opacity: 0.85;
 }

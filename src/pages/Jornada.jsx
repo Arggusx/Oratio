@@ -384,7 +384,7 @@ function ProfileCard() {
                 aria-label={has ? `Usar ${f.name}` : `${f.name}: conclua a ilha ${trail?.title}`}
                 aria-pressed={frame === f.id}
               >
-                <AvatarFrame frameId={f.id} size={36} />
+                <AvatarFrame frameId={f.id} size={36} animate={has} />
               </button>
             );
           })}
