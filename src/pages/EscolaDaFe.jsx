@@ -5,6 +5,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import MassGesturesSection from '../components/MassGesturesSection';
 import SymbolsSection from '../components/SymbolsSection';
 import MiraclesCatalog from '../components/MiraclesCatalog';
+import ChurchHierarchy from '../components/ChurchHierarchy';
 import MarianTitles from '../components/MarianTitles';
 import { marianTitles } from '../data/marianTitles';
 import { marianImages } from '../data/imageCredits';
@@ -49,6 +50,16 @@ function TrailIcon() {
       <circle cx="24" cy="28" r="3" className="halo" />
       <circle cx="40" cy="16" r="3" className="figure" />
       <path d="M40 13V5l6 3-6 3" className="figure" />
+    </svg>
+  );
+}
+
+// Degraus em pirâmide, com a cruz no alto: ícone do cartão da hierarquia.
+function HierarchyIcon() {
+  return (
+    <svg className="feature-card-icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+      <path d="M24 4v8M20.5 7.5h7" className="halo" />
+      <path d="M18 16h12v7H18zM12 23h24v8H12zM6 31h36v9H6z" className="figure" />
     </svg>
   );
 }
@@ -236,7 +247,7 @@ function CuriosidadesSection() {
   const [category, setCategory] = useState('Todos');
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(null);
-  // Coleção aberta no lugar das perguntas: 'milagres' ou nenhuma.
+  // Coleção aberta no lugar das perguntas: 'milagres', 'hierarquia' ou nenhuma.
   const [collection, setCollection] = useState(focusMiracle ? 'milagres' : null);
 
   // Ao abrir ou fechar o catálogo, volta ao topo da seção.
@@ -268,7 +279,8 @@ function CuriosidadesSection() {
           <ArrowLeft size={16} aria-hidden="true" />
           Voltar às curiosidades
         </button>
-        <MiraclesCatalog focusId={focusMiracle} />
+        {collection === 'milagres' && <MiraclesCatalog focusId={focusMiracle} />}
+        {collection === 'hierarquia' && <ChurchHierarchy />}
       </div>
     );
   }
@@ -287,6 +299,15 @@ function CuriosidadesSection() {
             <span>
               {eucharisticMiracles.length} milagres em {countryCount} países, de Lanciano a Buenos Aires
             </span>
+          </span>
+          <ArrowRight size={20} className="feature-card-arrow" aria-hidden="true" />
+        </button>
+        <button type="button" className="feature-card" onClick={() => openCollection('hierarquia')}>
+          <HierarchyIcon />
+          <span className="feature-card-text">
+            <span className="feature-card-eyebrow">Hierarquia da Igreja</span>
+            <strong>Quem é quem na Igreja</strong>
+            <span>Do Papa aos leigos: o que cada um faz, como chamar e a Igreja no Brasil</span>
           </span>
           <ArrowRight size={20} className="feature-card-arrow" aria-hidden="true" />
         </button>

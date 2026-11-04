@@ -10430,3 +10430,204 @@ details[open] > summary .exam-chevron {
 .trail-study .trail-today {
   margin: 0;
 }
+
+/* ---------- Quem é quem na Igreja: degraus em pirâmide, do Papa aos leigos ---------- */
+.hierarchy-ladder {
+  display: grid;
+  justify-items: center;
+  gap: 0.7rem;
+  margin: 1.5rem 0 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+/* Cada degrau é um pouco mais largo que o de cima, como uma pirâmide */
+.hierarchy-step {
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  gap: 0.9rem;
+  align-items: start;
+  width: min(100%, calc(30rem + var(--step) * 3rem));
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  border-top: 4px solid var(--rank);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.06));
+}
+
+.rank-figure {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--rank) 14%, var(--color-cream, #FFFBF4));
+  border: 1px solid color-mix(in srgb, var(--rank) 45%, var(--color-border));
+}
+
+.rank-face {
+  fill: #E9C9A8;
+}
+
+.rank-robe {
+  stroke: rgba(0, 0, 0, 0.18);
+  stroke-width: 0.6;
+}
+
+.rank-rays path {
+  stroke: #E3B55A;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.hierarchy-step-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.3rem 0.6rem;
+}
+
+.hierarchy-step h3 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+}
+
+.hierarchy-order {
+  padding: 0.12rem 0.55rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-gold);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.hierarchy-step-body > p {
+  margin: 0.35rem 0 0;
+  line-height: 1.6;
+  color: var(--color-text-soft);
+}
+
+.hierarchy-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.2rem;
+  margin: 0.6rem 0 0;
+}
+
+.hierarchy-facts dt {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-pale, var(--color-text-muted));
+}
+
+.hierarchy-facts dd {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+.hierarchy-swatch {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  background: var(--rank);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+}
+
+.hierarchy-step-body > .hierarchy-note {
+  margin-top: 0.55rem;
+  padding: 0.45rem 0.7rem;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-gold) 10%, transparent);
+  font-size: 0.88rem;
+}
+
+.hierarchy-extra {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.hierarchy-box {
+  flex: 1 1 20rem;
+  max-width: 34rem;
+  padding: 1.1rem 1.25rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.hierarchy-box h3 {
+  margin: 0 0 0.8rem;
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+}
+
+.hierarchy-box.is-brazil {
+  border-color: color-mix(in srgb, #2E8B57 45%, var(--color-border));
+  background:
+    linear-gradient(135deg, color-mix(in srgb, #2E8B57 9%, transparent), color-mix(in srgb, #F2C14E 9%, transparent)),
+    var(--color-surface);
+}
+
+/* Do maior para o menor: cada nível um pouco mais recuado */
+.hierarchy-levels {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hierarchy-levels li {
+  display: grid;
+  padding: 0.45rem 0.7rem;
+  border-left: 3px solid var(--color-gold);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: color-mix(in srgb, var(--color-gold) 8%, transparent);
+}
+
+.hierarchy-levels li:nth-child(2) { margin-left: 0.8rem; }
+.hierarchy-levels li:nth-child(3) { margin-left: 1.6rem; }
+.hierarchy-levels li:nth-child(4) { margin-left: 2.4rem; }
+.hierarchy-levels li:nth-child(5) { margin-left: 3.2rem; }
+
+.hierarchy-levels small {
+  color: var(--color-text-muted);
+}
+
+.hierarchy-brazil {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+}
+
+.hierarchy-brazil dt {
+  font-weight: 700;
+}
+
+.hierarchy-brazil dd {
+  margin: 0.1rem 0 0;
+  line-height: 1.55;
+  color: var(--color-text-soft);
+}
+
+@media (max-width: 560px) {
+  .hierarchy-step {
+    grid-template-columns: 3rem 1fr;
+    gap: 0.7rem;
+    padding: 0.9rem;
+  }
+
+  .rank-figure {
+    width: 3rem;
+    height: 3rem;
+  }
+}
