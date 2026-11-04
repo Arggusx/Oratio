@@ -1091,6 +1091,136 @@
   color: var(--color-text-muted);
 }
 
+/* ── Rezando as dezenas no próprio terço ──
+   O tom do mistério escolhido (--accent) é escurecido (ou clareado, no escuro) para o texto ter contraste. */
+.rosary-x {
+  --accent-text: color-mix(in srgb, var(--accent, var(--color-gold)) 38%, var(--color-charcoal));
+}
+
+.rosary-x-bead.is-this-decade {
+  stroke: var(--accent-text);
+  stroke-width: 1.4;
+  filter: drop-shadow(0 0 3px color-mix(in srgb, var(--accent, #D9A548) 70%, transparent));
+}
+
+.rosary-x-bead.is-lit {
+  fill: var(--accent-text);
+  stroke: var(--accent-text);
+}
+
+.rosary-x-decade {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+}
+
+.rosary-x-decades {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.35rem;
+  margin-bottom: 0.4rem;
+}
+
+.rosary-x-decades span {
+  height: 4px;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--accent-text) 18%, var(--color-surface));
+}
+
+.rosary-x-decades span.done,
+.rosary-x-decades span.current {
+  background: var(--accent-text);
+}
+
+.rosary-x-kicker {
+  color: var(--accent-text);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.rosary-x-decade h4 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  line-height: 1.1;
+}
+
+.rosary-x-meditation {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--color-text);
+}
+
+.rosary-x-prayer {
+  margin: 0.4rem 0 0;
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--accent-text) 8%, var(--color-surface));
+  font-family: var(--font-serif);
+  font-size: 1.08rem;
+  line-height: 1.55;
+  color: var(--color-text);
+}
+
+.rosary-x-clause {
+  display: block;
+  margin: 0.35rem 0;
+  font-style: italic;
+  font-weight: 600;
+  color: var(--accent-text);
+}
+
+.rosary-x-counter {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.rosary-x-counter strong {
+  font-family: var(--font-serif);
+  font-size: 2.4rem;
+  line-height: 1;
+  color: var(--color-charcoal);
+}
+
+.rosary-x-counter span {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.rosary-x-decade .rosary-x-actions {
+  margin-top: 0.4rem;
+}
+
+/* O botão de avançar a Ave-Maria é a ação principal: maior, para tocar sem olhar. */
+.rosary-x-open.rosary-x-next {
+  flex: 1;
+  justify-content: center;
+  min-height: var(--control-height, 3rem);
+  font-size: 0.92rem;
+}
+
+.rosary-x-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  align-self: flex-start;
+  margin-top: 0.4rem;
+  padding: 0.4rem 0;
+  border: 0;
+  background: none;
+  color: var(--color-terracotta);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 /* ── Oração para agora: folha de papel escrita com uma pena (página inicial) ── */
 .prayer-now {
   max-width: 46rem;

@@ -420,7 +420,8 @@ h1, h2, h3, h4,
   background: var(--color-terracotta-dark);
 }
 
-:root[data-theme='dark'] .bottom-nav-main-circle {
+:root[data-theme='dark'] .bottom-nav-main-circle,
+:root[data-theme='dark'] .bottom-nav a.bottom-nav-main.active .bottom-nav-main-circle {
   background: #B84A13;
   color: #FFF7EF;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45);
@@ -764,130 +765,20 @@ h1, h2, h3, h4,
   border-color: var(--accent);
 }
 
-/* ---------- 9.5. FOCUS MODE ---------- */
-.focus-mode-container {
-  min-height: 100vh;
-  background-color: var(--color-cream-light);
-  display: flex;
-  flex-direction: column;
-  padding: var(--space-xl) var(--space-md);
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.focus-header {
-  text-align: center;
-  color: var(--color-text-faint);
-  font-size: var(--text-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: var(--space-xl);
-  font-weight: 600;
-}
-
-.focus-mystery-title {
-  text-align: center;
-  margin-bottom: var(--space-md);
-}
-
-.focus-mystery-title h1 {
-  font-size: 2.2rem;
-  color: var(--color-charcoal);
-  margin-bottom: var(--space-sm);
-}
-
-.focus-meditation {
-  text-align: center;
-  color: var(--color-text-soft);
-  font-size: 1.05rem;
-  line-height: 1.6;
-  margin-bottom: var(--space-2xl);
-}
-
-.focus-prayer-card {
-  background-color: var(--focus-bg);
-  padding: 2rem 1.5rem;
-  border-radius: var(--radius-lg);
-  text-align: center;
-  margin-bottom: auto;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.02);
-}
-
-.focus-prayer-card p {
-  font-size: 1.15rem;
-  line-height: 1.8;
+/* Botão contornado, para a ação secundária ao lado da principal. */
+.btn.btn-secondary,
+:root[data-theme='dark'] .btn.btn-secondary {
+  background: var(--color-surface);
   color: var(--color-text);
+  border: 1.5px solid var(--color-border);
 }
 
-.focus-clause {
-  display: block;
-  font-style: italic;
-  font-weight: 600;
-  color: var(--accent);
-  margin: 1rem 0;
-  font-size: 1.2rem;
+.btn.btn-secondary:hover,
+:root[data-theme='dark'] .btn.btn-secondary:hover {
+  background: var(--color-surface);
+  border-color: var(--color-terracotta);
+  box-shadow: none;
 }
-
-.focus-bottom-bar {
-  margin-top: var(--space-3xl);
-  padding-bottom: var(--space-md);
-}
-
-.beads-counter {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: var(--space-xl);
-}
-
-.bead {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background-color: #E0DCD6;
-  transition: background-color 0.3s ease;
-}
-
-.bead.filled {
-  background-color: var(--accent);
-}
-
-.focus-navigation {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.btn-nav {
-  padding: 0.8rem 1.2rem;
-  border-radius: var(--radius-full);
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  background: transparent;
-  transition: all 0.2s ease;
-}
-
-.btn-prev {
-  color: var(--color-text-faint);
-}
-
-.btn-prev:hover {
-  background: rgba(0,0,0,0.05);
-}
-
-.btn-next {
-  background-color: var(--accent);
-  color: white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.btn-next:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.05);
-}
-
 
 /* ---------- 10. LEITURAS — TABS & READINGS ---------- */
 .tabs {
@@ -984,6 +875,12 @@ h1, h2, h3, h4,
 }
 
 .focus-overlay .focus-header {
+  text-align: center;
+  color: var(--color-text-faint);
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
   max-width: 850px;
   margin: 0 auto var(--space-md);
   display: flex;
@@ -4293,11 +4190,6 @@ body {
   color: var(--color-text-soft);
 }
 
-:root[data-theme='dark'] .bead {
-  background-color: #3A2E26;
-}
-
-:root[data-theme='dark'] .btn-prev:hover,
 :root[data-theme='dark'] .modal-close:hover {
   background: rgba(255, 255, 255, 0.06);
 }
@@ -4346,10 +4238,6 @@ body {
 
 :root[data-theme='dark'] .mystery-card {
   --bg-soft: color-mix(in srgb, var(--accent) 14%, var(--color-surface));
-}
-
-:root[data-theme='dark'] .focus-prayer-card {
-  background: color-mix(in srgb, var(--accent) 14%, var(--color-surface));
 }
 
 .reading-card .reading-eyebrow {

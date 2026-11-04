@@ -17,7 +17,6 @@ const Misterios = lazy(() => import('./pages/Misterios'));
 const Leituras = lazy(() => import('./pages/Leituras'));
 const Oracoes = lazy(() => import('./pages/Oracoes'));
 const EscolaDaFe = lazy(() => import('./pages/EscolaDaFe'));
-const FocusMystery = lazy(() => import('./pages/FocusMystery'));
 const Calendario = lazy(() => import('./pages/Calendario'));
 const Santos = lazy(() => import('./pages/Santos'));
 const Santo = lazy(() => import('./pages/Santo'));
@@ -110,7 +109,8 @@ function AnimatedRoutes() {
             <Route path="/home/trilhas/:id" element={<Trilhas />} />
             <Route path="/home/trilhas/:id/quiz/:level" element={<Quiz />} />
             <Route path="/home/quiz/aleatorio" element={<Quiz />} />
-            <Route path="/home/misterio/foco/:tipo/:id" element={<FocusMystery />} />
+            {/* O antigo modo foco virou parte do guia do terço (as dezenas são rezadas lá). */}
+            <Route path="/home/misterio/foco/*" element={<Navigate to="/home/oracoes" replace />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>

@@ -343,7 +343,13 @@ export default function RosaryGuide({ layoutData }) {
           <NordicTimeline key={activeMysteryKey} mystery={currentMystery} />
         ) : (
           <>
-            <RosaryExplorer steps={layoutData.steps} activeIndex={activeStepIndex} onOpenStep={openStepFromBead} />
+            <RosaryExplorer
+              steps={layoutData.steps}
+              activeIndex={activeStepIndex}
+              onOpenStep={openStepFromBead}
+              mysteryKey={activeMysteryKey}
+              mystery={currentMystery}
+            />
             <div className="rosary-steps-timeline">
               {layoutData.steps.map((step, index) => {
                 const isOpen = openStepId === step.id;
