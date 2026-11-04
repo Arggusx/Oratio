@@ -1,104 +1,91 @@
 import { useState } from 'react';
-import { Copy, Minus, Plus, Printer, Share2, Trash2 } from 'lucide-react';
+import { Download, Minus, Plus, Printer, Share2, Trash2 } from 'lucide-react';
+import { LEAVES_D, MAX_FLOWERS, OFFERINGS, bouquetDate, bouquetImage, flowerLayout, petal } from './bouquetArt';
 import { journey, useJourney } from '../../utils/journeyStore';
 import GameIntro from '../GameIntro';
 
-// O que se pode oferecer num buquê espiritual.
-// Cada oferta vira uma flor de uma cor no vaso.
-const OFFERINGS = [
-  { id: 'tercos', one: 'terço', many: 'terços', color: '#C2486A' },
-  { id: 'missas', one: 'Missa', many: 'Missas', color: '#F2C14E' },
-  { id: 'comunhoes', one: 'comunhão', many: 'comunhões', color: '#FFFDF9' },
-  { id: 'misericordia', one: 'Terço da Misericórdia', many: 'Terços da Misericórdia', color: '#E8643C' },
-  { id: 'avemarias', one: 'Ave-Maria', many: 'Ave-Marias', color: '#6E8FD6' },
-  { id: 'visitas', one: 'visita ao Santíssimo', many: 'visitas ao Santíssimo', color: '#E9C46A' },
-  { id: 'sacrificios', one: 'sacrifício', many: 'sacrifícios', color: '#9B7BC4' },
-];
-
-const MAX_FLOWERS = 15;
-
 /** O vaso que vai ganhando uma flor para cada oferta, enquanto a pessoa monta o buquê. */
 export function BouquetVase({ items, caption = true }) {
-  const flowers = OFFERINGS.flatMap((o) => Array.from({ length: items[o.id] ?? 0 }, () => o.color)).slice(
-    0,
-    MAX_FLOWERS,
-  );
+  const { flowers, heads, size } = flowerLayout(items);
   const total = Object.values(items).reduce((a, b) => a + b, 0);
   return (
     <figure className="bouquet-vase" aria-label={`Buquê com ${total} ${total === 1 ? 'oferta' : 'ofertas'}`}>
       <svg viewBox="0 0 160 170" aria-hidden="true" focusable="false">
-        {flowers.map((color, i) => {
-          // As flores se abrem em leque, as primeiras no centro.
-          const side = i % 2 === 0 ? 1 : -1;
-          const spread = Math.ceil(i / 2) * 9 * side;
-          const height = 82 - Math.abs(spread) * 0.5 - (i % 3) * 9;
-          const x = 80 + spread * 1.6;
-          const y = 92 - height;
-          return (
-            <g key={i} className="bouquet-flower" style={{ '--i': i }}>
-              <path className="bouquet-stem" d={`M80 120 Q${80 + spread * 0.6} ${100 - height / 2} ${x} ${y}`} />
-              {[0, 72, 144, 216, 288].map((a) => (
-                <ellipse key={a} cx={x} cy={y - 8} rx="5.5" ry="9" fill={color} transform={`rotate(${a} ${x} ${y})`} />
-              ))}
-              <circle cx={x} cy={y} r="4.2" className="bouquet-flower-center" />
-            </g>
-          );
-        })}
+        {flowers.map((f) => (
+          <path key={f.i} className="bouquet-stem" d={f.stem} />
+        ))}
+        {LEAVES_D.map((d) => (
+          <path key={d} className="bouquet-leaf" d={d} />
+        ))}
+        {heads.map((f) => (
+          <g key={f.i} className="bouquet-flower" style={{ '--i': f.i }}>
+            {petal(f.x, f.y, size).map((p) => (
+              <ellipse key={p.transform} {...p} fill={f.color} />
+            ))}
+            <circle cx={f.x} cy={f.y} r={4.2 * size} className="bouquet-flower-center" />
+          </g>
+        ))}
         <path className="bouquet-vase-body" d="M54 118h52l-8 44H62z" />
         <path className="bouquet-vase-rim" d="M50 112h60v8H50z" />
       </svg>
       {caption && (
         <figcaption>
           {total === 0 ? 'Escolha as ofertas para encher o vaso' : `${total} ${total === 1 ? 'oferta' : 'ofertas'}`}
+          {total > MAX_FLOWERS && ` (o vaso mostra até ${MAX_FLOWERS} flores)`}
         </figcaption>
       )}
     </figure>
   );
 }
 
-const describe = (items) =>
-  OFFERINGS.filter((o) => items[o.id] > 0).map((o) => `${items[o.id]} ${items[o.id] === 1 ? o.one : o.many}`);
-
-function bouquetText(b) {
-  const lines = describe(b.items).map((l) => `🌹 ${l}`);
-  return [
-    `Buquê espiritual para ${b.to}`,
-    b.intention && `Intenção: ${b.intention}`,
-    '',
-    'Ofereço a Deus por você:',
-    ...lines,
-    '',
-    b.message,
-    b.from && `Com carinho, ${b.from}`,
-  ]
-    .filter((l) => l !== undefined && l !== false && l !== null)
-    .join('\n')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
-}
-
 function BouquetCard({ bouquet, onRemove }) {
   const [status, setStatus] = useState('');
-  const canShare = typeof navigator !== 'undefined' && typeof navigator.share === 'function';
   const flash = (m) => {
     setStatus(m);
     setTimeout(() => setStatus(''), 2500);
   };
+  const fileName = `buque-espiritual-${bouquet.to.normalize('NFD').replace(/[^\w]+/g, '-').toLowerCase()}.png`;
 
-  const copy = async () => {
+  // O cartão vira uma imagem (PNG), para mandar pelo WhatsApp, Instagram ou e-mail.
+  const makeFile = async () => {
+    setStatus('Preparando a imagem...');
+    const blob = await bouquetImage(bouquet);
+    setStatus('');
+    return new File([blob], fileName, { type: 'image/png' });
+  };
+
+  const download = async () => {
     try {
-      await navigator.clipboard.writeText(bouquetText(bouquet));
-      flash('Texto copiado');
+      const file = await makeFile();
+      const url = URL.createObjectURL(file);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      flash('Imagem salva');
     } catch {
-      flash('Não foi possível copiar');
+      flash('Não foi possível criar a imagem');
     }
   };
+
+  // No celular, abre a janela de compartilhar com a imagem; onde não dá para enviar arquivos, baixa a imagem.
   const share = async () => {
+    let file;
     try {
-      await navigator.share({ title: `Buquê espiritual para ${bouquet.to}`, text: bouquetText(bouquet) });
+      file = await makeFile();
     } catch {
-      // janela de compartilhar fechada
+      return flash('Não foi possível criar a imagem');
     }
+    if (navigator.canShare?.({ files: [file] })) {
+      try {
+        await navigator.share({ files: [file], title: `Buquê espiritual para ${bouquet.to}` });
+      } catch {
+        // janela de compartilhar fechada
+      }
+      return undefined;
+    }
+    return download();
   };
   const print = () => {
     document.body.classList.add('print-bouquet');
@@ -134,21 +121,13 @@ function BouquetCard({ bouquet, onRemove }) {
       </ul>
       {bouquet.message && <blockquote className="bouquet-message">{bouquet.message}</blockquote>}
       {bouquet.from && <p className="bouquet-from">Com carinho, {bouquet.from}</p>}
-      <p className="bouquet-date">
-        {new Date(`${bouquet.created}T12:00`).toLocaleDateString('pt-BR', {
-          day: 'numeric',
-          month: 'long',
-          year: 'numeric',
-        })}
-      </p>
+      <p className="bouquet-date">{bouquetDate(bouquet.created)}</p>
       <div className="exam-export bouquet-actions">
-        {canShare && (
-          <button type="button" className="fx-small-btn" onClick={share}>
-            <Share2 size={15} aria-hidden="true" /> Compartilhar
-          </button>
-        )}
-        <button type="button" className="fx-small-btn" onClick={copy}>
-          <Copy size={15} aria-hidden="true" /> Copiar
+        <button type="button" className="fx-small-btn" onClick={share}>
+          <Share2 size={15} aria-hidden="true" /> Enviar imagem
+        </button>
+        <button type="button" className="fx-small-btn" onClick={download}>
+          <Download size={15} aria-hidden="true" /> Baixar imagem
         </button>
         <button type="button" className="fx-small-btn" onClick={print}>
           <Printer size={15} aria-hidden="true" /> Imprimir ou PDF

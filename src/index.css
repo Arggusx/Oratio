@@ -9472,6 +9472,7 @@ details[open] > summary .exam-chevron {
   position: relative;
   display: grid;
   justify-items: center;
+  align-content: start; /* ao lado de um cartão mais alto, as linhas não esticam */
   gap: 0.35rem;
   padding: 1.6rem 1.4rem 1.2rem;
   border-radius: 1.1rem;
@@ -10369,3 +10370,8 @@ details[open] > summary .exam-chevron {
 }
 .journey-frames-box .journey-frames { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
 .journey-frames-box .journey-frame { flex: none; padding: 0.05rem; }
+
+/* Folhas do vaso do buquê */
+.bouquet-leaf {
+  fill: #78A97D;
+}
