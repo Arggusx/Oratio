@@ -30,10 +30,10 @@ function QuizInvite({ section }) {
         <TrailIsland icon={island.icon} color={island.color} />
       </span>
       <span className="trail-card-body">
-        <span className="trail-chip">Ilha · etapas e quiz</span>
+        <span className="trail-chip">Ilha · estudo e quizzes</span>
         <strong>{island.title}</strong>
         <span className="trail-card-desc">
-          Siga o caminho da ilha: etapas curtas e um quiz que fica mais difícil, até o desafio final.
+          Estude o assunto e siga o caminho da ilha: quizzes cada vez mais difíceis, até o desafio final.
         </span>
       </span>
     </Link>
@@ -293,7 +293,7 @@ function CuriosidadesSection() {
         <Link to="/home/trilhas" className="feature-card">
           <TrailIcon />
           <span className="feature-card-text">
-            <span className="feature-card-eyebrow">Uma etapa por dia</span>
+            <span className="feature-card-eyebrow">Estudo e quizzes</span>
             <strong>Trilhas da fé</strong>
             <span>{trails.map((t) => t.title).join(' · ')}</span>
           </span>

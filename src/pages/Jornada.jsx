@@ -560,7 +560,7 @@ function JourneyHome({ onOpen }) {
           </GameTile>
         </Shelf>
 
-        <Shelf title="Aprender" hint="Ilhas com etapas curtas e quiz" layout="feature">
+        <Shelf title="Aprender" hint="Ilhas com estudo e quizzes" layout="feature">
           <GameTile
             id="trilhas"
             className="is-big"

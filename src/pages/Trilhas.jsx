@@ -44,8 +44,9 @@ function TrailList() {
         Escolha uma <span className="trail-title-accent">ilha</span>
       </h1>
       <p className="lead">
-        Cada assunto é uma ilha. No caminho há etapas curtas para ler e paradas de quiz que ficam mais difíceis, até o
-        desafio final. A próxima parada abre quando você conclui a atual.
+        Cada assunto é uma ilha. A primeira parada do caminho explica tudo o que você vai aprender; as outras são
+        quizzes, cada um mais difícil que o anterior, até o desafio final. A próxima parada abre quando você conclui a
+        atual.
       </p>
 
       <Link to={`/home/trilhas/${featured.id}`} className="trail-card is-featured" style={{ '--trail': featured.color }}>
@@ -86,10 +87,12 @@ function TrailList() {
   );
 }
 
-/** Janela de uma etapa: o texto, o "para hoje" e o botão de concluir. */
-function StepSheet({ trail, index, done, onComplete, onClose }) {
+/**
+ * O estudo da ilha: a primeira parada do caminho. Explica, de uma vez, todos os assuntos que os quizzes
+ * vão perguntar, cada um com uma sugestão para viver no dia a dia.
+ */
+function StudySheet({ trail, done, onComplete, onClose }) {
   const dialogRef = useRef(null);
-  const step = trail.steps[index];
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -107,30 +110,41 @@ function StepSheet({ trail, index, done, onComplete, onClose }) {
     <dialog ref={dialogRef} className="filter-sheet trail-sheet" aria-labelledby="trail-sheet-title">
       <header className="filter-sheet-head">
         <div>
-          <span className="novena-day-number">
-            Etapa {index + 1} de {trail.steps.length}
-          </span>
-          <h2 id="trail-sheet-title">{step.title}</h2>
+          <span className="novena-day-number">Estudo da ilha · {trail.steps.length} assuntos</span>
+          <h2 id="trail-sheet-title">{trail.title}</h2>
         </div>
         <button type="button" className="filter-sheet-close" onClick={() => dialogRef.current?.close()} aria-label="Fechar">
           <X size={20} />
         </button>
       </header>
       <div className="filter-sheet-body">
-        <p className="trail-sheet-text">{step.text}</p>
-        <p className="trail-today">
-          <strong>Para hoje:</strong> {step.today}
-        </p>
+        <p className="trail-study-intro">{trail.intro} Os quizzes do caminho perguntam sobre tudo o que está aqui.</p>
+        <ol className="trail-study">
+          {trail.steps.map((step, i) => (
+            <li key={step.title}>
+              <span className="trail-study-number" aria-hidden="true">
+                {i + 1}
+              </span>
+              <div>
+                <h3>{step.title}</h3>
+                <p className="trail-sheet-text">{step.text}</p>
+                <p className="trail-today">
+                  <strong>Para viver:</strong> {step.today}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
       </div>
       <footer className="filter-sheet-foot">
         {done ? (
           <span className="trail-sheet-done">
-            <Check size={16} aria-hidden="true" /> Etapa concluída
+            <Check size={16} aria-hidden="true" /> Estudo concluído
           </span>
         ) : (
           <button type="button" className="btn filter-sheet-apply" onClick={onComplete}>
             <Check size={16} aria-hidden="true" />
-            Concluí esta etapa
+            Concluí o estudo
           </button>
         )}
       </footer>
@@ -151,7 +165,7 @@ function TrailPage({ trail }) {
   const [open, setOpen] = useState(null);
   const [justUnlocked, setJustUnlocked] = useState(null);
   const islandRefs = useRef([]);
-  // O caminho mistura as etapas de leitura com as paradas de quiz (fácil, médio, difícil e desafio final).
+  // O caminho: o estudo da ilha e, depois, os quizzes do mais fácil ao desafio final.
   const { stops, isDone, nextIndex: current, complete: finished } = islandProgress(trail, state);
   const next = trails.find((t) => t.id !== trail.id && !plans[t.id]);
   const closeSheet = useCallback(() => setOpen(null), []);
@@ -199,9 +213,9 @@ function TrailPage({ trail }) {
       <GameIntro
         id="trilha"
         steps={[
-          'Toque na ilha que está brilhando para abrir a etapa. Leia, faça o "Para hoje" e toque em "Concluí esta etapa".',
-          'Pelo caminho há paradas de quiz (o ponto de interrogação) sobre o assunto da ilha: fácil, médio, difícil e o desafio final.',
-          'Cada parada só abre depois da anterior. A sugestão é avançar uma etapa por dia, com calma.',
+          'A primeira parada é o estudo da ilha: ele explica todos os assuntos do caminho. Leia com calma e toque em "Concluí o estudo".',
+          'As outras paradas são quizzes (o ponto de interrogação) sobre esse estudo. Cada um é mais difícil que o anterior, até o desafio final.',
+          'Cada parada só abre depois da anterior. Errou? Volte ao estudo quando quiser e jogue de novo.',
         ]}
       />
 
@@ -211,7 +225,7 @@ function TrailPage({ trail }) {
         stops={stops.map((st, i) => {
           const state = isDone(st) ? 'done' : i === current ? 'current' : 'locked';
           const level = st.kind === 'quiz' ? LEVELS.find((l) => l.id === st.level) : null;
-          const label = level ? `Quiz · ${level.size} perguntas` : `Etapa ${String(st.day).padStart(2, '0')}`;
+          const label = level ? `Quiz · ${level.size} perguntas` : `${trail.steps.length} assuntos`;
           return {
             key: level ? `quiz-${level.id}` : st.step.title,
             icon: level ? level.icon : st.step.icon,
@@ -255,9 +269,8 @@ function TrailPage({ trail }) {
       )}
 
       {open !== null && (
-        <StepSheet
+        <StudySheet
           trail={trail}
-          index={open}
           done={done.includes(open + 1)}
           onComplete={complete}
           onClose={closeSheet}

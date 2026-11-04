@@ -1,18 +1,20 @@
-// Trilhas: um caminho de ilhas, uma etapa em cada. A próxima ilha abre quando a atual é concluída;
-// a sugestão é fazer uma por dia, para dar tempo de rezar e viver o que se aprendeu.
+// Trilhas: cada assunto é uma ilha, com um caminho de paradas. A primeira parada é o estudo da ilha, que explica
+// todos os assuntos do caminho (os "steps" abaixo); as seguintes são quizzes sobre esse estudo, cada um mais
+// difícil que o anterior, até o desafio final (ver LEVELS em data/quizBank.js). A próxima parada abre quando a
+// atual é concluída.
 // "icon" escolhe o desenho que flutua sobre a ilha (ver components/TrailIsland.jsx).
-// "quizTopic" liga a ilha ao banco de perguntas (data/quizBank.js): no caminho, entre as etapas, há paradas de
-// quiz que ficam mais difíceis (fácil, médio, difícil e o desafio final). Ver trailStops abaixo.
+// "quizTopic" liga a ilha ao banco de perguntas (data/quizBank.js).
+import { LEVELS } from './quizBank';
 
 export const trails = [
   {
     id: 'missa-7-dias',
-    title: 'Conheça a Missa em 7 dias',
+    title: 'Conheça a Missa',
     short: 'Cada parte da Missa, do sinal da cruz ao envio.',
     icon: 'igreja',
     color: '#C8963E',
     quizTopic: 'missa',
-    intro: 'Uma etapa por dia para entender o que acontece em cada parte da Missa e participar com mais amor.',
+    intro: 'O que acontece em cada parte da Missa, do sinal da cruz ao envio, para participar com mais amor.',
     steps: [
       {
         title: 'Ritos iniciais',
@@ -65,7 +67,7 @@ export const trails = [
     icon: 'lua',
     color: '#4F7BB5',
     quizTopic: 'maria',
-    intro: 'Quatro verdades de fé sobre Nossa Senhora, uma por dia, com a base bíblica e o que elas dizem sobre nós.',
+    intro: 'Quatro verdades de fé sobre Nossa Senhora, com a base bíblica e o que elas dizem sobre nós.',
     steps: [
       {
         title: 'Mãe de Deus',
@@ -100,7 +102,7 @@ export const trails = [
     icon: 'hostia',
     color: '#5E8C63',
     quizTopic: 'fe',
-    intro: 'Uma ilha para cada sacramento: o que é, de onde vem na Bíblia e como vivê-lo hoje.',
+    intro: 'Os sete sacramentos: o que é cada um, de onde vem na Bíblia e como vivê-lo hoje.',
     steps: [
       {
         title: 'Batismo',
@@ -153,7 +155,7 @@ export const trails = [
     icon: 'biblia',
     color: '#8C6A3F',
     quizTopic: 'biblia',
-    intro: 'Quatro paradas para conhecer o livro mais lido do mundo e aprender a rezar com ele.',
+    intro: 'Como o livro mais lido do mundo se organiza e como rezar com ele.',
     steps: [
       {
         title: 'O que é a Bíblia',
@@ -188,7 +190,7 @@ export const trails = [
     icon: 'lirio',
     color: '#7A5A9E',
     quizTopic: 'santos',
-    intro: 'Quatro paradas para entender a santidade e a amizade com os santos.',
+    intro: 'O que é a santidade, como a Igreja reconhece um santo e por que pedimos a ajuda deles.',
     steps: [
       {
         title: 'O que é um santo',
@@ -223,7 +225,7 @@ export const trails = [
     icon: 'pomba',
     color: '#3F8C8A',
     quizTopic: 'simbolos',
-    intro: 'Quatro paradas para entender os sinais que a Igreja usa desde os primeiros cristãos.',
+    intro: 'O sentido dos sinais que a Igreja usa desde os primeiros cristãos.',
     steps: [
       {
         title: 'Por que símbolos?',
@@ -255,17 +257,10 @@ export const trails = [
 
 export const getTrail = (id) => trails.find((t) => t.id === id);
 
-/** Nível de quiz que entra depois de qual etapa: divide as etapas em três partes e fecha com o desafio final. */
-export function trailStops(trail) {
-  const n = trail.steps.length;
-  const cuts = [Math.ceil(n / 3), Math.ceil((2 * n) / 3), n];
-  const stops = [];
-  trail.steps.forEach((step, i) => {
-    stops.push({ kind: 'lesson', index: i, day: i + 1, step });
-    cuts.forEach((cut, level) => {
-      if (cut === i + 1) stops.push({ kind: 'quiz', level: level + 1 });
-    });
-  });
-  stops.push({ kind: 'quiz', level: 4 });
-  return stops;
+/** As paradas do caminho: o estudo da ilha e, depois, os quizzes do mais fácil ao desafio final. */
+export function trailStops() {
+  return [
+    { kind: 'lesson', index: 0, day: 1, step: { title: 'Estudo da ilha', icon: 'pergaminho' } },
+    ...LEVELS.map((l) => ({ kind: 'quiz', level: l.id })),
+  ];
 }

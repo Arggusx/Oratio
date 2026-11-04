@@ -10375,3 +10375,58 @@ details[open] > summary .exam-chevron {
 .bouquet-leaf {
   fill: #78A97D;
 }
+
+/* ---------- Estudo da ilha: todos os assuntos do caminho numa janela ---------- */
+.trail-study-intro {
+  margin: 0 0 1rem;
+  line-height: 1.6;
+  color: var(--color-text-soft);
+}
+
+.trail-study {
+  display: grid;
+  gap: 1.1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trail-study > li {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: 0.75rem;
+  padding-bottom: 1.1rem;
+  border-bottom: 1px dashed var(--color-border);
+}
+
+.trail-study > li:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.trail-study-number {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--trail) 18%, transparent);
+  border: 1px solid var(--trail);
+  font-family: var(--font-serif);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.trail-study h3 {
+  margin: 0.2rem 0 0.4rem;
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+}
+
+.trail-study .trail-sheet-text {
+  margin: 0 0 0.6rem;
+}
+
+.trail-study .trail-today {
+  margin: 0;
+}
