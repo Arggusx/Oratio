@@ -9145,6 +9145,14 @@ details[open] > summary .exam-chevron {
   position: relative;
 }
 
+.reward-rays-clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
 .reward-rays {
   position: absolute;
   left: 50%;

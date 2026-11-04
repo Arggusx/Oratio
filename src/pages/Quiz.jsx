@@ -30,6 +30,8 @@ function QuizRound({ round, color, pass, onRestart, onPassed, exitTo, exitLabel,
       return;
     }
     setPicked(null);
+    // O resultado é mais curto que a última pergunta: volta ao topo para não abrir no meio (ou abaixo) dele.
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     const total = answers.filter((a) => a.right).length;
     if (pass === undefined || total >= pass) onPassed?.(total);
   };

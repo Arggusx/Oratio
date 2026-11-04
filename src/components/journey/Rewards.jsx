@@ -109,7 +109,10 @@ export function RewardReveal({ trail, reward, onClose, onUseFrame }) {
 
   return (
     <dialog ref={dialogRef} className="reward-reveal" style={{ '--trail': trail.color }} aria-labelledby="reward-title">
-      <div className="reward-rays" aria-hidden="true" />
+      {/* Os raios são maiores que a janela: ficam dentro de uma camada recortada para não criar rolagem vazia. */}
+      <div className="reward-rays-clip" aria-hidden="true">
+        <div className="reward-rays" />
+      </div>
       <span className="eyebrow">Ilha concluída</span>
       <h2 id="reward-title">{trail.title}</h2>
       <div className="reward-items">
