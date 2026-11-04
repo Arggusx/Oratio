@@ -1,5 +1,5 @@
 import { trails, trailStops } from '../data/trails';
-import { LEVELS } from '../data/quizBank';
+import { LEVELS } from '../data/quizLevels';
 
 /**
  * Progresso de uma ilha (etapas de leitura e paradas de quiz juntas), a partir do estado da Jornada.

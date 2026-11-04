@@ -4,7 +4,7 @@
 // atual é concluída.
 // "icon" escolhe o desenho que flutua sobre a ilha (ver components/TrailIsland.jsx).
 // "quizTopic" liga a ilha ao banco de perguntas (data/quizBank.js).
-import { LEVELS } from './quizBank';
+import { LEVELS } from './quizLevels';
 
 export const trails = [
   {

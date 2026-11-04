@@ -8,7 +8,7 @@ import { getTrail, trails } from '../data/trails';
 import { islandProgress } from '../utils/islandProgress';
 import { islandRewards } from '../data/rewards';
 import { RewardReveal } from '../components/journey/Rewards';
-import { LEVELS } from '../data/quizBank';
+import { LEVELS } from '../data/quizLevels';
 import { journey, useJourney } from '../utils/journeyStore';
 
 function TrailProgress({ trail, progress }) {

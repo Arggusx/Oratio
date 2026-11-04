@@ -4,19 +4,8 @@
 // embaralha a ordem das perguntas e das alternativas a cada partida. "why" aparece depois da resposta, acertando ou não.
 // "level" é a dificuldade da pergunta: 1 fácil, 2 médio, 3 difícil.
 
-/**
- * Os quizzes do caminho de cada ilha, do mais fácil ao mais difícil.
- * "levels" diz de quais dificuldades vêm as perguntas; "pass" é quantas precisa acertar para seguir.
- */
-export const LEVELS = [
-  { id: 1, title: 'Quiz 1 · fácil', icon: 'pergunta', levels: [1], size: 4, pass: 3 },
-  { id: 2, title: 'Quiz 2 · fácil e médio', icon: 'pergunta', levels: [1, 2], size: 5, pass: 4 },
-  { id: 3, title: 'Quiz 3 · médio', icon: 'pergunta', levels: [2], size: 5, pass: 4 },
-  { id: 4, title: 'Quiz 4 · difícil', icon: 'pergunta', levels: [3], size: 5, pass: 4 },
-  { id: 5, title: 'Desafio final', icon: 'coroa', levels: [2, 3], size: 8, pass: 7 },
-];
-
-export const DIFFICULTY_LABEL = { 1: 'fácil', 2: 'médio', 3: 'difícil' };
+// Os níveis dos quizzes ficam em data/quizLevels.js (também usados pelas trilhas).
+export { DIFFICULTY_LABEL, LEVELS } from './quizLevels';
 
 // Assuntos do banco, ligados às ilhas das trilhas (campo quizTopic em data/trails.js).
 export const QUIZ_TOPICS = [
