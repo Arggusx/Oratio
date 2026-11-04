@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import { GraduationCap } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 
 const links = [
@@ -31,6 +32,15 @@ export default function Header() {
         </div>
 
         <div className="nav-actions">
+          {/* No celular a Escola da Fé não cabe na barra inferior: fica aqui, ao lado do tema. */}
+          <NavLink
+            to="/home/escola-da-fe"
+            className={({ isActive }) => `header-icon-link ${isActive ? 'active' : ''}`}
+            aria-label="Escola da Fé"
+            title="Escola da Fé"
+          >
+            <GraduationCap size={20} aria-hidden="true" />
+          </NavLink>
           <ThemeToggle />
         </div>
       </nav>

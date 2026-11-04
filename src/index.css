@@ -336,7 +336,8 @@ h1, h2, h3, h4,
   right: 0;
   bottom: 0;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(5, 1fr);
+  align-items: end;
   padding: 0.35rem 0.25rem calc(0.35rem + env(safe-area-inset-bottom));
   background: rgba(253, 251, 247, 0.94);
   backdrop-filter: blur(16px);
@@ -352,7 +353,8 @@ h1, h2, h3, h4,
   align-items: center;
   gap: 0.15rem;
   min-height: 3.1rem;
-  justify-content: center;
+  justify-content: flex-end;
+  padding-bottom: 0.2rem;
   border-radius: var(--radius-md);
   color: var(--color-text-soft);
   font-size: 0.68rem;
@@ -385,6 +387,43 @@ h1, h2, h3, h4,
 .bottom-nav a.active::before {
   opacity: 0.13;
   transform: scale(1);
+}
+
+/* Terço no centro: círculo cheio que sobe um pouco acima da barra. */
+.bottom-nav a.bottom-nav-main::before {
+  display: none;
+}
+
+.bottom-nav-main-circle {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-top: -1.6rem;
+  border-radius: 50%;
+  border: 4px solid var(--color-cream);
+  background: var(--color-terracotta);
+  color: #FFFAF4;
+  box-shadow: 0 8px 18px rgba(156, 70, 29, 0.32);
+  transition: transform var(--duration-fast) var(--ease-out), background var(--duration-fast);
+}
+
+.bottom-nav a.bottom-nav-main svg {
+  margin-top: 0;
+}
+
+.bottom-nav a.bottom-nav-main:active .bottom-nav-main-circle {
+  transform: scale(0.94);
+}
+
+.bottom-nav a.bottom-nav-main.active .bottom-nav-main-circle {
+  background: var(--color-terracotta-dark);
+}
+
+:root[data-theme='dark'] .bottom-nav-main-circle {
+  background: #B84A13;
+  color: #FFF7EF;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45);
 }
 
 /* O conteúdo e o botão de feedback não ficam escondidos atrás da barra. */
@@ -2826,6 +2865,28 @@ h1, h2, h3, h4,
   display: flex;
   align-items: center;
   gap: 0.25rem;
+}
+
+.header-icon-link {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  color: var(--color-text-muted);
+  transition: color var(--duration-fast), background var(--duration-fast);
+}
+
+.header-icon-link:hover,
+.header-icon-link.active {
+  color: var(--color-terracotta);
+  background: color-mix(in srgb, var(--color-terracotta) 10%, transparent);
+}
+
+@media (min-width: 768px) {
+  .header-icon-link {
+    display: none;
+  }
 }
 
 .theme-toggle {
