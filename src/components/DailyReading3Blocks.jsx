@@ -432,6 +432,18 @@ export default function DailyReading3Blocks() {
             </p>
           )}
 
+          {/* Índice dos trechos no celular, onde os cartões ficam um embaixo do outro. */}
+          {readings.length > 1 && (
+            <nav className="reading-steps" aria-label="Trechos da leitura">
+              {readings.map((item, index) => (
+                <a key={index} href={`#leitura-trecho-${index + 1}`}>
+                  <span aria-hidden="true" />
+                  {item.titulo_categoria || item.categoria || `Trecho ${index + 1}`}
+                </a>
+              ))}
+            </nav>
+          )}
+
           <div className="reading-blocks-grid">
             {readings.map((item, index) => {
               const categoriaNome = item.titulo_categoria || item.categoria || 'Leitura';
@@ -447,6 +459,7 @@ export default function DailyReading3Blocks() {
               return (
                 <motion.article
                   key={blockKey}
+                  id={`leitura-trecho-${index + 1}`}
                   className="reading-block-card"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -457,6 +470,11 @@ export default function DailyReading3Blocks() {
                       <IconComponent size={14} className="category-icon" />
                       <span>{categoriaNome}</span>
                     </div>
+                    {readings.length > 1 && (
+                      <span className="reading-block-count">
+                        {index + 1} de {readings.length}
+                      </span>
+                    )}
                   </div>
 
                   <h3 className="reading-block-ref">{item.referencia}</h3>
