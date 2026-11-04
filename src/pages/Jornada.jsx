@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   ArrowRight,
+  Camera,
   Check,
   ChevronLeft,
   Flag,
@@ -309,6 +310,32 @@ function todayList(state, skip) {
   return items.slice(0, 3);
 }
 
+/**
+ * Recorta a foto num quadrado do centro e reduz para 256x256 (JPEG), aqui mesmo no aparelho.
+ * Assim ela cabe no armazenamento local e nunca precisa sair daqui.
+ */
+async function squarePhoto(file) {
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise((resolve, reject) => {
+      const el = new Image();
+      el.onload = () => resolve(el);
+      el.onerror = reject;
+      el.src = url;
+    });
+    const side = Math.min(img.naturalWidth, img.naturalHeight);
+    const canvas = document.createElement('canvas');
+    canvas.width = 256;
+    canvas.height = 256;
+    canvas
+      .getContext('2d')
+      .drawImage(img, (img.naturalWidth - side) / 2, (img.naturalHeight - side) / 2, side, side, 0, 0, 256, 256);
+    return canvas.toDataURL('image/jpeg', 0.82);
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
 const greeting = () => {
   const h = new Date().getHours();
   return h < 5 ? 'Boa madrugada' : h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite';
@@ -317,7 +344,8 @@ const greeting = () => {
 /** Medalhão do peregrino: saudação, nome (opcional), números do caminho e a moldura escolhida. */
 function ProfileCard() {
   const state = useJourney();
-  const { name, frame } = state.profile;
+  const { name, frame, photo } = state.profile;
+  const [photoStatus, setPhotoStatus] = useState('');
   const islands = completedIslands(state);
   const earned = ['simples', ...islands.map((t) => islandRewards[t.id].frame.id)];
   const month = todayKey().slice(0, 7);
@@ -333,7 +361,30 @@ function ProfileCard() {
   return (
     <section className="journey-profile" aria-label="Seu medalhão">
       <div className="journey-profile-top">
-        <AvatarFrame frameId={frame} name={name} size={84} />
+        {/* Tocar no medalhão escolhe uma foto. Ela é reduzida aqui mesmo e fica só neste aparelho. */}
+        <label className="journey-photo" title={photo ? 'Trocar a foto' : 'Pôr uma foto'}>
+          <AvatarFrame frameId={frame} name={name} photo={photo} size={84} />
+          <input
+            type="file"
+            accept="image/*"
+            className="sr-only"
+            aria-label={photo ? 'Trocar a foto do perfil' : 'Pôr uma foto no perfil'}
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              e.target.value = '';
+              if (!file) return;
+              try {
+                journey.setProfile({ photo: await squarePhoto(file) });
+                setPhotoStatus('');
+              } catch {
+                setPhotoStatus('Não foi possível usar essa imagem.');
+              }
+            }}
+          />
+          <span className="journey-photo-badge" aria-hidden="true">
+            <Camera size={12} />
+          </span>
+        </label>
         <div className="journey-profile-body">
           <small className="journey-hello">{greeting()},</small>
           {editing ? (
@@ -355,6 +406,14 @@ function ProfileCard() {
               {name || 'Peregrino'} <small>editar</small>
             </button>
           )}
+          {photo ? (
+            <button type="button" className="journey-photo-remove" onClick={() => journey.setProfile({ photo: '' })}>
+              Remover foto
+            </button>
+          ) : (
+            <small className="journey-photo-hint">Toque no medalhão para pôr uma foto. Ela fica só neste aparelho.</small>
+          )}
+          {photoStatus && <small className="journey-photo-hint">{photoStatus}</small>}
         </div>
       </div>
 

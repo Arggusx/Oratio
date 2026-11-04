@@ -10628,3 +10628,54 @@ details[open] > summary .exam-chevron {
     height: 3rem;
   }
 }
+
+/* Foto do perfil: o medalhão é o botão de escolher a foto */
+.journey-photo {
+  position: relative;
+  flex: none;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.journey-photo:focus-within {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 4px;
+}
+
+.journey-photo-badge {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  border: 2px solid var(--color-surface);
+  background: var(--color-terracotta);
+  color: #fff;
+}
+
+.af-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.journey-photo-remove {
+  justify-self: start;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-terracotta);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.journey-photo-hint {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+}

@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 // Canal de contato do responsável pelo site (exigido pela LGPD, art. 41).
 const CONTACT_EMAIL = 'dougclasher9@gmail.com';
-const LAST_UPDATE = '29 de outubro de 2026';
+const LAST_UPDATE = '4 de novembro de 2026';
 
 export default function Privacidade() {
   return (
@@ -48,8 +48,12 @@ export default function Privacidade() {
           O site guarda algumas preferências no armazenamento local do seu navegador (<em>localStorage</em>): o tema
           claro ou escuro, a data em que você recomeçou a leitura diária, cópias das leituras já carregadas, para
           abrir mais rápido, e o progresso da <strong>Jornada</strong> (dias de oração, novenas, trilhas, coleção,
-          mapa, buquês espirituais e respostas dos quizzes). Essas informações <strong>ficam apenas no seu
+          mapa, buquês espirituais, respostas dos quizzes e, se você escolher, o nome e a foto do medalhão). Essas informações <strong>ficam apenas no seu
           aparelho</strong> e não são enviadas para nós. Você pode apagá-las a qualquer momento limpando os dados do site nas configurações do navegador.
+        </p>
+        <p>
+          A <strong>foto do medalhão</strong> é opcional. Ela é recortada e reduzida no próprio aparelho e nunca sai
+          dele: não é enviada para nós nem para ninguém. Para apagá-la, toque em “Remover foto” na Jornada.
         </p>
 
         <h3>Registros técnicos de acesso</h3>

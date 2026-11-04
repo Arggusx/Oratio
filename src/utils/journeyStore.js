@@ -18,7 +18,7 @@ const EMPTY = {
   quizzes: {}, // { [tema]: { answered: n, correct: n } } (quiz antigo das abas da Escola)
   quizLevels: {}, // { [ilha]: [níveis concluídos] } nas ilhas de quiz
   seenIntros: [], // jogos cuja explicação "Como funciona" a pessoa já viu
-  profile: { name: '', frame: 'simples' }, // nome (opcional) e moldura do medalhão da Jornada
+  profile: { name: '', frame: 'simples', photo: '' }, // nome e foto (opcionais, a foto em data URL 256x256) e moldura do medalhão
   rewardsSeen: [], // recompensas cuja revelação já foi mostrada (ex.: 'ilha:biblia', 'vitral:10')
 };
 

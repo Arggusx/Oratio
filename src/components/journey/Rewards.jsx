@@ -12,12 +12,12 @@ const DOVE =
   'M38 64c10-8 24-10 36-5 4 1 7 0 9-3 2 2 2 5 0 7-3 3-7 4-11 4-8 0-15 2-20 6l-7-1 4-3c-5-1-8-3-11-5zM58 60c-2-9-8-15-17-18 4 7 6 13 9 20z';
 
 /**
- * Medalhão da Jornada: a inicial do nome (ou uma pomba) dentro da moldura escolhida.
+ * Medalhão da Jornada: a foto (ou a inicial do nome, ou uma pomba) dentro da moldura escolhida.
  * A pilha é: camada de trás (o anel e as partículas) → avatar → camada da frente (selos e brilhos).
  * As animações são SMIL, dentro do próprio SVG; ficam pausadas quando o medalhão sai da tela,
  * quando "animate" é falso (moldura bloqueada) ou quando a pessoa prefere menos movimento.
  */
-export function AvatarFrame({ frameId, name, size = 96, animate = true }) {
+export function AvatarFrame({ frameId, name, photo, size = 96, animate = true }) {
   const frame = allFrames.find((f) => f.id === frameId) ?? DEFAULT_FRAME;
   const layers = LAYERS[frame.id] ?? LAYERS[DEFAULT_FRAME.id];
   const initial = name?.trim().charAt(0).toUpperCase();
@@ -58,7 +58,9 @@ export function AvatarFrame({ frameId, name, size = 96, animate = true }) {
         dangerouslySetInnerHTML={{ __html: layers.tras }}
       />
       <span className="af-avatar">
-        {initial ? (
+        {photo ? (
+          <img src={photo} alt="" className="af-photo" />
+        ) : initial ? (
           <span className="af-initial" style={{ fontSize: size * 0.42 }}>
             {initial}
           </span>
