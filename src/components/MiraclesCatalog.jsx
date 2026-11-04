@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ExternalLink, MapPin } from 'lucide-react';
+import { ExternalLink, MapPin, MapPinCheck } from 'lucide-react';
+import { journey, useJourney } from '../utils/journeyStore';
 import { eucharisticMiracles, ERAS, RECOGNITION } from '../data/eucharisticMiracles';
 import { LoadMoreButton } from './LoadMore';
 import { useLoadMore } from '../utils/useLoadMore';
@@ -25,9 +26,65 @@ function matchesFilters(m, { country, era }) {
   return (!country || m.country === country) && (!eraTest || eraTest(m.year));
 }
 
-/** Catálogo de milagres eucarísticos, no espírito da exposição de São Carlo Acutis. */
-export default function MiraclesCatalog() {
+/** O cartão de um milagre: o nome, o lugar, o que aconteceu, onde ver e "Marcar no meu mapa". */
+function MiracleCard({ miracle: m, visited, index = 0, featured = false }) {
+  const seen = visited.includes(m.id);
+  return (
+    <motion.article
+      id={`milagre-${m.id}`}
+      className={`miracle-card ${featured ? 'is-focused' : ''}`}
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, delay: Math.min((index % PAGE_SIZE) * 0.03, 0.3) }}
+    >
+      <div className="miracle-card-top">
+        <span className="miracle-year">{m.yearLabel}</span>
+        <span className={`miracle-recognition is-${m.recognition}`}>{RECOGNITION[m.recognition]}</span>
+      </div>
+      <h3>{m.name}</h3>
+      <p className="miracle-country">
+        {m.place} · {m.country}
+      </p>
+      <p className="miracle-summary">{m.summary}</p>
+      <p className="miracle-where">
+        <MapPin size={14} aria-hidden="true" />
+        <span>{m.whereToSee}</span>
+      </p>
+      {m.link && (
+        <a
+          className="miracle-link"
+          href={m.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => journey.markMiracle(m.id)}
+        >
+          Ver fotos e detalhes na exposição de Carlo
+          <ExternalLink size={14} aria-hidden="true" />
+          <span className="sr-only"> (abre em nova aba)</span>
+        </a>
+      )}
+      {/* Marca o milagre no mapa da Jornada (também acontece ao abrir as fotos). */}
+      <button
+        type="button"
+        className={`miracle-visit ${seen ? 'is-done' : ''}`}
+        onClick={() => journey.markMiracle(m.id, !seen)}
+        aria-pressed={seen}
+      >
+        <MapPinCheck size={14} aria-hidden="true" />
+        {seen ? 'No seu mapa' : 'Marcar no meu mapa'}
+      </button>
+    </motion.article>
+  );
+}
+
+/**
+ * Catálogo de milagres eucarísticos, no espírito da exposição de São Carlo Acutis.
+ * "focusId" vem do mapa da Jornada: esse milagre abre em destaque no topo, antes da lista.
+ */
+export default function MiraclesCatalog({ focusId = null }) {
+  const { miracles: visited } = useJourney();
   const [filters, setFilters] = useState({ country: null, era: null });
+  const focused = byYear.find((m) => m.id === focusId);
 
   const shown = useMemo(() => byYear.filter((m) => matchesFilters(m, filters)), [filters]);
 
@@ -35,8 +92,23 @@ export default function MiraclesCatalog() {
     showAll: Object.values(filters).some(Boolean),
   });
 
+  // Vindo do mapa, a página começa no milagre escolhido.
+  useEffect(() => {
+    if (focused) document.getElementById('milagre-aberto')?.scrollIntoView({ block: 'start' });
+  }, [focused]);
+
   return (
     <section className="miracles-section" aria-labelledby="miracles-title">
+      {focused && (
+        <section id="milagre-aberto" className="miracle-focus" aria-label={`Milagre escolhido no mapa: ${focused.name}`}>
+          <span className="eyebrow">Escolhido no mapa</span>
+          <MiracleCard miracle={focused} visited={visited} featured />
+          <a href="#miracles-title" className="miracle-focus-more">
+            Ver todos os milagres
+          </a>
+        </section>
+      )}
+
       <header className="miracles-intro">
         <h2 id="miracles-title" className="mass-intro-title">Milagres eucarísticos pelo mundo</h2>
         <p>
@@ -62,34 +134,11 @@ export default function MiraclesCatalog() {
       </p>
 
       <div className="miracles-grid">
-        {listed.map((m, index) => (
-          <motion.article
-            key={m.id}
-            className="miracle-card"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: Math.min((index % PAGE_SIZE) * 0.03, 0.3) }}
-          >
-            <div className="miracle-card-top">
-              <span className="miracle-year">{m.yearLabel}</span>
-              <span className={`miracle-recognition is-${m.recognition}`}>{RECOGNITION[m.recognition]}</span>
-            </div>
-            <h3>{m.place}</h3>
-            <p className="miracle-country">{m.country}</p>
-            <p className="miracle-summary">{m.summary}</p>
-            <p className="miracle-where">
-              <MapPin size={14} aria-hidden="true" />
-              <span>{m.whereToSee}</span>
-            </p>
-            {m.link && (
-              <a className="miracle-link" href={m.link} target="_blank" rel="noopener noreferrer">
-                Ver fotos e detalhes na exposição de Carlo
-                <ExternalLink size={14} aria-hidden="true" />
-                <span className="sr-only"> (abre em nova aba)</span>
-              </a>
-            )}
-          </motion.article>
-        ))}
+        {listed
+          .filter((m) => m.id !== focused?.id)
+          .map((m, index) => (
+            <MiracleCard key={m.id} miracle={m} visited={visited} index={index} />
+          ))}
         {shown.length === 0 && <p className="lead">Nenhum milagre deste país nesta época.</p>}
       </div>
 
@@ -109,6 +158,7 @@ export default function MiraclesCatalog() {
         >
           Ver a exposição completa de Carlo Acutis
           <ExternalLink size={14} aria-hidden="true" />
+          <span className="sr-only"> (abre em nova aba)</span>
         </a>
       </footer>
     </section>

@@ -88,11 +88,12 @@ function normalizeReadings(result) {
   );
 }
 
-const PREVIEW_LENGTH = 140;
+// Um trecho por vez: o texto aparece inteiro, e só os muito longos são cortados com "Ler mais".
+const SINGLE_PREVIEW_LENGTH = 900;
 
 // Corta o trecho no fim de uma palavra para a prévia do cartão.
-function previewText(text) {
-  const cut = text.slice(0, PREVIEW_LENGTH);
+function previewText(text, length) {
+  const cut = text.slice(0, length);
   const lastSpace = cut.lastIndexOf(' ');
   return `${(lastSpace > 80 ? cut.slice(0, lastSpace) : cut).trimEnd()}…`;
 }
@@ -190,6 +191,27 @@ export default function DailyReading3Blocks() {
   const [copiedId, setCopiedId] = useState(null);
   const [openReading, setOpenReading] = useState(null);
   const [expandedInterpretationId, setExpandedInterpretationId] = useState(null);
+  // Trecho aberto (um por vez) e o mais adiante a que a pessoa já chegou, para acender a barrinha.
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [furthestIdx, setFurthestIdx] = useState(0);
+  const readingRef = useRef(null);
+  const stepsRef = useRef(null);
+
+  // Chegaram os trechos de outro dia: volta ao primeiro.
+  useEffect(() => {
+    setActiveIdx(0);
+    setFurthestIdx(0);
+  }, [readings]);
+
+  const showReading = (index) => {
+    setActiveIdx(index);
+    setFurthestIdx((f) => Math.max(f, index));
+    // Se as abas ficaram acima da tela (trecho longo), sobe até elas; senão, nada se mexe.
+    const top = (stepsRef.current ?? readingRef.current)?.getBoundingClientRect().top;
+    if (top !== undefined && top < 80) {
+      window.scrollBy({ top: top - 88, behavior: 'smooth' });
+    }
+  };
 
   const requestIdRef = useRef(0);
 
@@ -308,7 +330,7 @@ export default function DailyReading3Blocks() {
   const isToday = selectedKey === todayKey;
 
   return (
-    <section className="daily-reading-section">
+    <section className="daily-reading-section" id="leitura-do-dia">
       <div className="daily-reading-header">
         <div className="daily-reading-title-box">
           <span className="eyebrow verse-eyebrow">Leitura Diária</span>
@@ -432,31 +454,65 @@ export default function DailyReading3Blocks() {
             </p>
           )}
 
-          <div className="reading-blocks-grid">
-            {readings.map((item, index) => {
+          {/* Os trechos como abas: um por vez, no mesmo lugar. A barrinha acende conforme a leitura avança. */}
+          {readings.length > 1 && (
+            <div className="reading-steps" role="tablist" aria-label="Trechos da leitura" ref={stepsRef}>
+              {readings.map((item, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  role="tab"
+                  id={`leitura-aba-${index + 1}`}
+                  aria-selected={index === activeIdx}
+                  aria-controls="leitura-trecho"
+                  className={`${index === activeIdx ? 'is-active' : ''} ${index <= furthestIdx ? 'is-seen' : ''}`}
+                  onClick={() => showReading(index)}
+                >
+                  <span aria-hidden="true" />
+                  {item.titulo_categoria || item.categoria || `Trecho ${index + 1}`}
+                </button>
+              ))}
+            </div>
+          )}
+
+          <div className="reading-blocks-grid reading-blocks-single" ref={readingRef}>
+            <AnimatePresence mode="wait" initial={false}>
+            {readings.slice(activeIdx, activeIdx + 1).map((item) => {
+              const index = activeIdx;
               const categoriaNome = item.titulo_categoria || item.categoria || 'Leitura';
               const blockKey = `reading-${index}-${item.id || item.referencia || categoriaNome}`;
               const IconComponent = item.icon || getCategoryIcon(item.id, categoriaNome);
               const isCopied = copiedId === (item.id || categoriaNome);
               const isInterpretationExpanded = expandedInterpretationId === blockKey;
               const interpretacao = getInterpretation(item);
+              const next = readings[index + 1];
 
-              const isLongText = (item.texto || '').length > PREVIEW_LENGTH;
-              const displayedText = isLongText ? previewText(item.texto) : item.texto;
+              // Com um trecho por vez, o texto aparece inteiro; só os muito longos abrem no "Ler mais".
+              const isLongText = (item.texto || '').length > SINGLE_PREVIEW_LENGTH;
+              const displayedText = isLongText ? previewText(item.texto, SINGLE_PREVIEW_LENGTH) : item.texto;
 
               return (
                 <motion.article
                   key={blockKey}
+                  id="leitura-trecho"
+                  role={readings.length > 1 ? 'tabpanel' : undefined}
+                  aria-labelledby={readings.length > 1 ? `leitura-aba-${index + 1}` : undefined}
                   className="reading-block-card"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: index * 0.12 }}
+                  initial={{ opacity: 0, x: 24 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -24 }}
+                  transition={{ duration: 0.25 }}
                 >
                   <div className="reading-block-top">
                     <div className="reading-category-pill">
                       <IconComponent size={14} className="category-icon" />
                       <span>{categoriaNome}</span>
                     </div>
+                    {readings.length > 1 && (
+                      <span className="reading-block-count">
+                        {index + 1} de {readings.length}
+                      </span>
+                    )}
                   </div>
 
                   <h3 className="reading-block-ref">{item.referencia}</h3>
@@ -513,10 +569,29 @@ export default function DailyReading3Blocks() {
                       <CopyCheckIcon done={isCopied} size={14} />
                       <span>{isCopied ? 'Copiado' : 'Copiar'}</span>
                     </button>
+                    {index > 0 && (
+                      <button type="button" className="btn-block-action" onClick={() => showReading(index - 1)}>
+                        <ChevronLeft size={14} aria-hidden="true" />
+                        <span>Anterior</span>
+                      </button>
+                    )}
+                    {next ? (
+                      <button type="button" className="btn reading-next-btn" onClick={() => showReading(index + 1)}>
+                        Próximo: {next.titulo_categoria || next.categoria || `trecho ${index + 2}`}
+                        <ChevronRight size={16} aria-hidden="true" />
+                      </button>
+                    ) : (
+                      readings.length > 1 && (
+                        <p className="reading-finished">
+                          Você leu os {readings.length} trechos de hoje. Que a Palavra ilumine o seu dia.
+                        </p>
+                      )
+                    )}
                   </div>
                 </motion.article>
               );
             })}
+            </AnimatePresence>
           </div>
         </>
       )}

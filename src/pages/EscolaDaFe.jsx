@@ -1,10 +1,11 @@
 import { useMemo, useState } from 'react';
 import { ArrowLeft, ArrowRight, ChevronDown, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import MassGesturesSection from '../components/MassGesturesSection';
 import SymbolsSection from '../components/SymbolsSection';
 import MiraclesCatalog from '../components/MiraclesCatalog';
+import ChurchHierarchy from '../components/ChurchHierarchy';
 import MarianTitles from '../components/MarianTitles';
 import { marianTitles } from '../data/marianTitles';
 import { marianImages } from '../data/imageCredits';
@@ -13,8 +14,55 @@ import { LoadMoreButton } from '../components/LoadMore';
 import { useLoadMore } from '../utils/useLoadMore';
 import { eucharisticMiracles } from '../data/eucharisticMiracles';
 import Angel from '../components/anim/Angel';
+import TrailIsland from '../components/TrailIsland';
+import { getTrail, trails } from '../data/trails';
 
 const countryCount = new Set(eucharisticMiracles.map((m) => m.country)).size;
+
+// Cada aba convida para a ilha do mesmo assunto, onde estão as etapas e o quiz.
+const ISLAND_FOR_SECTION = { curiosidades: 'sete-sacramentos', missa: 'missa-7-dias', simbolos: 'simbolos', santos: 'santos' };
+
+function QuizInvite({ section }) {
+  const island = getTrail(ISLAND_FOR_SECTION[section]);
+  if (!island) return null;
+  return (
+    <Link to={`/home/trilhas/${island.id}`} className="trail-card quiz-invite" style={{ '--trail': island.color }}>
+      <span className="trail-card-art">
+        <TrailIsland icon={island.icon} color={island.color} />
+      </span>
+      <span className="trail-card-body">
+        <span className="trail-chip">Ilha · estudo e quizzes</span>
+        <strong>{island.title}</strong>
+        <span className="trail-card-desc">
+          Estude o assunto e siga o caminho da ilha: quizzes cada vez mais difíceis, até o desafio final.
+        </span>
+      </span>
+    </Link>
+  );
+}
+
+// Caminho com marcos: ícone do cartão das trilhas.
+function TrailIcon() {
+  return (
+    <svg className="feature-card-icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+      <path d="M8 40c10 0 6-12 16-12s6-12 16-12" className="figure" />
+      <circle cx="8" cy="40" r="3" className="halo" />
+      <circle cx="24" cy="28" r="3" className="halo" />
+      <circle cx="40" cy="16" r="3" className="figure" />
+      <path d="M40 13V5l6 3-6 3" className="figure" />
+    </svg>
+  );
+}
+
+// Degraus em pirâmide, com a cruz no alto: ícone do cartão da hierarquia.
+function HierarchyIcon() {
+  return (
+    <svg className="feature-card-icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+      <path d="M24 4v8M20.5 7.5h7" className="halo" />
+      <path d="M18 16h12v7H18zM12 23h24v8H12zM6 31h36v9H6z" className="figure" />
+    </svg>
+  );
+}
 
 // Ostensório: a Hóstia no centro de raios dourados, sobre a base.
 function MonstranceIcon() {
@@ -193,15 +241,19 @@ const faqJsonLd = JSON.stringify({
 }).replace(/</g, '\\u003c'); // evita que algum texto feche a tag <script>
 
 function CuriosidadesSection() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  // ?milagre=<id> vem do mapa da Jornada: abre o catálogo já no milagre escolhido.
+  const focusMiracle = searchParams.get('milagre');
   const [category, setCategory] = useState('Todos');
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(null);
-  // Coleção aberta no lugar das perguntas: 'milagres', 'maria' ou nenhuma.
-  const [collection, setCollection] = useState(null);
+  // Coleção aberta no lugar das perguntas: 'milagres', 'hierarquia' ou nenhuma.
+  const [collection, setCollection] = useState(focusMiracle ? 'milagres' : null);
 
   // Ao abrir ou fechar o catálogo, volta ao topo da seção.
   const openCollection = (value) => {
     setCollection(value);
+    if (focusMiracle) setSearchParams({}, { replace: true });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -227,7 +279,8 @@ function CuriosidadesSection() {
           <ArrowLeft size={16} aria-hidden="true" />
           Voltar às curiosidades
         </button>
-        <MiraclesCatalog />
+        {collection === 'milagres' && <MiraclesCatalog focusId={focusMiracle} />}
+        {collection === 'hierarquia' && <ChurchHierarchy />}
       </div>
     );
   }
@@ -249,6 +302,24 @@ function CuriosidadesSection() {
           </span>
           <ArrowRight size={20} className="feature-card-arrow" aria-hidden="true" />
         </button>
+        <button type="button" className="feature-card" onClick={() => openCollection('hierarquia')}>
+          <HierarchyIcon />
+          <span className="feature-card-text">
+            <span className="feature-card-eyebrow">Hierarquia da Igreja</span>
+            <strong>Quem é quem na Igreja</strong>
+            <span>Do Papa aos leigos: o que cada um faz, como chamar e a Igreja no Brasil</span>
+          </span>
+          <ArrowRight size={20} className="feature-card-arrow" aria-hidden="true" />
+        </button>
+        <Link to="/home/trilhas" className="feature-card">
+          <TrailIcon />
+          <span className="feature-card-text">
+            <span className="feature-card-eyebrow">Estudo e quizzes</span>
+            <strong>Trilhas da fé</strong>
+            <span>{trails.map((t) => t.title).join(' · ')}</span>
+          </span>
+          <ArrowRight size={20} className="feature-card-arrow" aria-hidden="true" />
+        </Link>
       </div>
 
       {/* ── Search bar ── */}
@@ -425,6 +496,8 @@ export default function EscolaDaFe() {
         {section === 'simbolos' && <SymbolsSection />}
         {section === 'curiosidades' && <CuriosidadesSection />}
         {section === 'santos' && <SantosSection />}
+        {/* No fim de cada aba, um convite para a ilha de quiz do assunto */}
+        <QuizInvite section={section} />
       </motion.div>
     </main>
   );

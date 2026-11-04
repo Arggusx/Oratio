@@ -317,3 +317,18 @@ export function getLiturgicalCycle(date = new Date()) {
     nextStart: getKeyDates(liturgicalYear).advent1,
   };
 }
+
+/**
+ * Tema visual do site para uma data: o tempo litúrgico, com Pentecostes destacado no seu domingo.
+ * adventWeek (1 a 4) diz quantas velas da coroa do Advento estão acesas.
+ */
+export function getSeasonTheme(date = new Date()) {
+  const day = startOfDay(date);
+  const k = getKeyDates(day.getFullYear());
+  const season = getLiturgicalSeason(day);
+  if (day.getTime() === k.pentecost.getTime()) return { theme: 'pentecostes', adventWeek: 0 };
+  const adventWeek = season === 'advento' ? Math.min(4, Math.floor((day - k.advent1) / (7 * 86400000)) + 1) : 0;
+  return { theme: season, adventWeek };
+}
+
+export const SEASON_THEMES = ['advento', 'natal', 'quaresma', 'triduo', 'pascoa', 'pentecostes', 'comum'];

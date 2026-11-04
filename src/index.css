@@ -20,16 +20,19 @@
   --color-gold:        #C8963E;
   --color-gold-light:  #D4A84F;
   --color-gold-muted:  #B28A42;
+  /* O dourado claro só serve de enfeite (2,6:1 sobre o creme); texto dourado usa este tom (6,5:1). */
+  --color-gold-text:   #7A5520;
 
-  /* Colors — Text */
+  /* Colors — Text
+     Dois papéis: texto e texto suave. Os nomes antigos (soft, pale, faint, light)
+     continuam valendo, mas apontam para o texto suave (5,9:1 sobre o creme). */
   --color-charcoal:    #2D241F;
   --color-text:        #332A25;
   --color-text-muted:  #705E52;
-  --color-text-soft:   #5F5047;
-  /* Tons ajustados para contraste mínimo de 4,5:1 (WCAG AA) também sobre o fundo creme. */
-  --color-text-pale:   #82654E;
-  --color-text-faint:  #82654E;
-  --color-text-light:  #806D60;
+  --color-text-soft:   var(--color-text-muted);
+  --color-text-pale:   var(--color-text-muted);
+  --color-text-faint:  var(--color-text-muted);
+  --color-text-light:  var(--color-text-muted);
 
   /* Colors — Borders & Surfaces */
   --color-border:      #E7DCD0;
@@ -76,12 +79,15 @@
   --space-2xl: 3rem;
   --space-3xl: 4rem;
 
-  /* Radii */
-  --radius-sm:   0.5rem;
-  --radius-md:   0.65rem;
-  --radius-lg:   1rem;
-  --radius-xl:   1.1rem;
+  /* Radii — três tamanhos e a pílula: 12 px (campos e itens), 18 px (cartões), 22 px (destaques). */
+  --radius-sm:   0.75rem;
+  --radius-md:   0.75rem;
+  --radius-lg:   1.125rem;
+  --radius-xl:   1.375rem;
   --radius-full: 999px;
+
+  /* Alvos de toque */
+  --control-height: 3rem;
 
   /* Shadows */
   --shadow-sm:   0 2px 8px rgba(94, 59, 36, 0.04);
@@ -208,11 +214,12 @@ h1, h2, h3, h4,
   border: 0;
   border-radius: var(--radius-full);
   cursor: pointer;
-  padding: 0.85rem 1.5rem;
+  min-height: var(--control-height);
+  padding: 0.7rem 1.5rem;
   background: var(--color-terracotta);
   color: #FFFAF4;
   font-weight: 700;
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   letter-spacing: 0.01em;
   transition:
     transform var(--duration-fast) var(--ease-out),
@@ -330,6 +337,7 @@ h1, h2, h3, h4,
   bottom: 0;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
+  align-items: end;
   padding: 0.35rem 0.25rem calc(0.35rem + env(safe-area-inset-bottom));
   background: rgba(253, 251, 247, 0.94);
   backdrop-filter: blur(16px);
@@ -345,7 +353,8 @@ h1, h2, h3, h4,
   align-items: center;
   gap: 0.15rem;
   min-height: 3.1rem;
-  justify-content: center;
+  justify-content: flex-end;
+  padding-bottom: 0.2rem;
   border-radius: var(--radius-md);
   color: var(--color-text-soft);
   font-size: 0.68rem;
@@ -378,6 +387,44 @@ h1, h2, h3, h4,
 .bottom-nav a.active::before {
   opacity: 0.13;
   transform: scale(1);
+}
+
+/* Terço no centro: círculo cheio que sobe um pouco acima da barra. */
+.bottom-nav a.bottom-nav-main::before {
+  display: none;
+}
+
+.bottom-nav-main-circle {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-top: -1.6rem;
+  border-radius: 50%;
+  border: 4px solid var(--color-cream);
+  background: var(--color-terracotta);
+  color: #FFFAF4;
+  box-shadow: 0 8px 18px rgba(156, 70, 29, 0.32);
+  transition: transform var(--duration-fast) var(--ease-out), background var(--duration-fast);
+}
+
+.bottom-nav a.bottom-nav-main svg {
+  margin-top: 0;
+}
+
+.bottom-nav a.bottom-nav-main:active .bottom-nav-main-circle {
+  transform: scale(0.94);
+}
+
+.bottom-nav a.bottom-nav-main.active .bottom-nav-main-circle {
+  background: var(--color-terracotta-dark);
+}
+
+:root[data-theme='dark'] .bottom-nav-main-circle,
+:root[data-theme='dark'] .bottom-nav a.bottom-nav-main.active .bottom-nav-main-circle {
+  background: #B84A13;
+  color: #FFF7EF;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45);
 }
 
 /* O conteúdo e o botão de feedback não ficam escondidos atrás da barra. */
@@ -427,16 +474,153 @@ h1, h2, h3, h4,
   transform: scale(1.03);
 }
 
+.hero-image {
+  border-radius: var(--radius-xl);
+  box-shadow: 0 14px 30px rgba(94, 59, 36, 0.14);
+}
+
+/* Escurece a parte de baixo da foto para o texto do terço de hoje ficar legível. */
 .hero-image::after {
   content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(
     180deg,
-    transparent 50%,
-    rgba(45, 36, 31, 0.08) 100%
+    rgba(45, 36, 31, 0) 30%,
+    rgba(45, 36, 31, 0.84) 100%
   );
   pointer-events: none;
+}
+
+.hero-image-caption {
+  position: absolute;
+  z-index: 1;
+  left: 1.1rem;
+  right: 1.1rem;
+  bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+}
+
+.hero-image-kicker {
+  color: #F1E3B8;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero-image-caption strong {
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: #FFFAF4;
+  margin-bottom: 0.6rem;
+}
+
+/* Botão claro sobre a foto escura (nos dois temas). */
+.btn.btn-on-photo,
+:root[data-theme='dark'] .btn.btn-on-photo {
+  background: #FFFAF4;
+  color: #96380D;
+}
+
+.btn.btn-on-photo:hover,
+:root[data-theme='dark'] .btn.btn-on-photo:hover {
+  background: #FFFFFF;
+}
+
+/* "Para hoje" na página inicial: três linhas num cartão, com o que já foi feito riscado. */
+.home-today {
+  margin-top: 2rem;
+}
+
+.home-today h2 {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.home-today ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+.home-today li + li {
+  border-top: 1px solid var(--color-border-soft);
+}
+
+.home-today a {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-height: 3.5rem;
+  padding: 0.7rem 0.9rem;
+  color: var(--color-text);
+  transition: background var(--duration-fast);
+}
+
+.home-today a:hover {
+  background: color-mix(in srgb, var(--color-gold) 8%, var(--color-surface));
+}
+
+.home-today a > svg {
+  flex: none;
+  color: var(--color-text-muted);
+}
+
+.home-today-check {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.65rem;
+  height: 1.65rem;
+  border-radius: 50%;
+  border: 2px solid var(--color-gold);
+  color: #FFFAF4;
+}
+
+.home-today li.is-done .home-today-check {
+  border-color: var(--color-terracotta);
+  background: var(--color-terracotta);
+}
+
+.home-today-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.home-today-text strong {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.home-today-text small {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+.home-today li.is-done strong {
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+  text-decoration-color: var(--color-gold);
+}
+
+@media (min-width: 768px) {
+  .home-today {
+    max-width: 36rem;
+  }
 }
 
 
@@ -581,130 +765,20 @@ h1, h2, h3, h4,
   border-color: var(--accent);
 }
 
-/* ---------- 9.5. FOCUS MODE ---------- */
-.focus-mode-container {
-  min-height: 100vh;
-  background-color: var(--color-cream-light);
-  display: flex;
-  flex-direction: column;
-  padding: var(--space-xl) var(--space-md);
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.focus-header {
-  text-align: center;
-  color: var(--color-text-faint);
-  font-size: var(--text-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: var(--space-xl);
-  font-weight: 600;
-}
-
-.focus-mystery-title {
-  text-align: center;
-  margin-bottom: var(--space-md);
-}
-
-.focus-mystery-title h1 {
-  font-size: 2.2rem;
-  color: var(--color-charcoal);
-  margin-bottom: var(--space-sm);
-}
-
-.focus-meditation {
-  text-align: center;
-  color: var(--color-text-soft);
-  font-size: 1.05rem;
-  line-height: 1.6;
-  margin-bottom: var(--space-2xl);
-}
-
-.focus-prayer-card {
-  background-color: var(--focus-bg);
-  padding: 2rem 1.5rem;
-  border-radius: var(--radius-lg);
-  text-align: center;
-  margin-bottom: auto;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.02);
-}
-
-.focus-prayer-card p {
-  font-size: 1.15rem;
-  line-height: 1.8;
+/* Botão contornado, para a ação secundária ao lado da principal. */
+.btn.btn-secondary,
+:root[data-theme='dark'] .btn.btn-secondary {
+  background: var(--color-surface);
   color: var(--color-text);
+  border: 1.5px solid var(--color-border);
 }
 
-.focus-clause {
-  display: block;
-  font-style: italic;
-  font-weight: 600;
-  color: var(--accent);
-  margin: 1rem 0;
-  font-size: 1.2rem;
+.btn.btn-secondary:hover,
+:root[data-theme='dark'] .btn.btn-secondary:hover {
+  background: var(--color-surface);
+  border-color: var(--color-terracotta);
+  box-shadow: none;
 }
-
-.focus-bottom-bar {
-  margin-top: var(--space-3xl);
-  padding-bottom: var(--space-md);
-}
-
-.beads-counter {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: var(--space-xl);
-}
-
-.bead {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background-color: #E0DCD6;
-  transition: background-color 0.3s ease;
-}
-
-.bead.filled {
-  background-color: var(--accent);
-}
-
-.focus-navigation {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.btn-nav {
-  padding: 0.8rem 1.2rem;
-  border-radius: var(--radius-full);
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  background: transparent;
-  transition: all 0.2s ease;
-}
-
-.btn-prev {
-  color: var(--color-text-faint);
-}
-
-.btn-prev:hover {
-  background: rgba(0,0,0,0.05);
-}
-
-.btn-next {
-  background-color: var(--accent);
-  color: white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.btn-next:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.05);
-}
-
 
 /* ---------- 10. LEITURAS — TABS & READINGS ---------- */
 .tabs {
@@ -801,6 +875,12 @@ h1, h2, h3, h4,
 }
 
 .focus-overlay .focus-header {
+  text-align: center;
+  color: var(--color-text-faint);
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
   max-width: 850px;
   margin: 0 auto var(--space-md);
   display: flex;
@@ -2036,23 +2116,117 @@ h1, h2, h3, h4,
   margin-bottom: 0.6rem;
 }
 
+/* A Palavra em letra de livro, maior e sem itálico, para ler com calma. */
 .reading-block-text {
   font-family: var(--font-serif);
-  font-size: 1.02rem;
-  font-style: italic;
-  line-height: 1.6;
-  color: var(--color-text-soft);
+  font-size: 1.2rem;
+  line-height: 1.55;
+  color: var(--color-text);
   margin: 0 0 1.25rem 0;
   flex: 1;
-  border-left: 2px solid var(--color-gold-muted);
-  padding-left: 0.75rem;
 }
 
+.reading-block-count {
+  flex: none;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+/* Abas dos trechos: a barrinha acende nos trechos já lidos; o aberto fica em destaque. */
+.reading-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  max-width: 44rem;
+  margin: 0 auto 1rem;
+}
+
+.reading-steps button {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-height: 2.75rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  font: inherit;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  line-height: 1.25;
+  cursor: pointer;
+}
+
+.reading-steps button span {
+  height: 4px;
+  border-radius: var(--radius-full);
+  background: var(--color-border);
+  transition: background var(--duration-mid);
+}
+
+.reading-steps button.is-seen span {
+  background: var(--color-terracotta);
+}
+
+.reading-steps button.is-active {
+  color: var(--color-terracotta-dark);
+  font-weight: 700;
+}
+
+.reading-steps button:hover {
+  color: var(--color-terracotta-dark);
+}
+
+/* Um cartão por vez, centralizado e numa largura boa de ler. */
+.reading-blocks-grid.reading-blocks-single {
+  display: block;
+  max-width: 44rem;
+  margin: 0 auto;
+}
+
+.reading-blocks-single .reading-block-card:hover {
+  transform: none;
+}
+
+.reading-blocks-single .reading-block-actions {
+  flex-wrap: wrap;
+  margin-top: auto;
+}
+
+.btn.reading-next-btn {
+  margin-left: auto;
+  min-height: 2.75rem;
+  padding: 0.55rem 1.2rem;
+  font-size: 0.88rem;
+}
+
+.reading-finished {
+  flex: 1 1 14rem;
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  text-align: right;
+}
+
+@media (max-width: 479px) {
+  .btn.reading-next-btn {
+    flex: 1 1 100%;
+    margin-left: 0;
+  }
+
+  .reading-finished {
+    text-align: left;
+  }
+}
+
+/* Interpretação num quadro de tom quente, sem a borda tracejada. */
 .block-interpretation {
   margin: 0 0 1.1rem;
   background: var(--color-cream-warm);
-  border: 1px dashed var(--color-border);
-  border-radius: var(--radius-md);
+  border: 0;
+  border-radius: var(--radius-lg);
   color: var(--color-text);
 }
 
@@ -2305,6 +2479,11 @@ h1, h2, h3, h4,
 
   .subnav-segmented:has(> button:nth-child(4)) button {
     border-radius: var(--radius-md);
+  }
+
+  /* Cinco ou seis abas (ex.: Jornada): três por linha. */
+  .subnav-segmented:has(> button:nth-child(5)) {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -2814,6 +2993,99 @@ h1, h2, h3, h4,
   display: flex;
   align-items: center;
   gap: 0.25rem;
+}
+
+/* Etiqueta do tempo litúrgico: ponto na cor do dia e fundo no mesmo tom, bem claro. */
+.season-chip {
+  --chip: var(--liturgical-verde);
+  --chip-text: #3D5E42;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2rem;
+  padding: 0 0.7rem;
+  margin-right: 0.25rem;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--chip) 14%, var(--color-surface));
+  color: var(--chip-text);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background var(--duration-fast);
+}
+
+.season-chip:hover {
+  background: color-mix(in srgb, var(--chip) 24%, var(--color-surface));
+}
+
+.season-chip-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--chip);
+}
+
+.season-chip-roxo { --chip: var(--liturgical-roxo); --chip-text: #5A3F61; }
+.season-chip-vermelho { --chip: var(--liturgical-vermelho); --chip-text: #8A3730; }
+.season-chip-branco { --chip: var(--color-gold); --chip-text: var(--color-gold-text); }
+
+:root[data-theme='dark'] .season-chip { --chip-text: #B9D3BC; }
+:root[data-theme='dark'] .season-chip-roxo { --chip-text: #D2BCD8; }
+:root[data-theme='dark'] .season-chip-vermelho { --chip-text: #EBB3AC; }
+:root[data-theme='dark'] .season-chip-branco { --chip-text: var(--color-gold-text); }
+
+.season-chip-short {
+  display: none;
+}
+
+/* No celular, o nome curto ("Comum", "Advento"), para a marca não ser espremida. */
+@media (max-width: 479px) {
+  .season-chip {
+    padding: 0 0.6rem;
+    margin-right: 0;
+  }
+
+  .season-chip-full {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .season-chip-short {
+    display: inline;
+  }
+}
+
+/* Em telas muito estreitas fica só o ponto. */
+@media (max-width: 339px) {
+  .season-chip-short {
+    display: none;
+  }
+}
+
+.header-icon-link {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  color: var(--color-text-muted);
+  transition: color var(--duration-fast), background var(--duration-fast);
+}
+
+.header-icon-link:hover,
+.header-icon-link.active {
+  color: var(--color-terracotta);
+  background: color-mix(in srgb, var(--color-terracotta) 10%, transparent);
+}
+
+@media (min-width: 768px) {
+  .header-icon-link {
+    display: none;
+  }
 }
 
 .theme-toggle {
@@ -3900,14 +4172,11 @@ h1, h2, h3, h4,
   --color-gold:        #D9AE5C;
   --color-gold-light:  #E3BD72;
   --color-gold-muted:  #C9A15A;
+  --color-gold-text:   #E3BD72;
 
   --color-charcoal:    #F3E9DE;
   --color-text:        #E6DAD0;
   --color-text-muted:  #BBA99A;
-  --color-text-soft:   #CDBFB3;
-  --color-text-pale:   #A8937F;
-  --color-text-faint:  #9C8773;
-  --color-text-light:  #A8968A;
 
   --color-border:      #3A2E26;
   --color-border-soft: #30261F;
@@ -3973,11 +4242,6 @@ body {
   color: var(--color-text-soft);
 }
 
-:root[data-theme='dark'] .bead {
-  background-color: #3A2E26;
-}
-
-:root[data-theme='dark'] .btn-prev:hover,
 :root[data-theme='dark'] .modal-close:hover {
   background: rgba(255, 255, 255, 0.06);
 }
@@ -4026,10 +4290,6 @@ body {
 
 :root[data-theme='dark'] .mystery-card {
   --bg-soft: color-mix(in srgb, var(--accent) 14%, var(--color-surface));
-}
-
-:root[data-theme='dark'] .focus-prayer-card {
-  background: color-mix(in srgb, var(--accent) 14%, var(--color-surface));
 }
 
 .reading-card .reading-eyebrow {
@@ -5334,6 +5594,38 @@ body {
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-border);
   background: var(--color-surface);
+  scroll-margin-top: 6rem;
+}
+
+/* Milagre aberto pelo mapa da Jornada: brilha por alguns segundos */
+.miracle-card.is-focused {
+  border-color: var(--color-gold);
+  animation: miracle-focus 2.6s var(--ease-out);
+}
+
+@keyframes miracle-focus {
+  0%, 40% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-gold) 45%, transparent), var(--shadow-md); }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+/* Milagre escolhido no mapa: aberto em destaque antes do catálogo */
+.miracle-focus {
+  display: grid;
+  gap: 0.6rem;
+  max-width: 40rem;
+  margin: 0 auto 2rem;
+  scroll-margin-top: 6rem;
+}
+
+.miracle-focus .miracle-card h3 {
+  font-size: 1.6rem;
+}
+
+.miracle-focus-more {
+  justify-self: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-terracotta);
 }
 
 .miracle-card-top {
@@ -6784,4 +7076,3907 @@ details[open] > summary .exam-chevron {
   .confession-rail .page-title-row .section-title {
     font-size: 2rem;
   }
+}
+
+
+/* ---------- Jornada ---------- */
+.journey-card {
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+}
+
+.journey-card-head h2 {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+}
+
+.journey-card-head p {
+  margin: 0 0 1.1rem;
+  color: var(--color-text-soft);
+  line-height: 1.6;
+}
+
+.diary-grid {
+  display: grid;
+  gap: 0.4rem;
+  max-width: 26rem;
+}
+
+.diary-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.4rem;
+}
+
+.diary-head span {
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.diary-day {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  min-width: 0.9rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-border);
+  color: var(--color-gold-muted);
+}
+
+.diary-day.is-prayed {
+  border-color: var(--color-gold);
+  background: radial-gradient(circle at 40% 35%, #FFE8A3, var(--color-gold) 70%);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--color-gold) 60%, transparent);
+}
+
+.diary-day.is-grace {
+  border-style: dashed;
+  border-color: var(--color-gold);
+  background: color-mix(in srgb, var(--color-gold) 14%, transparent);
+}
+
+.diary-day.is-future {
+  opacity: 0.35;
+}
+
+.diary-day.is-today {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 2px;
+}
+
+.diary-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1rem 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8rem;
+  color: var(--color-text-soft);
+}
+
+.diary-legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.diary-legend .diary-day {
+  width: 1rem;
+}
+
+.journey-mark-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+
+/* "Marcar terço de hoje" é a ação principal do dia: botão cheio, como o .btn.
+   A borda tracejada antiga parecia botão desativado. Depois de marcado, vira um selo dourado suave. */
+.journey-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: var(--control-height);
+  padding: 0.6rem 1.25rem;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--color-terracotta);
+  background: var(--color-terracotta);
+  color: #FFFAF4;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background var(--duration-fast), border-color var(--duration-fast), color var(--duration-fast);
+}
+
+.journey-mark:hover {
+  background: var(--color-terracotta-dark);
+  border-color: var(--color-terracotta-dark);
+}
+
+.journey-mark.is-done {
+  border-color: var(--color-gold);
+  background: color-mix(in srgb, var(--color-gold) 18%, var(--color-surface));
+  color: var(--color-text);
+}
+
+.journey-mark.is-done svg {
+  color: var(--color-gold-text);
+}
+
+/* Dentro de listas (dias da novena, intenções, missões) o botão é contornado, para não pesar. */
+.novena-day .journey-mark:not(.is-done),
+.intention-note .journey-mark:not(.is-done),
+.mission-card .journey-mark:not(.is-done) {
+  min-height: 2.5rem;
+  border-color: var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.novena-day .journey-mark:not(.is-done):hover,
+.intention-note .journey-mark:not(.is-done):hover,
+.mission-card .journey-mark:not(.is-done):hover {
+  border-color: var(--color-terracotta);
+  color: var(--color-terracotta-dark);
+}
+
+:root[data-theme='dark'] .journey-mark:not(.is-done) {
+  background: #B84A13;
+  border-color: #B84A13;
+  color: #FFF7EF;
+}
+
+:root[data-theme='dark'] .journey-mark:not(.is-done):hover {
+  background: #CF5E24;
+  border-color: #CF5E24;
+}
+
+:root[data-theme='dark'] .novena-day .journey-mark:not(.is-done),
+:root[data-theme='dark'] .intention-note .journey-mark:not(.is-done),
+:root[data-theme='dark'] .mission-card .journey-mark:not(.is-done) {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.journey-mark-link {
+  color: var(--color-terracotta);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* ---------- Novenas ---------- */
+.novena-list {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.novena-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  transition: border-color var(--duration-fast), box-shadow var(--duration-fast);
+}
+
+.novena-card:hover {
+  border-color: var(--color-gold);
+  box-shadow: var(--shadow-sm);
+}
+
+.novena-card-text {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.novena-card-text span {
+  color: var(--color-text-soft);
+  font-size: 0.85rem;
+}
+
+.novena-beads {
+  display: flex;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.novena-bead {
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-gold);
+  transition: background 0.4s, box-shadow 0.4s;
+}
+
+.novena-beads.is-sm .novena-bead {
+  width: 0.7rem;
+  height: 0.7rem;
+}
+
+.novena-bead.is-done {
+  background: radial-gradient(circle at 40% 35%, #FFE8A3, var(--color-gold) 70%);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--color-gold) 60%, transparent);
+}
+
+.novena-bead.is-today {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 2px;
+}
+
+.novena-when {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.novena-progress {
+  display: grid;
+  justify-items: start;
+  gap: 0.6rem;
+  margin: 1.5rem 0;
+  padding: 1.1rem;
+  border: 1px solid var(--color-gold);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-gold) 8%, var(--color-surface));
+}
+
+.novena-progress p {
+  margin: 0;
+}
+
+.novena-progress .filter-clear-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.novena-prayer {
+  margin-bottom: 1.5rem;
+}
+
+.novena-days {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.novena-day {
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.novena-day.is-today {
+  border-color: var(--color-terracotta);
+}
+
+.novena-day.is-done {
+  border-color: var(--color-gold);
+}
+
+.novena-day-number {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-terracotta);
+}
+
+.novena-day h3 {
+  margin: 0.2rem 0 0.3rem;
+  font-size: 1.05rem;
+}
+
+.novena-day p {
+  margin: 0 0 0.6rem;
+  color: var(--color-text-soft);
+  line-height: 1.55;
+}
+
+.novena-day .journey-mark {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.85rem;
+}
+
+
+
+
+/* Toques discretos: guardar santo e marcar milagre */
+.saint-collect,
+.miracle-visit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.6rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  border: 1px dashed var(--color-gold);
+  background: transparent;
+  color: var(--color-text-soft);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.saint-collect.is-done,
+.miracle-visit.is-done {
+  border-style: solid;
+  background: color-mix(in srgb, var(--color-gold) 16%, var(--color-surface));
+  color: var(--color-text);
+}
+
+/* Coleção de santos */
+.collection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+
+
+/* Mapa dos milagres */
+
+
+
+
+
+
+
+
+
+
+
+
+/* Buquê espiritual */
+.bouquet-form {
+  display: grid;
+  gap: 0.9rem;
+  max-width: 34rem;
+}
+
+.bouquet-form label {
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.bouquet-form .search {
+  padding-left: 1rem;
+}
+
+.bouquet-form textarea.search {
+  resize: vertical;
+  border-radius: var(--radius-md);
+  padding-top: 0.7rem;
+}
+
+.bouquet-form .btn {
+  justify-self: start;
+}
+
+.bouquet-items {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.bouquet-items legend {
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.bouquet-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.45rem 0.6rem 0.45rem 0.9rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-surface);
+  font-size: 0.9rem;
+}
+
+.bouquet-item.is-on {
+  border-color: var(--color-gold);
+}
+
+.bouquet-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bouquet-stepper button {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.bouquet-stepper button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.bouquet-stepper output {
+  min-width: 1.5rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+
+
+
+
+
+
+
+
+
+@media print {
+  body.print-bouquet * {
+    visibility: hidden;
+  }
+
+  body.print-bouquet .bouquet-card.is-printing,
+  body.print-bouquet .bouquet-card.is-printing * {
+    visibility: visible;
+  }
+
+  body.print-bouquet .bouquet-card.is-printing {
+    position: absolute;
+    inset: 0 0 auto;
+    background: #fff;
+    color: #000;
+  }
+
+  body.print-bouquet .bouquet-actions {
+    display: none;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+.year-bar {
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--color-border-soft);
+  overflow: hidden;
+}
+
+.year-bar span {
+  display: block;
+  height: 100%;
+}
+
+
+/* Quiz da Escola da Fé */
+.quiz {
+  margin-top: 2.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--color-gold);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-gold) 7%, var(--color-surface));
+}
+
+.quiz-title {
+  margin: 0 0 0.4rem;
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+}
+
+.quiz-count {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-terracotta);
+}
+
+.quiz-question {
+  margin: 0.4rem 0 0.9rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.quiz-options {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.quiz-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.95rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.quiz-option:not(:disabled):hover {
+  border-color: var(--color-gold);
+}
+
+.quiz-option:disabled {
+  cursor: default;
+}
+
+.quiz-option.is-right {
+  border-color: #5E8C63;
+  background: color-mix(in srgb, #5E8C63 14%, var(--color-surface));
+}
+
+.quiz-option.is-wrong {
+  border-color: #B23A2E;
+  background: color-mix(in srgb, #B23A2E 10%, var(--color-surface));
+}
+
+.quiz-option.is-dim {
+  opacity: 0.55;
+}
+
+.quiz-why {
+  margin-top: 0.9rem;
+  line-height: 1.6;
+}
+
+.quiz-next {
+  display: flex;
+  margin-top: 0.8rem;
+}
+
+.quiz-end {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.quiz-end p {
+  margin: 0;
+}
+
+/* Trilhas */
+.novena-day.is-locked {
+  opacity: 0.6;
+}
+
+.trail-locked {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.trail-today {
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-gold) 10%, transparent);
+}
+
+/* ---------- Comunidade ---------- */
+.community-inline {
+  font-size: 0.88rem;
+  color: var(--color-text-soft);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--color-gold) 60%, transparent);
+  text-underline-offset: 3px;
+}
+
+.community-inline.is-block {
+  display: inline-block;
+  margin: 0.4rem 0 1rem;
+}
+
+.community-numbers {
+  display: grid;
+  gap: 1rem;
+  margin: 1.5rem 0 2.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--color-gold);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-gold) 8%, var(--color-surface));
+}
+
+.community-counter {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--color-gold-muted);
+}
+
+.community-counter p {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1.1rem;
+}
+
+.community-goal {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.community-goal-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.community-goal small,
+.community-novenas {
+  color: var(--color-text-soft);
+  font-size: 0.85rem;
+}
+
+.community-novenas {
+  margin: 0;
+  padding-left: 1.1rem;
+  line-height: 1.7;
+}
+
+.community-novenas a {
+  color: var(--color-terracotta);
+  font-weight: 600;
+}
+
+.intention-form {
+  display: grid;
+  gap: 0.6rem;
+  margin-bottom: 1.75rem;
+}
+
+.intention-form label {
+  font-weight: 600;
+}
+
+.intention-form textarea.search {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  resize: vertical;
+}
+
+.intention-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.intention-form-row .search {
+  flex: 1 1 12rem;
+  padding-left: 1rem;
+}
+
+.intention-form-note {
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.intention-form-error {
+  margin: 0;
+  color: #B23A2E;
+  font-weight: 600;
+}
+
+.intention-wall {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 0.9rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.intention-note {
+  display: grid;
+  gap: 0.6rem;
+  align-content: space-between;
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.intention-note p {
+  margin: 0;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.intention-note-foot {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.intention-note-foot small {
+  flex: 1;
+  color: var(--color-text-muted);
+}
+
+.intention-note .journey-mark {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.82rem;
+}
+
+.intention-count {
+  margin-left: 0.2rem;
+  padding: 0 0.4rem;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-gold) 25%, transparent);
+}
+
+.intention-report {
+  display: grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.intention-report:hover {
+  background: var(--color-border-soft);
+}
+
+.trail-sheet-text {
+  line-height: 1.65;
+}
+
+.trail-sheet-done {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 700;
+  color: #5E8C63;
+}
+
+.trail-finish {
+  justify-items: start;
+}
+
+.trail-restart {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.novena-page .saint-back-link {
+  display: flex;
+  width: fit-content;
+  margin-bottom: 0.9rem;
+}
+
+/* Jornada: tela inicial */
+.journey-today {
+  margin: 1.25rem 0 2rem;
+  padding: 1.1rem 1.25rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-gold);
+  background:
+    radial-gradient(circle at 100% 0, color-mix(in srgb, var(--color-gold) 22%, transparent), transparent 55%),
+    color-mix(in srgb, var(--color-surface) 92%, transparent);
+}
+
+.journey-today h2,
+.journey-games-title {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+}
+
+.journey-today ol {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: today;
+}
+
+.journey-today li a {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-soft);
+  color: var(--color-text);
+  counter-increment: today;
+  transition: border-color var(--duration-fast), transform var(--duration-fast);
+}
+
+.journey-today li a::before {
+  content: counter(today);
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  background: var(--color-terracotta);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.journey-today li a:hover {
+  border-color: var(--color-gold);
+  transform: translateX(3px);
+}
+
+.journey-today li a > span {
+  flex: 1;
+  display: grid;
+  gap: 0.1rem;
+}
+
+.journey-today small {
+  color: var(--color-text-soft);
+}
+
+.journey-today-done {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.journey-games {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+  gap: 0.8rem;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.journey-game {
+  display: grid;
+  justify-items: start;
+  gap: 0.35rem;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  border-radius: 1.1rem;
+  border: 1px solid color-mix(in srgb, var(--game) 35%, var(--color-border));
+  border-bottom-width: 4px;
+  background:
+    radial-gradient(circle at 100% 0, color-mix(in srgb, var(--game) 20%, transparent), transparent 65%),
+    var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.15s var(--ease-out), border-bottom-width 0.15s;
+}
+
+.journey-game:hover {
+  transform: translateY(-3px);
+}
+
+.journey-game:active {
+  transform: translateY(1px);
+  border-bottom-width: 2px;
+}
+
+.journey-game-icon {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.9rem;
+  background: var(--game);
+  color: #fff;
+  box-shadow: 0 4px 0 color-mix(in srgb, var(--game) 60%, #000);
+  margin-bottom: 0.3rem;
+}
+
+.journey-game strong {
+  font-size: 0.98rem;
+  line-height: 1.25;
+}
+
+.journey-game small {
+  color: var(--color-text-soft);
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+/* "← Jornada" no topo das páginas de jogo que ficam fora da Jornada (Trilhas, Desafio aleatório) */
+.page-back-link {
+  display: flex;
+  width: fit-content;
+  margin-bottom: 0.9rem;
+}
+
+.journey-back {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* ---------- Trilhas: escolher a ilha e o caminho ---------- */
+.trail-title-accent {
+  color: var(--color-gold-text);
+}
+
+.trail-card {
+  position: relative;
+  display: grid;
+  justify-items: start;
+  gap: 0.35rem;
+  padding: 1.25rem;
+  border-radius: 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--trail) 40%, var(--color-border));
+  background:
+    radial-gradient(circle at 30% 20%, color-mix(in srgb, var(--trail) 22%, transparent), transparent 60%),
+    var(--color-surface);
+  color: var(--color-text);
+  overflow: hidden;
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s;
+}
+
+.trail-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px color-mix(in srgb, var(--trail) 22%, transparent);
+}
+
+.trail-card > strong,
+.trail-card-body > strong {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+}
+
+.trail-card-desc {
+  color: var(--color-text-soft);
+  font-size: 0.92rem;
+}
+
+.trail-card-art {
+  justify-self: center;
+  width: min(100%, 12rem);
+  animation: island-float 4.6s ease-in-out infinite;
+}
+
+.trail-card.is-featured {
+  margin: 1.5rem 0 1rem;
+  padding: 1.5rem;
+}
+
+.trail-card.is-featured .trail-card-art {
+  width: min(100%, 15rem);
+}
+
+.trail-card-body {
+  display: grid;
+  gap: 0.45rem;
+  width: 100%;
+}
+
+@media (min-width: 720px) {
+  .trail-card.is-featured {
+    grid-template-columns: 1fr 1.1fr;
+    align-items: center;
+    gap: 1.5rem;
+  }
+}
+
+.trail-chip {
+  justify-self: start;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-full);
+  border: 1px solid color-mix(in srgb, var(--trail) 60%, transparent);
+  background: color-mix(in srgb, var(--trail) 14%, transparent);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.trail-card-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  margin-top: 0.3rem;
+}
+
+.trail-card-progress .year-bar {
+  flex: 1;
+}
+
+.trail-card-progress small {
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.trail-card-cta {
+  justify-content: center;
+  margin-top: 0.5rem;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1rem;
+}
+
+/* Página da trilha */
+.trail-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 1.1rem;
+  border: 1px solid color-mix(in srgb, var(--trail) 35%, var(--color-border));
+  background: var(--color-surface);
+}
+
+.trail-head h1 {
+  margin: 0.15rem 0 0;
+  font-family: var(--font-serif);
+  font-size: clamp(1.3rem, 4vw, 1.8rem);
+  line-height: 1.15;
+}
+
+.trail-head .fx-small-btn {
+  flex: none;
+}
+
+.trail-hint {
+  margin: 1rem 0 0;
+  color: var(--color-text-soft);
+  font-size: 0.95rem;
+}
+
+.trail-map {
+  position: relative;
+  width: min(100%, 34rem);
+  margin: 0.5rem auto 2rem;
+}
+
+.trail-road {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.trail-road path {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-text-muted) 45%, transparent);
+  stroke-width: 2.5;
+  stroke-dasharray: 3 7;
+  stroke-linecap: round;
+}
+
+.trail-road path.is-lit {
+  stroke: var(--trail);
+  stroke-width: 3;
+}
+
+.trail-hero {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: min(15rem, 62%);
+  transform: translateX(-50%);
+  filter: drop-shadow(0 0 24px color-mix(in srgb, var(--trail) 45%, transparent));
+}
+
+.trail-hero .trail-island-svg {
+  animation: island-float 5s ease-in-out infinite;
+}
+
+.trail-islands {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Cada parada: a ilha de um lado e o nome do outro */
+.trail-stop {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 62%;
+  transform: translateY(-50%);
+}
+
+.trail-stop.is-left {
+  left: 30%;
+  margin-left: -5.5rem;
+}
+
+.trail-stop.is-right {
+  right: 30%;
+  margin-right: -5.5rem;
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.trail-stop-island {
+  position: relative;
+  flex: none;
+  width: 11rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.trail-stop-island:disabled {
+  cursor: default;
+}
+
+.trail-stop-island:focus-visible {
+  outline: 3px solid var(--color-terracotta);
+  outline-offset: 4px;
+  border-radius: 50%;
+}
+
+.trail-island-float {
+  display: block;
+  animation: island-float 4.2s ease-in-out calc(var(--i) * -0.7s) infinite;
+}
+
+@keyframes island-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+
+.trail-island-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  transition: transform 0.25s var(--ease-out), filter 0.25s;
+}
+
+.trail-stop-island:not(:disabled):hover .trail-island-svg {
+  transform: scale(1.05);
+}
+
+.trail-stop.is-current .trail-island-svg {
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 16px color-mix(in srgb, var(--trail, var(--color-gold)) 60%, transparent));
+}
+
+.trail-stop.is-new .trail-island-svg {
+  animation: island-unlock 1.2s var(--ease-out);
+}
+
+@keyframes island-unlock {
+  0% { transform: scale(0.85); filter: grayscale(1); }
+  60% { transform: scale(1.18); filter: drop-shadow(0 0 22px var(--color-gold)); }
+  100% { transform: scale(1.08); }
+}
+
+.trail-stop-label {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.trail-stop-label small {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+}
+
+.trail-stop-label strong {
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+.trail-stop.is-current .trail-stop-label small {
+  color: var(--trail, var(--color-terracotta));
+}
+
+.trail-stop.is-locked .trail-stop-label {
+  opacity: 0.55;
+}
+
+@media (max-width: 560px) {
+  .trail-stop-island {
+    width: 8.5rem;
+  }
+
+  .trail-stop.is-left {
+    margin-left: -4.25rem;
+  }
+
+  .trail-stop.is-right {
+    margin-right: -4.25rem;
+  }
+
+  .trail-stop {
+    width: 74%;
+  }
+
+  .trail-stop-label strong {
+    font-size: 0.95rem;
+  }
+}
+
+/* Cores da ilha */
+.ti-shadow { fill: rgba(45, 36, 31, 0.18); }
+.ti-earth { fill: #9A6B47; }
+.ti-roots { fill: none; stroke: #7A5236; stroke-width: 3; stroke-linecap: round; }
+.ti-grass { fill: #5E8C63; }
+.ti-grass-top { fill: #78A97D; }
+.ti-fill { fill: #FFFDF9; stroke: var(--island, #B28A42); stroke-width: 2; stroke-linejoin: round; }
+.ti-line { fill: none; stroke: var(--island, #B28A42); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.ti-glow { fill: color-mix(in srgb, var(--island, #F7E3A6) 35%, #FFF6D8); opacity: 0.6; }
+
+.is-done .ti-fill { fill: #FFF3CF; }
+.is-done .ti-glow { opacity: 0.95; }
+
+.is-locked .ti-earth,
+.is-locked .ti-roots,
+.is-locked .ti-grass,
+.is-locked .ti-grass-top,
+.is-locked .ti-icon {
+  filter: grayscale(1);
+  opacity: 0.45;
+}
+
+:root[data-theme='dark'] .ti-shadow { fill: rgba(0, 0, 0, 0.45); }
+
+.trail-badge {
+  position: absolute;
+  top: 0.4rem;
+  right: 1.2rem;
+  display: grid;
+  place-items: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  color: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+.trail-badge.is-done { background: #5E8C63; }
+.trail-badge.is-locked { background: #8C7E6B; }
+
+/* ---------- Ilhas de quiz ---------- */
+.trail-section-title {
+  margin: 2.5rem 0 0.25rem;
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+}
+
+.trail-section-title + .trail-grid {
+  margin-top: 1rem;
+}
+
+.trail-section-title + .trail-hint {
+  margin: 0 0 1rem;
+}
+
+.quiz-invite {
+  margin-top: 2.5rem;
+}
+
+@media (min-width: 720px) {
+  .quiz-invite {
+    grid-template-columns: 10rem 1fr;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .quiz-invite .trail-card-art {
+    width: 10rem;
+  }
+}
+
+.quiz-page .trail-head {
+  margin-bottom: 1.25rem;
+}
+
+.quiz-game,
+.quiz-result,
+.quiz-setup {
+  display: grid;
+  gap: 1rem;
+  max-width: 40rem;
+  margin: 0 auto;
+}
+
+.quiz-progress {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.quiz-progress span {
+  flex: 1;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: var(--color-border-soft);
+  transition: background 0.3s;
+}
+
+.quiz-progress span.is-now {
+  background: color-mix(in srgb, var(--trail) 45%, var(--color-border-soft));
+}
+
+.quiz-progress span.is-right {
+  background: #5E8C63;
+}
+
+.quiz-progress span.is-wrong {
+  background: #B23A2E;
+}
+
+.quiz-game .quiz-count {
+  margin: 0;
+  color: var(--trail);
+}
+
+.quiz-game .quiz-question {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(1.35rem, 4.5vw, 1.8rem);
+  line-height: 1.25;
+}
+
+.quiz-game .quiz-options {
+  gap: 0.65rem;
+}
+
+.quiz-game .quiz-option {
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-width: 2px;
+  border-bottom-width: 4px;
+  border-radius: 0.9rem;
+  font-size: 1rem;
+  transition: transform 0.12s, border-color 0.15s, background 0.15s;
+}
+
+.quiz-game .quiz-option:not(:disabled):hover {
+  border-color: var(--trail);
+  transform: translateY(-2px);
+}
+
+.quiz-game .quiz-option:not(:disabled):active {
+  transform: translateY(1px);
+  border-bottom-width: 2px;
+}
+
+.quiz-game .quiz-option > span:nth-child(2) {
+  flex: 1;
+}
+
+.quiz-letter {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.55rem;
+  border: 2px solid var(--color-border);
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+}
+
+.quiz-option.is-right .quiz-letter {
+  border-color: #5E8C63;
+  background: #5E8C63;
+  color: #fff;
+}
+
+.quiz-option.is-wrong .quiz-letter {
+  border-color: #B23A2E;
+  background: #B23A2E;
+  color: #fff;
+}
+
+.quiz-game .quiz-why {
+  margin: 0;
+  padding: 1rem 1.1rem;
+  border-radius: 0.9rem;
+  border: 1px solid;
+}
+
+.quiz-why.is-right {
+  border-color: #5E8C63;
+  background: color-mix(in srgb, #5E8C63 12%, var(--color-surface));
+}
+
+.quiz-why.is-wrong {
+  border-color: #B23A2E;
+  background: color-mix(in srgb, #B23A2E 9%, var(--color-surface));
+}
+
+.quiz-why p {
+  margin: 0.35rem 0 0;
+  line-height: 1.6;
+}
+
+.quiz-game .quiz-next {
+  display: inline-flex;
+  margin-top: 0.85rem;
+}
+
+.quiz-score {
+  display: grid;
+  justify-items: center;
+  gap: 0.35rem;
+  padding: 1.75rem 1rem;
+  border-radius: 1.1rem;
+  border: 1px solid var(--trail);
+  background:
+    radial-gradient(circle at 50% 0, color-mix(in srgb, var(--trail) 22%, transparent), transparent 65%),
+    var(--color-surface);
+  text-align: center;
+}
+
+.quiz-score strong {
+  font-family: var(--font-serif);
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.quiz-score span {
+  color: var(--color-text-soft);
+  max-width: 28rem;
+}
+
+.quiz-review h2 {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+}
+
+.quiz-review ul {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.quiz-review li {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-surface);
+  line-height: 1.5;
+}
+
+.quiz-review li > span:last-child {
+  color: var(--color-text-soft);
+  font-size: 0.92rem;
+}
+
+.quiz-review-answer {
+  color: #5E8C63;
+  font-weight: 700;
+}
+
+.quiz-result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.quiz-setup .filter-group {
+  border-bottom: 0;
+}
+
+.quiz-setup-note {
+  display: block;
+  margin-top: 0.5rem;
+  color: var(--color-text-muted);
+}
+
+.quiz-start {
+  justify-self: start;
+}
+
+/* ---------- Como funciona (todos os jogos) ---------- */
+.game-intro {
+  margin: 1.25rem 0;
+  padding: 1.1rem 1.25rem;
+  border-radius: 1rem;
+  border: 1px dashed var(--color-gold);
+  background: color-mix(in srgb, var(--color-gold) 8%, var(--color-surface));
+}
+
+.game-intro header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.game-intro header strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 1.05rem;
+}
+
+.game-intro ol {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+  padding-left: 1.3rem;
+  line-height: 1.55;
+}
+
+.game-intro-note {
+  margin: 0 0 0.75rem;
+  color: var(--color-text-soft);
+  font-size: 0.9rem;
+}
+
+.game-intro-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 1rem 0;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-soft);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.game-intro-toggle:hover {
+  border-color: var(--color-gold);
+  color: var(--color-text);
+}
+
+/* ---------- Mapa dos milagres (desenhado) ---------- */
+
+
+
+.map-sea {
+  fill: #CFE0EA;
+}
+
+.map-land {
+  fill: #EFE6D2;
+  stroke: #B9A47E;
+  stroke-width: 0.5;
+}
+
+.map-borders {
+  fill: none;
+  stroke: #C9B795;
+  stroke-width: 0.4;
+  stroke-dasharray: 1.5 1.5;
+}
+
+:root[data-theme='dark'] .map-sea { fill: #142231; }
+:root[data-theme='dark'] .map-land { fill: #2B241D; stroke: #5A4A36; }
+:root[data-theme='dark'] .map-borders { stroke: #4A3D2E; }
+
+.map-pin {
+  cursor: pointer;
+  outline: none;
+}
+
+.map-pin-hit {
+  fill: transparent;
+}
+
+.map-pin-ring {
+  fill: none;
+  stroke: var(--color-gold);
+  stroke-width: 0;
+  opacity: 0;
+}
+
+.map-pin-drop {
+  fill: #8C7E6B;
+  stroke: #fff;
+  stroke-width: 0.8;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transition: transform 0.2s var(--ease-out);
+}
+
+.map-pin-dot {
+  fill: #fff;
+}
+
+.map-pin:hover .map-pin-drop,
+.map-pin:focus-visible .map-pin-drop,
+.map-pin.is-selected .map-pin-drop {
+  transform: scale(1.3);
+}
+
+.map-pin.is-visited .map-pin-drop {
+  fill: var(--color-gold);
+  filter: drop-shadow(0 0 3px var(--color-gold));
+}
+
+.map-pin.is-visited .map-pin-ring {
+  stroke-width: 1.2;
+  animation: pin-ring 2.4s ease-out infinite;
+}
+
+.map-pin.is-selected .map-pin-drop {
+  fill: var(--color-terracotta);
+}
+
+@keyframes pin-ring {
+  from { r: 3; opacity: 0.9; }
+  to { r: 12; opacity: 0; }
+}
+
+.map-hint {
+  margin: 0;
+  color: var(--color-text-soft);
+}
+
+.map-credit {
+  margin: 0.75rem 0 0;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.trail-random-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.75rem;
+  padding: 0.65rem 1.1rem;
+  border-radius: var(--radius-full);
+  border: 1px dashed var(--color-gold);
+  color: var(--color-text);
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.trail-random-link:hover {
+  background: color-mix(in srgb, var(--color-gold) 12%, transparent);
+}
+
+/* ---------- Jogos: velas, cartas e vaso ---------- */
+/* Caminho de oração com velas */
+.diary-day {
+  aspect-ratio: auto;
+  border: 0;
+  border-radius: 0.5rem;
+  padding: 0.15rem 0;
+  background: color-mix(in srgb, var(--color-border-soft) 45%, transparent);
+}
+
+.diary-day.is-prayed,
+.diary-day.is-grace {
+  background: color-mix(in srgb, var(--color-gold) 14%, transparent);
+  box-shadow: none;
+}
+
+.diary-candle {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 2.4rem;
+}
+
+.diary-candle-body {
+  fill: #EDE3D2;
+  stroke: #C9B795;
+  stroke-width: 0.8;
+}
+
+.diary-candle-wick {
+  stroke: #6B5B4A;
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+.diary-candle-flame {
+  fill: #F2B544;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: candle-flicker 1.4s ease-in-out infinite alternate;
+}
+
+.diary-candle-halo {
+  fill: #FFE8A3;
+  opacity: 0.45;
+}
+
+.diary-candle-star {
+  fill: var(--color-gold);
+}
+
+.is-prayed .diary-candle-body,
+.diary-legend li:first-child .diary-candle-body {
+  fill: #FFF6E0;
+}
+
+.is-empty .diary-candle-body,
+.is-future .diary-candle-body {
+  fill: color-mix(in srgb, #EDE3D2 60%, transparent);
+}
+
+.diary-legend .diary-candle {
+  width: 0.9rem;
+}
+
+:root[data-theme='dark'] .diary-candle-body { fill: #4A3F33; stroke: #6B5B4A; }
+:root[data-theme='dark'] .is-prayed .diary-candle-body { fill: #F3E7CF; }
+
+/* Coleção: cartas que viram */
+.collection-filters {
+  margin-bottom: 1rem;
+}
+
+.collection-grid {
+  grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+}
+
+.collection-card {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  perspective: 600px;
+}
+
+.collection-card-inner {
+  position: relative;
+  display: grid;
+  width: 100%;
+  min-height: 9.5rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.5s var(--ease-out);
+}
+
+.collection-card.is-flipped .collection-card-inner {
+  transform: rotateY(180deg);
+}
+
+.collection-face {
+  grid-area: 1 / 1;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 0.3rem;
+  padding: 0.75rem 0.5rem;
+  border-radius: 0.9rem;
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-surface);
+  font-size: 0.75rem;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--color-text-muted);
+  backface-visibility: hidden;
+}
+
+.collection-face strong {
+  font-size: 0.8rem;
+  color: var(--color-text);
+}
+
+.collection-face.is-back {
+  transform: rotateY(180deg);
+  border-color: var(--color-gold);
+  background: color-mix(in srgb, var(--color-gold) 10%, var(--color-surface));
+}
+
+.collection-card.is-collected .collection-face.is-front {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-gold) 40%, transparent), 0 6px 14px rgba(94, 59, 36, 0.08);
+}
+
+.collection-card:not(.is-collected) .collection-face.is-front .saint-initial {
+  filter: grayscale(1) brightness(0.55) contrast(0.8);
+  opacity: 0.55;
+}
+
+.collection-card-link {
+  justify-self: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--color-terracotta);
+}
+
+/* Buquê: vaso que se enche de flores */
+.bouquet-layout {
+  display: grid;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+@media (min-width: 760px) {
+  .bouquet-layout {
+    grid-template-columns: 15rem 1fr;
+  }
+
+  .bouquet-vase {
+    position: sticky;
+    top: 6rem;
+  }
+}
+
+.bouquet-vase {
+  margin: 0;
+  justify-self: center;
+  width: min(100%, 15rem);
+  text-align: center;
+}
+
+.bouquet-vase svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.bouquet-vase figcaption {
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+}
+
+.bouquet-stem {
+  fill: none;
+  stroke: #5E8C63;
+  stroke-width: 2;
+}
+
+.bouquet-flower {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: flower-grow 0.45s var(--ease-out) both;
+}
+
+.bouquet-flower-center {
+  fill: #E3B55A;
+}
+
+@keyframes flower-grow {
+  from { transform: scale(0.3); opacity: 0; }
+}
+
+.bouquet-vase-body {
+  fill: #B88A5A;
+}
+
+.bouquet-vase-rim {
+  fill: #9A6B47;
+}
+
+/* ---------- Mapa dos milagres: cartão grande e tela cheia ---------- */
+.map-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 1.1rem;
+  overflow: hidden;
+  background: none;
+  cursor: zoom-in;
+  box-shadow: var(--shadow-md);
+}
+
+.map-card svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.map-card-cta {
+  position: absolute;
+  right: 0.9rem;
+  bottom: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1rem;
+  border-radius: var(--radius-full);
+  background: var(--color-terracotta);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.2s var(--ease-out);
+}
+
+.map-card:hover .map-card-cta {
+  transform: translateY(-2px);
+}
+
+.map-viewer {
+  width: 100vw;
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: #CFE0EA;
+  overflow: hidden;
+}
+
+:root[data-theme='dark'] .map-viewer {
+  background: #142231;
+}
+
+.map-viewer::backdrop {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.map-viewer-canvas {
+  position: absolute;
+  inset: 0;
+  touch-action: none;
+  cursor: grab;
+}
+
+.map-viewer-canvas:active {
+  cursor: grabbing;
+}
+
+.map-viewer-canvas svg {
+  width: 100%;
+  height: 100%;
+}
+
+.map-viewer-controls {
+  position: absolute;
+  top: calc(0.9rem + env(safe-area-inset-top));
+  right: 0.9rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.map-viewer-controls button {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.8rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+}
+
+.map-viewer-controls button:last-child {
+  margin-top: 0.4rem;
+  background: var(--color-terracotta);
+  border-color: var(--color-terracotta);
+  color: #fff;
+}
+
+.map-viewer-hint {
+  position: absolute;
+  top: calc(0.9rem + env(safe-area-inset-top));
+  left: 0.9rem;
+  right: 4.5rem;
+  margin: 0;
+  padding: 0.45rem 0.8rem;
+  width: fit-content;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+  font-size: 0.78rem;
+  color: var(--color-text-soft);
+  pointer-events: none;
+}
+
+/* Etiqueta com o nome do milagre, logo acima do alfinete */
+.map-tooltip {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  gap: 0.1rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 0.7rem;
+  border: 1px solid var(--color-gold);
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 0.5rem));
+  animation: fadeIn 0.15s var(--ease-out);
+}
+
+.map-tooltip::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -0.35rem;
+  width: 0.6rem;
+  height: 0.6rem;
+  margin-left: -0.3rem;
+  border-right: 1px solid var(--color-gold);
+  border-bottom: 1px solid var(--color-gold);
+  background: var(--color-surface);
+  transform: rotate(45deg);
+}
+
+.map-tooltip.is-below {
+  transform: translate(-50%, 0.5rem);
+}
+
+.map-tooltip.is-below::after {
+  top: -0.35rem;
+  bottom: auto;
+  transform: rotate(225deg);
+}
+
+.map-tooltip strong {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+}
+
+.map-tooltip small {
+  font-size: 0.74rem;
+  color: var(--color-text-muted);
+}
+
+/* ---------- Listas de cartões centralizadas ----------
+   Toda lista de cartões fica centralizada, inclusive a última linha incompleta. */
+.card-list {
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.9rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---------- Medalhão e molduras ----------
+   Pilha: SVG de trás (anel e partículas) → avatar → SVG da frente (selos e brilhos).
+   O SVG tem viewBox -40 -40 180 180: o anel (0..100) ocupa o tamanho do medalhão e
+   o resto sai para fora, por isso o SVG é 180% do medalhão, deslocado -40%. */
+.avatar-frame {
+  position: relative;
+  display: inline-block;
+  flex: none;
+  vertical-align: middle;
+}
+
+.af-fx {
+  position: absolute;
+  left: -40%;
+  top: -40%;
+  width: 180%;
+  height: 180%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.af-avatar {
+  position: absolute;
+  inset: 8%;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--frame-accent) 55%, transparent), transparent 70%),
+    var(--color-surface);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--frame) 45%, transparent);
+  overflow: hidden;
+}
+
+.af-initial {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--frame);
+}
+
+.af-dove {
+  width: 70%;
+  fill: var(--frame);
+  opacity: 0.85;
+}
+
+.journey-profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.25rem 0 0;
+  padding: 1rem 1.1rem;
+  border-radius: 1.1rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.journey-profile-body {
+  display: grid;
+  gap: 0.55rem;
+  min-width: 0;
+}
+
+.journey-profile-name {
+  justify-self: start;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-text);
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.journey-profile-name small {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-terracotta);
+  text-decoration: underline;
+}
+
+.journey-profile .search {
+  padding-left: 1rem;
+}
+
+.journey-frames {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.journey-frame {
+  padding: 0.15rem;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+}
+
+.journey-frame:disabled {
+  cursor: not-allowed;
+  filter: grayscale(1);
+  opacity: 0.35;
+}
+
+.journey-frame.is-active {
+  border-color: var(--color-terracotta);
+}
+
+/* ---------- Passaporte do Peregrino ---------- */
+.passport-pages {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 0.9rem;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 27px, color-mix(in srgb, var(--color-gold) 14%, transparent) 27px 28px),
+    color-mix(in srgb, #F6EBD3 70%, var(--color-surface));
+  border: 1px solid color-mix(in srgb, var(--color-gold) 45%, var(--color-border));
+}
+
+:root[data-theme='dark'] .passport-pages {
+  background:
+    repeating-linear-gradient(0deg, transparent 0 27px, rgba(200, 150, 62, 0.08) 27px 28px),
+    #2A231C;
+}
+
+.passport-slot {
+  flex: 0 1 10rem;
+  color: inherit;
+}
+
+.stamp {
+  display: grid;
+  justify-items: center;
+  gap: 0.2rem;
+  padding: 0.9rem 0.6rem;
+  border-radius: 50% / 38%;
+  border: 2px dashed color-mix(in srgb, var(--color-text-muted) 45%, transparent);
+  text-align: center;
+  opacity: 0.6;
+}
+
+.stamp-art {
+  width: 4.5rem;
+  filter: grayscale(1);
+  opacity: 0.5;
+}
+
+.stamp strong {
+  font-size: 0.85rem;
+  line-height: 1.2;
+}
+
+.stamp small {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+}
+
+.stamp.is-stamped {
+  opacity: 1;
+  border: 3px double var(--stamp);
+  color: var(--stamp);
+  transform: rotate(var(--tilt));
+  background: color-mix(in srgb, var(--stamp) 6%, transparent);
+  animation: stamp-in 0.5s var(--ease-out) both;
+}
+
+.stamp.is-stamped .stamp-art {
+  filter: none;
+  opacity: 1;
+}
+
+.stamp.is-stamped strong {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.stamp.is-stamped small {
+  color: var(--stamp);
+}
+
+@keyframes stamp-in {
+  from { transform: rotate(var(--tilt)) scale(1.6); opacity: 0; }
+}
+
+/* No celular, os carimbos ficam menores e em duas colunas. */
+@media (max-width: 560px) {
+  .passport-pages {
+    gap: 0.7rem 0.5rem;
+    padding: 0.9rem 0.6rem;
+  }
+
+  .passport-slot {
+    flex: 0 1 calc(50% - 0.25rem);
+    max-width: 9rem;
+  }
+
+  .stamp {
+    padding: 0.6rem 0.35rem;
+    gap: 0.1rem;
+  }
+
+  .stamp-art {
+    width: 2.9rem;
+  }
+
+  .stamp strong {
+    font-size: 0.74rem;
+  }
+
+  .stamp small {
+    font-size: 0.64rem;
+  }
+}
+
+/* ---------- Revelação de recompensa ---------- */
+.reward-reveal {
+  width: min(30rem, calc(100% - 2rem));
+  margin: auto;
+  padding: 1.75rem 1.5rem;
+  border: 1px solid var(--trail);
+  border-radius: 1.25rem;
+  background: var(--color-cream);
+  color: var(--color-text);
+  text-align: center;
+  max-height: 92dvh;
+  overflow: hidden auto;
+}
+
+.reward-reveal[open] {
+  display: grid;
+  justify-items: center;
+  gap: 0.6rem;
+  animation: filter-sheet-in 0.35s var(--ease-out);
+}
+
+.reward-reveal::backdrop {
+  background: rgba(20, 15, 10, 0.6);
+  backdrop-filter: blur(3px);
+}
+
+.reward-reveal h2 {
+  position: relative;
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+}
+
+.reward-reveal p {
+  position: relative;
+  margin: 0;
+  color: var(--color-text-soft);
+}
+
+.reward-reveal .eyebrow {
+  position: relative;
+}
+
+.reward-rays-clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.reward-rays {
+  position: absolute;
+  left: 50%;
+  top: 35%;
+  width: 40rem;
+  height: 40rem;
+  margin: -20rem 0 0 -20rem;
+  background: repeating-conic-gradient(color-mix(in srgb, var(--trail) 9%, transparent) 0 8deg, transparent 8deg 20deg);
+  animation: rays-spin 40s linear infinite;
+  pointer-events: none;
+}
+
+.reward-items {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.25rem;
+  margin: 0.5rem 0;
+}
+
+.reward-items figure {
+  display: grid;
+  justify-items: center;
+  gap: 0.4rem;
+  width: 11rem;
+  margin: 0;
+}
+
+.reward-items figcaption {
+  font-size: 0.82rem;
+  color: var(--color-text-soft);
+}
+
+.reward-actions {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.glass-piece {
+  position: relative;
+  width: 7rem;
+  height: 7rem;
+  margin: 0.5rem 0;
+  clip-path: polygon(50% 0, 100% 38%, 82% 100%, 18% 100%, 0 38%);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.55), transparent 45%),
+    var(--glass);
+  box-shadow: inset 0 0 0 3px #3A2E26;
+  animation: glass-glow 2.4s ease-in-out infinite;
+}
+
+@keyframes glass-glow {
+  50% { filter: brightness(1.25) drop-shadow(0 0 12px var(--glass)); }
+}
+
+/* ---------- Santos do ano: rosácea e cartões de mês ---------- */
+.rose-window {
+  margin: 0 auto 1.5rem;
+  width: min(100%, 20rem);
+  text-align: center;
+}
+
+.rose-window svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.rose-window figcaption {
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+}
+
+.rose-frame {
+  fill: #3A2E26;
+}
+
+.rose-petal {
+  cursor: pointer;
+  outline: none;
+}
+
+.rose-petal path {
+  fill: color-mix(in srgb, #8C7E6B 55%, #2A231C);
+  stroke: #3A2E26;
+  stroke-width: 2.5;
+  transition: fill 0.4s;
+}
+
+.rose-petal.is-lit path {
+  fill: var(--glass);
+  filter: drop-shadow(0 0 4px var(--glass));
+}
+
+.rose-petal:hover path,
+.rose-petal:focus-visible path {
+  filter: brightness(1.25);
+}
+
+.rose-petal.is-now path {
+  stroke: var(--color-gold);
+}
+
+.rose-jewel {
+  fill: rgba(255, 255, 255, 0.18);
+}
+
+.rose-petal.is-lit .rose-jewel {
+  fill: rgba(255, 255, 255, 0.55);
+}
+
+.rose-label {
+  fill: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.rose-center {
+  fill: #F2D58A;
+  stroke: #3A2E26;
+  stroke-width: 3;
+}
+
+.rose-cross {
+  fill: none;
+  stroke: #8C6A3F;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.month-cards > li {
+  flex: 0 1 11.5rem;
+}
+
+.month-card {
+  display: grid;
+  justify-items: start;
+  gap: 0.55rem;
+  width: 100%;
+  height: 100%;
+  padding: 0.95rem;
+  border-radius: 1rem;
+  border: 1px solid var(--color-border);
+  border-top: 4px solid color-mix(in srgb, var(--glass) 70%, transparent);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.15s var(--ease-out), box-shadow 0.15s;
+}
+
+.month-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--glass) 22%, transparent);
+}
+
+.month-card.is-now {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 1px var(--color-gold);
+}
+
+.month-card.is-lit {
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--glass) 18%, transparent), transparent 70%),
+    var(--color-surface);
+}
+
+.month-card-head {
+  display: grid;
+}
+
+.month-card-head small {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+}
+
+.month-card.is-now .month-card-head small {
+  color: var(--color-terracotta);
+}
+
+.month-card-head strong {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  text-transform: capitalize;
+}
+
+.month-card-faces {
+  display: flex;
+  align-items: center;
+}
+
+.month-card-faces > span {
+  margin-right: -0.55rem;
+}
+
+.month-card-faces .saint-initial {
+  width: 2.1rem;
+  height: 2.1rem;
+  font-size: 0.85rem;
+  border: 2px solid var(--color-surface);
+}
+
+.month-card-faces > span:not(.is-collected) .saint-initial {
+  filter: grayscale(1) brightness(0.6);
+  opacity: 0.6;
+}
+
+.month-card-more {
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  border: 2px solid var(--color-surface);
+  background: var(--color-border-soft);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.month-card-status {
+  font-size: 0.8rem;
+  color: var(--color-text-soft);
+}
+
+.month-card.is-lit .month-card-status {
+  color: var(--glass);
+  font-weight: 700;
+}
+
+.month-sheet-hint {
+  margin: 0 0 1rem;
+  color: var(--color-text-soft);
+  line-height: 1.55;
+}
+
+.month-sheet .collection-grid > li {
+  flex: 0 1 8rem;
+}
+
+@media (max-width: 560px) {
+  .reward-reveal {
+    padding: 1.25rem 1rem;
+  }
+
+  .reward-items {
+    flex-wrap: nowrap;
+    gap: 0.6rem;
+  }
+
+  .reward-items figure {
+    width: 50%;
+  }
+
+  .reward-items .stamp-art {
+    width: 3.2rem;
+  }
+
+  .reward-items .avatar-frame {
+    width: 92px;
+    height: 92px;
+  }
+}
+
+@media (max-width: 560px) {
+  .month-cards > li {
+    flex-basis: 9rem;
+  }
+
+  .month-card {
+    padding: 0.8rem;
+  }
+}
+
+/* ---------- Cartão do buquê espiritual ---------- */
+.bouquet-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.bouquet-list > .bouquet-card {
+  flex: 0 1 21rem;
+}
+
+.bouquet-card {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: start; /* ao lado de um cartão mais alto, as linhas não esticam */
+  gap: 0.35rem;
+  padding: 1.6rem 1.4rem 1.2rem;
+  border-radius: 1.1rem;
+  border: 1px solid color-mix(in srgb, #C2486A 35%, var(--color-gold));
+  outline: 1px solid color-mix(in srgb, var(--color-gold) 55%, transparent);
+  outline-offset: -8px;
+  background:
+    radial-gradient(circle at 50% 18%, color-mix(in srgb, #F7D6E0 70%, transparent), transparent 55%),
+    radial-gradient(circle at 0% 100%, color-mix(in srgb, #E9C46A 22%, transparent), transparent 45%),
+    radial-gradient(circle at 100% 100%, color-mix(in srgb, #9B7BC4 18%, transparent), transparent 45%),
+    #FFFBF4;
+  color: #3A2A22;
+  text-align: center;
+  box-shadow: 0 14px 30px rgba(94, 59, 36, 0.12);
+  overflow: hidden;
+}
+
+/* Ramos nos cantos */
+.bouquet-card-corner {
+  position: absolute;
+  width: 5rem;
+  height: 5rem;
+  background:
+    radial-gradient(circle at 30% 30%, #C2486A 0 4px, transparent 5px),
+    radial-gradient(circle at 55% 18%, #E9C46A 0 3px, transparent 4px),
+    radial-gradient(circle at 18% 58%, #9B7BC4 0 3px, transparent 4px),
+    radial-gradient(ellipse at 40% 45%, #78A97D 0 7px, transparent 8px),
+    radial-gradient(ellipse at 22% 32%, #5E8C63 0 5px, transparent 6px);
+  opacity: 0.85;
+}
+
+.bouquet-card-corner.is-tl {
+  top: 0;
+  left: 0;
+}
+
+.bouquet-card-corner.is-br {
+  right: 0;
+  bottom: 0;
+  transform: rotate(180deg);
+}
+
+.bouquet-card-kicker {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #B84A13;
+}
+
+.bouquet-card h3 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.7rem;
+  line-height: 1.1;
+  color: #3A2A22;
+}
+
+.bouquet-card .bouquet-intention {
+  margin: 0;
+  font-style: italic;
+  color: #6B5A4E;
+}
+
+.bouquet-card .bouquet-vase {
+  width: 11rem;
+  margin: 0.2rem 0 -0.4rem;
+}
+
+.bouquet-card-offer {
+  margin: 0.2rem 0 0;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  color: #6B5A4E;
+}
+
+.bouquet-ribbons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
+  margin: 0.2rem 0 0.4rem;
+  padding: 0;
+  list-style: none;
+}
+
+.bouquet-ribbons li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.7rem;
+  border-radius: var(--radius-full);
+  border: 1px solid color-mix(in srgb, var(--flower) 55%, #D9C9B4);
+  background: color-mix(in srgb, var(--flower) 14%, #FFFBF4);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #3A2A22;
+}
+
+.bouquet-ribbon-dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--flower);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+
+.bouquet-card .bouquet-message {
+  margin: 0.3rem 0;
+  padding: 0 0.5rem;
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-style: italic;
+  line-height: 1.4;
+  color: #3A2A22;
+}
+
+.bouquet-card .bouquet-message::before {
+  content: '“';
+}
+
+.bouquet-card .bouquet-message::after {
+  content: '”';
+}
+
+.bouquet-card .bouquet-from {
+  margin: 0;
+  font-weight: 600;
+  color: #6B5A4E;
+}
+
+.bouquet-date {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #8C7A6B;
+}
+
+.bouquet-card .bouquet-actions {
+  width: 100%;
+  margin-top: 0.6rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed #D9C9B4;
+}
+
+.bouquet-card .fx-small-btn {
+  background: #FFFFFF;
+  border-color: #D9C9B4;
+  color: #3A2A22;
+}
+
+.bouquet-card .filter-clear-link {
+  color: #8C3A2A;
+}
+
+/* ---------- Missões em cartões ---------- */
+.mission-group-title {
+  margin: 1.25rem 0 0.75rem;
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.mission-cards > li {
+  flex: 0 1 16rem;
+}
+
+.mission-card {
+  display: grid;
+  justify-items: start;
+  align-content: start;
+  gap: 0.45rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, var(--mission) 35%, var(--color-border));
+  border-top: 4px solid var(--mission);
+  background:
+    radial-gradient(circle at 100% 0, color-mix(in srgb, var(--mission) 14%, transparent), transparent 60%),
+    var(--color-surface);
+}
+
+.mission-card-kicker {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--mission);
+}
+
+.mission-card > strong {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  line-height: 1.2;
+}
+
+.mission-beads {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin: 0.2rem 0;
+}
+
+.mission-bead {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 50%;
+  border: 1.5px solid color-mix(in srgb, var(--mission) 70%, transparent);
+}
+
+.mission-bead.is-quiz {
+  border-radius: 0.2rem;
+  transform: rotate(45deg) scale(0.85);
+}
+
+.mission-bead.is-done {
+  background: var(--mission);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--mission) 60%, transparent);
+}
+
+.mission-bead.is-now {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 2px;
+}
+
+.mission-card-status {
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+
+.mission-card-hint {
+  color: var(--color-text-soft);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.mission-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.3rem;
+}
+
+.mission-card .journey-mark {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8rem;
+}
+
+/* ---------- Listas de cartões centralizadas ----------
+   Toda lista de cartões fica centralizada, inclusive a última linha incompleta: as grades viram filas que quebram
+   linha (flex-wrap) com os cartões no centro. Todos os cartões de uma lista têm a mesma largura. */
+.library-grid,
+.saint-miracles,
+.miracles-grid,
+.feature-cards,
+.credits-list,
+.scroll-rail.is-static .scroll-rail-track,
+.collection-grid,
+.intention-wall,
+.trail-grid,
+.saints-grid,
+.symbols-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.library-grid > * { flex: 0 1 20rem; }
+.saint-miracles > * { flex: 0 1 20rem; }
+.miracles-grid > * { flex: 0 1 21rem; }
+.feature-cards > * { flex: 0 1 26rem; }
+.credits-list > * { flex: 0 1 21rem; }
+.scroll-rail.is-static .scroll-rail-track > * { flex: 0 1 20rem; }
+.collection-grid > * { flex: 0 1 7.5rem; }
+.intention-wall > * { flex: 0 1 19rem; }
+.trail-grid > * { flex: 0 1 18rem; }
+.saints-grid > * { flex: 1 1 100%; }
+.symbols-grid > * { flex: 1 1 100%; }
+
+@media (min-width: 640px) {
+  .symbols-grid > * { flex-basis: calc(50% - 0.5rem); max-width: calc(50% - 0.5rem); }
+}
+
+@media (min-width: 720px) {
+  .saints-grid > * { flex-basis: calc(50% - 0.4rem); max-width: calc(50% - 0.4rem); }
+}
+
+@media (min-width: 1024px) {
+  .symbols-grid > * { flex-basis: calc(33.333% - 0.67rem); max-width: calc(33.333% - 0.67rem); }
+}
+
+@media (max-width: 480px) {
+  .miracles-grid > * { flex-basis: 100%; }
+}
+
+/* ---------- Jornada: tela inicial em painel ----------
+   PC: o destaque e "Para hoje" à esquerda, o medalhão fixo à direita, as prateleiras de jogos embaixo.
+   Celular: uma coluna, começando pelo medalhão com a saudação. */
+.journey-hub {
+  display: grid;
+  gap: 1.1rem;
+  margin-top: 1.25rem;
+  grid-template-areas: "side" "main" "shelves";
+}
+
+.journey-hub-side { grid-area: side; min-width: 0; }
+.journey-hub-main { grid-area: main; display: grid; gap: 1.1rem; align-content: start; min-width: 0; }
+.journey-hub-shelves { grid-area: shelves; display: grid; gap: 1.6rem; margin-top: 0.6rem; min-width: 0; }
+
+@media (min-width: 960px) {
+  .journey-hub {
+    grid-template-columns: minmax(0, 1fr) 19rem;
+    grid-template-areas: "main side" "shelves shelves";
+    column-gap: 1.4rem;
+  }
+
+  .journey-hub-side .journey-profile {
+    position: sticky;
+    top: 5.5rem;
+  }
+}
+
+/* Medalhão com saudação e números do caminho */
+.journey-profile {
+  display: grid;
+  gap: 0.9rem;
+  margin: 0;
+  align-items: stretch;
+}
+
+.journey-profile-top {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.journey-hello {
+  color: var(--color-text-soft);
+  font-size: 0.85rem;
+}
+
+.journey-profile-body { gap: 0.1rem; }
+
+.journey-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.4rem;
+  margin: 0;
+}
+
+.journey-stats > div {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.1rem;
+  padding: 0.55rem 0.25rem;
+  border-radius: 0.8rem;
+  background: color-mix(in srgb, var(--color-gold) 9%, transparent);
+  text-align: center;
+}
+
+.journey-stats dt {
+  font-size: 0.68rem;
+  line-height: 1.2;
+  color: var(--color-text-soft);
+}
+
+.journey-stats dd {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-terracotta);
+}
+
+@media (min-width: 960px) {
+  .journey-stats { grid-template-columns: repeat(2, 1fr); }
+}
+
+.journey-frames-box {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.journey-frames-box > small {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-soft);
+}
+
+.journey-profile-community {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  justify-self: start;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-terracotta);
+}
+
+/* O destaque "Continue de onde parou" */
+.journey-continue {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem;
+  border-radius: 1.3rem;
+  border: 1px solid color-mix(in srgb, var(--game) 45%, var(--color-border));
+  border-bottom-width: 5px;
+  background:
+    radial-gradient(circle at 12% 50%, color-mix(in srgb, var(--game) 26%, transparent), transparent 55%),
+    linear-gradient(135deg, color-mix(in srgb, var(--game) 10%, var(--color-surface)), var(--color-surface));
+  color: var(--color-text);
+  overflow: hidden;
+  transition: transform 0.15s var(--ease-out);
+}
+
+.journey-continue:hover { transform: translateY(-2px); }
+
+.journey-continue-art {
+  flex: none;
+  width: 8.5rem;
+}
+
+.journey-continue-art .trail-island-svg {
+  animation: island-float 5s ease-in-out infinite;
+}
+
+.journey-continue-body {
+  display: grid;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.journey-continue-body > strong {
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  line-height: 1.15;
+}
+
+.journey-continue-body > small {
+  color: var(--color-text-soft);
+}
+
+.journey-continue-progress {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.journey-continue-cta {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.3rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  background: var(--game);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--game) 60%, #000);
+}
+
+@media (max-width: 560px) {
+  .journey-continue {
+    padding: 1rem;
+    gap: 0.6rem;
+  }
+
+  .journey-continue-art { width: 5.6rem; }
+  .journey-continue-body > strong { font-size: 1.25rem; }
+}
+
+/* Mini contas (novena ou ilha) */
+.mini-beads {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.mini-beads .mission-bead {
+  width: 0.7rem;
+  height: 0.7rem;
+}
+
+/* "Para hoje" como lista de tarefas */
+.journey-today {
+  margin: 0;
+}
+
+.journey-today > header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.7rem;
+}
+
+.journey-today > header h2 { margin: 0; }
+
+.journey-today > header small {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-soft);
+}
+
+.journey-today li a::before { content: none; }
+
+.journey-today-check {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  border: 2px solid var(--color-gold);
+}
+
+.journey-today li.is-done a {
+  opacity: 0.75;
+}
+
+.journey-today li.is-done .journey-today-check {
+  background: #5E8C63;
+  border-color: #5E8C63;
+  color: #fff;
+}
+
+.journey-today li.is-done strong {
+  text-decoration: line-through;
+  text-decoration-color: color-mix(in srgb, var(--color-text) 40%, transparent);
+}
+
+.journey-today-done {
+  margin-top: 0.7rem;
+  font-size: 0.88rem;
+  color: var(--color-text-soft);
+}
+
+/* Prateleiras de jogos */
+.game-shelf > header {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.7rem;
+  margin-bottom: 0.75rem;
+}
+
+.game-shelf > header h2 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+}
+
+.game-shelf > header small {
+  color: var(--color-text-soft);
+}
+
+.game-shelf-grid {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.game-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 1.1rem;
+  border: 1px solid color-mix(in srgb, var(--game) 35%, var(--color-border));
+  border-bottom-width: 4px;
+  background:
+    radial-gradient(circle at 100% 0, color-mix(in srgb, var(--game) 16%, transparent), transparent 60%),
+    var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.15s var(--ease-out), border-bottom-width 0.15s;
+}
+
+.game-tile:hover { transform: translateY(-3px); }
+.game-tile:active { transform: translateY(1px); border-bottom-width: 2px; }
+
+.game-tile .journey-game-icon {
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: 0;
+  border-radius: 0.8rem;
+  background: var(--game);
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--game) 60%, #000);
+}
+
+.game-tile-head {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.game-tile-text {
+  display: grid;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.game-tile-text strong {
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.game-tile-text small {
+  color: var(--color-text-soft);
+  font-size: 0.8rem;
+  line-height: 1.3;
+}
+
+.game-tile-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  flex: 1;
+}
+
+.game-tile-cta {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--game);
+}
+
+.game-tile-count {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-text-soft);
+}
+
+/* Rezar: cartões em linha (ícone e texto à esquerda, miniatura à direita) */
+.game-shelf.is-rows .game-tile {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.game-shelf.is-rows .game-tile-head { flex: 1; min-width: 0; }
+.game-shelf.is-rows .game-tile-preview { flex: none; align-items: flex-end; }
+
+@media (min-width: 900px) {
+  .game-shelf.is-rows .game-shelf-grid { grid-template-columns: repeat(3, 1fr); }
+
+  .game-shelf.is-rows .game-tile {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .game-shelf.is-rows .game-tile-preview { align-items: center; }
+}
+
+.mini-candles {
+  display: grid;
+  grid-template-columns: repeat(7, 1.25rem);
+  gap: 0.2rem;
+}
+
+.mini-candles .diary-candle { max-height: 1.7rem; }
+
+@media (max-width: 420px) {
+  .mini-candles { grid-template-columns: repeat(7, 0.95rem); gap: 0.12rem; }
+}
+
+.game-tile-vase {
+  display: block;
+  width: 4.2rem;
+}
+
+.game-tile-vase .bouquet-vase { margin: 0; }
+
+@media (min-width: 900px) {
+  .game-tile-vase { width: 5.2rem; }
+}
+
+/* Aprender: as trilhas em destaque e o desafio ao lado */
+@media (min-width: 760px) {
+  .game-shelf.is-feature .game-shelf-grid { grid-template-columns: 2fr 1fr; }
+}
+
+.game-tile.is-big .game-tile-preview { align-items: stretch; }
+
+.game-tile-islands {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.3rem;
+  padding: 0.6rem 0.4rem 0.2rem;
+  border-radius: 0.9rem;
+  background:
+    radial-gradient(ellipse at 50% 120%, color-mix(in srgb, #4F7BB5 22%, transparent), transparent 70%),
+    color-mix(in srgb, var(--game) 6%, transparent);
+}
+
+.game-tile-islands > span:nth-child(odd) { transform: translateY(-6px); }
+
+@media (max-width: 480px) {
+  .game-tile-islands { gap: 0.1rem; padding: 0.5rem 0.2rem 0.1rem; }
+  .game-tile-islands > span:nth-child(odd) { transform: translateY(-3px); }
+}
+
+.game-tile.is-bolt {
+  background:
+    repeating-linear-gradient(135deg, transparent 0 14px, color-mix(in srgb, var(--game) 7%, transparent) 14px 28px),
+    radial-gradient(circle at 100% 0, color-mix(in srgb, var(--game) 26%, transparent), transparent 60%),
+    var(--color-surface);
+}
+
+.game-tile.is-bolt .game-tile-preview { align-items: flex-start; justify-content: flex-end; }
+
+.game-tile-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.game-tile-chips span {
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--game) 45%, transparent);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--game);
+}
+
+/* Colecionar: mosaico com o mapa largo */
+.game-shelf.is-bento .game-shelf-grid { grid-template-columns: repeat(2, 1fr); }
+.game-tile.is-wide { grid-column: 1 / -1; }
+
+@media (min-width: 760px) {
+  .game-shelf.is-bento .game-shelf-grid { grid-template-columns: 2fr 1fr 1fr; }
+  .game-tile.is-wide { grid-column: auto; }
+}
+
+@media (max-width: 420px) {
+  .game-shelf.is-bento .game-tile:not(.is-wide) .game-tile-head { flex-direction: column; align-items: flex-start; }
+}
+
+.game-tile-map {
+  display: block;
+  width: 100%;
+  border-radius: 0.8rem;
+  overflow: hidden;
+  border: 1px solid var(--color-border-soft);
+}
+
+.game-tile-map svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 11rem;
+}
+
+.mini-rose {
+  width: 6.5rem;
+  max-width: 100%;
+}
+
+.mini-rose-frame {
+  fill: none;
+  stroke: var(--color-gold);
+  stroke-width: 2;
+}
+
+.mini-rose path {
+  fill: color-mix(in srgb, var(--color-text-muted) 14%, transparent);
+  stroke: color-mix(in srgb, var(--color-gold) 50%, transparent);
+  stroke-width: 0.8;
+}
+
+.mini-rose path.is-lit {
+  fill: var(--glass);
+  filter: drop-shadow(0 0 3px color-mix(in srgb, var(--glass) 70%, transparent));
+}
+
+.mini-rose-center { fill: var(--color-gold); }
+
+.mini-stamps {
+  display: grid;
+  grid-template-columns: repeat(3, 1.9rem);
+  gap: 0.45rem;
+}
+
+.mini-stamps span {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 2px dashed color-mix(in srgb, var(--color-text-muted) 40%, transparent);
+}
+
+.mini-stamps span.is-stamped {
+  border: 3px double var(--stamp);
+  background: color-mix(in srgb, var(--stamp) 22%, transparent);
+  transform: rotate(var(--tilt));
+}
+
+/* Barra de jogos dentro de cada jogo */
+.game-switcher {
+  display: flex;
+  gap: 0.4rem;
+  margin: 0 0 1rem;
+  padding: 0.2rem 0 0.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.game-switcher::-webkit-scrollbar { display: none; }
+
+@media (min-width: 900px) {
+  .game-switcher { flex-wrap: wrap; justify-content: center; overflow: visible; }
+}
+
+.game-switcher > a,
+.game-switcher > button {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--game) 40%, var(--color-border));
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.game-switcher svg { color: var(--game); }
+
+.game-switcher .is-active {
+  background: var(--game);
+  border-color: var(--game);
+  color: #fff;
+}
+
+.game-switcher .is-active svg { color: #fff; }
+
+.journey-today li a > .journey-today-check { flex: none; }
+
+.game-tile-count {
+  max-width: 6.5rem;
+  text-align: right;
+  line-height: 1.3;
+}
+
+/* Celular: medalhão mais baixo, com as molduras numa fileira que rola para o lado */
+@media (max-width: 959px) {
+  .journey-profile { gap: 0.7rem; padding: 0.9rem; }
+  .journey-profile-top .avatar-frame { width: 64px; height: 64px; }
+  .journey-stats > div { padding: 0.4rem 0.2rem; }
+  .journey-stats dd { font-size: 1.1rem; }
+  .journey-stats dt { font-size: 0.64rem; }
+
+  .journey-frames {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    gap: 0.2rem;
+  }
+
+  .journey-frames::-webkit-scrollbar { display: none; }
+  .journey-frame { flex: none; }
+  .journey-frame .avatar-frame { width: 32px; height: 32px; }
+}
+
+.journey-frames-box .journey-frames { gap: 0.15rem; }
+.journey-frames-box .journey-frame .avatar-frame { width: 32px; height: 32px; }
+
+@media (min-width: 900px) {
+  .game-shelf.is-rows .game-tile-count { max-width: none; text-align: center; }
+  .game-shelf.is-rows .mini-candles { grid-template-columns: repeat(7, 1.6rem); }
+  .game-shelf.is-rows .mini-candles .diary-candle { max-height: 2.1rem; }
+}
+.journey-frames-box .journey-frames { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+.journey-frames-box .journey-frame { flex: none; padding: 0.05rem; }
+
+/* Folhas do vaso do buquê */
+.bouquet-leaf {
+  fill: #78A97D;
+}
+
+/* ---------- Estudo da ilha: todos os assuntos do caminho numa janela ---------- */
+.trail-study-intro {
+  margin: 0 0 1rem;
+  line-height: 1.6;
+  color: var(--color-text-soft);
+}
+
+.trail-study {
+  display: grid;
+  gap: 1.1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trail-study > li {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: 0.75rem;
+  padding-bottom: 1.1rem;
+  border-bottom: 1px dashed var(--color-border);
+}
+
+.trail-study > li:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.trail-study-number {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--trail) 18%, transparent);
+  border: 1px solid var(--trail);
+  font-family: var(--font-serif);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.trail-study h3 {
+  margin: 0.2rem 0 0.4rem;
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+}
+
+.trail-study .trail-sheet-text {
+  margin: 0 0 0.6rem;
+}
+
+.trail-study .trail-today {
+  margin: 0;
+}
+
+/* ---------- Quem é quem na Igreja: degraus em pirâmide, do Papa aos leigos ---------- */
+.hierarchy-ladder {
+  display: grid;
+  justify-items: center;
+  gap: 0.7rem;
+  margin: 1.5rem 0 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+/* Cada degrau é um pouco mais largo que o de cima, como uma pirâmide */
+.hierarchy-step {
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  gap: 0.9rem;
+  align-items: start;
+  width: min(100%, calc(30rem + var(--step) * 3rem));
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  border-top: 4px solid var(--rank);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.06));
+}
+
+.rank-figure {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--rank) 14%, var(--color-cream, #FFFBF4));
+  border: 1px solid color-mix(in srgb, var(--rank) 45%, var(--color-border));
+}
+
+.rank-face {
+  fill: #E9C9A8;
+}
+
+.rank-robe {
+  stroke: rgba(0, 0, 0, 0.18);
+  stroke-width: 0.6;
+}
+
+.rank-rays path {
+  stroke: #E3B55A;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.hierarchy-step-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.3rem 0.6rem;
+}
+
+.hierarchy-step h3 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+}
+
+.hierarchy-order {
+  padding: 0.12rem 0.55rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-gold);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-gold-text);
+}
+
+.hierarchy-step-body > p {
+  margin: 0.35rem 0 0;
+  line-height: 1.6;
+  color: var(--color-text-soft);
+}
+
+.hierarchy-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.2rem;
+  margin: 0.6rem 0 0;
+}
+
+.hierarchy-facts dt {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-pale, var(--color-text-muted));
+}
+
+.hierarchy-facts dd {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+.hierarchy-swatch {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  background: var(--rank);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+}
+
+.hierarchy-step-body > .hierarchy-note {
+  margin-top: 0.55rem;
+  padding: 0.45rem 0.7rem;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-gold) 10%, transparent);
+  font-size: 0.88rem;
+}
+
+.hierarchy-extra {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.hierarchy-box {
+  flex: 1 1 20rem;
+  max-width: 34rem;
+  padding: 1.1rem 1.25rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.hierarchy-box h3 {
+  margin: 0 0 0.8rem;
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+}
+
+.hierarchy-box.is-brazil {
+  border-color: color-mix(in srgb, #2E8B57 45%, var(--color-border));
+  background:
+    linear-gradient(135deg, color-mix(in srgb, #2E8B57 9%, transparent), color-mix(in srgb, #F2C14E 9%, transparent)),
+    var(--color-surface);
+}
+
+/* Do maior para o menor: cada nível um pouco mais recuado */
+.hierarchy-levels {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hierarchy-levels li {
+  display: grid;
+  padding: 0.45rem 0.7rem;
+  border-left: 3px solid var(--color-gold);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: color-mix(in srgb, var(--color-gold) 8%, transparent);
+}
+
+.hierarchy-levels li:nth-child(2) { margin-left: 0.8rem; }
+.hierarchy-levels li:nth-child(3) { margin-left: 1.6rem; }
+.hierarchy-levels li:nth-child(4) { margin-left: 2.4rem; }
+.hierarchy-levels li:nth-child(5) { margin-left: 3.2rem; }
+
+.hierarchy-levels small {
+  color: var(--color-text-muted);
+}
+
+.hierarchy-brazil {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+}
+
+.hierarchy-brazil dt {
+  font-weight: 700;
+}
+
+.hierarchy-brazil dd {
+  margin: 0.1rem 0 0;
+  line-height: 1.55;
+  color: var(--color-text-soft);
+}
+
+@media (max-width: 560px) {
+  .hierarchy-step {
+    grid-template-columns: 3rem 1fr;
+    gap: 0.7rem;
+    padding: 0.9rem;
+  }
+
+  .rank-figure {
+    width: 3rem;
+    height: 3rem;
+  }
+}
+
+/* Foto do perfil: o medalhão é o botão de escolher a foto */
+.journey-photo {
+  position: relative;
+  flex: none;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.journey-photo:focus-within {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 4px;
+}
+
+.journey-photo-badge {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  border: 2px solid var(--color-surface);
+  background: var(--color-terracotta);
+  color: #fff;
+}
+
+.af-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.journey-photo-remove {
+  justify-self: start;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-terracotta);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.journey-photo-hint {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
 }

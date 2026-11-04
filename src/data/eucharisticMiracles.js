@@ -27,9 +27,11 @@ export const ERAS = [
 export const eucharisticMiracles = [
   {
     id: 'lanciano',
+    name: 'A hóstia que se fez carne',
     link: EXHIBITION + 'scheda_b.html?nat=italia&wh=lanciano',
     place: 'Lanciano',
     country: 'Itália',
+    coords: [42.23, 14.39], // latitude, longitude (para o mapa da Jornada)
     year: 750,
     yearLabel: 'Século VIII',
     summary:
@@ -39,9 +41,11 @@ export const eucharisticMiracles = [
   },
   {
     id: 'ferrara',
+    name: 'O sangue na abóbada',
     link: EXHIBITION + 'scheda.html?nat=italia&wh=ferrara',
     place: 'Ferrara',
     country: 'Itália',
+    coords: [44.84, 11.62], // latitude, longitude (para o mapa da Jornada)
     year: 1171,
     yearLabel: '1171',
     summary:
@@ -51,9 +55,11 @@ export const eucharisticMiracles = [
   },
   {
     id: 'daroca',
+    name: 'Os Sagrados Corporais',
     link: EXHIBITION + 'scheda_b.html?nat=spagna&wh=daroca',
     place: 'Daroca',
     country: 'Espanha',
+    coords: [41.11, -1.42], // latitude, longitude (para o mapa da Jornada)
     year: 1239,
     yearLabel: '1239',
     summary:
@@ -63,9 +69,11 @@ export const eucharisticMiracles = [
   },
   {
     id: 'santarem',
+    name: 'O Santíssimo Milagre',
     link: EXHIBITION + 'scheda_b.html?nat=portogallo&wh=santarem',
     place: 'Santarém',
     country: 'Portugal',
+    coords: [39.24, -8.69], // latitude, longitude (para o mapa da Jornada)
     year: 1247,
     yearLabel: 'Século XIII',
     summary:
@@ -75,9 +83,11 @@ export const eucharisticMiracles = [
   },
   {
     id: 'bolsena',
+    name: 'O corporal de Bolsena',
     link: EXHIBITION + 'scheda_b.html?nat=italia&wh=bolsena',
     place: 'Bolsena e Orvieto',
     country: 'Itália',
+    coords: [42.64, 11.99], // latitude, longitude (para o mapa da Jornada)
     year: 1263,
     yearLabel: '1263',
     summary:
@@ -87,9 +97,11 @@ export const eucharisticMiracles = [
   },
   {
     id: 'walldurn',
+    name: 'O Santo Sangue',
     link: EXHIBITION + 'scheda_b.html?nat=germania&wh=walldurn',
     place: 'Walldürn',
     country: 'Alemanha',
+    coords: [49.58, 9.37], // latitude, longitude (para o mapa da Jornada)
     year: 1330,
     yearLabel: '1330',
     summary:
@@ -99,9 +111,11 @@ export const eucharisticMiracles = [
   },
   {
     id: 'cascia',
+    name: 'A hóstia no breviário',
     link: EXHIBITION + 'scheda.html?nat=italia&wh=cascia',
     place: 'Cássia',
     country: 'Itália',
+    coords: [42.72, 13.01], // latitude, longitude (para o mapa da Jornada)
     year: 1330,
     yearLabel: '1330',
     summary:
@@ -111,9 +125,11 @@ export const eucharisticMiracles = [
   },
   {
     id: 'amsterda',
+    name: 'A hóstia intacta no fogo',
     link: EXHIBITION + 'scheda_b.html?nat=olanda&wh=amsterdam',
     place: 'Amsterdã',
     country: 'Holanda',
+    coords: [52.37, 4.9], // latitude, longitude (para o mapa da Jornada)
     year: 1345,
     yearLabel: '1345',
     summary:
@@ -123,9 +139,11 @@ export const eucharisticMiracles = [
   },
   {
     id: 'ludbreg',
+    name: 'O Precioso Sangue',
     link: EXHIBITION + 'scheda_b.html?nat=croazia&wh=ludbreg',
     place: 'Ludbreg',
     country: 'Croácia',
+    coords: [46.25, 16.62], // latitude, longitude (para o mapa da Jornada)
     year: 1411,
     yearLabel: '1411',
     summary:
@@ -135,9 +153,11 @@ export const eucharisticMiracles = [
   },
   {
     id: 'faverney',
+    name: 'O ostensório suspenso no ar',
     link: EXHIBITION + 'scheda.html?nat=francia&wh=faverney',
     place: 'Faverney',
     country: 'França',
+    coords: [47.77, 6.1], // latitude, longitude (para o mapa da Jornada)
     year: 1608,
     yearLabel: '1608',
     summary:
@@ -147,9 +167,11 @@ export const eucharisticMiracles = [
   },
   {
     id: 'siena',
+    name: 'As hóstias que não se desfazem',
     link: EXHIBITION + 'scheda.html?nat=italia&wh=caterinadasiena',
     place: 'Siena',
     country: 'Itália',
+    coords: [43.32, 11.33], // latitude, longitude (para o mapa da Jornada)
     year: 1730,
     yearLabel: '1730',
     summary:
@@ -159,9 +181,11 @@ export const eucharisticMiracles = [
   },
   {
     id: 'betania',
+    name: 'A hóstia que sangrou',
     link: EXHIBITION + 'scheda.html?nat=venezuela&wh=betania',
     place: 'Betânia',
     country: 'Venezuela',
+    coords: [10.16, -66.89], // latitude, longitude (para o mapa da Jornada)
     year: 1991,
     yearLabel: '1991',
     summary:
@@ -171,9 +195,11 @@ export const eucharisticMiracles = [
   },
   {
     id: 'buenos-aires',
+    name: 'O tecido do coração',
     link: EXHIBITION + 'scheda_c.html?nat=argentina&wh=buenosaires',
     place: 'Buenos Aires',
     country: 'Argentina',
+    coords: [-34.6, -58.38], // latitude, longitude (para o mapa da Jornada)
     year: 1996,
     yearLabel: '1992 a 1996',
     summary:
@@ -183,9 +209,11 @@ export const eucharisticMiracles = [
   },
   {
     id: 'tixtla',
+    name: 'A hóstia que exsudou sangue',
     link: EXHIBITION + 'scheda_b.html?nat=messico&wh=tixtla',
     place: 'Tixtla',
     country: 'México',
+    coords: [17.57, -99.4], // latitude, longitude (para o mapa da Jornada)
     year: 2006,
     yearLabel: '2006',
     summary:
@@ -195,9 +223,11 @@ export const eucharisticMiracles = [
   },
   {
     id: 'sokolka',
+    name: 'O coração na hóstia',
     link: EXHIBITION + 'scheda_c.html?nat=polonia&wh=sokolka',
     place: 'Sokółka',
     country: 'Polônia',
+    coords: [53.41, 23.5], // latitude, longitude (para o mapa da Jornada)
     year: 2008,
     yearLabel: '2008',
     summary:
@@ -207,14 +237,134 @@ export const eucharisticMiracles = [
   },
   {
     id: 'legnica',
+    name: 'O coração em agonia',
     link: EXHIBITION + 'scheda_b.html?nat=polonia&wh=legnica',
     place: 'Legnica',
     country: 'Polônia',
+    coords: [51.21, 16.16], // latitude, longitude (para o mapa da Jornada)
     year: 2013,
     yearLabel: '2013',
     summary:
       'No Natal, uma hóstia caiu no chão e foi posta na água. Surgiram nela fragmentos vermelhos, que os peritos identificaram como tecido de músculo cardíaco com sinais de agonia. Em 2016, depois de consultar a Santa Sé, o bispo reconheceu o milagre.',
     whereToSee: 'Santuário de São Jacinto, em Legnica.',
     recognition: 'bispo',
+  },
+  // Milagres sem página própria na lista da exposição (por isso sem "link").
+  {
+    id: 'augsburgo',
+    name: 'A hóstia guardada na cera',
+    place: 'Augsburgo',
+    country: 'Alemanha',
+    coords: [48.37, 10.9],
+    year: 1194,
+    yearLabel: '1194',
+    summary:
+      'Uma mulher guardou em casa uma hóstia consagrada, envolta em cera. Anos depois, arrependida, entregou-a ao padre: parte da hóstia tinha se transformado em carne.',
+    whereToSee: 'Igreja da Santa Cruz (Heilig Kreuz), em Augsburgo.',
+    recognition: 'culto',
+  },
+  {
+    id: 'alatri',
+    name: 'A hóstia que virou carne',
+    place: 'Alatri',
+    country: 'Itália',
+    coords: [41.73, 13.34],
+    year: 1228,
+    yearLabel: '1228',
+    summary:
+      'Uma jovem guardou uma hóstia consagrada para fazer uma “poção de amor”, a conselho de uma feiticeira. Dias depois, encontrou a hóstia transformada em carne. Arrependida, contou tudo ao bispo, e o Papa Gregório IX tratou do caso numa carta de 1228.',
+    whereToSee: 'Catedral de São Paulo, em Alatri.',
+    recognition: 'culto',
+  },
+  {
+    id: 'offida',
+    name: 'A hóstia que sangrou no fogo',
+    place: 'Offida',
+    country: 'Itália',
+    coords: [42.94, 13.69],
+    year: 1273,
+    yearLabel: '1273',
+    summary:
+      'Uma mulher tentou usar uma hóstia consagrada num feitiço e a levou ao fogo. A hóstia se transformou em carne e verteu sangue. Anos depois, arrependida, ela confessou o que tinha feito, e a relíquia foi levada para Offida.',
+    whereToSee: 'Igreja de Santo Agostinho, em Offida.',
+    recognition: 'culto',
+  },
+  {
+    id: 'cebreiro',
+    name: 'O cálice do Cebreiro',
+    place: 'O Cebreiro',
+    country: 'Espanha',
+    coords: [42.71, -7.04],
+    year: 1300,
+    yearLabel: 'Por volta de 1300',
+    summary:
+      'Num dia de nevasca, um camponês subiu a montanha para ir à Missa. O monge que celebrava achou exagero tanto esforço “por um pouco de pão e vinho”. Na consagração, a hóstia se tornou carne e o vinho, sangue.',
+    whereToSee: 'Igreja de Santa María la Real, em O Cebreiro, no Caminho de Santiago, que guarda o cálice e a patena.',
+    recognition: 'culto',
+  },
+  {
+    id: 'seefeld',
+    name: 'A hóstia do cavaleiro orgulhoso',
+    place: 'Seefeld',
+    country: 'Áustria',
+    coords: [47.33, 11.19],
+    year: 1384,
+    yearLabel: '1384',
+    summary:
+      'Na Quinta-feira Santa, o cavaleiro Oswald Milser exigiu, por orgulho, comungar a hóstia grande, reservada ao padre. Ao recebê-la, o chão cedeu sob os seus pés e a hóstia ficou marcada de sangue. Ele se arrependeu e passou a viver em penitência.',
+    whereToSee: 'Igreja de Santo Osvaldo, em Seefeld.',
+    recognition: 'culto',
+  },
+  {
+    id: 'avinhao',
+    name: 'As águas que se abriram',
+    place: 'Avinhão',
+    country: 'França',
+    coords: [43.95, 4.81],
+    year: 1433,
+    yearLabel: '1433',
+    summary:
+      'Em novembro de 1433, uma enchente invadiu a capela onde o Santíssimo estava exposto. Os frades que chegaram de barco viram a água afastada dos dois lados, deixando seco o caminho até o altar.',
+    whereToSee: 'Capela dos Penitentes Cinzentos, em Avinhão, onde o milagre é lembrado todo 30 de novembro.',
+    recognition: 'culto',
+  },
+  {
+    id: 'turim',
+    name: 'A hóstia que se ergueu no ar',
+    place: 'Turim',
+    country: 'Itália',
+    coords: [45.07, 7.68],
+    year: 1453,
+    yearLabel: '1453',
+    summary:
+      'Soldados saquearam uma igreja em Exilles e levaram o ostensório num saco, no lombo de uma mula. Em Turim, o animal parou, o saco se abriu e a hóstia se elevou no ar, resplandecente, até que o bispo a recebeu num cálice.',
+    whereToSee: 'Basílica do Corpus Domini, construída no lugar do milagre, em Turim.',
+    recognition: 'culto',
+  },
+  {
+    id: 'eten',
+    name: 'O Menino Jesus na hóstia',
+    place: 'Eten',
+    country: 'Peru',
+    coords: [-6.91, -79.86],
+    year: 1649,
+    yearLabel: '1649',
+    summary:
+      'Em 2 de junho de 1649, durante a exposição do Santíssimo, os fiéis viram na hóstia a figura de um menino. A visão se repetiu semanas depois, diante de muitas pessoas.',
+    whereToSee: 'Santuário do Divino Menino do Milagre, em Eten.',
+    recognition: 'culto',
+  },
+  {
+    id: 'chirattakonam',
+    name: 'O rosto na hóstia',
+    place: 'Chirattakonam',
+    country: 'Índia',
+    coords: [8.8, 76.88],
+    year: 2001,
+    yearLabel: '2001',
+    summary:
+      'Em abril de 2001, durante a adoração, apareceram na hóstia exposta marcas que formavam um rosto, lembrando Cristo coroado de espinhos.',
+    whereToSee: 'Igreja de Santa Maria, em Chirattakonam, no estado de Kerala.',
+    recognition: 'estudo',
   },
 ];

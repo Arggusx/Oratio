@@ -3,7 +3,6 @@ import { saints } from '../data/saints';
 import { marianTitles } from '../data/marianTitles';
 import { saintImages, marianImages } from '../data/imageCredits';
 import ImageCredit from '../components/ImageCredit';
-import Angel from '../components/anim/Angel';
 
 function CreditList({ items }) {
   return (
@@ -44,7 +43,6 @@ export default function Creditos() {
           <span className="eyebrow">Transparência</span>
           <h1 className="section-title">Créditos das imagens</h1>
         </div>
-        <Angel />
       </div>
       <p className="lead">
         As pinturas, ícones e fotografias dos santos e de Nossa Senhora vêm do Wikimedia Commons. A maioria está

@@ -1,5 +1,7 @@
 import { NavLink } from 'react-router-dom';
+import { GraduationCap } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
+import SeasonChip from './SeasonChip';
 
 const links = [
   ['Início', '/'],
@@ -7,6 +9,7 @@ const links = [
   ['Terço e Orações', '/home/oracoes'],
   ['Calendário', '/home/calendario'],
   ['Escola da Fé', '/home/escola-da-fe'],
+  ['Jornada', '/jornada'],
 ];
 
 // No celular, os links ficam na barra inferior (BottomNav); aqui sobram a marca e o tema.
@@ -30,6 +33,16 @@ export default function Header() {
         </div>
 
         <div className="nav-actions">
+          <SeasonChip />
+          {/* No celular a Escola da Fé não cabe na barra inferior: fica aqui, ao lado do tema. */}
+          <NavLink
+            to="/home/escola-da-fe"
+            className={({ isActive }) => `header-icon-link ${isActive ? 'active' : ''}`}
+            aria-label="Escola da Fé"
+            title="Escola da Fé"
+          >
+            <GraduationCap size={20} aria-hidden="true" />
+          </NavLink>
           <ThemeToggle />
         </div>
       </nav>

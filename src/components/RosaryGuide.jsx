@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronDown, Sparkles, Calendar, HeartHandshake } from 'lucide-react';
 import { getTodayMysteryKey } from '../utils/liturgicalCalendar';
 import RosaryExplorer from './anim/RosaryExplorer';
+import PrayedTodayButton from './PrayedTodayButton';
 import {
   closingPrayers,
   SIGN_OF_THE_CROSS,
@@ -342,7 +343,13 @@ export default function RosaryGuide({ layoutData }) {
           <NordicTimeline key={activeMysteryKey} mystery={currentMystery} />
         ) : (
           <>
-            <RosaryExplorer steps={layoutData.steps} activeIndex={activeStepIndex} onOpenStep={openStepFromBead} />
+            <RosaryExplorer
+              steps={layoutData.steps}
+              activeIndex={activeStepIndex}
+              onOpenStep={openStepFromBead}
+              mysteryKey={activeMysteryKey}
+              mystery={currentMystery}
+            />
             <div className="rosary-steps-timeline">
               {layoutData.steps.map((step, index) => {
                 const isOpen = openStepId === step.id;
@@ -403,6 +410,9 @@ export default function RosaryGuide({ layoutData }) {
           </>
         )}
       </section>
+
+      {/* Fim do terço: um toque discreto para acender o dia na Jornada. */}
+      <PrayedTodayButton showLink />
 
       {/* 4. ORAÇÕES PARA DEPOIS DO TERÇO */}
       <ClosingPrayers />

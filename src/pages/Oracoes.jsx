@@ -89,6 +89,19 @@ function HaloIcon() {
   );
 }
 
+// Nove contas em arco: ícone do cartão das novenas.
+function NovenaIcon() {
+  return (
+    <svg className="feature-card-icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+      {Array.from({ length: 9 }, (_, i) => {
+        const a = Math.PI * (0.1 + (0.8 * i) / 8);
+        return <circle key={i} cx={24 - 16 * Math.cos(a)} cy={30 - 16 * Math.sin(a)} r="2.6" className={i < 4 ? 'halo' : 'figure'} />;
+      })}
+      <path d="M24 30v12M19 35h10" className="figure" />
+    </svg>
+  );
+}
+
 export default function Oracoes() {
   // A aba fica na URL (?secao=oracoes) para poder ser compartilhada.
   const [searchParams, setSearchParams] = useSearchParams();
@@ -130,11 +143,7 @@ export default function Oracoes() {
           <span className="eyebrow">Um caminho de oração</span>
           <h1 className="section-title">Terço e Orações</h1>
         </div>
-        <div className="candles">
-          <Candle />
-          <Candle />
-          <Candle />
-        </div>
+        <Candle />
       </div>
       <p className="lead">
         Aprenda a rezar passo a passo, escolha sua devoção ou consulte orações tradicionais.
@@ -174,20 +183,29 @@ export default function Oracoes() {
             transition={{ duration: 0.35 }}
             className="prayers-search-section"
           >
-            {/* ── Destaque: leva à aba Santos ── */}
-            <Link to="/home/escola-da-fe?secao=santos" className="feature-card">
-              <HaloIcon />
-              <span className="feature-card-text">
-                <span className="feature-card-eyebrow">Santos e intercessores</span>
-                <strong>Conheça a história de cada santo</strong>
-                <span>
-                  {saints.length} santos, cada um com uma página própria: vida, data da festa e orações
+            {/* ── Destaques: novenas e aba Santos ── */}
+            <div className="feature-cards">
+              <Link to="/home/novenas" className="feature-card">
+                <NovenaIcon />
+                <span className="feature-card-text">
+                  <span className="feature-card-eyebrow">Nove dias de oração</span>
+                  <strong>Novenas</strong>
+                  <span>Comece uma novena e acompanhe cada dia, com as nove contas acendendo</span>
                 </span>
-              </span>
-              <ArrowRight size={20} className="feature-card-arrow" aria-hidden="true" />
-            </Link>
-
-            <SaoBentoSection />
+                <ArrowRight size={20} className="feature-card-arrow" aria-hidden="true" />
+              </Link>
+              <Link to="/home/escola-da-fe?secao=santos" className="feature-card">
+                <HaloIcon />
+                <span className="feature-card-text">
+                  <span className="feature-card-eyebrow">Santos e intercessores</span>
+                  <strong>Conheça a história de cada santo</strong>
+                  <span>
+                    {saints.length} santos, cada um com uma página própria: vida, data da festa e orações
+                  </span>
+                </span>
+                <ArrowRight size={20} className="feature-card-arrow" aria-hidden="true" />
+              </Link>
+            </div>
 
             {/* ── Busca e filtros ── */}
             <div className="search-wrapper">
@@ -232,6 +250,9 @@ export default function Oracoes() {
             </div>
 
             <LoadMoreButton remaining={remaining} onClick={showMore} label="Ver mais orações" />
+
+            {/* São Bento vem depois da lista, para a busca ficar logo no começo da aba. */}
+            <SaoBentoSection />
 
             {filtered.length === 0 && (
               <p className="lead" style={{ textAlign: 'center', marginTop: '2rem' }}>

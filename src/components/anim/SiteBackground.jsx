@@ -8,6 +8,10 @@ export default function SiteBackground() {
       <span className="site-bg-glow site-bg-glow-gold" />
       <span className="site-bg-glow site-bg-glow-blue" />
       <span className="site-bg-glow site-bg-glow-rose" />
+      {/* Partículas dos tempos festivos (estrelas no Natal, luz na Páscoa, fogo em Pentecostes); o CSS só as mostra nesses tempos. */}
+      {[...Array(14)].map((_, i) => (
+        <span key={i} className="site-bg-particle" style={{ '--i': i }} />
+      ))}
     </div>
   );
 }
