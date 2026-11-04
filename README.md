@@ -1,110 +1,143 @@
-# Oratio 
+# Oratio
 
-O **Oratio** é uma aplicação web católica para criar um momento diário de oração, leitura e contemplação. Ela reúne o roteiro do Santo Terço, os mistérios do Rosário, a liturgia do dia, leituras breves com reflexões e uma área de dúvidas sobre a fé e as tradições da Igreja.
+O **Oratio** é uma aplicação web católica para criar um momento diário de oração, leitura e contemplação. Ela reúne o terço guiado conta por conta, a liturgia do dia, leituras breves com interpretação, o calendário litúrgico, os santos, a Escola da Fé e a **Jornada**, um conjunto de jogos de oração que acompanham o caminho de cada pessoa sem ranking, pontos ou culpa.
 
-O projeto é uma *single-page application* (SPA) em React: a navegação acontece no navegador, sem recarregar a página, e as transições são animadas para manter uma experiência calma e contínua.
+O projeto é uma *single-page application* (SPA) em React: a navegação acontece no navegador, sem recarregar a página, com transições animadas para manter uma experiência calma e contínua. O conteúdo e a interface estão em português do Brasil, e nada exige cadastro.
 
 ## Para que serve
 
 O site foi pensado como um refúgio digital para quem deseja:
 
-- rezar o terço com um roteiro guiado;
-- consultar os mistérios apropriados para cada dia;
-- acompanhar leituras e o Evangelho do dia;
-- fazer pausas breves de leitura bíblica e meditação;
-- encontrar orações tradicionais;
-- esclarecer dúvidas frequentes sobre a fé católica;
-- enviar sugestões por meio do formulário de feedback.
+- rezar o terço com um roteiro guiado, contando as Ave-Marias no próprio desenho do terço;
+- consultar os mistérios de cada dia e acompanhar a liturgia e o Evangelho;
+- fazer pausas breves de leitura bíblica, um trecho por vez;
+- encontrar orações tradicionais por intenção e por momento do dia;
+- preparar a confissão com um exame de consciência;
+- aprender sobre a fé (Missa, símbolos, santos, títulos de Maria, milagres eucarísticos, hierarquia da Igreja);
+- seguir um caminho de oração com novenas, trilhas de estudo e quizzes;
+- rezar em comunhão com outras pessoas, de forma anônima.
 
-O conteúdo e a interface estão em português do Brasil.
+## Visual
+
+O estilo é "sagrado-minimalista": fundo creme, terracota como cor de ação e dourado como enfeite, títulos em Cormorant Garamond e texto em Inter.
+
+- **Tokens de design** em `src/index.css` (`:root`): dois papéis de texto (`--color-text` e `--color-text-muted`; os nomes antigos `soft`, `pale`, `faint` e `light` apontam para o tom suave), um dourado só para texto (`--color-gold-text`, contraste de 6,5:1; o dourado claro fica para ícones e enfeites), três raios (12, 18 e 22 px, além da pílula) e `--control-height` de 48 px para os botões.
+- **Botões**: `.btn` (cheio, terracota), `.btn-secondary` (contornado) e `.btn-ghost`. "Marcar terço de hoje" é um botão cheio que vira um selo dourado depois de marcado; dentro de listas (novenas, intenções, missões) ele fica contornado.
+- **Modo escuro** em tons quentes. Na primeira visita segue o sistema; a escolha fica salva (`oratio:tema`) e é aplicada antes da primeira pintura por `public/theme-init.js`, para a tela não piscar em claro.
+- **Temas do ano litúrgico**: `useSeasonTheme` define `<html data-season="...">` (Advento, Natal, Quaresma, Tríduo, Páscoa, Pentecostes ou Tempo Comum), e o CSS troca a cor de destaque, os brilhos do fundo e os enfeites da página inicial. Para pré-visualizar outro tempo, use `?tempo=natal` (vale até fechar a aba) e `?tempo=auto` para voltar ao calendário.
+- **Cabeçalho**: marca, a etiqueta do **tempo litúrgico de hoje** na cor do dia (leva ao calendário; no celular aparece o nome curto, como "Comum"), o atalho da Escola da Fé no celular e o botão de tema.
+- **Barra inferior no celular** com cinco itens e o **Terço no centro**, num círculo em destaque: Início, Leituras, Terço, Calendário e Jornada. No computador, os links ficam no topo.
+- Listas de cartões são sempre centralizadas, inclusive a última linha; listas longas mostram poucos itens e um botão "Ver mais"; no celular, listas de cartões paralelos rolam na horizontal.
+- Animações em SVG (pomba, velas, sino, anjo, terço que se monta) respeitam `prefers-reduced-motion`.
 
 ## Funcionalidades
 
 ### Início
 
-A página inicial apresenta o propósito do Oratio  e traz a seção **A Palavra em Três Momentos**. Ela organiza leituras contemplativas — sem o Evangelho — em três blocos: Antigo Testamento, Poesia e Sabedoria, e Cartas e Epístolas. Cada bloco pode exibir o texto completo, uma interpretação e um botão para copiar o trecho. Os textos aparecem mesmo quando a interpretação gerada por IA ainda não está pronta.
+- **Terço de hoje**: a foto do terço vira um cartão com o mistério do dia por cima ("Terço de hoje · ~20 min", por exemplo "Mistérios Gloriosos") e o botão "Começar a rezar".
+- **Para hoje**: lista curta com o terço (riscado quando já foi marcado na Jornada), a leitura do dia e, quando houver, o santo do dia. A lista de santos é baixada à parte, para não pesar na página inicial.
+- **Oração para agora**: a oração do momento do dia (manhã, Ângelus ou Regina Caeli, tarde, noite, antes de dormir) escrita por uma pena.
+- **A Palavra em Três Momentos**: leituras contemplativas, sem o Evangelho, em três trechos (Antigo Testamento, Poesia e Sabedoria, Cartas e Epístolas), mostrados **um por vez, no mesmo lugar**. As abas no topo trocam o trecho e acendem conforme a leitura avança; o cartão tem o texto inteiro (só os muito longos abrem no "Ler mais"), a interpretação recolhível, "Copiar", "Anterior" e "Próximo: …". No último trecho aparece uma mensagem de fim da leitura.
+- É possível voltar a dias anteriores (nunca a dias futuros) e recomeçar a leitura do início (Gênesis 1, Jó 1 e Romanos 1) no próprio ritmo; o ponto de recomeço fica salvo no navegador (`oratio:leitura-inicio`). Há um atalho para o Evangelho do dia na página de Liturgia.
 
-É possível voltar a dias anteriores (nunca a dias futuros) e recomeçar a leitura do início (Gênesis 1, Jó 1 e Romanos 1) no próprio ritmo. O ponto de recomeço fica salvo no navegador do leitor.
+### Terço e Orações
 
-Há também um atalho para a página de Liturgia, onde o Evangelho do dia está disponível.
+A página **Terço e Orações** tem quatro abas (`?secao=terco`, `nordico`, `oracoes`, `confissao`):
+
+1. **Terço Tradicional**: escolha do grupo de mistérios (o do dia vem marcado) e um **terço interativo**. O desenho se monta ao aparecer; tocar numa parte (cruz, contas, medalha) mostra ao lado o que rezar ali, e "Anterior"/"Próximo" percorrem os 8 passos na ordem da oração.
+   - **No passo das dezenas, o próprio terço vira o contador**: as contas da dezena da vez ficam destacadas e acendem uma a uma, na cor do mistério. Ao lado aparecem "1ª dezena de 5", o mistério e a meditação, o Pai-Nosso antes de começar, a Ave-Maria com a cláusula do mistério, o Glória e a Jaculatória no fim, o contador "3 de 10" e o botão "Rezei a Ave-Maria", que vira "Próxima dezena" e, depois da quinta, "Ir para o encerramento".
+   - Abaixo, o roteiro passo a passo em texto, o botão "Marcar terço de hoje", as orações opcionais para depois do terço e a imagem com a posição das contas.
+2. **Terço Nórdico (das Cláusulas)**: roteiro completo de cada conjunto de mistérios; em cada Ave-Maria, a cláusula meditativa entra depois do nome de Jesus.
+3. **Orações**: catálogo pesquisável e filtrável por categoria, por **intenção** ("Para que você quer rezar?") e por **momento do dia**; inclui a Oração de São Bento em português e latim.
+4. **Confissão**: exame de consciência pelos Dez Mandamentos e pelos preceitos da Igreja, os sete pecados capitais, o passo a passo de como se confessar e o Ato de Contrição. A lista marcada fica só na tela e não é salva.
+
+O antigo modo foco (`/home/misterio/foco/...`) foi incorporado ao terço interativo; o endereço leva a esta página.
 
 ### Mistérios do Rosário
 
-A página **Mistérios** lista os cinco mistérios de cada conjunto do Rosário e os dias em que são tradicionalmente rezados:
+A página **Mistérios** lista os cinco mistérios de cada conjunto e os dias em que são rezados:
 
 | Conjunto | Dias indicados |
 | --- | --- |
 | Gozosos | Segundas e sábados; domingos do Advento |
 | Luminosos | Quintas-feiras |
 | Dolorosos | Terças e sextas; domingos da Quaresma |
-| Gloriosos | Quartas e domingos; Tempo Pascal |
+| Gloriosos | Quartas e domingos |
 
-Os dados ficam centralizados em `src/data/mysteries.js`, incluindo nome, texto de meditação, cor visual e cláusula usada no Rosário Nórdico.
-
-### Terço e orações
-
-A página **Terço e Orações** possui três áreas:
-
-1. **Como rezar o terço** — guia em etapas, do sinal da cruz à Salve-Rainha, acompanhado de uma imagem explicativa.
-2. **Rosário Nórdico (das Cláusulas)** — abre um roteiro completo para cada conjunto de mistérios. Em cada Ave-Maria, a cláusula meditativa correspondente é inserida após o nome de Jesus.
-3. **Orações tradicionais** — catálogo pesquisável e filtrável por categorias: Diárias, Marianas, Santos e Sacramentais.
+Os dados ficam em `src/data/mysteries.js` (nome, meditação, cor e cláusula do Terço Nórdico). Os nomes dos quatro grupos, usados na página inicial, estão em `src/data/mysteryTitles.js`.
 
 ### Liturgia diária
 
-A página **Leituras** busca a liturgia em uma fonte externa e mostra, conforme a disponibilidade, a primeira leitura, o salmo, a segunda leitura, o Evangelho e uma homilia/reflexão. A cor da interface acompanha a cor litúrgica recebida.
-
-O botão **Modo foco** abre a leitura selecionada em uma sobreposição de tela inteira, para reduzir distrações.
-
-Caso uma integração esteja indisponível, o site apresenta leituras e reflexões de contingência em vez de interromper a experiência.
-
-### Santos e orações por intenção
-
-Cada santo tem uma página com biografia, data da festa, do que é padroeiro e suas orações: a principal e as específicas para cada intenção (por exemplo, São Rafael para quem procura um(a) companheiro(a)). Na aba **Orações** é possível filtrar por **intenção** ("Para que você quer rezar?") e por **momento do dia** ("Quando rezar?": ao acordar, ao meio-dia, nas refeições, antes de estudar e antes de dormir). As festas dos santos também aparecem no Calendário.
-
-Os dados ficam em `src/data/saints.js` (santos e intenções) e `src/data/prayers.js` (orações, com os campos `saint`, `intentions` e `moments`), organizados como tabelas para facilitar uma futura migração para o banco de dados.
+A página **Leituras** busca a liturgia numa fonte externa e mostra, conforme a disponibilidade, a primeira leitura, o salmo com refrão, a segunda leitura, o Evangelho, as respostas da Missa e uma homilia/reflexão (com aviso quando a homilia é de um dia anterior). A cor da interface acompanha a cor litúrgica. O botão **Modo foco** abre a leitura em tela inteira. Se uma integração falhar, aparecem leituras e reflexões de contingência.
 
 ### Calendário Católico
 
-A página **Calendário** mostra o ano inteiro com domingos de preceito, dias santos de guarda (normas da CNBB), as principais celebrações litúrgicas e os feriados nacionais. A legenda funciona como filtro e há busca por nome. As datas móveis são calculadas a partir da Páscoa em `src/utils/liturgicalCalendar.js`, que também define o mistério do terço do dia (domingos do Advento são gozosos e os da Quaresma, dolorosos) e quando o Aleluia é omitido na Liturgia.
-
-### Modo escuro
-
-O botão no cabeçalho alterna entre tema claro e escuro. Na primeira visita o site segue a preferência do sistema; a escolha fica salva no navegador.
+O ano inteiro com domingos de preceito, dias santos de guarda (normas da CNBB), celebrações litúrgicas, festas de santos e feriados nacionais. A legenda funciona como filtro, há busca por nome, o **anel do ano litúrgico** mostra o intervalo de datas de cada tempo e o ciclo de leituras atual (A, B ou C) fica em destaque. As datas móveis são calculadas a partir da Páscoa em `src/utils/liturgicalCalendar.js`, que também define o tempo litúrgico, o mistério do dia e quando o Aleluia é omitido.
 
 ### Escola da Fé
 
-A página **Escola da Fé** tem três seções. **Na Missa** explica, com ícones ilustrados, quando fazer a inclinação de cabeça, a inclinação profunda e a genuflexão, conforme a Instrução Geral do Missal Romano. **Símbolos** apresenta 15 símbolos cristãos (imagens em `public/img2/simbolos` e textos em `src/data/symbols.js`), cada um com uma citação bíblica. **Curiosidades** funciona como uma FAQ. Ela permite pesquisar e filtrar perguntas sobre sacramentos, história da Igreja, símbolos e liturgia, dogmas e tradições.
+Quatro seções (`?secao=curiosidades`, `missa`, `simbolos`, `santos`):
 
-### Navegação e feedback
+- **Curiosidades**: perguntas frequentes pesquisáveis sobre sacramentos, história, liturgia, dogmas e tradições; **Quem é quem na Igreja** (do Papa aos leigos e a Igreja no Brasil); os **títulos de Nossa Senhora** explicados; e o catálogo de **milagres eucarísticos** pelo mundo.
+- **Na Missa**: quando fazer a inclinação de cabeça, a inclinação profunda e a genuflexão, conforme a Instrução Geral do Missal Romano, com ícones ilustrados.
+- **Símbolos**: 15 símbolos cristãos com imagem e citação bíblica.
+- **Santos**: mais de 40 santos com biografia, festa, patronatos e orações (a principal e as por intenção). Cada um tem sua página em `/home/santos/:slug`.
 
-O cabeçalho é responsivo: em telas pequenas, os links são apresentados em um menu lateral. O botão flutuante **Feedback** abre um formulário enviado pelo Formspree.
+Cada seção termina com um convite para a ilha do mesmo assunto nas Trilhas da fé, onde estão o estudo e os quizzes.
+
+### Jornada
+
+A **Jornada** (`/jornada`) guarda o caminho de oração **só neste aparelho** (`localStorage`, chave `oratio:jornada`); nada vai para servidor. Os princípios: sem pontos, ranking, selos de quantidade nem culpa por dias perdidos.
+
+- **Painel**: medalhão do peregrino (saudação, nome opcional, foto opcional reduzida para 256×256 no próprio aparelho e moldura animada em SVG, ganha ao concluir uma ilha), "Continue de onde parou", "Para hoje" e prateleiras com os jogos.
+- **Caminho de oração**: as semanas de terço marcadas; em cada semana, um dia sem oração é coberto por uma "graça", para faltar um dia não apagar o caminho.
+- **Missões e Novenas** (`/home/novenas`): novenas ao Espírito Santo, de Natal, a Nossa Senhora Aparecida e a Santo Antônio, com nove contas que acendem.
+- **Buquê espiritual**: um buquê de orações oferecido a alguém, enviado como imagem.
+- **Trilhas da fé** (`/home/trilhas`): ilhas flutuantes em ziguezague (Conheça a Missa, Os 4 dogmas de Maria, Os 7 sacramentos, Conheça a Bíblia, Amigos de Deus: os santos, Os sinais da fé). A primeira parada traz o estudo do caminho inteiro, e as seguintes têm quizzes cada vez mais difíceis.
+- **Desafio aleatório** (`/home/quiz/aleatorio`): perguntas de todos os temas, com cinco alternativas, num banco de 126 perguntas.
+- **Santos do ano**: a coleção de santos, que completa uma rosácea mês a mês.
+- **Mapa dos milagres**: o mundo inteiro desenhado, com os milagres eucarísticos visitados e um atalho para o catálogo.
+- **Passaporte do Peregrino**: como a credencial do Caminho de Santiago, ganha um carimbo a cada ilha concluída, e cada carimbo libera uma moldura para o medalhão.
+
+### Comunidade
+
+A página **Comunidade** (`/comunidade`) mostra quantas pessoas rezaram o terço hoje, as novenas feitas em grupo, metas e um mural de intenções. O aparelho manda só um código aleatório (`oratio:anon`), que a API guarda embaralhado. Se a API falhar, a parte da comunidade some e o resto do site segue normal.
+
+### Feedback e privacidade
+
+O botão flutuante **Feedback** abre um formulário enviado pelo Formspree. A **Política de Privacidade** (`/privacidade`, LGPD) explica o que fica no aparelho (tema, Jornada, foto do medalhão, leitura) e o uso do Vercel Web Analytics.
 
 ## Rotas
 
 | Rota | Página |
 | --- | --- |
-| `/` | Página inicial e leituras em três blocos |
-| `/home/misterio` | Conjuntos e meditações dos mistérios |
+| `/` | Início: terço de hoje, Para hoje, oração para agora e leitura em três trechos |
+| `/home/oracoes` | Terço interativo, Terço Nórdico, orações e confissão (`?secao=`) |
+| `/home/misterio` | Os quatro grupos de mistérios |
 | `/home/leituras` | Liturgia diária, Evangelho e homilia |
-| `/home/oracoes` | Guia do terço, Rosário Nórdico e orações |
 | `/home/calendario` | Calendário católico do ano, com filtros e busca |
-| `/home/santos` | Lista de santos, com busca e filtro por intenção |
-| `/home/santos/:slug` | Página de um santo: biografia, festa, padroeiro de quê e orações |
-| `/home/escola-da-fe` | Escola da Fé: curiosidades, o que fazer na Missa (`?secao=missa`) e símbolos cristãos (`?secao=simbolos`). O antigo `/home/curiosidades` redireciona para cá |
+| `/home/escola-da-fe` | Escola da Fé (`?secao=curiosidades`, `missa`, `simbolos`, `santos`); `/home/curiosidades` redireciona para cá |
+| `/home/santos/:slug` | Página de um santo |
+| `/home/confissao` | Exame de consciência |
+| `/jornada` | Jornada (painel e jogos, `?secao=`) |
+| `/home/novenas` e `/home/novenas/:id` | Novenas |
+| `/home/trilhas` e `/home/trilhas/:id` | Trilhas da fé |
+| `/home/trilhas/:id/quiz/:level` | Quiz de uma ilha |
+| `/home/quiz/aleatorio` | Desafio aleatório |
+| `/comunidade` | Comunidade |
 | `/privacidade` | Política de Privacidade (LGPD) |
-| `/home/misterio/foco/:tipo/:id` | Modo guiado de um mistério (`tipo`: `gozosos`, `luminosos`, `dolorosos` ou `gloriosos`; `id`: 1 a 5) |
-
-No modo guiado, cada mistério tem dez contas interativas. Ao avançar pelas dez Ave-Marias, a aplicação segue automaticamente para o próximo mistério; após o quinto, retorna à página de Mistérios.
+| `/creditos` | Créditos das imagens |
+| `/home/misterio/foco/*` | Antigo modo foco; redireciona para `/home/oracoes` |
 
 ## Tecnologias
 
 - [React 19](https://react.dev/) para a interface;
-- [Vite](https://vite.dev/) para desenvolvimento e geração do build;
-- [React Router](https://reactrouter.com/) para rotas no cliente;
+- [Vite](https://vite.dev/) para desenvolvimento e build;
+- [React Router](https://reactrouter.com/) para as rotas no cliente (páginas carregadas sob demanda com `lazy`);
 - [Framer Motion](https://www.framer.com/motion/) para animações e transições;
 - [Lucide React](https://lucide.dev/) para ícones;
-- CSS próprio em `src/index.css` para o visual responsivo;
-- Vercel, configurada para servir a SPA corretamente em rotas diretas.
+- [Vercel Web Analytics](https://vercel.com/docs/analytics);
+- CSS próprio em `src/index.css` (tokens, layout e páginas) e `src/animations.css` (animações, terço interativo e temas litúrgicos).
 
 ## Estrutura do projeto
 
@@ -112,17 +145,26 @@ No modo guiado, cada mistério tem dez contas interativas. Ao avançar pelas dez
 .
 ├── public/
 │   ├── fontes/              # Fontes locais
-│   └── img2/                # Ícones e imagens do site
+│   ├── img2/                # Ícones e imagens do site
+│   ├── theme-init.js        # Aplica o tema salvo antes da primeira pintura
+│   ├── llms.txt, robots.txt # Descrição para buscadores e IAs
+│   └── sitemap.xml          # Gerado no build
+├── scripts/
+│   └── generate-sitemap.mjs # Gera o sitemap (roda antes de npm run build)
 ├── src/
-│   ├── components/          # Cabeçalho, rodapé, feedback e blocos reutilizáveis
-│   ├── data/mysteries.js    # Dados dos quatro conjuntos de mistérios
+│   ├── components/          # Cabeçalho, barra inferior, terço interativo, leitura, blocos reutilizáveis
+│   │   ├── anim/            # Animações em SVG
+│   │   └── journey/         # Jogos da Jornada
+│   ├── data/                # Mistérios, orações, santos, novenas, trilhas, quizzes, milagres...
 │   ├── pages/               # Páginas associadas às rotas
+│   ├── utils/               # Calendário litúrgico, Jornada, comunidade, tema litúrgico, SEO
 │   ├── App.jsx              # Rotas e animação entre páginas
-│   ├── index.css            # Estilos globais e responsividade
+│   ├── index.css            # Tokens, estilos globais e páginas
+│   ├── animations.css       # Animações e temas do ano litúrgico
 │   └── main.jsx             # Ponto de entrada React
 ├── index.html               # Metadados e carregamento da aplicação
 ├── vercel.json              # Reescrita de rotas para a SPA
-└── package.json             # Dependências e comandos do projeto
+└── package.json             # Dependências e comandos
 ```
 
 ## Como executar localmente
@@ -139,13 +181,16 @@ npm install
 npm run dev
 ```
 
-O Vite exibirá no terminal o endereço local, normalmente `http://localhost:5173`.
+O Vite mostra no terminal o endereço local, normalmente `http://localhost:5173`.
 
 ### Outros comandos
 
 ```bash
-# Gera os arquivos de produção em dist/
+# Gera o sitemap e os arquivos de produção em dist/
 npm run build
+
+# Gera só o sitemap
+npm run sitemap
 
 # Confere regras de lint
 npm run lint
@@ -154,29 +199,33 @@ npm run lint
 npm run preview
 ```
 
+O gerador do sitemap roda no Node e importa arquivos de `src/data/`. Por isso, os imports entre esses arquivos precisam ter a extensão `.js` (por exemplo, `import { LEVELS } from './quizLevels.js'`); sem ela o Vite funciona, mas o `npm run build` falha.
+
 ## Integrações e configuração
 
 O front-end consome as seguintes fontes:
 
 | Recurso | Endereço padrão | Uso |
 | --- | --- | --- |
-| Leitura diária em três blocos | `https://-prayer-api.vercel.app/api/-reading` | Página inicial |
-| Versículo do dia | `https://-prayer-api.vercel.app/api/verse-of-the-day` | Componente `VerseOfTheDay` |
-| Reflexão/homilia | `https://-prayer-api.vercel.app/api/-reflection` | Página de Liturgia |
+| Leitura diária em três trechos | `https://daily-prayer-api.vercel.app/api/daily-reading` | Página inicial |
+| Versículo do dia | `https://daily-prayer-api.vercel.app/api/verse-of-the-day` | Componente `VerseOfTheDay` |
+| Reflexão do dia | `https://daily-prayer-api.vercel.app/api/daily-reflection` | Página de Liturgia |
+| Homilia do dia | `https://daily-prayer-api.vercel.app/api/daily-homily` | Página de Liturgia |
+| Comunidade | `https://daily-prayer-api.vercel.app/api/community` | Comunidade e contadores |
 | Liturgia | `https://liturgia.up.railway.app/v2/` | Leituras, salmo e Evangelho |
 | Feedback | Formspree (`https://formspree.io/f/mqapqejd`) | Formulário flutuante |
 
-Para direcionar as chamadas relacionadas à oração a outro serviço, crie um arquivo `.env.local` na raiz:
+Para direcionar as chamadas da `daily-prayer-api` a outro serviço, crie um arquivo `.env.local` na raiz:
 
 ```env
 VITE_API_ORACAO=https://seu-dominio-de-api.example
 ```
 
-O valor deve ser a URL-base, sem os caminhos `/api/...`. Em desenvolvimento, a página de Liturgia também tenta `http://localhost:3000` para buscar a reflexão diária antes de usar o serviço público padrão.
+O valor é a URL-base, sem os caminhos `/api/...`. Em desenvolvimento, a página de Liturgia também tenta `http://localhost:3000` para buscar a reflexão diária antes do serviço público. A API precisa liberar CORS para a origem do site; ao rodar o Vite numa porta diferente da 5173, a comunidade pode ficar indisponível localmente.
 
 ### Formato esperado das APIs
 
-Os endpoints de leitura diária são tolerantes a pequenas variações de nomes, mas o formato recomendado é:
+Os endpoints de leitura diária aceitam pequenas variações de nomes, mas o formato recomendado é:
 
 ```json
 {
@@ -194,27 +243,44 @@ Os endpoints de leitura diária são tolerantes a pequenas variações de nomes,
 }
 ```
 
-Para a reflexão diária, use ao menos `title` e `content`. A aplicação também aceita os sinônimos `titulo`, `subject`, `texto`, `reflexao` e `message`.
+Para a reflexão diária, use ao menos `title` e `content`. A aplicação também aceita `titulo`, `subject`, `texto`, `reflexao` e `message`. Se uma chamada falhar, entram conteúdos locais de contingência.
 
-Se uma chamada falhar, são usados conteúdos locais de fallback. Assim, a navegação e a leitura continuam funcionando mesmo sem conexão com essas APIs.
+## Dados guardados no aparelho
+
+| Chave | O que guarda |
+| --- | --- |
+| `oratio:tema` | Tema claro ou escuro escolhido |
+| `oratio:jornada` | Progresso da Jornada (dias rezados, novenas, trilhas, quizzes, coleção, buquês, perfil e foto do medalhão) |
+| `oratio:leitura-inicio` | Início da leitura pessoal, quando a pessoa recomeça do zero |
+| `oratio:leitura-cache:*` | Leituras já baixadas |
+| `oratio:anon` | Código aleatório e anônimo usado pela comunidade |
+| `oratio:tempo-teste` | Pré-visualização de um tempo litúrgico (`sessionStorage`, só até fechar a aba) |
 
 ## Publicação
 
-O arquivo `vercel.json` encaminha qualquer rota para `index.html`. Isso é necessário porque as rotas são resolvidas pelo React Router no navegador; sem essa regra, acessar diretamente uma URL como `/home/oracoes` poderia retornar 404 no servidor.
+O `vercel.json` encaminha qualquer rota para `index.html`, porque as rotas são resolvidas pelo React Router no navegador; sem isso, abrir direto `/home/oracoes` daria 404.
 
 Para publicar na Vercel:
 
 1. Importe o repositório na Vercel.
 2. Mantenha o preset de Vite.
-3. Caso use uma API própria, cadastre `VITE_API_ORACAO` nas variáveis de ambiente do projeto.
-4. Faça o deploy. O comando de build é `npm run build`.
+3. Se usar uma API própria, cadastre `VITE_API_ORACAO` nas variáveis de ambiente.
+4. Faça o deploy. O comando de build é `npm run build` (gera o sitemap e o build).
+
+## Fluxo de branches
+
+- `main`: o que está publicado.
+- `develop`: onde as mudanças são testadas antes de irem para a `main`.
+- Cada mudança vai numa branch própria (`feat/...`, `fix/...`, `docs/...`), mesclada na `develop` com `git merge --no-ff`. Depois de testada, a `develop` é mesclada na `main`.
 
 ## Observações de manutenção
 
-- Adicione ou edite mistérios em `src/data/mysteries.js` para que as páginas de Mistérios, Terço e Modo Foco permaneçam sincronizadas.
-- As orações estão em `src/data/prayers.js` e as perguntas frequentes em `src/pages/EscolaDaFe.jsx`. Os gestos da Missa ficam em `src/components/MassGesturesSection.jsx` e os ícones ilustrados em `src/components/MassIcons.jsx`.
-- Não há backend local em execução neste repositório, embora `axios`, `express` e `cors` constem como dependências. As funcionalidades atuais dependem de APIs externas ou de dados de contingência no front-end.
-- O componente `VerseOfTheDay` existe no projeto e está preparado para consumir o endpoint de versículo do dia; verifique sua inclusão em uma página caso queira expô-lo na interface atual.
+- Mistérios em `src/data/mysteries.js`: alimentam a página de Mistérios, o Terço Nórdico e as dezenas do terço interativo.
+- Passos do terço tradicional em `src/data/rosaryData.js`; o desenho e a contagem das dezenas ficam em `src/components/anim/RosaryExplorer.jsx`, com o formato do terço em `src/utils/rosaryShape.js`.
+- Orações em `src/data/prayers.js`, santos e intenções em `src/data/saints.js`, novenas em `src/data/novenas.js`, trilhas em `src/data/trails.js` e perguntas em `src/data/quizBank.js` (níveis em `src/data/quizLevels.js`, separados para o banco de perguntas não entrar no pacote principal).
+- A Jornada inteira passa por `src/utils/journeyStore.js`; se um dia houver login, é esse objeto que será sincronizado.
+- Títulos e descrições de cada página (SEO) ficam em `src/utils/usePageMeta.js`.
+- O componente `VerseOfTheDay` está pronto para o endpoint de versículo do dia, mas não aparece em nenhuma página hoje.
 
 ## Licença
 
