@@ -43,7 +43,7 @@ export function MapDrawing({ view = FULL, visited, selected, onSelect, onHover, 
             {...(interactive && {
               tabIndex: 0,
               role: 'link',
-              'aria-label': `${m.place}, ${m.country}${seen ? ', visitado' : ''}. Abrir no catálogo`,
+              'aria-label': `${m.name}: ${m.place}, ${m.country}${seen ? ', visitado' : ''}. Abrir no catálogo`,
               onClick: (e) => {
                 e.stopPropagation();
                 onSelect(m.id);
@@ -127,12 +127,15 @@ function MapViewer({ visited, onClose }) {
     navigate(miracleHref(id));
   };
 
-  // O nome fica numa etiqueta logo acima do alfinete.
+  // O nome fica numa etiqueta logo acima do alfinete (abaixo dele, quando o alfinete está perto do topo),
+  // sem passar das bordas da tela.
   const showName = (miracle, pin) => {
     if (!miracle) return setHover(null);
     const box = svgBox.current.getBoundingClientRect();
     const r = pin.getBoundingClientRect();
-    setHover({ miracle, x: r.left + r.width / 2 - box.left, y: r.top - box.top });
+    const below = r.top - box.top < 90;
+    const x = Math.min(Math.max(r.left + r.width / 2 - box.left, 130), box.width - 130);
+    setHover({ miracle, x, y: below ? r.bottom - box.top : r.top - box.top, below });
   };
 
   const onWheel = (e) => {
@@ -208,10 +211,14 @@ function MapViewer({ visited, onClose }) {
           scale={Math.max(0.35, view.w / FULL.w)}
         />
         {hover && (
-          <span className="map-tooltip" style={{ left: hover.x, top: hover.y }} role="tooltip">
-            <strong>{hover.miracle.place}</strong>
+          <span
+            className={`map-tooltip ${hover.below ? 'is-below' : ''}`}
+            style={{ left: hover.x, top: hover.y }}
+            role="tooltip"
+          >
+            <strong>{hover.miracle.name}</strong>
             <small>
-              {hover.miracle.country} · {hover.miracle.yearLabel}
+              {hover.miracle.place}, {hover.miracle.country} · {hover.miracle.yearLabel}
             </small>
           </span>
         )}

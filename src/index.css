@@ -5353,6 +5353,26 @@ body {
   100% { box-shadow: 0 0 0 0 transparent; }
 }
 
+/* Milagre escolhido no mapa: aberto em destaque antes do catálogo */
+.miracle-focus {
+  display: grid;
+  gap: 0.6rem;
+  max-width: 40rem;
+  margin: 0 auto 2rem;
+  scroll-margin-top: 6rem;
+}
+
+.miracle-focus .miracle-card h3 {
+  font-size: 1.6rem;
+}
+
+.miracle-focus-more {
+  justify-self: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-terracotta);
+}
+
 .miracle-card-top {
   display: flex;
   flex-wrap: wrap;
@@ -8845,6 +8865,16 @@ details[open] > summary .exam-chevron {
   border-bottom: 1px solid var(--color-gold);
   background: var(--color-surface);
   transform: rotate(45deg);
+}
+
+.map-tooltip.is-below {
+  transform: translate(-50%, 0.5rem);
+}
+
+.map-tooltip.is-below::after {
+  top: -0.35rem;
+  bottom: auto;
+  transform: rotate(225deg);
 }
 
 .map-tooltip strong {
