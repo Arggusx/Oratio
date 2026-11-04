@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, CheckCircle2, RotateCcw, Shuffle, XCircle } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2, ChevronLeft, RotateCcw, Shuffle, XCircle } from 'lucide-react';
 import GameIntro from '../components/GameIntro';
 import { LEVELS, QUIZ_TOPICS, buildRound } from '../data/quizBank';
 import { getTrail, trailStops } from '../data/trails';
@@ -229,6 +229,10 @@ function RandomQuizPage() {
 
   return (
     <main className="page quiz-page" style={{ '--trail': '#B84A13' }}>
+      <Link to="/jornada" className="saint-back-link page-back-link">
+        <ChevronLeft size={16} aria-hidden="true" />
+        Jornada
+      </Link>
       <header className="trail-head">
         <div>
           <span className="eyebrow">Quiz</span>

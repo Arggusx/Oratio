@@ -7699,6 +7699,13 @@ details[open] > summary .exam-chevron {
   line-height: 1.35;
 }
 
+/* "← Jornada" no topo das páginas de jogo que ficam fora da Jornada (Trilhas, Desafio aleatório) */
+.page-back-link {
+  display: flex;
+  width: fit-content;
+  margin-bottom: 0.9rem;
+}
+
 .journey-back {
   border: 0;
   background: none;

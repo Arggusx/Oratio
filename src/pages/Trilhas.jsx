@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Check, RotateCcw, Shuffle, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, ChevronLeft, RotateCcw, Shuffle, X } from 'lucide-react';
 import IslandPath from '../components/IslandPath';
 import GameIntro from '../components/GameIntro';
 import TrailIsland from '../components/TrailIsland';
@@ -35,6 +35,10 @@ function TrailList() {
 
   return (
     <main className="page">
+      <Link to="/jornada" className="saint-back-link page-back-link">
+        <ChevronLeft size={16} aria-hidden="true" />
+        Jornada
+      </Link>
       <span className="eyebrow">Trilhas da fé · {trails.length} ilhas</span>
       <h1 className="section-title">
         Escolha uma <span className="trail-title-accent">ilha</span>
