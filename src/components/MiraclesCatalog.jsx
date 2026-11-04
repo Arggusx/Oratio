@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ExternalLink, MapPin, MapPinCheck } from 'lucide-react';
@@ -26,8 +26,11 @@ function matchesFilters(m, { country, era }) {
   return (!country || m.country === country) && (!eraTest || eraTest(m.year));
 }
 
-/** Catálogo de milagres eucarísticos, no espírito da exposição de São Carlo Acutis. */
-export default function MiraclesCatalog() {
+/**
+ * Catálogo de milagres eucarísticos, no espírito da exposição de São Carlo Acutis.
+ * "focusId" vem do mapa da Jornada: o catálogo rola até esse milagre, que brilha.
+ */
+export default function MiraclesCatalog({ focusId = null }) {
   const { miracles: visited } = useJourney();
   const [filters, setFilters] = useState({ country: null, era: null });
 
@@ -35,7 +38,19 @@ export default function MiraclesCatalog() {
 
   const { listed, remaining, showMore } = useLoadMore(shown, PAGE_SIZE, {
     showAll: Object.values(filters).some(Boolean),
+    // O milagre aberto pelo mapa já aparece na lista, mesmo que esteja depois do "Ver mais".
+    minVisible: focusId ? byYear.findIndex((m) => m.id === focusId) + 1 : 0,
   });
+
+  // Espera a página terminar de entrar (a troca de página volta ao topo) e só então rola até o milagre.
+  useEffect(() => {
+    if (!focusId) return undefined;
+    const timer = setTimeout(
+      () => document.getElementById(`milagre-${focusId}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
+      450,
+    );
+    return () => clearTimeout(timer);
+  }, [focusId]);
 
   return (
     <section className="miracles-section" aria-labelledby="miracles-title">
@@ -67,7 +82,8 @@ export default function MiraclesCatalog() {
         {listed.map((m, index) => (
           <motion.article
             key={m.id}
-            className="miracle-card"
+            id={`milagre-${m.id}`}
+            className={`miracle-card ${m.id === focusId ? 'is-focused' : ''}`}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: Math.min((index % PAGE_SIZE) * 0.03, 0.3) }}

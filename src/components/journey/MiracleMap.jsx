@@ -1,19 +1,27 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Expand, MapPin, MapPinCheck, Minus, Plus, RotateCcw, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Expand, Minus, Plus, RotateCcw, X } from 'lucide-react';
 import { eucharisticMiracles } from '../../data/eucharisticMiracles';
 import { miracleMapRegions } from '../../data/miracleMapRegions';
-import { journey, useJourney } from '../../utils/journeyStore';
+import { useJourney } from '../../utils/journeyStore';
 import GameIntro from '../GameIntro';
 
 const MAP = miracleMapRegions.mundo;
 const FULL = { x: 0, y: 0, w: MAP.width, h: MAP.height };
 const MAX_ZOOM = 8;
+// Quanto o dedo ou o mouse pode andar e ainda contar como toque (e não como arrastar o mapa).
+const TAP_SLOP = 6;
 
 const project = ([lat, lng]) => ({ x: (lng - MAP.lng0) * MAP.k, y: (MAP.lat1 - lat) * MAP.k });
 
-/** O desenho do mapa com os alfinetes. "scale" mantém os alfinetes do mesmo tamanho em qualquer zoom. */
-export function MapDrawing({ view = FULL, visited, selected, onSelect, scale = 1, interactive = true }) {
+/** Endereço do milagre no catálogo da Escola da Fé (o catálogo abre e rola até ele). */
+const miracleHref = (id) => `/home/escola-da-fe?milagre=${id}`;
+
+/**
+ * O desenho do mapa com os alfinetes. "scale" mantém os alfinetes do mesmo tamanho em qualquer zoom.
+ * "onHover" recebe o milagre e o alfinete quando o mouse passa por cima (ou o teclado foca), e null ao sair.
+ */
+export function MapDrawing({ view = FULL, visited, selected, onSelect, onHover, scale = 1, interactive = true }) {
   return (
     <svg
       viewBox={`${view.x} ${view.y} ${view.w} ${view.h}`}
@@ -34,13 +42,17 @@ export function MapDrawing({ view = FULL, visited, selected, onSelect, scale = 1
             transform={`translate(${x} ${y}) scale(${scale})`}
             {...(interactive && {
               tabIndex: 0,
-              role: 'button',
-              'aria-label': `${m.place}, ${m.country}${seen ? ', visitado' : ''}`,
+              role: 'link',
+              'aria-label': `${m.place}, ${m.country}${seen ? ', visitado' : ''}. Abrir no catálogo`,
               onClick: (e) => {
                 e.stopPropagation();
                 onSelect(m.id);
               },
               onKeyDown: (e) => (e.key === 'Enter' || e.key === ' ') && onSelect(m.id),
+              onPointerEnter: (e) => e.pointerType === 'mouse' && onHover?.(m, e.currentTarget),
+              onPointerLeave: () => onHover?.(null),
+              onFocus: (e) => onHover?.(m, e.currentTarget),
+              onBlur: () => onHover?.(null),
             })}
           >
             <circle className="map-pin-hit" r="13" />
@@ -54,59 +66,28 @@ export function MapDrawing({ view = FULL, visited, selected, onSelect, scale = 1
   );
 }
 
-/** Cartão do milagre escolhido, com "Marcar como visitado". */
-function MiracleInfo({ miracle, visited, onClose }) {
-  const seen = visited.includes(miracle.id);
-  return (
-    <article className="map-info-card">
-      {onClose && (
-        <button type="button" className="filter-sheet-close map-info-close" onClick={onClose} aria-label="Fechar">
-          <X size={18} />
-        </button>
-      )}
-      <span className="miracle-year">{miracle.yearLabel}</span>
-      <h3>
-        {miracle.place} <small>({miracle.country})</small>
-      </h3>
-      <p>{miracle.summary}</p>
-      <p className="miracle-where">
-        <MapPin size={14} aria-hidden="true" />
-        <span>{miracle.whereToSee}</span>
-      </p>
-      <div className="map-info-actions">
-        <button
-          type="button"
-          className={`miracle-visit ${seen ? 'is-done' : ''}`}
-          onClick={() => journey.markMiracle(miracle.id, !seen)}
-          aria-pressed={seen}
-        >
-          <MapPinCheck size={14} aria-hidden="true" />
-          {seen ? 'Visitado' : 'Marcar como visitado'}
-        </button>
-        <Link to="/home/escola-da-fe" className="map-info-link">
-          Ver o catálogo
-        </Link>
-      </div>
-    </article>
-  );
-}
-
 /**
  * O mapa aberto em tela cheia: arrastar para se mover, roda do mouse ou pinça para aproximar,
- * e os botões + e − para quem prefere tocar.
+ * e os botões + e − para quem prefere tocar. Passar o mouse num alfinete mostra o nome do milagre;
+ * tocar nele leva até o milagre no catálogo da Escola da Fé.
  */
 function MapViewer({ visited, onClose }) {
+  const navigate = useNavigate();
   const dialogRef = useRef(null);
   const svgBox = useRef(null);
+  const zoomInRef = useRef(null);
   const pointers = useRef(new Map());
   const last = useRef(null);
+  const dragged = useRef(false);
+  const start = useRef(null);
   const [view, setView] = useState(FULL);
-  const [selected, setSelected] = useState(null);
-  const current = eucharisticMiracles.find((m) => m.id === selected);
+  const [hover, setHover] = useState(null);
 
   useEffect(() => {
     const dialog = dialogRef.current;
     dialog?.showModal();
+    // Foco inicial no "+": sem isso o navegador foca o primeiro alfinete e o nome dele já abre sozinho.
+    zoomInRef.current?.focus();
     dialog?.addEventListener('close', onClose);
     return () => dialog?.removeEventListener('close', onClose);
   }, [onClose]);
@@ -139,15 +120,24 @@ function MapViewer({ visited, onClose }) {
     return { x: v.x - offX + (clientX - r.left) * scale, y: v.y - offY + (clientY - r.top) * scale, scale };
   };
 
-  // Ao escolher um alfinete, o mapa se centraliza nele (um pouco acima, para o cartão não cobrir).
-  const select = (id) => {
-    setSelected(id);
-    const { x, y } = project(eucharisticMiracles.find((m) => m.id === id).coords);
-    setView((v) => clamp({ ...v, x: x - v.w / 2, y: y - v.h / 3 }));
+  // Tocar num alfinete (sem ter arrastado o mapa) leva até o milagre no catálogo.
+  const open = (id) => {
+    if (dragged.current) return;
+    dialogRef.current?.close();
+    navigate(miracleHref(id));
+  };
+
+  // O nome fica numa etiqueta logo acima do alfinete.
+  const showName = (miracle, pin) => {
+    if (!miracle) return setHover(null);
+    const box = svgBox.current.getBoundingClientRect();
+    const r = pin.getBoundingClientRect();
+    setHover({ miracle, x: r.left + r.width / 2 - box.left, y: r.top - box.top });
   };
 
   const onWheel = (e) => {
     e.preventDefault();
+    setHover(null);
     const p = toMap(e.clientX, e.clientY);
     zoomAt(e.deltaY < 0 ? 1.25 : 0.8, p.x, p.y);
   };
@@ -161,7 +151,8 @@ function MapViewer({ visited, onClose }) {
 
   const onPointerDown = (e) => {
     pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
-    e.currentTarget.setPointerCapture?.(e.pointerId);
+    start.current = { x: e.clientX, y: e.clientY };
+    dragged.current = false;
     last.current = null;
   };
 
@@ -170,6 +161,13 @@ function MapViewer({ visited, onClose }) {
     const prev = pointers.current.get(e.pointerId);
     pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
     const list = [...pointers.current.values()];
+    if (!dragged.current && Math.hypot(e.clientX - start.current.x, e.clientY - start.current.y) > TAP_SLOP) {
+      dragged.current = true;
+      setHover(null);
+      // Só prende o ponteiro quando vira arrasto, para o clique no alfinete continuar chegando nele.
+      e.currentTarget.setPointerCapture?.(e.pointerId);
+    }
+    if (!dragged.current) return;
 
     if (list.length === 2) {
       // Pinça: a distância entre os dedos controla o zoom.
@@ -204,14 +202,23 @@ function MapViewer({ visited, onClose }) {
         <MapDrawing
           view={view}
           visited={visited}
-          selected={selected}
-          onSelect={select}
+          selected={hover?.miracle.id}
+          onSelect={open}
+          onHover={showName}
           scale={Math.max(0.35, view.w / FULL.w)}
         />
+        {hover && (
+          <span className="map-tooltip" style={{ left: hover.x, top: hover.y }} role="tooltip">
+            <strong>{hover.miracle.place}</strong>
+            <small>
+              {hover.miracle.country} · {hover.miracle.yearLabel}
+            </small>
+          </span>
+        )}
       </div>
 
       <div className="map-viewer-controls">
-        <button type="button" onClick={() => zoomAt(1.5)} aria-label="Aproximar">
+        <button ref={zoomInRef} type="button" onClick={() => zoomAt(1.5)} aria-label="Aproximar">
           <Plus size={18} />
         </button>
         <button type="button" onClick={() => zoomAt(1 / 1.5)} aria-label="Afastar">
@@ -225,13 +232,9 @@ function MapViewer({ visited, onClose }) {
         </button>
       </div>
 
-      <p className="map-viewer-hint">Arraste para se mover · roda do mouse ou pinça para aproximar · toque num alfinete</p>
-
-      {current && (
-        <div className="map-viewer-info">
-          <MiracleInfo miracle={current} visited={visited} onClose={() => setSelected(null)} />
-        </div>
-      )}
+      <p className="map-viewer-hint">
+        Arraste para se mover · roda do mouse ou pinça para aproximar · toque num alfinete para ler o milagre
+      </p>
     </dialog>
   );
 }
@@ -262,8 +265,8 @@ export default function MiracleMap() {
         id="mapa"
         steps={[
           'Toque em "Abrir o mapa" para vê-lo em tela cheia. Arraste para se mover e use a roda do mouse, a pinça ou os botões + e − para aproximar.',
-          'Cada alfinete é um lugar onde aconteceu um milagre eucarístico. Toque nele para ler o que aconteceu ali.',
-          'Depois de ler, toque em "Marcar como visitado": o alfinete acende em dourado.',
+          'Cada alfinete é um lugar onde aconteceu um milagre eucarístico. Passe o mouse para ver o nome; toque nele para ler a história no catálogo.',
+          'No catálogo, toque em "Marcar no meu mapa": o alfinete acende em dourado.',
         ]}
       />
 

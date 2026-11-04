@@ -5339,6 +5339,18 @@ body {
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-border);
   background: var(--color-surface);
+  scroll-margin-top: 6rem;
+}
+
+/* Milagre aberto pelo mapa da Jornada: brilha por alguns segundos */
+.miracle-card.is-focused {
+  border-color: var(--color-gold);
+  animation: miracle-focus 2.6s var(--ease-out);
+}
+
+@keyframes miracle-focus {
+  0%, 40% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-gold) 45%, transparent), var(--shadow-md); }
+  100% { box-shadow: 0 0 0 0 transparent; }
 }
 
 .miracle-card-top {
@@ -8442,55 +8454,6 @@ details[open] > summary .exam-chevron {
   to { r: 12; opacity: 0; }
 }
 
-.map-info {
-  margin-top: 1rem;
-}
-
-.map-info-card {
-  display: grid;
-  gap: 0.45rem;
-  padding: 1rem 1.1rem;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-gold);
-  background: var(--color-surface);
-  animation: fadeIn 0.3s var(--ease-out);
-}
-
-.map-info-card h3 {
-  margin: 0;
-  font-family: var(--font-serif);
-  font-size: 1.3rem;
-}
-
-.map-info-card h3 small {
-  font-family: var(--font-sans);
-  font-size: 0.85rem;
-  color: var(--color-text-muted);
-}
-
-.map-info-card p {
-  margin: 0;
-  line-height: 1.6;
-  color: var(--color-text-soft);
-}
-
-.map-info-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.map-info-actions .miracle-visit {
-  margin-top: 0;
-}
-
-.map-info-link {
-  color: var(--color-terracotta);
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
 .map-hint {
   margin: 0;
   color: var(--color-text-soft);
@@ -8851,26 +8814,47 @@ details[open] > summary .exam-chevron {
   pointer-events: none;
 }
 
-.map-viewer-info {
+/* Etiqueta com o nome do milagre, logo acima do alfinete */
+.map-tooltip {
   position: absolute;
-  left: 0.9rem;
-  right: 0.9rem;
-  bottom: calc(0.9rem + env(safe-area-inset-bottom));
-  max-width: 34rem;
-  margin: 0 auto;
-  max-height: 55dvh;
-  overflow-y: auto;
+  z-index: 2;
+  display: grid;
+  gap: 0.1rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 0.7rem;
+  border: 1px solid var(--color-gold);
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 0.5rem));
+  animation: fadeIn 0.15s var(--ease-out);
 }
 
-.map-info-card {
-  position: relative;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+.map-tooltip::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -0.35rem;
+  width: 0.6rem;
+  height: 0.6rem;
+  margin-left: -0.3rem;
+  border-right: 1px solid var(--color-gold);
+  border-bottom: 1px solid var(--color-gold);
+  background: var(--color-surface);
+  transform: rotate(45deg);
 }
 
-.map-info-close {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+.map-tooltip strong {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+}
+
+.map-tooltip small {
+  font-size: 0.74rem;
+  color: var(--color-text-muted);
 }
 
 /* ---------- Listas de cartões centralizadas ----------

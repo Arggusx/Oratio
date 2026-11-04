@@ -230,15 +230,19 @@ const faqJsonLd = JSON.stringify({
 }).replace(/</g, '\\u003c'); // evita que algum texto feche a tag <script>
 
 function CuriosidadesSection() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  // ?milagre=<id> vem do mapa da Jornada: abre o catálogo já no milagre escolhido.
+  const focusMiracle = searchParams.get('milagre');
   const [category, setCategory] = useState('Todos');
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(null);
-  // Coleção aberta no lugar das perguntas: 'milagres', 'maria' ou nenhuma.
-  const [collection, setCollection] = useState(null);
+  // Coleção aberta no lugar das perguntas: 'milagres' ou nenhuma.
+  const [collection, setCollection] = useState(focusMiracle ? 'milagres' : null);
 
   // Ao abrir ou fechar o catálogo, volta ao topo da seção.
   const openCollection = (value) => {
     setCollection(value);
+    if (focusMiracle) setSearchParams({}, { replace: true });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -264,7 +268,7 @@ function CuriosidadesSection() {
           <ArrowLeft size={16} aria-hidden="true" />
           Voltar às curiosidades
         </button>
-        <MiraclesCatalog />
+        <MiraclesCatalog focusId={focusMiracle} />
       </div>
     );
   }
