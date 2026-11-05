@@ -6,14 +6,14 @@ O conteúdo segue a doutrina e a liturgia da Igreja Católica (normas da CNBB pa
 
 ## Páginas principais
 
-- [Como rezar o terço e orações](https://oratio-daily-dev.vercel.app/home/oracoes): roteiro passo a passo do terço tradicional e do rosário nórdico (das cláusulas), mistério recomendado para o dia, orações para depois do terço, Oração de São Bento (português e latim) e orações filtráveis por intenção e momento do dia.
-- [Mistérios do terço](https://oratio-daily-dev.vercel.app/home/misterio): mistérios gozosos (segunda e sábado), luminosos (quinta), dolorosos (terça e sexta) e gloriosos (quarta e domingo).
-- [Liturgia diária](https://oratio-daily-dev.vercel.app/home/leituras): leituras, salmo com refrão, Evangelho e homilia do dia, com as respostas da Missa.
-- [Calendário católico](https://oratio-daily-dev.vercel.app/home/calendario): domingos e dias santos de preceito, solenidades, festas de santos e feriados nacionais do Brasil.
-- [Santos](https://oratio-daily-dev.vercel.app/home/santos): biografia, festa, patronatos e orações de mais de 40 santos, como São Bento, Santo Antônio, Santa Rita, São Jorge, Padre Pio, Santa Dulce dos Pobres, Frei Galvão e São Carlo Acutis.
-- [Escola da Fé](https://oratio-daily-dev.vercel.app/home/escola-da-fe): perguntas frequentes sobre a fé católica, o que fazer na Missa (genuflexão, inclinação de cabeça e inclinação profunda), o significado dos símbolos cristãos, um catálogo de milagres eucarísticos pelo mundo (Lanciano, Bolsena, Santarém, Siena, Buenos Aires, Sokółka, Legnica e outros) e os títulos de Nossa Senhora explicados (Aparecida, Fátima, Lourdes, Guadalupe, Carmo, Desatadora dos Nós e outros), mostrando que todos se referem à mesma Maria.
-- [Exame de consciência](https://oratio-daily-dev.vercel.app/home/confissao): roteiro para a confissão com perguntas pelos Dez Mandamentos e pelos preceitos da Igreja, os sete pecados capitais, o passo a passo de como se confessar e o Ato de Contrição. A lista marcada fica só na tela e não é salva.
+- [Como rezar o terço e orações](https://www.oratiodaily.com/home/oracoes): roteiro passo a passo do terço tradicional e do rosário nórdico (das cláusulas), mistério recomendado para o dia, orações para depois do terço, Oração de São Bento (português e latim) e orações filtráveis por intenção e momento do dia.
+- [Mistérios do terço](https://www.oratiodaily.com/home/misterio): mistérios gozosos (segunda e sábado), luminosos (quinta), dolorosos (terça e sexta) e gloriosos (quarta e domingo).
+- [Liturgia diária](https://www.oratiodaily.com/home/leituras): leituras, salmo com refrão, Evangelho e homilia do dia, com as respostas da Missa.
+- [Calendário católico](https://www.oratiodaily.com/home/calendario): domingos e dias santos de preceito, solenidades, festas de santos e feriados nacionais do Brasil.
+- [Santos](https://www.oratiodaily.com/home/santos): biografia, festa, patronatos e orações de mais de 40 santos, como São Bento, Santo Antônio, Santa Rita, São Jorge, Padre Pio, Santa Dulce dos Pobres, Frei Galvão e São Carlo Acutis.
+- [Escola da Fé](https://www.oratiodaily.com/home/escola-da-fe): perguntas frequentes sobre a fé católica, o que fazer na Missa (genuflexão, inclinação de cabeça e inclinação profunda), o significado dos símbolos cristãos, um catálogo de milagres eucarísticos pelo mundo (Lanciano, Bolsena, Santarém, Siena, Buenos Aires, Sokółka, Legnica e outros) e os títulos de Nossa Senhora explicados (Aparecida, Fátima, Lourdes, Guadalupe, Carmo, Desatadora dos Nós e outros), mostrando que todos se referem à mesma Maria.
+- [Exame de consciência](https://www.oratiodaily.com/home/confissao): roteiro para a confissão com perguntas pelos Dez Mandamentos e pelos preceitos da Igreja, os sete pecados capitais, o passo a passo de como se confessar e o Ato de Contrição. A lista marcada fica só na tela e não é salva.
 
 ## Opcional
 
-- [Política de Privacidade](https://oratio-daily-dev.vercel.app/privacidade)
+- [Política de Privacidade](https://www.oratiodaily.com/privacidade)

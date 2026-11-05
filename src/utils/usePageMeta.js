@@ -5,7 +5,7 @@ import { getTrail } from '../data/trails';
 
 const QUIZ_DESCRIPTION = 'Perguntas com cinco alternativas e a explicação de cada resposta, do fácil ao desafio final.';
 
-export const SITE_URL = 'https://oratio-daily-dev.vercel.app';
+export const SITE_URL = 'https://www.oratiodaily.com';
 
 const DEFAULT_META = {
   title: 'Oratio Daily — Oração, Terço e Liturgia Diária',

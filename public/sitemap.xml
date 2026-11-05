@@ -1,422 +1,422 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/leituras</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/leituras</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/oracoes</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/oracoes</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/misterio</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/misterio</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/calendario</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/calendario</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/sao-bento</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/sao-bento</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/sao-rafael</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/sao-rafael</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/sao-miguel</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/sao-miguel</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/sao-jose</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/sao-jose</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/santo-antonio</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/santo-antonio</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/santa-rita</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/santa-rita</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/sao-judas-tadeu</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/sao-judas-tadeu</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/santa-luzia</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/santa-luzia</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/sao-bras</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/sao-bras</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/sao-francisco</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/sao-francisco</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/santa-teresinha</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/santa-teresinha</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/sao-carlo-acutis</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/sao-carlo-acutis</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/sao-joao-batista</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/sao-joao-batista</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/sao-pedro</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/sao-pedro</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/sao-paulo</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/sao-paulo</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/santa-maria-madalena</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/santa-maria-madalena</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/santana-e-sao-joaquim</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/santana-e-sao-joaquim</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/sao-sebastiao</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/sao-sebastiao</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/sao-jorge</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/sao-jorge</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/sao-lourenco</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/sao-lourenco</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/santa-cecilia</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/santa-cecilia</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/santa-monica</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/santa-monica</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/santo-agostinho</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/santo-agostinho</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/sao-patricio</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/sao-patricio</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/santa-edwiges</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/santa-edwiges</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/sao-domingos</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/sao-domingos</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/santa-clara</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/santa-clara</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/santo-tomas-de-aquino</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/santo-tomas-de-aquino</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/santa-catarina-de-sena</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/santa-catarina-de-sena</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/santo-inacio-de-loyola</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/santo-inacio-de-loyola</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/sao-francisco-xavier</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/sao-francisco-xavier</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/santa-teresa-de-avila</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/santa-teresa-de-avila</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/sao-jose-de-anchieta</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/sao-jose-de-anchieta</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/sao-camilo-de-lelis</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/sao-camilo-de-lelis</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/sao-vicente-de-paulo</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/sao-vicente-de-paulo</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/sao-frei-galvao</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/sao-frei-galvao</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/sao-joao-maria-vianney</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/sao-joao-maria-vianney</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/santa-josefina-bakhita</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/santa-josefina-bakhita</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/sao-padre-pio</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/sao-padre-pio</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/sao-maximiliano-kolbe</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/sao-maximiliano-kolbe</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/santa-faustina</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/santa-faustina</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/santa-dulce-dos-pobres</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/santa-dulce-dos-pobres</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/santa-teresa-de-calcuta</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/santa-teresa-de-calcuta</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/santa-gianna-beretta-molla</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/santa-gianna-beretta-molla</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/santos/sao-joao-paulo-ii</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/santos/sao-joao-paulo-ii</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/escola-da-fe</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/escola-da-fe</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/confissao</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/confissao</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/novenas</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/novenas</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/novenas/espirito-santo</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/novenas/espirito-santo</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/novenas/natal</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/novenas/natal</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/novenas/aparecida</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/novenas/aparecida</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/novenas/santo-antonio</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/novenas/santo-antonio</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/trilhas</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/trilhas</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/comunidade</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/comunidade</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/trilhas/missa-7-dias</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/trilhas/missa-7-dias</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/trilhas/dogmas-de-maria</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/trilhas/dogmas-de-maria</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/trilhas/sete-sacramentos</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/trilhas/sete-sacramentos</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/trilhas/biblia</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/trilhas/biblia</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/trilhas/santos</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/trilhas/santos</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/trilhas/simbolos</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/trilhas/simbolos</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/escola-da-fe?secao=missa</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/escola-da-fe?secao=missa</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/home/escola-da-fe?secao=simbolos</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/home/escola-da-fe?secao=simbolos</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/privacidade</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/privacidade</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.2</priority>
   </url>
   <url>
-    <loc>https://oratio-daily-dev.vercel.app/creditos</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://www.oratiodaily.com/creditos</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.2</priority>
   </url>
