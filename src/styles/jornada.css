@@ -1,0 +1,618 @@
+/* ---------- Jornada ---------- */
+.journey-card {
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+}
+
+.journey-card-head h2 {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+}
+
+.journey-card-head p {
+  margin: 0 0 1.1rem;
+  color: var(--color-text-soft);
+  line-height: 1.6;
+}
+
+.diary-grid {
+  display: grid;
+  gap: 0.4rem;
+  max-width: 26rem;
+}
+
+.diary-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.4rem;
+}
+
+.diary-head span {
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.diary-day {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  min-width: 0.9rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-border);
+  color: var(--color-gold-muted);
+}
+
+.diary-day.is-prayed {
+  border-color: var(--color-gold);
+  background: radial-gradient(circle at 40% 35%, #FFE8A3, var(--color-gold) 70%);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--color-gold) 60%, transparent);
+}
+
+.diary-day.is-grace {
+  border-style: dashed;
+  border-color: var(--color-gold);
+  background: color-mix(in srgb, var(--color-gold) 14%, transparent);
+}
+
+.diary-day.is-future {
+  opacity: 0.35;
+}
+
+.diary-day.is-today {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 2px;
+}
+
+.diary-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1rem 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8rem;
+  color: var(--color-text-soft);
+}
+
+.diary-legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.diary-legend .diary-day {
+  width: 1rem;
+}
+
+.journey-mark-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+
+/* "Marcar terço de hoje" é a ação principal do dia: botão cheio, como o .btn.
+   A borda tracejada antiga parecia botão desativado. Depois de marcado, vira um selo dourado suave. */
+.journey-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: var(--control-height);
+  padding: 0.6rem 1.25rem;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--color-terracotta);
+  background: var(--color-terracotta);
+  color: #FFFAF4;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background var(--duration-fast), border-color var(--duration-fast), color var(--duration-fast);
+}
+
+.journey-mark:hover {
+  background: var(--color-terracotta-dark);
+  border-color: var(--color-terracotta-dark);
+}
+
+.journey-mark.is-done {
+  border-color: var(--color-gold);
+  background: color-mix(in srgb, var(--color-gold) 18%, var(--color-surface));
+  color: var(--color-text);
+}
+
+.journey-mark.is-done svg {
+  color: var(--color-gold-text);
+}
+
+/* Dentro de listas (dias da novena, intenções, missões) o botão é contornado, para não pesar. */
+.novena-day .journey-mark:not(.is-done),
+.intention-note .journey-mark:not(.is-done),
+.mission-card .journey-mark:not(.is-done) {
+  min-height: 2.5rem;
+  border-color: var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.novena-day .journey-mark:not(.is-done):hover,
+.intention-note .journey-mark:not(.is-done):hover,
+.mission-card .journey-mark:not(.is-done):hover {
+  border-color: var(--color-terracotta);
+  color: var(--color-terracotta-dark);
+}
+
+:root[data-theme='dark'] .journey-mark:not(.is-done) {
+  background: #B84A13;
+  border-color: #B84A13;
+  color: #FFF7EF;
+}
+
+:root[data-theme='dark'] .journey-mark:not(.is-done):hover {
+  background: #CF5E24;
+  border-color: #CF5E24;
+}
+
+:root[data-theme='dark'] .novena-day .journey-mark:not(.is-done),
+:root[data-theme='dark'] .intention-note .journey-mark:not(.is-done),
+:root[data-theme='dark'] .mission-card .journey-mark:not(.is-done) {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.journey-mark-link {
+  color: var(--color-terracotta);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* ---------- Novenas ---------- */
+.novena-list {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.novena-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  transition: border-color var(--duration-fast), box-shadow var(--duration-fast);
+}
+
+.novena-card:hover {
+  border-color: var(--color-gold);
+  box-shadow: var(--shadow-sm);
+}
+
+.novena-card-text {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.novena-card-text span {
+  color: var(--color-text-soft);
+  font-size: 0.85rem;
+}
+
+.novena-beads {
+  display: flex;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.novena-bead {
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-gold);
+  transition: background 0.4s, box-shadow 0.4s;
+}
+
+.novena-beads.is-sm .novena-bead {
+  width: 0.7rem;
+  height: 0.7rem;
+}
+
+.novena-bead.is-done {
+  background: radial-gradient(circle at 40% 35%, #FFE8A3, var(--color-gold) 70%);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--color-gold) 60%, transparent);
+}
+
+.novena-bead.is-today {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 2px;
+}
+
+.novena-when {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.novena-progress {
+  display: grid;
+  justify-items: start;
+  gap: 0.6rem;
+  margin: 1.5rem 0;
+  padding: 1.1rem;
+  border: 1px solid var(--color-gold);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-gold) 8%, var(--color-surface));
+}
+
+.novena-progress p {
+  margin: 0;
+}
+
+.novena-progress .filter-clear-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.novena-prayer {
+  margin-bottom: 1.5rem;
+}
+
+.novena-days {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.novena-day {
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.novena-day.is-today {
+  border-color: var(--color-terracotta);
+}
+
+.novena-day.is-done {
+  border-color: var(--color-gold);
+}
+
+.novena-day-number {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-terracotta);
+}
+
+.novena-day h3 {
+  margin: 0.2rem 0 0.3rem;
+  font-size: 1.05rem;
+}
+
+.novena-day p {
+  margin: 0 0 0.6rem;
+  color: var(--color-text-soft);
+  line-height: 1.55;
+}
+
+.novena-day .journey-mark {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.85rem;
+}
+
+
+
+
+/* Toques discretos: guardar santo e marcar milagre */
+.saint-collect,
+.miracle-visit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.6rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  border: 1px dashed var(--color-gold);
+  background: transparent;
+  color: var(--color-text-soft);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.saint-collect.is-done,
+.miracle-visit.is-done {
+  border-style: solid;
+  background: color-mix(in srgb, var(--color-gold) 16%, var(--color-surface));
+  color: var(--color-text);
+}
+
+/* Coleção de santos */
+.collection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+
+
+/* Mapa dos milagres */
+
+
+
+
+
+
+
+
+
+
+
+
+/* Buquê espiritual */
+.bouquet-form {
+  display: grid;
+  gap: 0.9rem;
+  max-width: 34rem;
+}
+
+.bouquet-form label {
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.bouquet-form .search {
+  padding-left: 1rem;
+}
+
+.bouquet-form textarea.search {
+  resize: vertical;
+  border-radius: var(--radius-md);
+  padding-top: 0.7rem;
+}
+
+.bouquet-form .btn {
+  justify-self: start;
+}
+
+.bouquet-items {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.bouquet-items legend {
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.bouquet-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.45rem 0.6rem 0.45rem 0.9rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-surface);
+  font-size: 0.9rem;
+}
+
+.bouquet-item.is-on {
+  border-color: var(--color-gold);
+}
+
+.bouquet-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bouquet-stepper button {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.bouquet-stepper button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.bouquet-stepper output {
+  min-width: 1.5rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+
+
+
+
+
+
+
+
+
+@media print {
+  body.print-bouquet * {
+    visibility: hidden;
+  }
+
+  body.print-bouquet .bouquet-card.is-printing,
+  body.print-bouquet .bouquet-card.is-printing * {
+    visibility: visible;
+  }
+
+  body.print-bouquet .bouquet-card.is-printing {
+    position: absolute;
+    inset: 0 0 auto;
+    background: #fff;
+    color: #000;
+  }
+
+  body.print-bouquet .bouquet-actions {
+    display: none;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+.year-bar {
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--color-border-soft);
+  overflow: hidden;
+}
+
+.year-bar span {
+  display: block;
+  height: 100%;
+}
+
+
+/* Quiz da Escola da Fé */
+.quiz {
+  margin-top: 2.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--color-gold);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-gold) 7%, var(--color-surface));
+}
+
+.quiz-title {
+  margin: 0 0 0.4rem;
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+}
+
+.quiz-count {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-terracotta);
+}
+
+.quiz-question {
+  margin: 0.4rem 0 0.9rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.quiz-options {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.quiz-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.95rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.quiz-option:not(:disabled):hover {
+  border-color: var(--color-gold);
+}
+
+.quiz-option:disabled {
+  cursor: default;
+}
+
+.quiz-option.is-right {
+  border-color: #5E8C63;
+  background: color-mix(in srgb, #5E8C63 14%, var(--color-surface));
+}
+
+.quiz-option.is-wrong {
+  border-color: #B23A2E;
+  background: color-mix(in srgb, #B23A2E 10%, var(--color-surface));
+}
+
+.quiz-option.is-dim {
+  opacity: 0.55;
+}
+
+.quiz-why {
+  margin-top: 0.9rem;
+  line-height: 1.6;
+}
+
+.quiz-next {
+  display: flex;
+  margin-top: 0.8rem;
+}
+
+.quiz-end {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.quiz-end p {
+  margin: 0;
+}
+
+/* Trilhas */
+.novena-day.is-locked {
+  opacity: 0.6;
+}
+
+.trail-locked {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.trail-today {
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-gold) 10%, transparent);
+}

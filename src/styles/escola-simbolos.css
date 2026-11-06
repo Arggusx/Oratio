@@ -1,0 +1,103 @@
+/* ============================================================
+   ESCOLA DA FÉ — SÍMBOLOS CRISTÃOS
+   ============================================================ */
+.symbols-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .symbols-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .symbols-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.symbol-card {
+  display: flex;
+  gap: 1rem;
+  height: 100%;
+  padding: 1.1rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--duration-fast), transform var(--duration-fast), box-shadow var(--duration-fast);
+}
+
+.symbol-card:hover {
+  border-color: var(--color-gold);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.symbol-image {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 5.5rem;
+  height: 6.5rem;
+  border-radius: var(--radius-md);
+  background: radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--color-gold) 16%, var(--color-surface)), var(--color-cream-warm));
+}
+
+/* Imagens pequenas (cerca de 100 px): exibidas sem ampliar para não perder nitidez. */
+.symbol-image img {
+  max-width: 82%;
+  max-height: 86%;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.18));
+  transition: transform 0.4s var(--ease-spring);
+}
+
+.symbol-card:hover .symbol-image img {
+  transform: scale(1.06);
+}
+
+.symbol-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.symbol-body h3 {
+  font-size: 1.3rem;
+  color: var(--color-charcoal);
+}
+
+.symbol-body p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--color-text-soft);
+}
+
+.symbol-body .symbol-extra {
+  font-size: 0.83rem;
+  color: var(--color-text-muted);
+}
+
+.symbol-ref {
+  margin-top: 0.2rem;
+  padding-left: 0.7rem;
+  border-left: 2px solid var(--color-gold);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.98rem;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.symbol-ref cite {
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-terracotta);
+}

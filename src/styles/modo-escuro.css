@@ -1,0 +1,151 @@
+/* ============================================================
+   MODO ESCURO
+   ============================================================ */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --color-cream:       #17120F;
+  --color-cream-warm:  #251D18;
+  --color-cream-light: #1C1612;
+  --color-cream-dark:  #33281F;
+
+  --color-terracotta:       #E58A55;
+  --color-terracotta-dark:  #F2A473;
+  --color-terracotta-light: #C96A35;
+
+  --color-gold:        #D9AE5C;
+  --color-gold-light:  #E3BD72;
+  --color-gold-muted:  #C9A15A;
+  --color-gold-text:   #E3BD72;
+
+  --color-charcoal:    #F3E9DE;
+  --color-text:        #E6DAD0;
+  --color-text-muted:  #BBA99A;
+
+  --color-border:      #3A2E26;
+  --color-border-soft: #30261F;
+  --color-surface:     #201914;
+
+  --shadow-sm:   0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-md:   0 6px 18px rgba(0, 0, 0, 0.3);
+  --shadow-lg:   0 14px 25px rgba(0, 0, 0, 0.35);
+  --shadow-xl:   0 9px 22px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 5px 20px rgba(0, 0, 0, 0.45);
+}
+
+body {
+  transition: background var(--duration-mid), color var(--duration-mid);
+}
+
+/* Botões com fundo terracota mantêm o tom original para contraste com o texto claro. */
+:root[data-theme='dark'] .btn,
+:root[data-theme='dark'] .category.active,
+:root[data-theme='dark'] .btn-gospel-banner {
+  background: #B84A13;
+  color: #FFF7EF;
+}
+
+:root[data-theme='dark'] .btn:hover,
+:root[data-theme='dark'] .btn-gospel-banner:hover {
+  background: #CF5E24;
+}
+
+:root[data-theme='dark'] .btn-ghost,
+:root[data-theme='dark'] .mystery-card .btn {
+  background: var(--color-cream-warm);
+  color: var(--color-text);
+}
+
+:root[data-theme='dark'] .site-header {
+  background: rgba(23, 18, 15, 0.88);
+}
+
+:root[data-theme='dark'] .bottom-nav {
+  background: rgba(23, 18, 15, 0.94);
+}
+
+:root[data-theme='dark'] .brand,
+:root[data-theme='dark'] .footer-brand-name {
+  color: var(--color-terracotta);
+}
+
+:root[data-theme='dark'] .reflection blockquote,
+:root[data-theme='dark'] .reading-text {
+  color: var(--color-text);
+}
+
+:root[data-theme='dark'] .tab {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme='dark'] .tab:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+:root[data-theme='dark'] .category {
+  color: var(--color-text-soft);
+}
+
+:root[data-theme='dark'] .modal-close:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+:root[data-theme='dark'] .skeleton {
+  background: linear-gradient(90deg, #241C17 25%, #2F251E 50%, #241C17 75%);
+  background-size: 200% 100%;
+}
+
+:root[data-theme='dark'] .verse-api-notice {
+  background: #2B1D12;
+  border-color: #4A2E17;
+  color: #F2A46B;
+}
+
+:root[data-theme='dark'] .btn-retry {
+  color: #F2A46B;
+}
+
+:root[data-theme='dark'] .btn-verse-action.copied,
+:root[data-theme='dark'] .btn-block-action.copied {
+  background: #0F2A20;
+  border-color: #10B981;
+  color: #6EE7B7;
+}
+
+:root[data-theme='dark'] .gospel-link-badge:hover,
+:root[data-theme='dark'] .verse-search-input-box:focus-within {
+  background: var(--color-surface);
+}
+
+:root[data-theme='dark'] .nordic-clause-highlight {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+:root[data-theme='dark'] .github-contact-btn:hover,
+:root[data-theme='dark'] .verse-tooltip {
+  color: var(--color-cream);
+}
+
+/* Cores claras vindas dos dados (mistérios) são misturadas ao fundo escuro. */
+:root[data-theme='dark'] .mystery-tab-btn:hover,
+:root[data-theme='dark'] .mystery-tab-btn.active {
+  background: color-mix(in srgb, var(--accent) 18%, var(--color-surface));
+}
+
+:root[data-theme='dark'] .mystery-card {
+  --bg-soft: color-mix(in srgb, var(--accent) 14%, var(--color-surface));
+}
+
+.reading-card .reading-eyebrow {
+  color: var(--liturgical-color);
+}
+
+/* No escuro, a cor litúrgica é clareada para manter o contraste do texto pequeno. */
+:root[data-theme='dark'] .reading-card .reading-eyebrow {
+  color: color-mix(in srgb, var(--liturgical-color) 55%, #fff);
+}
+
+:root[data-theme='dark'] .hero-image img,
+:root[data-theme='dark'] .terco-guide-img {
+  filter: saturate(0.8) brightness(0.88);
+}
