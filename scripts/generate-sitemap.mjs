@@ -5,7 +5,7 @@ import { saints } from '../src/data/saints.js';
 import { novenas } from '../src/data/novenas.js';
 import { trails } from '../src/data/trails.js';
 
-const SITE_URL = 'https://oratio-daily-dev.vercel.app';
+const SITE_URL = 'https://www.oratiodaily.com';
 const today = new Date().toISOString().slice(0, 10);
 
 const pages = [
