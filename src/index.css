@@ -7791,6 +7791,11 @@ details[open] > summary .exam-chevron {
   padding-left: 1rem;
 }
 
+/* O Turnstile só aparece quando a Cloudflare pede uma confirmação; fora isso, não ocupa espaço. */
+.turnstile-box:empty {
+  display: none;
+}
+
 .intention-form-note {
   color: var(--color-text-muted);
   line-height: 1.5;

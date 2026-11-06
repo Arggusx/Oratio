@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Flag, HandHeart, Send, Users } from 'lucide-react';
 import { community, plural, useCommunityStats } from '../utils/community';
 import { novenas } from '../data/novenas';
 import { LoadMoreButton } from '../components/LoadMore';
+import Turnstile from '../components/Turnstile';
+import { TURNSTILE_SITE_KEY } from '../utils/turnstile';
 
 const timeAgo = (iso) => {
   const minutes = Math.round((Date.now() - new Date(iso)) / 60000);
@@ -69,17 +71,22 @@ function IntentionForm({ onCreated }) {
   const [text, setText] = useState('');
   const [name, setName] = useState('');
   const [status, setStatus] = useState({ sending: false, error: '' });
+  const [token, setToken] = useState(null);
+  const turnstileRef = useRef(null);
+  const waitingCheck = Boolean(TURNSTILE_SITE_KEY) && !token;
 
   const submit = async (e) => {
     e.preventDefault();
     setStatus({ sending: true, error: '' });
     try {
-      const created = await community.addIntention(text, name);
+      const created = await community.addIntention(text, name, token);
       onCreated(created);
       setText('');
       setStatus({ sending: false, error: '' });
     } catch (err) {
       setStatus({ sending: false, error: err.message });
+    } finally {
+      turnstileRef.current?.reset();
     }
   };
 
@@ -106,11 +113,12 @@ function IntentionForm({ onCreated }) {
           aria-label="Primeiro nome (opcional)"
           autoComplete="off"
         />
-        <button type="submit" className="btn" disabled={status.sending || text.trim().length < 5}>
+        <button type="submit" className="btn" disabled={status.sending || waitingCheck || text.trim().length < 5}>
           <Send size={15} aria-hidden="true" />
           {status.sending ? 'Enviando…' : 'Publicar pedido'}
         </button>
       </div>
+      <Turnstile ref={turnstileRef} action="intention" onToken={setToken} />
       <small className="intention-form-note">
         O pedido fica visível para todos por 30 dias. Não escreva sobrenome, endereço, telefone ou detalhes que
         identifiquem alguém: links e contatos são removidos automaticamente.

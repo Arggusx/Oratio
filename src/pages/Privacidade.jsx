@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 // Canal de contato do responsável pelo site (exigido pela LGPD, art. 41).
 const CONTACT_EMAIL = 'dougclasher9@gmail.com';
-const LAST_UPDATE = '4 de novembro de 2026';
+const LAST_UPDATE = '5 de novembro de 2026';
 
 export default function Privacidade() {
   return (
@@ -92,6 +92,11 @@ export default function Privacidade() {
           <li><strong>Vercel</strong> — hospedagem do site e da API de leituras.</li>
           <li><strong>Google Fonts</strong> — fornece as fontes de texto usadas no site.</li>
           <li><strong>Formspree</strong> — envio do formulário de feedback (somente se você usá-lo).</li>
+          <li>
+            <strong>Cloudflare Turnstile</strong> — confirma que quem publica um pedido no mural da Comunidade não é
+            um robô. Só é carregado na página da Comunidade e analisa sinais técnicos do navegador, sem cookies de
+            rastreamento e sem quebra-cabeça.
+          </li>
           <li>
             <strong>API de Liturgia</strong> (liturgia.up.railway.app) — fornece as leituras da liturgia diária, com
             conteúdo da Canção Nova.

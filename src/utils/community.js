@@ -37,7 +37,8 @@ async function request(route, { method = 'GET', body, params = '' } = {}) {
 export const community = {
   stats: () => request('stats'),
   intentions: (before) => request('intentions', { params: before ? `&before=${before}` : '' }),
-  addIntention: (text, firstName) => request('intentions', { method: 'POST', body: { text, firstName } }),
+  addIntention: (text, firstName, turnstileToken) =>
+    request('intentions', { method: 'POST', body: { text, firstName, turnstileToken } }),
   pray: (id) => request('pray', { method: 'POST', body: { id } }),
   report: (id) => request('report', { method: 'POST', body: { id } }),
   // Marcações não podem atrapalhar a oração: se falharem, ficam só no aparelho.
