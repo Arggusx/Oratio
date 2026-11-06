@@ -9,6 +9,7 @@ import RelatedLinks from './components/RelatedLinks';
 import Home from './pages/Home';
 import usePageMeta from './utils/usePageMeta';
 import { SeasonContext, useSeasonTheme } from './utils/useSeasonTheme';
+import { account } from './utils/account';
 import Angel from './components/anim/Angel';
 import SiteBackground from './components/anim/SiteBackground';
 import RosaryLoader from './components/anim/RosaryLoader';
@@ -123,6 +124,11 @@ function AnimatedRoutes() {
 export default function App() {
   // Tema do tempo litúrgico (Advento, Natal, Quaresma, Páscoa...): troca cores e enfeites sozinho.
   const season = useSeasonTheme();
+
+  // Quem já entrou com Google: traz o progresso feito em outros aparelhos e volta a salvar sozinho.
+  useEffect(() => {
+    account.resume();
+  }, []);
 
   return (
     <SeasonContext.Provider value={season}>
