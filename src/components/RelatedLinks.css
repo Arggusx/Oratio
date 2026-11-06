@@ -1,0 +1,88 @@
+/* "Continue no Oratio": três páginas relacionadas no fim de cada página. */
+.related-links {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto 2.5rem;
+  text-align: center;
+}
+
+.related-links-title {
+  margin: 0.3rem 0 1.1rem;
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 3vw, 1.9rem);
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--color-charcoal);
+}
+
+/* Lista centralizada, inclusive a última linha. */
+.related-links-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.related-links-list li {
+  flex: 0 1 17rem;
+}
+
+.related-link {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  height: 100%;
+  padding: 0.95rem 1.1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  color: var(--color-text);
+  text-align: left;
+  text-decoration: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.related-link:hover,
+.related-link:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--color-terracotta);
+  box-shadow: var(--shadow-md);
+}
+
+.related-link-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--color-cream-warm);
+  color: var(--color-terracotta);
+}
+
+.related-link strong {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--color-charcoal);
+}
+
+.related-link small {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--color-text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .related-link {
+    transition: none;
+  }
+  .related-link:hover,
+  .related-link:focus-visible {
+    transform: none;
+  }
+}

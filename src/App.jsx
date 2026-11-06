@@ -5,6 +5,7 @@ import Header from './components/Header';
 import BottomNav from './components/BottomNav';
 import Footer from './components/Footer';
 import Feedback from './components/Feedback';
+import RelatedLinks from './components/RelatedLinks';
 import Home from './pages/Home';
 import usePageMeta from './utils/usePageMeta';
 import { SeasonContext, useSeasonTheme } from './utils/useSeasonTheme';
@@ -136,6 +137,7 @@ export default function App() {
             <Header />
             <div id="conteudo" tabIndex={-1} className="content-anchor">
               <AnimatedRoutes />
+              <RelatedLinks />
             </div>
             <Feedback />
             <Footer />

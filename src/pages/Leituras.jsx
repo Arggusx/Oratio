@@ -322,8 +322,8 @@ export default function Leituras() {
       {/* ── Page header ── */}
       <div className="page-title-row">
         <div>
-          <span className="eyebrow">Palavra de hoje</span>
-          <h1 className="section-title">{liturgia}</h1>
+          <span className="eyebrow">{liturgia && liturgia !== 'Liturgia diária' ? liturgia : 'Palavra de hoje'}</span>
+          <h1 className="section-title">Liturgia diária</h1>
         </div>
         <BibleFlip />
       </div>

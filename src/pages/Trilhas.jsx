@@ -39,9 +39,9 @@ function TrailList() {
         <ChevronLeft size={16} aria-hidden="true" />
         Jornada
       </Link>
-      <span className="eyebrow">Trilhas da fé · {trails.length} ilhas</span>
+      <span className="eyebrow">{trails.length} ilhas · quiz católico</span>
       <h1 className="section-title">
-        Escolha uma <span className="trail-title-accent">ilha</span>
+        Trilhas da fé: escolha uma <span className="trail-title-accent">ilha</span>
       </h1>
       <p className="lead">
         Cada assunto é uma ilha. A primeira parada do caminho explica tudo o que você vai aprender; as outras são
