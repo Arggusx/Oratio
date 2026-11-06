@@ -1,0 +1,339 @@
+/* ---------- 13. FEEDBACK ---------- */
+.feedback {
+  position: fixed;
+  z-index: 30;
+  right: var(--space-md);
+  bottom: var(--space-md);
+}
+
+.feedback .btn {
+  box-shadow: var(--shadow-glow);
+  font-size: 0.85rem;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  padding: var(--space-md);
+  background: rgba(45, 36, 31, 0.45);
+  backdrop-filter: blur(6px);
+  animation: fadeIn 0.25s var(--ease-out) both;
+}
+
+.modal-box {
+  width: min(100%, 480px);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  background: var(--color-cream);
+  animation: scaleIn 0.3s var(--ease-spring) both;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-md);
+}
+
+.modal-box textarea {
+  width: 100%;
+  min-height: 130px;
+  padding: 0.8rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  resize: vertical;
+  background: var(--color-surface);
+  outline: none;
+  transition: border-color var(--duration-fast);
+}
+
+.modal-box textarea:focus {
+  border-color: var(--color-terracotta);
+}
+
+.modal-actions {
+  margin-top: var(--space-md);
+}
+
+
+/* ---------- 14. FOOTER ---------- */
+.footer {
+  margin-top: auto;
+  padding: var(--space-3xl) var(--space-md) var(--space-xl);
+  background: var(--color-cream-warm);
+  border-top: 1px solid var(--color-border);
+}
+
+.footer-inner {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-bottom: var(--space-2xl);
+}
+
+@media (min-width: 768px) {
+  .footer-grid {
+    grid-template-columns: 1.6fr 1fr 1.2fr;
+    gap: 3rem;
+  }
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.footer-brand-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.footer-brand-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.footer-brand-name {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #6C2E15;
+}
+
+.footer-description {
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.footer-col-title {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-charcoal);
+  margin-bottom: 0.2rem;
+}
+
+.footer-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer-nav-list a {
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+  transition: color var(--duration-fast);
+}
+
+.footer-nav-list a:hover {
+  color: var(--color-terracotta);
+}
+
+.footer-info-text {
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.footer-contact {
+  margin-top: 0.4rem;
+}
+
+.github-contact-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-charcoal);
+  padding: 0.55rem 0.95rem;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all var(--duration-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+.github-contact-btn:hover {
+  background: var(--color-charcoal);
+  color: #FFF;
+  border-color: var(--color-charcoal);
+  box-shadow: var(--shadow-md);
+}
+
+.footer-bottom {
+  border-top: 1px solid var(--color-border-soft);
+  padding-top: var(--space-lg);
+  text-align: center;
+}
+
+.footer-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.8rem;
+  color: var(--color-terracotta);
+  opacity: 0.6;
+}
+
+.footer-copy {
+  color: var(--color-text-pale);
+  font-size: var(--text-xs);
+}
+
+
+/* ---------- 15. SKELETON LOADERS ---------- */
+.skeleton {
+  border-radius: var(--radius-sm);
+  min-height: 1rem;
+  background: linear-gradient(
+    90deg,
+    #F1E7DC 25%,
+    #FBF6EF 50%,
+    #F1E7DC 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+.skeleton.large {
+  height: 280px;
+  border-radius: var(--radius-lg);
+}
+
+
+/* ---------- 16. ANIMATIONS ---------- */
+@keyframes pageIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+
+/* ---------- 17. RESPONSIVE — TABLET (≥ 768px) ---------- */
+@media (min-width: 768px) {
+  .page {
+    width: min(1120px, calc(100% - 4rem));
+    padding-top: 8rem;
+  }
+
+  .desktop-nav {
+    display: flex;
+  }
+
+  .bottom-nav {
+    display: none;
+  }
+
+  .home-hero {
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: var(--space-3xl);
+  }
+
+  .hero-image {
+    height: 460px;
+  }
+
+  .reflection {
+    padding: var(--space-2xl);
+  }
+
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .mystery-card {
+    grid-template-columns: 1.15fr 0.85fr;
+  }
+
+  .mystery-image {
+    display: block;
+  }
+
+  .prayer-layout {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3xl);
+  }
+
+  .reading-actions {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .reading-actions .reading-card {
+    flex: 1;
+  }
+
+  .nav {
+    height: 4.5rem;
+  }
+}
+
+
+/* ---------- 18. RESPONSIVE — DESKTOP (≥ 1024px) ---------- */
+@media (min-width: 1024px) {
+  .page {
+    width: min(1120px, calc(100% - 5rem));
+    padding-top: 9rem;
+  }
+
+  .home-hero {
+    gap: 5rem;
+  }
+
+  .hero-image {
+    height: 500px;
+  }
+}

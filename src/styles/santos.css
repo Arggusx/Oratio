@@ -1,0 +1,495 @@
+/* ============================================================
+   SANTOS — LISTA, PÁGINA E FILTRO POR INTENÇÃO
+   ============================================================ */
+.prayer-accordion-text {
+  white-space: pre-wrap;
+}
+
+.prayer-accordion-latin {
+  margin-top: 0.8rem;
+  font-style: italic;
+  font-size: 0.92rem;
+  color: var(--color-text-muted);
+}
+
+.prayer-accordion-latin strong {
+  font-style: normal;
+  color: var(--color-text-soft);
+}
+
+.prayer-accordion-note {
+  margin-top: 0.8rem;
+  font-size: 0.8rem;
+  color: var(--color-text-pale);
+}
+
+.prayer-saint-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  margin-top: 0.7rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-terracotta);
+}
+
+.prayer-saint-link:hover {
+  text-decoration: underline;
+}
+
+.sao-bento-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem 1.2rem;
+  margin-top: 1rem;
+}
+
+.sao-bento-actions .sao-bento-more,
+.sao-bento-actions .prayer-saint-link {
+  margin-top: 0;
+}
+
+/* Inicial do santo (cartões e página do santo) */
+.saint-initial {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  color: #FFF8EC;
+  background: radial-gradient(circle at 35% 30%, #E9C27A, #A87432);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-gold) 35%, transparent);
+}
+
+/* Filtro por intenção */
+.intention-filter {
+  margin: 0.4rem 0 1.4rem;
+}
+
+.intention-filter-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-pale);
+  margin-bottom: 0.5rem;
+}
+
+.intention-filter-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.intention-chip {
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-full);
+  border: 1px dashed var(--color-border);
+  background: transparent;
+  color: var(--color-text-soft);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: background var(--duration-fast), border-color var(--duration-fast), color var(--duration-fast);
+}
+
+.intention-chip:hover {
+  border-color: var(--color-gold);
+}
+
+.intention-chip.active {
+  border-style: solid;
+  border-color: var(--color-gold);
+  background: color-mix(in srgb, var(--color-gold) 18%, var(--color-surface));
+  color: var(--color-charcoal);
+  font-weight: 600;
+}
+
+.intention-saints {
+  margin: -0.4rem 0 1.2rem;
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+}
+
+.intention-saints a {
+  color: var(--color-terracotta);
+  font-weight: 600;
+}
+
+.intention-saints a:hover {
+  text-decoration: underline;
+}
+
+.intention-tag {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-text-soft);
+  background: var(--color-cream-warm);
+  border: 1px solid var(--color-border-soft);
+}
+
+/* Lista de santos */
+.saints-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.8rem;
+}
+
+@media (min-width: 720px) {
+  .saints-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.saint-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.9rem;
+  height: 100%;
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--duration-fast), transform var(--duration-fast), box-shadow var(--duration-fast);
+}
+
+.saint-card:hover {
+  border-color: var(--color-gold);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.saint-initial {
+  width: 3.2rem;
+  height: 3.2rem;
+  font-size: 1.6rem;
+}
+
+.saint-initial.is-large {
+  width: 5rem;
+  height: 5rem;
+  font-size: 2.6rem;
+}
+
+.saint-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.saint-card-body strong {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: var(--color-charcoal);
+}
+
+.saint-card-title,
+.saint-card-patron {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+.saint-card-feast {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-terracotta);
+}
+
+.saint-card-main {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Deixa claro que o cartão abre a página do santo */
+.saint-card-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-terracotta);
+}
+
+.saint-card-cta svg {
+  transition: transform var(--duration-fast);
+}
+
+.saint-card:hover .saint-card-cta svg {
+  transform: translateX(4px);
+}
+
+/* Ícone de auréola no cartão de destaque dos santos */
+.feature-card-icon .halo,
+.feature-card-icon .figure {
+  fill: none;
+  stroke: var(--color-gold);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.feature-card-icon .halo {
+  stroke-width: 2;
+}
+
+/* Página do santo */
+.saint-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin-bottom: 1.2rem;
+}
+
+.saint-back-link:hover {
+  color: var(--color-terracotta);
+}
+
+.saint-hero {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.saint-hero .section-title {
+  margin-bottom: 0.4rem;
+}
+
+.saint-hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+}
+
+.saint-hero-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.saint-section {
+  margin-bottom: 2rem;
+}
+
+.saint-hero-note {
+  margin-top: 0.35rem;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+.saint-paragraph + .saint-paragraph {
+  margin-top: 0.9rem;
+}
+
+.saint-quote {
+  max-width: 46rem;
+  margin: 1.4rem 0 0;
+  padding: 1rem 1.2rem;
+  border-left: 3px solid var(--color-gold);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: color-mix(in srgb, var(--color-gold) 8%, var(--color-surface));
+}
+
+.saint-quote p {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.saint-quote cite {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.82rem;
+  font-style: normal;
+  color: var(--color-text-muted);
+}
+
+.saint-miracles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 0.9rem;
+  max-width: 52rem;
+}
+
+.saint-miracle {
+  padding: 1.1rem 1.2rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.saint-miracle-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-pale);
+}
+
+.saint-miracle h3 {
+  margin: 0.25rem 0 0.45rem;
+  font-size: 1.15rem;
+}
+
+.saint-miracle p {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--color-text-soft);
+}
+
+.saint-canonization {
+  margin-top: 1rem;
+  max-width: 46rem;
+  font-size: 0.92rem;
+  color: var(--color-text-soft);
+}
+
+.saint-section-title {
+  font-size: 1.7rem;
+  margin-bottom: 0.8rem;
+}
+
+.saint-bio {
+  max-width: 46rem;
+  font-size: 1.02rem;
+  line-height: 1.8;
+  color: var(--color-text);
+}
+
+.saint-patron {
+  margin-top: 1.2rem;
+}
+
+.saint-patron h2 {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-pale);
+  margin-bottom: 0.5rem;
+}
+
+.saint-patron ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.saint-patron li {
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--radius-full);
+  background: var(--color-cream-warm);
+  border: 1px solid var(--color-border);
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+}
+
+.saint-prayers {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.saint-prayer {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.saint-prayer.is-open {
+  border-color: var(--color-gold);
+}
+
+.saint-prayer-trigger {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  color: var(--color-charcoal);
+}
+
+.saint-prayer-trigger > span {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.saint-prayer-trigger strong {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+}
+
+.saint-prayer-trigger .arrow-icon {
+  flex-shrink: 0;
+  color: var(--color-terracotta);
+  transition: transform var(--duration-fast);
+}
+
+.saint-prayer-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.saint-prayer-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  padding: 0 1.1rem 1.1rem;
+}
+
+.saint-prayer-body .prayer-full-text {
+  align-self: stretch;
+  font-size: 0.98rem;
+  line-height: 1.75;
+}
+
+.saint-prayer-body .btn-block-action {
+  margin-top: 0.8rem;
+}
+
+.mass-intro-note {
+  margin-top: 0.6rem;
+  font-size: 0.88rem;
+}
+
+.mass-intro-note a {
+  color: var(--color-terracotta);
+  font-weight: 600;
+}
+
+.mass-intro-note a:hover {
+  text-decoration: underline;
+}
