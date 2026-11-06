@@ -1,0 +1,109 @@
+/* Botão de compartilhar e o menu com WhatsApp e "copiar link". */
+.share {
+  position: relative;
+  display: inline-flex;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-cream-warm);
+  color: var(--color-terracotta-dark);
+  font: 600 0.88rem var(--font-sans);
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.share-btn:hover,
+.share-btn:focus-visible {
+  border-color: var(--color-terracotta);
+  transform: translateY(-1px);
+}
+
+/* Versão cheia, para fundos escuros como o rodapé. */
+.share-btn-solid {
+  border-color: transparent;
+  background: var(--color-terracotta);
+  color: #fffaf4;
+}
+
+.share-btn-solid:hover,
+.share-btn-solid:focus-visible {
+  background: var(--color-terracotta-dark);
+}
+
+.share-menu {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  right: 0;
+  z-index: 40;
+  display: grid;
+  min-width: 11rem;
+  padding: 0.35rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.share-option {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.6rem 0.75rem;
+  border: 0;
+  border-radius: 0.55rem;
+  background: none;
+  color: var(--color-text);
+  font: 500 0.9rem var(--font-sans);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.share-option:hover,
+.share-option:focus-visible {
+  background: var(--color-cream-warm);
+}
+
+/* No rodapé o menu abre para cima, para não sair da tela. */
+.footer .share-menu {
+  top: auto;
+  bottom: calc(100% + 0.4rem);
+  left: 0;
+  right: auto;
+}
+
+.footer-share {
+  margin-top: 1rem;
+}
+
+/* Onde o botão aparece nas páginas. */
+.page-share {
+  margin: -0.25rem 0 1.25rem;
+}
+
+.saint-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.saint-hero-actions .saint-collect {
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .share-btn {
+    transition: none;
+  }
+  .share-btn:hover,
+  .share-btn:focus-visible {
+    transform: none;
+  }
+}

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { isAlleluiaSuppressed } from '../utils/liturgicalCalendar';
 import BibleFlip from '../components/anim/BibleFlip';
 import RosaryLoader from '../components/anim/RosaryLoader';
+import ShareButton from '../components/ShareButton';
 
 /* ── Fallback readings when API is unavailable ── */
 const fallback = {
@@ -330,6 +331,14 @@ export default function Leituras() {
       <p className="lead">
         Acompanhe a liturgia e reserve alguns minutos para acolher a Palavra.
       </p>
+      <div className="page-share">
+        <ShareButton
+          path="/home/leituras"
+          title="Liturgia diária"
+          text="A liturgia e o Evangelho de hoje, para rezar com calma:"
+          label="Compartilhar a liturgia de hoje"
+        />
+      </div>
 
       {/* ── Liturgical color indicator ── */}
       <div
