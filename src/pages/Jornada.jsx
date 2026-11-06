@@ -772,8 +772,9 @@ export default function Jornada() {
             O que fazer hoje e o seu caminho até aqui, sem pontos e sem ranking. Fica neste aparelho e, se você quiser, na
             sua conta.
           </p>
-          <JourneyHome onOpen={open} />
+          {/* Logo no topo: quem entra na Jornada vê na hora que pode guardar o progresso na conta. */}
           <AccountPanel />
+          <JourneyHome onOpen={open} />
         </>
       )}
     </main>

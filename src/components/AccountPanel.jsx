@@ -70,23 +70,28 @@ export default function AccountPanel() {
 
   if (!token) {
     return (
-      <section className="account-panel" aria-labelledby="account-title">
-        <h2 id="account-title" className="account-title">
-          Guarde o seu progresso
-        </h2>
-        <p className="account-text">
-          Entre com a sua conta Google para não perder a Jornada se trocar de aparelho e continuar de onde parou no
-          celular ou no computador. Sem conta, tudo continua salvo só aqui.
-        </p>
-        <GoogleButton />
-        {error && (
-          <p className="account-error" role="alert">
-            {error}
+      <section className="account-panel is-bar" aria-labelledby="account-title">
+        <span className="account-icon" aria-hidden="true">
+          <Cloud size={22} />
+        </span>
+        <div className="account-body">
+          <h2 id="account-title" className="account-title">
+            Guarde o seu progresso
+          </h2>
+          <p className="account-text">
+            Entre com o Google para continuar de onde parou no celular ou no computador. Sem conta, tudo fica salvo só
+            neste aparelho.
           </p>
-        )}
-        <small className="account-note">
-          Guardamos só o seu e-mail, o primeiro nome e o progresso. <Link to="/privacidade">Saiba mais</Link>.
-        </small>
+          <small className="account-note">
+            Guardamos só o seu e-mail, o primeiro nome e o progresso. <Link to="/privacidade">Saiba mais</Link>.
+          </small>
+          {error && (
+            <p className="account-error" role="alert">
+              {error}
+            </p>
+          )}
+        </div>
+        <GoogleButton />
       </section>
     );
   }
