@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { JORNADA_ATIVA } from '../utils/features';
 
 // Canal de contato do responsável pelo site (exigido pela LGPD, art. 41).
 const CONTACT_EMAIL = 'dougclasher9@gmail.com';
@@ -47,30 +48,50 @@ export default function Privacidade() {
         <p>
           O site guarda algumas preferências no armazenamento local do seu navegador (<em>localStorage</em>): o tema
           claro ou escuro, a data em que você recomeçou a leitura diária, cópias das leituras já carregadas, para
-          abrir mais rápido, e o progresso da <strong>Jornada</strong> (dias de oração, novenas, trilhas, coleção,
-          mapa, buquês espirituais, respostas dos quizzes e, se você escolher, o nome e a foto do medalhão). Sem conta, essas informações <strong>ficam apenas no seu
+          abrir mais rápido, e{' '}
+          {JORNADA_ATIVA ? (
+            <>
+              o progresso da <strong>Jornada</strong> (dias de oração, novenas, trilhas, coleção, mapa, buquês
+              espirituais, respostas dos quizzes e, se você escolher, o nome e a foto do medalhão)
+            </>
+          ) : (
+            <>o seu progresso (dias de terço marcados, novenas, trilhas e respostas dos quizzes)</>
+          )}
+          . Sem conta, essas informações <strong>ficam apenas no seu
           aparelho</strong> e não são enviadas para nós. Você pode apagá-las a qualquer momento limpando os dados do site nas configurações do navegador.
         </p>
-        <p>
-          A <strong>foto do medalhão</strong> é opcional. Ela é recortada e reduzida no próprio aparelho e nunca sai
-          dele: não é enviada para nós nem para ninguém. Para apagá-la, toque em “Remover foto” na Jornada.
-        </p>
+        {JORNADA_ATIVA && (
+          <p>
+            A <strong>foto do medalhão</strong> é opcional. Ela é recortada e reduzida no próprio aparelho e nunca sai
+            dele: não é enviada para nós nem para ninguém. Para apagá-la, toque em “Remover foto” na Jornada.
+          </p>
+        )}
 
         <h3>Conta com Google (opcional)</h3>
-        <p>
-          Se você escolher <strong>entrar com Google</strong> na Jornada, recebemos do Google o identificador da sua
-          conta, o seu e-mail e o primeiro nome, e guardamos uma cópia do progresso da Jornada para que ele fique igual
-          em todos os seus aparelhos. A <strong>foto do medalhão não vai para a conta</strong>: continua só no aparelho.
-          Não recebemos a sua senha do Google. A base legal é o seu consentimento, dado ao entrar (LGPD, art. 7º, I). Você
-          pode sair ou <strong>apagar a conta</strong> a qualquer momento na própria Jornada; apagar a conta apaga o
-          progresso guardado nela.
-        </p>
+        {JORNADA_ATIVA ? (
+          <p>
+            Se você escolher <strong>entrar com Google</strong> na Jornada, recebemos do Google o identificador da sua
+            conta, o seu e-mail e o primeiro nome, e guardamos uma cópia do progresso da Jornada para que ele fique igual
+            em todos os seus aparelhos. A <strong>foto do medalhão não vai para a conta</strong>: continua só no aparelho.
+            Não recebemos a sua senha do Google. A base legal é o seu consentimento, dado ao entrar (LGPD, art. 7º, I). Você
+            pode sair ou <strong>apagar a conta</strong> a qualquer momento na própria Jornada; apagar a conta apaga o
+            progresso guardado nela.
+          </p>
+        ) : (
+          <p>
+            Se você <strong>entrou com Google</strong>, recebemos do Google o identificador da sua conta, o seu e-mail e o
+            primeiro nome, e guardamos uma cópia do seu progresso para que ele fique igual em todos os seus aparelhos.
+            Não recebemos a sua senha do Google. A base legal é o seu consentimento, dado ao entrar (LGPD, art. 7º, I).
+            Para <strong>apagar a conta</strong> e o progresso guardado nela, escreva para{' '}
+            <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+          </p>
+        )}
 
         <h3>Mensagens por e-mail (opcional)</h3>
         <p>
           Quem tem conta pode pedir para receber a Palavra do dia por e-mail, às 6h. Usamos o seu e-mail só para isso, e
-          o envio é feito pelo serviço <strong>Resend</strong>. Para parar, desmarque a opção na Jornada ou use o link
-          que vem em toda mensagem.
+          o envio é feito pelo serviço <strong>Resend</strong>. Para parar,{' '}
+          {JORNADA_ATIVA ? 'desmarque a opção na Jornada ou use o link' : 'use o link'} que vem em toda mensagem.
         </p>
 
         <h3>Registros técnicos de acesso</h3>
@@ -154,7 +175,10 @@ export default function Privacidade() {
         <ul>
           <li>a confirmação de que tratamos dados seus e o acesso a eles;</li>
           <li>a correção de dados incompletos ou desatualizados;</li>
-          <li>a exclusão das mensagens que você enviou e da sua conta (o botão “Apagar conta” na Jornada faz isso na hora);</li>
+          <li>
+            a exclusão das mensagens que você enviou e da sua conta
+            {JORNADA_ATIVA && ' (o botão “Apagar conta” na Jornada faz isso na hora)'};
+          </li>
           <li>informações sobre com quem os dados foram compartilhados;</li>
           <li>a revogação do seu consentimento.</li>
         </ul>

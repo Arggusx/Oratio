@@ -10,6 +10,7 @@ import ImageCredit from '../components/ImageCredit';
 import ShareButton from '../components/ShareButton';
 import { saintImages } from '../data/imageCredits';
 import { journey, useJourney } from '../utils/journeyStore';
+import { JORNADA_ATIVA } from '../utils/features';
 
 function SaintPrayer({ prayer, defaultOpen }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -123,7 +124,7 @@ export default function Santo() {
           </p>
           {saint.feastNote && <p className="saint-hero-note">{saint.feastNote}</p>}
           <div className="saint-hero-actions">
-            <CollectButton slug={saint.slug} />
+            {JORNADA_ATIVA && <CollectButton slug={saint.slug} />}
             <ShareButton
               title={`${saint.name} | Oratio Daily`}
               text={`A história e a oração de ${saint.name}:`}

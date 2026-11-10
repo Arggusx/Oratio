@@ -5,6 +5,7 @@ import { getSaint } from '../data/saints';
 import { journey, planDayToday, useJourney } from '../utils/journeyStore';
 import { plural, useCommunityStats } from '../utils/community';
 import GameIntro from '../components/GameIntro';
+import { JORNADA_ATIVA } from '../utils/features';
 
 /** Nove contas que acendem conforme os dias rezados; a de hoje fica marcada. */
 export function NovenaBeads({ plan, size = 'md' }) {
@@ -38,7 +39,7 @@ function NovenaList() {
       </div>
       <p className="lead">
         Uma novena é a oração feita por nove dias seguidos por uma intenção. Escolha uma, comece hoje e acompanhe o
-        seu progresso na Jornada.
+        seu progresso {JORNADA_ATIVA ? 'na Jornada' : 'aqui, dia a dia'}.
       </p>
       <div className="novena-list">
         {novenas.map((n) => (
@@ -93,7 +94,9 @@ function NovenaPage({ novena }) {
         steps={[
           'Toque em "Começar esta novena" no dia em que quiser começar.',
           'A cada dia, leia o tema, reze a oração da novena e toque em "Rezei este dia": uma das nove contas acende.',
-          'Esqueceu um dia? Marque quando rezar; o importante é chegar ao fim. O progresso aparece em Jornada > Missões.',
+          JORNADA_ATIVA
+            ? 'Esqueceu um dia? Marque quando rezar; o importante é chegar ao fim. O progresso aparece em Jornada > Missões.'
+            : 'Esqueceu um dia? Marque quando rezar; o importante é chegar ao fim. O progresso fica salvo neste aparelho.',
         ]}
       />
 

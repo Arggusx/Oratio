@@ -10,6 +10,7 @@ import { islandRewards } from '../data/rewards';
 import { RewardReveal } from '../components/journey/Rewards';
 import { LEVELS } from '../data/quizLevels';
 import { journey, useJourney } from '../utils/journeyStore';
+import { JORNADA_ATIVA } from '../utils/features';
 
 function TrailProgress({ trail, progress }) {
   return (
@@ -35,10 +36,18 @@ function TrailList() {
 
   return (
     <main className="page">
-      <Link to="/jornada" className="saint-back-link page-back-link">
-        <ChevronLeft size={16} aria-hidden="true" />
-        Jornada
-      </Link>
+      {/* As trilhas são abertas pela Jornada ou, sem ela, pela Escola da Fé: o "voltar" leva para lá. */}
+      {JORNADA_ATIVA ? (
+        <Link to="/jornada" className="saint-back-link page-back-link">
+          <ChevronLeft size={16} aria-hidden="true" />
+          Jornada
+        </Link>
+      ) : (
+        <Link to="/home/escola-da-fe" className="saint-back-link page-back-link">
+          <ChevronLeft size={16} aria-hidden="true" />
+          Escola da Fé
+        </Link>
+      )}
       <span className="eyebrow">{trails.length} ilhas · quiz católico</span>
       <h1 className="section-title">
         Trilhas da fé: escolha uma <span className="trail-title-accent">ilha</span>
@@ -259,7 +268,8 @@ function TrailPage({ trail }) {
         </button>
       )}
 
-      {showReward && (
+      {/* Carimbo e moldura são da Jornada: sem ela, a janela de recompensa não aparece. */}
+      {JORNADA_ATIVA && showReward && (
         <RewardReveal
           trail={trail}
           reward={reward}

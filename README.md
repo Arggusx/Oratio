@@ -87,6 +87,8 @@ Cada seção termina com um convite para a ilha do mesmo assunto nas Trilhas da 
 
 ### Jornada
 
+> A Jornada só aparece quando o build é feito com `VITE_JORNADA=true` (veja [Jornada ligada ou desligada](#jornada-ligada-ou-desligada)). Na produção ela fica desligada; no hml, ligada.
+
 A **Jornada** (`/jornada`) guarda o caminho de oração **só neste aparelho** (`localStorage`, chave `oratio:jornada`); nada vai para servidor. Os princípios: sem pontos, ranking, selos de quantidade nem culpa por dias perdidos.
 
 - **Painel**: medalhão do peregrino (saudação, nome opcional, foto opcional reduzida para 256×256 no próprio aparelho e moldura animada em SVG, ganha ao concluir uma ilha), "Continue de onde parou", "Para hoje" e prateleiras com os jogos.
@@ -119,7 +121,7 @@ O botão flutuante **Feedback** abre um formulário enviado pelo Formspree. A **
 | `/home/escola-da-fe` | Escola da Fé (`?secao=curiosidades`, `missa`, `simbolos`, `santos`); `/home/curiosidades` redireciona para cá |
 | `/home/santos/:slug` | Página de um santo |
 | `/home/confissao` | Exame de consciência |
-| `/jornada` | Jornada (painel e jogos, `?secao=`) |
+| `/jornada` | Jornada (painel e jogos, `?secao=`); só existe com `VITE_JORNADA=true`, senão dá página não encontrada |
 | `/home/novenas` e `/home/novenas/:id` | Novenas |
 | `/home/trilhas` e `/home/trilhas/:id` | Trilhas da fé |
 | `/home/trilhas/:id/quiz/:level` | Quiz de uma ilha |
@@ -223,6 +225,19 @@ VITE_API_ORACAO=https://seu-dominio-de-api.example
 
 O valor é a URL-base, sem os caminhos `/api/...`. Em desenvolvimento, a página de Liturgia também tenta `http://localhost:3000` para buscar a reflexão diária antes do serviço público. A API precisa liberar CORS para a origem do site; ao rodar o Vite numa porta diferente da 5173, a comunidade pode ficar indisponível localmente.
 
+### Jornada ligada ou desligada
+
+A Jornada (`/jornada`, o item dela na barra inferior e no topo, os atalhos "Ver na Jornada", "Guardar na coleção", "Marcar no meu mapa" e a janela de carimbo das trilhas) só entra no site quando a variável de build `VITE_JORNADA` vale `true`. Sem a variável, ou com qualquer outro valor, ela some: `/jornada` cai na página não encontrada, a Escola da Fé ocupa o quinto lugar da barra inferior e o código da Jornada nem vai para o pacote. O terço de hoje, as novenas, as trilhas e os quizzes continuam funcionando e guardando o progresso no aparelho.
+
+A flag é lida em `src/utils/features.js` (`JORNADA_ATIVA`). Como é uma variável do Vite, vale no momento do build: depois de mudar o valor, é preciso fazer um novo deploy.
+
+Na Vercel, em **Settings > Environment Variables** do projeto:
+
+- no projeto (ou ambiente) do **hml**, crie `VITE_JORNADA` com o valor `true`;
+- na **produção**, não crie a variável (ou deixe com outro valor).
+
+Para testar localmente com a Jornada, ponha `VITE_JORNADA=true` no `.env.local`.
+
 ### Formato esperado das APIs
 
 Os endpoints de leitura diária aceitam pequenas variações de nomes, mas o formato recomendado é:
@@ -264,7 +279,7 @@ Para publicar na Vercel:
 
 1. Importe o repositório na Vercel.
 2. Mantenha o preset de Vite.
-3. Se usar uma API própria, cadastre `VITE_API_ORACAO` nas variáveis de ambiente.
+3. Se usar uma API própria, cadastre `VITE_API_ORACAO` nas variáveis de ambiente. Para ligar a Jornada (só no hml), cadastre `VITE_JORNADA=true`.
 4. Faça o deploy. O comando de build é `npm run build` (gera o sitemap e o build).
 
 ## Fluxo de branches

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { getSaint } from '../data/saints';
 import { getNovena } from '../data/novenas';
 import { getTrail } from '../data/trails';
+import { JORNADA_ATIVA } from './features';
 
 export const SITE_URL = 'https://www.oratiodaily.com';
 
@@ -122,6 +123,8 @@ const PAGE_META = {
 export function metaFor(rawPathname) {
   // O React Router aceita "/home/leituras/" como "/home/leituras".
   const pathname = rawPathname.length > 1 ? rawPathname.replace(/\/+$/, '') : rawPathname;
+  // Com a Jornada desligada, /jornada é uma página inexistente.
+  if (pathname === '/jornada' && !JORNADA_ATIVA) return NOT_FOUND_META;
   if (PAGE_META[pathname]) return PAGE_META[pathname];
 
   const saintMatch = pathname.match(/^\/home\/santos\/([^/]+)$/);
