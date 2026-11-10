@@ -26,8 +26,8 @@ const Santo = lazy(() => import('./pages/Santo'));
 const Privacidade = lazy(() => import('./pages/Privacidade'));
 const Creditos = lazy(() => import('./pages/Creditos'));
 const Confissao = lazy(() => import('./pages/Confissao'));
-// A Jornada só entra no build quando a flag está ligada (VITE_JORNADA=true); sem ela, /jornada não existe.
-const Jornada = JORNADA_ATIVA ? lazy(() => import('./pages/Jornada')) : null;
+// A Jornada só entra no build quando a flag está ligada (VITE_JORNADA=true); sem ela, /jornada mostra um "Em breve".
+const Jornada = JORNADA_ATIVA ? lazy(() => import('./pages/Jornada')) : lazy(() => import('./pages/JornadaEmBreve'));
 const Novenas = lazy(() => import('./pages/Novenas'));
 const Trilhas = lazy(() => import('./pages/Trilhas'));
 const Quiz = lazy(() => import('./pages/Quiz'));
@@ -105,7 +105,7 @@ function AnimatedRoutes() {
             <Route path="/privacidade" element={<Privacidade />} />
             <Route path="/creditos" element={<Creditos />} />
             <Route path="/home/confissao" element={<Confissao />} />
-            {Jornada && <Route path="/jornada" element={<Jornada />} />}
+            <Route path="/jornada" element={<Jornada />} />
             <Route path="/comunidade" element={<Comunidade />} />
             <Route path="/home/novenas" element={<Novenas />} />
             <Route path="/home/novenas/:id" element={<Novenas />} />

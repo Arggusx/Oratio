@@ -87,7 +87,7 @@ Cada seção termina com um convite para a ilha do mesmo assunto nas Trilhas da 
 
 ### Jornada
 
-> A Jornada só aparece quando o build é feito com `VITE_JORNADA=true` (veja [Jornada ligada ou desligada](#jornada-ligada-ou-desligada)). Na produção ela fica desligada; no hml, ligada.
+> A Jornada só aparece quando o build é feito com `VITE_JORNADA=true` (veja [Jornada ligada ou desligada](#jornada-ligada-ou-desligada)). Na produção ela fica desligada e `/jornada` mostra um aviso de "Em breve"; no hml, ligada.
 
 A **Jornada** (`/jornada`) guarda o caminho de oração **só neste aparelho** (`localStorage`, chave `oratio:jornada`); nada vai para servidor. Os princípios: sem pontos, ranking, selos de quantidade nem culpa por dias perdidos.
 
@@ -121,7 +121,7 @@ O botão flutuante **Feedback** abre um formulário enviado pelo Formspree. A **
 | `/home/escola-da-fe` | Escola da Fé (`?secao=curiosidades`, `missa`, `simbolos`, `santos`); `/home/curiosidades` redireciona para cá |
 | `/home/santos/:slug` | Página de um santo |
 | `/home/confissao` | Exame de consciência |
-| `/jornada` | Jornada (painel e jogos, `?secao=`); só existe com `VITE_JORNADA=true`, senão dá página não encontrada |
+| `/jornada` | Jornada (painel e jogos, `?secao=`) com `VITE_JORNADA=true`; sem a flag, uma página de "Em breve" |
 | `/home/novenas` e `/home/novenas/:id` | Novenas |
 | `/home/trilhas` e `/home/trilhas/:id` | Trilhas da fé |
 | `/home/trilhas/:id/quiz/:level` | Quiz de uma ilha |
@@ -227,7 +227,7 @@ O valor é a URL-base, sem os caminhos `/api/...`. Em desenvolvimento, a página
 
 ### Jornada ligada ou desligada
 
-A Jornada (`/jornada`, o item dela na barra inferior e no topo, os atalhos "Ver na Jornada", "Guardar na coleção", "Marcar no meu mapa" e a janela de carimbo das trilhas) só entra no site quando a variável de build `VITE_JORNADA` vale `true`. Sem a variável, ou com qualquer outro valor, ela some: `/jornada` cai na página não encontrada, a Escola da Fé ocupa o quinto lugar da barra inferior e o código da Jornada nem vai para o pacote. O terço de hoje, as novenas, as trilhas e os quizzes continuam funcionando e guardando o progresso no aparelho.
+A Jornada (o painel e os jogos em `/jornada`, os atalhos "Ver na Jornada", "Guardar na coleção", "Marcar no meu mapa", os "voltar à Jornada" e a janela de carimbo das trilhas) só entra no site quando a variável de build `VITE_JORNADA` vale `true`. Sem a variável, ou com qualquer outro valor, `/jornada` mostra só um aviso de "Em breve" (`src/pages/JornadaEmBreve.jsx`), os atalhos somem e o código da Jornada nem vai para o pacote. O item "Jornada" da barra inferior e do topo continua, levando ao aviso. Nos dois casos, `/jornada` fica fora dos buscadores (`noindex`) e do sitemap. O terço de hoje, as novenas, as trilhas e os quizzes continuam funcionando e guardando o progresso no aparelho.
 
 A flag é lida em `src/utils/features.js` (`JORNADA_ATIVA`). Como é uma variável do Vite, vale no momento do build: depois de mudar o valor, é preciso fazer um novo deploy.
 

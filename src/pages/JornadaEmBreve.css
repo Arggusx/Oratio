@@ -1,0 +1,62 @@
+/* Página "Em breve" da Jornada (só quando VITE_JORNADA está desligada). */
+.jornada-em-breve {
+  display: flex;
+  justify-content: center;
+}
+
+.jornada-em-breve-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  max-width: 34rem;
+  margin: 1rem auto 0;
+  padding: 2.4rem 1.6rem 2rem;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 40%, var(--color-border));
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--color-gold) 16%, transparent), transparent 65%),
+    var(--color-surface);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+}
+
+.jornada-em-breve-card .section-title {
+  margin: 0;
+}
+
+.jornada-em-breve-card .lead {
+  margin: 0.2rem 0 0;
+}
+
+.jornada-em-breve-icon {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-gold) 16%, var(--color-surface));
+  color: var(--color-gold-text);
+}
+
+.jornada-em-breve-note {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+}
+
+.jornada-em-breve-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 480px) {
+  .jornada-em-breve-card {
+    padding: 2rem 1.1rem 1.6rem;
+  }
+}
