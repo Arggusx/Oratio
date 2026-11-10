@@ -9,6 +9,7 @@ import { SaintInitial } from '../components/SaintsDirectory';
 import ImageCredit from '../components/ImageCredit';
 import { saintImages } from '../data/imageCredits';
 import { journey, useJourney } from '../utils/journeyStore';
+import { JORNADA_ATIVA } from '../utils/features';
 
 function SaintPrayer({ prayer, defaultOpen }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -121,7 +122,7 @@ export default function Santo() {
             {saint.lifespan && <span>{saint.lifespan}</span>}
           </p>
           {saint.feastNote && <p className="saint-hero-note">{saint.feastNote}</p>}
-          <CollectButton slug={saint.slug} />
+          {JORNADA_ATIVA && <CollectButton slug={saint.slug} />}
         </div>
       </header>
       <ImageCredit image={saintImages[saint.slug]} className="saint-image-credit" />

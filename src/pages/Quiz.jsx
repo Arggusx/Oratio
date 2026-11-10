@@ -5,6 +5,7 @@ import GameIntro from '../components/GameIntro';
 import { DIFFICULTY_LABEL, LEVELS, QUIZ_TOPICS, buildRound } from '../data/quizBank';
 import { getTrail, trailStops } from '../data/trails';
 import { journey, useJourney } from '../utils/journeyStore';
+import { JORNADA_ATIVA } from '../utils/features';
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E'];
 
@@ -229,10 +230,13 @@ function RandomQuizPage() {
 
   return (
     <main className="page quiz-page" style={{ '--trail': '#B84A13' }}>
-      <Link to="/jornada" className="saint-back-link page-back-link">
-        <ChevronLeft size={16} aria-hidden="true" />
-        Jornada
-      </Link>
+      {/* Sem a Jornada, o caminho de volta é o botão "Ilhas", logo abaixo. */}
+      {JORNADA_ATIVA && (
+        <Link to="/jornada" className="saint-back-link page-back-link">
+          <ChevronLeft size={16} aria-hidden="true" />
+          Jornada
+        </Link>
+      )}
       <header className="trail-head">
         <div>
           <span className="eyebrow">Quiz</span>

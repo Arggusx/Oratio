@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Check } from 'lucide-react';
 import { journey, todayKey, useJourney } from '../utils/journeyStore';
 import { plural, useCommunityStats } from '../utils/community';
+import { JORNADA_ATIVA } from '../utils/features';
 
 /** "Marcar terço de hoje": acende o dia no caminho de oração da Jornada. */
 export default function PrayedTodayButton({ showLink = false }) {
@@ -25,7 +26,7 @@ export default function PrayedTodayButton({ showLink = false }) {
           Hoje, {plural(stats.tercoToday, 'pessoa rezou', 'pessoas rezaram')} o terço no Oratio
         </Link>
       )}
-      {showLink && done && (
+      {JORNADA_ATIVA && showLink && done && (
         <Link to="/jornada" className="journey-mark-link">
           Ver na Jornada
         </Link>

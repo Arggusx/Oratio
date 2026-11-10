@@ -11,6 +11,7 @@ import { SeasonContext, useSeasonTheme } from './utils/useSeasonTheme';
 import Angel from './components/anim/Angel';
 import SiteBackground from './components/anim/SiteBackground';
 import RosaryLoader from './components/anim/RosaryLoader';
+import { JORNADA_ATIVA } from './utils/features';
 
 // A página inicial vem no pacote principal; as demais são baixadas só quando abertas.
 const Misterios = lazy(() => import('./pages/Misterios'));
@@ -23,7 +24,8 @@ const Santo = lazy(() => import('./pages/Santo'));
 const Privacidade = lazy(() => import('./pages/Privacidade'));
 const Creditos = lazy(() => import('./pages/Creditos'));
 const Confissao = lazy(() => import('./pages/Confissao'));
-const Jornada = lazy(() => import('./pages/Jornada'));
+// A Jornada só entra no build quando a flag está ligada (VITE_JORNADA=true); sem ela, /jornada não existe.
+const Jornada = JORNADA_ATIVA ? lazy(() => import('./pages/Jornada')) : null;
 const Novenas = lazy(() => import('./pages/Novenas'));
 const Trilhas = lazy(() => import('./pages/Trilhas'));
 const Quiz = lazy(() => import('./pages/Quiz'));
@@ -101,7 +103,7 @@ function AnimatedRoutes() {
             <Route path="/privacidade" element={<Privacidade />} />
             <Route path="/creditos" element={<Creditos />} />
             <Route path="/home/confissao" element={<Confissao />} />
-            <Route path="/jornada" element={<Jornada />} />
+            {Jornada && <Route path="/jornada" element={<Jornada />} />}
             <Route path="/comunidade" element={<Comunidade />} />
             <Route path="/home/novenas" element={<Novenas />} />
             <Route path="/home/novenas/:id" element={<Novenas />} />

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { getSaint } from '../data/saints';
 import { getNovena } from '../data/novenas';
 import { getTrail } from '../data/trails';
+import { JORNADA_ATIVA } from './features';
 
 const QUIZ_DESCRIPTION = 'Perguntas com cinco alternativas e a explicação de cada resposta, do fácil ao desafio final.';
 
@@ -79,6 +80,8 @@ const PAGE_META = {
 function metaFor(rawPathname) {
   // O React Router aceita "/home/leituras/" como "/home/leituras".
   const pathname = rawPathname.length > 1 ? rawPathname.replace(/\/+$/, '') : rawPathname;
+  // Com a Jornada desligada, /jornada é uma página inexistente.
+  if (pathname === '/jornada' && !JORNADA_ATIVA) return NOT_FOUND_META;
   if (PAGE_META[pathname]) return PAGE_META[pathname];
 
   const saintMatch = pathname.match(/^\/home\/santos\/([^/]+)$/);
