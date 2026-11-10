@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ArrowLeft, ArrowRight, ChevronDown, Search } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ChevronDown, Music, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link, useSearchParams } from 'react-router-dom';
 import MassGesturesSection from '../components/MassGesturesSection';
@@ -493,6 +493,16 @@ export default function EscolaDaFe() {
         transition={{ duration: 0.35 }}
       >
         {section === 'missa' && <MassGesturesSection />}
+        {section === 'missa' && (
+          <Link to="/home/canticos" className="canticos-invite">
+            <Music size={22} aria-hidden="true" />
+            <span>
+              <strong>Cânticos da Missa</strong>
+              <small>Hinos e cantos para cada momento, da entrada ao canto final.</small>
+            </span>
+            <ArrowRight size={18} aria-hidden="true" />
+          </Link>
+        )}
         {section === 'simbolos' && <SymbolsSection />}
         {section === 'curiosidades' && <CuriosidadesSection />}
         {section === 'santos' && <SantosSection />}

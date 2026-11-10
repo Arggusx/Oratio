@@ -40,4 +40,5 @@
 @import './styles/jornada-buque-missoes.css'; /* Cartão do buquê e missões */
 @import './styles/jornada-painel.css'; /* Jornada: listas centralizadas e painel da tela inicial */
 @import './styles/jornada-estudo.css'; /* Estudo da ilha e Quem é quem na Igreja */
+@import './styles/canticos.css'; /* Cânticos da Missa: lista e página do cântico */
 @import './styles/animacoes.css'; /* Animações, temas do tempo litúrgico e brilhos de fundo */
