@@ -34,6 +34,7 @@ const Quiz = lazy(() => import('./pages/Quiz'));
 const Comunidade = lazy(() => import('./pages/Comunidade'));
 const Canticos = lazy(() => import('./pages/Canticos'));
 const Cantico = lazy(() => import('./pages/Cantico'));
+const OrdinarioMissa = lazy(() => import('./pages/OrdinarioMissa'));
 
 function NotFound() {
   return (
@@ -97,6 +98,7 @@ function AnimatedRoutes() {
             <Route path="/" element={<Home />} />
             <Route path="/home/misterio" element={<Misterios />} />
             <Route path="/home/leituras" element={<Leituras />} />
+            <Route path="/home/ordinario-da-missa" element={<OrdinarioMissa />} />
             <Route path="/home/oracoes" element={<Oracoes />} />
             <Route path="/home/escola-da-fe" element={<EscolaDaFe />} />
             {/* Endereço antigo da página */}

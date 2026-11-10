@@ -103,6 +103,15 @@ export default function Creditos() {
           ))}
         </ul>
       </section>
+
+      <section className="saint-section">
+        <h2 className="saint-section-title">Textos da Missa</h2>
+        <p className="credits-note">
+          No Ordinário da Missa, as respostas do povo são trechos curtos do Missal Romano, na tradução oficial da
+          CNBB, de uso comum nas celebrações. As regras de cada dia seguem a Instrução Geral do Missal Romano. As
+          antífonas, as orações e as leituras do dia vêm da API Liturgia Diária.
+        </p>
+      </section>
     </main>
   );
 }
