@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { getSaint } from '../data/saints';
 import { getNovena } from '../data/novenas';
 import { getTrail } from '../data/trails';
+import { getCantico, hasPage } from '../data/canticos';
 import { JORNADA_ATIVA } from './features';
 
 export const SITE_URL = 'https://www.oratiodaily.com';
@@ -98,6 +99,11 @@ const PAGE_META = {
     description:
       'Aprenda sobre a fé de um jeito leve: trilhas sobre a Missa, os sacramentos, Maria e a Bíblia, uma etapa por dia, e quiz católico do fácil ao desafio final.',
   },
+  '/home/canticos': {
+    title: pageTitle('Cânticos da Missa: catálogo por momento'),
+    description:
+      'Cânticos para cada momento da Missa e tempo litúrgico, com a letra e a tradução de hinos como Salve Regina, Adoro te devote, Te Deum e Veni Creator.',
+  },
   '/comunidade': {
     title: pageTitle('Mural de intenções e pedidos de oração'),
     description:
@@ -116,9 +122,9 @@ const PAGE_META = {
         noindex: true,
       },
   '/creditos': {
-    title: pageTitle('Créditos das imagens'),
+    title: pageTitle('Créditos das imagens e dos cânticos'),
     description:
-      'Autores, fontes e licenças das pinturas, ícones e fotografias de santos e de Nossa Senhora usadas no Oratio Daily, com links para as obras originais.',
+      'Autores, fontes e licenças das imagens de santos e de Nossa Senhora e dos textos dos cânticos usados no Oratio Daily, com links para as obras originais.',
   },
   '/privacidade': {
     title: pageTitle('Política de Privacidade'),
@@ -141,6 +147,23 @@ export function metaFor(rawPathname) {
       description: clampDescription(
         `Conheça ${saint.name} (${saint.title}): a história, a data da festa, do que é padroeiro e a oração para pedir a sua intercessão.`,
         'Reze com o Oratio.',
+      ),
+    };
+  }
+
+  const canticoMatch = pathname.match(/^\/home\/canticos\/([^/]+)$/);
+  if (canticoMatch) {
+    const cantico = getCantico(canticoMatch[1]);
+    // Só os cânticos com letra publicada têm página.
+    if (!cantico || !hasPage(cantico)) return NOT_FOUND_META;
+    const about = cantico.subtitle ? `${cantico.title} (${cantico.subtitle})` : cantico.title;
+    return {
+      title: pageTitle(`${cantico.title}: ${cantico.translation ? 'letra e tradução' : 'letra'}`, cantico.title),
+      description: clampDescription(
+        cantico.translation
+          ? `${about}: letra original com tradução, o momento da Missa em que se canta, a origem e a fonte do cântico.`
+          : `${about}: letra completa, o momento da Missa em que se canta, a origem e a fonte deste cântico.`,
+        'Cante e reze com o Oratio.',
       ),
     };
   }

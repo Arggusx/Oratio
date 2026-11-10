@@ -4,6 +4,29 @@ import { marianTitles } from '../data/marianTitles';
 import { saintImages, marianImages } from '../data/imageCredits';
 import ImageCredit from '../components/ImageCredit';
 
+// Obras de onde vêm os textos dos cânticos publicados com letra (todos em domínio público).
+const CANTICO_SOURCES = [
+  {
+    name: 'Liber Usualis',
+    detail:
+      'Abadia de Solesmes, edição de 1961. Reúne os cantos gregorianos: antífonas marianas, hinos eucarísticos, Te Deum e cantos do Advento e da Quaresma.',
+  },
+  {
+    name: 'Graduale Romanum e seu Kyriale',
+    detail:
+      'Livro de canto da Missa romana. Dele vêm o Kyrie, o Glória, o Santo e o Cordeiro da Missa VIII (De Angelis), as sequências e os cantos do Domingo de Ramos.',
+  },
+  {
+    name: 'Bíblia',
+    detail: 'Os Salmos 23, 100 e 117 e o Magnificat (Lc 1,46-55) estão em tradução livre feita para o Oratio.',
+  },
+  {
+    name: 'Hinos antigos',
+    detail:
+      'Adeste fideles (John Francis Wade, séc. XVIII), Veni, veni, Emmanuel (Psalteriolum Cantionum Catholicarum, 1710) e Puer natus in Bethlehem (séc. XIV).',
+  },
+];
+
 function CreditList({ items }) {
   return (
     <ul className="credits-list">
@@ -41,7 +64,7 @@ export default function Creditos() {
       <div className="page-title-row">
         <div>
           <span className="eyebrow">Transparência</span>
-          <h1 className="section-title">Créditos das imagens</h1>
+          <h1 className="section-title">Créditos</h1>
         </div>
       </div>
       <p className="lead">
@@ -62,6 +85,23 @@ export default function Creditos() {
       <section className="saint-section">
         <h2 className="saint-section-title">Títulos de Nossa Senhora</h2>
         <CreditList items={marianItems} />
+      </section>
+
+      <section className="saint-section">
+        <h2 className="saint-section-title">Textos dos cânticos</h2>
+        <p className="credits-note">
+          Na página de <Link to="/home/canticos">Cânticos da Missa</Link>, só os textos em domínio público têm a
+          letra publicada. As traduções para o português foram feitas para o Oratio. Os cânticos com autor vivo ou
+          editora aparecem sem a letra, com a indicação de onde encontrá-la.
+        </p>
+        <ul className="credits-sources">
+          {CANTICO_SOURCES.map((s) => (
+            <li key={s.name}>
+              <strong>{s.name}</strong>
+              <span>{s.detail}</span>
+            </li>
+          ))}
+        </ul>
       </section>
     </main>
   );

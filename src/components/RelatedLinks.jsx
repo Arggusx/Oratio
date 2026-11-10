@@ -32,6 +32,7 @@ const RELATED = [
   ['/home/trilhas', ['escola', 'santos', 'misterio']],
   ['/home/quiz', ['escola', 'trilhas', 'santos']],
   ['/comunidade', ['oracoes', 'novenas', 'leituras']],
+  ['/home/canticos', ['leituras', 'escola', 'calendario']],
 ];
 
 export default function RelatedLinks() {
