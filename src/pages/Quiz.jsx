@@ -1,8 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, CheckCircle2, ChevronLeft, RotateCcw, Shuffle, XCircle } from 'lucide-react';
 import GameIntro from '../components/GameIntro';
-import { DIFFICULTY_LABEL, LEVELS, QUIZ_TOPICS, buildRound } from '../data/quizBank';
+import { DIFFICULTY_LABEL, LEVELS, QUIZ_TOPICS, buildRound, rememberRound } from '../data/quizBank';
 import { getTrail, trailStops } from '../data/trails';
 import { journey, useJourney } from '../utils/journeyStore';
 
@@ -50,7 +50,7 @@ function QuizRound({ round, color, pass, onRestart, onPassed, exitTo, exitLabel,
               ? 'acertos'
               : passed
                 ? 'Concluído! A próxima parada do caminho abriu.'
-                : `Para seguir no caminho, acerte pelo menos ${pass}. Tente de novo: as perguntas mudam de ordem.`}
+                : `Para seguir no caminho, acerte pelo menos ${pass}. Tente de novo: vêm outras perguntas sorteadas.`}
           </span>
         </div>
 
@@ -143,11 +143,19 @@ function TrailQuizPage({ trail, level }) {
   const navigate = useNavigate();
   const { trails: plans, quizLevels } = useJourney();
   const [seed, setSeed] = useState(0);
+  const memory = `${trail.id}:${level.id}`;
   const round = useMemo(
-    () => buildRound({ topic: trail.quizTopic, levels: level.levels, size: level.size }),
+    () => buildRound({ topic: trail.quizTopic, levels: level.levels, size: level.size, memory }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [trail.id, level.id, seed]
   );
+  // As perguntas da partida que sai da tela ficam para o fim do próximo sorteio: ao jogar de novo (antes de sortear)
+  // e ao sair da página (no efeito abaixo).
+  useEffect(() => () => rememberRound(memory, round), [memory, round]);
+  const restart = () => {
+    rememberRound(memory, round);
+    setSeed(seed + 1);
+  };
 
   // A parada anterior no caminho precisa estar concluída.
   const stops = trailStops(trail);
@@ -176,7 +184,7 @@ function TrailQuizPage({ trail, level }) {
           'Depois do estudo da ilha, o caminho tem cinco quizzes, cada um mais difícil que o anterior, até o desafio final.',
           'Cada pergunta tem cinco alternativas. Depois de responder, aparece a explicação, acertando ou não.',
           `Para seguir no caminho, acerte pelo menos ${level.pass} de ${level.size} neste quiz.`,
-          'Errou? É só jogar de novo: as perguntas e as alternativas mudam de ordem, e nada se perde.',
+          'Errou? É só jogar de novo: o quiz sorteia outras perguntas do banco da ilha, e nada se perde.',
         ]}
       />
       <QuizRound
@@ -185,7 +193,7 @@ function TrailQuizPage({ trail, level }) {
         color={trail.color}
         pass={level.pass}
         onPassed={() => journey.passQuizLevel(trail.id, level.id)}
-        onRestart={() => setSeed(seed + 1)}
+        onRestart={restart}
         exitTo={`/home/trilhas/${trail.id}`}
         exitLabel="Voltar à ilha"
         nextAction={
@@ -204,6 +212,7 @@ const DIFFICULTIES = [
   { id: 1, label: 'Fácil' },
   { id: 2, label: 'Médio' },
   { id: 3, label: 'Difícil' },
+  { id: 4, label: 'Muito difícil' },
 ];
 
 /** Desafio aleatório: a pessoa escolhe os assuntos, a dificuldade e o tamanho da partida. */

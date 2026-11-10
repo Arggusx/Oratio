@@ -9,7 +9,8 @@
     "prebuild": "node scripts/generate-sitemap.mjs",
     "build": "vite build",
     "postbuild": "node scripts/prerender-meta.mjs",
-    "lint": "eslint .",
+    "lint": "eslint . && node scripts/check-quiz-bank.mjs",
+    "check:quiz": "node scripts/check-quiz-bank.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
