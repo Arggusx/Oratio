@@ -62,11 +62,18 @@ const PAGE_META = {
     title: 'Comunidade: mural de intenções e terços de hoje — Oratio',
     description: 'Reze pelos pedidos de outras pessoas, veja quantos rezaram o terço hoje e acompanhe as novenas em grupo e as metas da comunidade, sem identificar ninguém.',
   },
-  '/jornada': {
-    title: 'Jornada: seu caminho de oração — Oratio',
-    description: 'Seu progresso pessoal: dias de oração, novenas, coleção de santos e milagres visitados. Fica só no seu aparelho.',
-    noindex: true,
-  },
+  // Com a Jornada desligada (VITE_JORNADA), /jornada é só um aviso de "em breve". Nos dois casos, fora dos buscadores.
+  '/jornada': JORNADA_ATIVA
+    ? {
+        title: 'Jornada: seu caminho de oração — Oratio',
+        description: 'Seu progresso pessoal: dias de oração, novenas, coleção de santos e milagres visitados. Fica só no seu aparelho.',
+        noindex: true,
+      }
+    : {
+        title: 'Jornada: em breve — Oratio',
+        description: 'Em breve: um caminho de oração para acompanhar os seus dias.',
+        noindex: true,
+      },
   '/creditos': {
     title: 'Créditos das imagens — Oratio',
     description: 'Autores e licenças das pinturas, ícones e fotografias de santos e de Nossa Senhora usadas no Oratio.',
@@ -80,8 +87,6 @@ const PAGE_META = {
 function metaFor(rawPathname) {
   // O React Router aceita "/home/leituras/" como "/home/leituras".
   const pathname = rawPathname.length > 1 ? rawPathname.replace(/\/+$/, '') : rawPathname;
-  // Com a Jornada desligada, /jornada é uma página inexistente.
-  if (pathname === '/jornada' && !JORNADA_ATIVA) return NOT_FOUND_META;
   if (PAGE_META[pathname]) return PAGE_META[pathname];
 
   const saintMatch = pathname.match(/^\/home\/santos\/([^/]+)$/);
