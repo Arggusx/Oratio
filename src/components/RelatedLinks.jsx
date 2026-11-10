@@ -8,6 +8,7 @@ import './RelatedLinks.css';
  */
 const LINKS = {
   leituras: { to: '/home/leituras', title: 'Liturgia diária', text: 'Leituras, salmo e Evangelho do dia.', Icon: BookOpen },
+  missa: { to: '/home/ordinario-da-missa', title: 'Ordinário da Missa', text: 'As partes da Missa e as respostas.', Icon: Church },
   oracoes: { to: '/home/oracoes', title: 'Como rezar o terço', text: 'O passo a passo, conta por conta.', Icon: Heart },
   misterio: { to: '/home/misterio', title: 'Mistérios do terço', text: 'Qual mistério rezar em cada dia.', Icon: Sparkles },
   calendario: { to: '/home/calendario', title: 'Calendário católico', text: 'Dias santos, festas e feriados.', Icon: CalendarDays },
@@ -22,6 +23,7 @@ const LINKS = {
 // Para cada página (ou começo de endereço), as três sugestões, da mais próxima à mais distante.
 const RELATED = [
   ['/home/leituras', ['oracoes', 'misterio', 'calendario']],
+  ['/home/ordinario-da-missa', ['leituras', 'escola', 'calendario']],
   ['/home/oracoes', ['misterio', 'novenas', 'santos']],
   ['/home/misterio', ['oracoes', 'leituras', 'novenas']],
   ['/home/calendario', ['leituras', 'santos', 'novenas']],

@@ -11,6 +11,7 @@ const today = new Date().toISOString().slice(0, 10);
 const pages = [
   { path: '/', changefreq: 'daily', priority: '1.0' },
   { path: '/home/leituras', changefreq: 'daily', priority: '0.9' },
+  { path: '/home/ordinario-da-missa', changefreq: 'daily', priority: '0.8' },
   { path: '/home/oracoes', changefreq: 'weekly', priority: '0.9' },
   { path: '/home/misterio', changefreq: 'monthly', priority: '0.8' },
   { path: '/home/calendario', changefreq: 'monthly', priority: '0.8' },

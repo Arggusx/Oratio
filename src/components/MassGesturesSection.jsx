@@ -74,6 +74,10 @@ export default function MassGesturesSection() {
           Na oração pessoal, fora da Missa, você tem liberdade de postura. Veja{' '}
           <Link to="/home/escola-da-fe">“Posso rezar deitado?” em Curiosidades</Link>.
         </p>
+        <p className="mass-intro-note">
+          Para acompanhar a celebração com as respostas do povo, veja{' '}
+          <Link to="/home/ordinario-da-missa">o Ordinário da Missa de hoje</Link>.
+        </p>
       </header>
 
       <ScrollRail label="Gestos da Missa" className="mass-rail">

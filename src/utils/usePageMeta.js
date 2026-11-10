@@ -62,6 +62,11 @@ const PAGE_META = {
     description:
       'Leia a liturgia diária completa: primeira leitura, salmo com refrão, segunda leitura, Evangelho do dia e homilia, com as respostas do povo na Missa.',
   },
+  '/home/ordinario-da-missa': {
+    title: pageTitle('Ordinário da Missa de hoje, com respostas'),
+    description:
+      'Acompanhe a Missa de hoje parte por parte, com as respostas do povo em destaque, o Glória, o Credo, o Aleluia e a cor litúrgica de acordo com o dia.',
+  },
   '/home/oracoes': {
     title: pageTitle('Como rezar o terço passo a passo'),
     description:
