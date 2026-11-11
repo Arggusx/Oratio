@@ -217,7 +217,9 @@ O front-end consome as seguintes fontes:
 | Liturgia | `https://liturgia.up.railway.app/v2/` | Leituras, salmo e Evangelho |
 | Feedback | Formspree (`https://formspree.io/f/mqapqejd`) | Formulário flutuante |
 
-Para direcionar as chamadas da `daily-prayer-api` a outro serviço, crie um arquivo `.env.local` na raiz:
+As variáveis de ambiente estão listadas em `.env.example`. Copie o arquivo para `.env` (que fica fora do git) e preencha os valores. Na Vercel, as mesmas variáveis ficam em Settings > Environment Variables.
+
+Para direcionar as chamadas da `daily-prayer-api` a outro serviço, ajuste no `.env`:
 
 ```env
 VITE_API_ORACAO=https://seu-dominio-de-api.example
