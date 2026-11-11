@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ExternalLink, MapPin, MapPinCheck } from 'lucide-react';
 import { journey, useJourney } from '../utils/journeyStore';
+import { JORNADA_ATIVA } from '../utils/features';
 import { eucharisticMiracles, ERAS, RECOGNITION } from '../data/eucharisticMiracles';
 import { LoadMoreButton } from './LoadMore';
 import { useLoadMore } from '../utils/useLoadMore';
@@ -63,16 +64,18 @@ function MiracleCard({ miracle: m, visited, index = 0, featured = false }) {
           <span className="sr-only"> (abre em nova aba)</span>
         </a>
       )}
-      {/* Marca o milagre no mapa da Jornada (também acontece ao abrir as fotos). */}
-      <button
-        type="button"
-        className={`miracle-visit ${seen ? 'is-done' : ''}`}
-        onClick={() => journey.markMiracle(m.id, !seen)}
-        aria-pressed={seen}
-      >
-        <MapPinCheck size={14} aria-hidden="true" />
-        {seen ? 'No seu mapa' : 'Marcar no meu mapa'}
-      </button>
+      {/* Marca o milagre no mapa da Jornada (também acontece ao abrir as fotos). Sem a Jornada, o mapa não aparece. */}
+      {JORNADA_ATIVA && (
+        <button
+          type="button"
+          className={`miracle-visit ${seen ? 'is-done' : ''}`}
+          onClick={() => journey.markMiracle(m.id, !seen)}
+          aria-pressed={seen}
+        >
+          <MapPinCheck size={14} aria-hidden="true" />
+          {seen ? 'No seu mapa' : 'Marcar no meu mapa'}
+        </button>
+      )}
     </motion.article>
   );
 }

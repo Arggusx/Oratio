@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { getSaint } from '../data/saints';
 import { getNovena } from '../data/novenas';
 import { getTrail } from '../data/trails';
+import { JORNADA_ATIVA } from './features';
 
 const QUIZ_DESCRIPTION = 'Perguntas com cinco alternativas e a explicação de cada resposta, do fácil ao desafio final.';
 
@@ -61,11 +62,18 @@ const PAGE_META = {
     title: 'Comunidade: mural de intenções e terços de hoje — Oratio',
     description: 'Reze pelos pedidos de outras pessoas, veja quantos rezaram o terço hoje e acompanhe as novenas em grupo e as metas da comunidade, sem identificar ninguém.',
   },
-  '/jornada': {
-    title: 'Jornada: seu caminho de oração — Oratio',
-    description: 'Seu progresso pessoal: dias de oração, novenas, coleção de santos e milagres visitados. Fica só no seu aparelho.',
-    noindex: true,
-  },
+  // Com a Jornada desligada (VITE_JORNADA), /jornada é só um aviso de "em breve". Nos dois casos, fora dos buscadores.
+  '/jornada': JORNADA_ATIVA
+    ? {
+        title: 'Jornada: seu caminho de oração — Oratio',
+        description: 'Seu progresso pessoal: dias de oração, novenas, coleção de santos e milagres visitados. Fica só no seu aparelho.',
+        noindex: true,
+      }
+    : {
+        title: 'Jornada: em breve — Oratio',
+        description: 'Em breve: um caminho de oração para acompanhar os seus dias.',
+        noindex: true,
+      },
   '/creditos': {
     title: 'Créditos das imagens — Oratio',
     description: 'Autores e licenças das pinturas, ícones e fotografias de santos e de Nossa Senhora usadas no Oratio.',

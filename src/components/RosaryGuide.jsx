@@ -411,7 +411,7 @@ export default function RosaryGuide({ layoutData }) {
         )}
       </section>
 
-      {/* Fim do terço: um toque discreto para acender o dia na Jornada. */}
+      {/* Fim do terço: um toque discreto para marcar o dia (e acendê-lo na Jornada, quando ligada). */}
       <PrayedTodayButton showLink />
 
       {/* 4. ORAÇÕES PARA DEPOIS DO TERÇO */}
