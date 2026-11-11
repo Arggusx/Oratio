@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { X, BookOpen, ExternalLink, Church } from 'lucide-react';
+import { X, BookOpen, ExternalLink, Church, Music } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { isAlleluiaSuppressed } from '../utils/liturgicalCalendar';
@@ -416,6 +416,10 @@ export default function Leituras() {
       <Link to="/home/ordinario-da-missa">
         <Church size={16} aria-hidden="true" />
         Acompanhe a Missa de hoje, parte por parte
+      </Link>
+      <Link to="/home/canticos">
+        <Music size={16} aria-hidden="true" />
+        Cânticos para cada momento da Missa
       </Link>
     </p>
     <a 
