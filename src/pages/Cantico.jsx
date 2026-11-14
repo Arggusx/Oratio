@@ -1,9 +1,11 @@
 import { Link, Navigate, useParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, BookOpen, Clock, Feather } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BookOpen, Clock, ExternalLink, Feather, Lock, PlayCircle } from 'lucide-react';
 import {
   canticos,
   getCantico,
+  hasLyrics,
   hasPage,
+  searchLinks,
   LICENSE_LABELS,
   momentLabel,
   seasonLabel,
@@ -11,10 +13,11 @@ import {
 
 const LANGUAGE_NAMES = { la: 'latim', pt: 'português' };
 
-/** Até quatro outros cânticos com letra para o mesmo momento da Missa. */
+/** Até quatro outros cânticos para o mesmo momento da Missa, primeiro os que têm letra. */
 function relatedTo(cantico) {
   return canticos
-    .filter((c) => c.id !== cantico.id && hasPage(c) && c.moments.some((m) => cantico.moments.includes(m)))
+    .filter((c) => c.id !== cantico.id && c.moments.some((m) => cantico.moments.includes(m)))
+    .sort((a, b) => Number(hasLyrics(b)) - Number(hasLyrics(a)))
     .slice(0, 4);
 }
 
@@ -22,11 +25,12 @@ export default function Cantico() {
   const { id } = useParams();
   const cantico = getCantico(id);
 
-  // Cânticos protegidos não têm página: a lista mostra onde encontrar a letra.
   if (!cantico || !hasPage(cantico)) return <Navigate to="/home/canticos" replace />;
 
   const { lyrics, translation } = cantico;
+  const withLyrics = hasLyrics(cantico);
   const related = relatedTo(cantico);
+  const links = withLyrics ? null : searchLinks(cantico);
 
   return (
     <main className="page cantico-page">
@@ -64,6 +68,30 @@ export default function Cantico() {
 
       <p className="saint-bio">{cantico.about}</p>
 
+      {!withLyrics && (
+        <section className="saint-section" aria-labelledby="cantico-onde">
+          <h2 id="cantico-onde" className="saint-section-title">
+            Onde encontrar a letra
+          </h2>
+          <p className="cantico-note">
+            <Lock size={14} aria-hidden="true" /> Este cântico tem direitos autorais, por isso a letra não está
+            publicada aqui. {cantico.licenseNote}
+          </p>
+          <p className="saint-bio">{cantico.whereToFind}</p>
+          <div className="cantico-search-links">
+            <a href={links.listen} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
+              <PlayCircle size={18} aria-hidden="true" />
+              Ouvir no YouTube
+            </a>
+            <a href={links.lyrics} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
+              <ExternalLink size={18} aria-hidden="true" />
+              Buscar a letra
+            </a>
+          </div>
+        </section>
+      )}
+
+      {withLyrics && (
       <section className="saint-section" aria-labelledby="cantico-letra">
         <h2 id="cantico-letra" className="saint-section-title">
           Letra
@@ -97,6 +125,7 @@ export default function Cantico() {
           </p>
         )}
       </section>
+      )}
 
       <section className="saint-section" aria-labelledby="cantico-fonte">
         <h2 id="cantico-fonte" className="saint-section-title">

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { getSaint } from '../data/saints';
 import { getNovena } from '../data/novenas';
 import { getTrail } from '../data/trails';
-import { getCantico, hasPage } from '../data/canticos';
+import { getCantico, hasLyrics, hasPage } from '../data/canticos';
 import { JORNADA_ATIVA } from './features';
 
 export const SITE_URL = 'https://www.oratiodaily.com';
@@ -159,9 +159,18 @@ export function metaFor(rawPathname) {
   const canticoMatch = pathname.match(/^\/home\/canticos\/([^/]+)$/);
   if (canticoMatch) {
     const cantico = getCantico(canticoMatch[1]);
-    // Só os cânticos com letra publicada têm página.
     if (!cantico || !hasPage(cantico)) return NOT_FOUND_META;
     const about = cantico.subtitle ? `${cantico.title} (${cantico.subtitle})` : cantico.title;
+    // Protegido: a página não tem a letra, só o autor e onde encontrá-la.
+    if (!hasLyrics(cantico)) {
+      return {
+        title: pageTitle(`${cantico.title}: onde encontrar a letra`, cantico.title),
+        description: clampDescription(
+          `${about}, de ${cantico.author}: em que momento da Missa se canta, em que tempo do ano e onde encontrar a letra e a partitura.`,
+          'Cante e reze com o Oratio.',
+        ),
+      };
+    }
     return {
       title: pageTitle(`${cantico.title}: ${cantico.translation ? 'letra e tradução' : 'letra'}`, cantico.title),
       description: clampDescription(

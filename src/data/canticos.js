@@ -54,8 +54,24 @@ export const seasonFromTheme = (theme) => (theme === 'triduo' ? 'quaresma' : the
 export const fitsSeason = (cantico, season) =>
   !season || cantico.seasons.includes('qualquer') || cantico.seasons.includes(season);
 
-/** Só os cânticos com letra publicada têm página própria. */
-export const hasPage = (cantico) => Boolean(cantico.lyrics?.length);
+/** Cânticos com a letra publicada aqui (só os de domínio público). */
+export const hasLyrics = (cantico) => Boolean(cantico.lyrics?.length);
+
+/** Todo cântico tem página; a dos protegidos mostra onde encontrar a letra, sem copiá-la. */
+export const hasPage = (cantico) => Boolean(cantico);
+
+/**
+ * Buscas para ouvir e achar a letra de um cântico protegido. São links de busca, não
+ * endereços fixos: a letra fica com quem tem os direitos, e o link não quebra se a página mudar.
+ */
+export function searchLinks(cantico) {
+  const author = cantico.author?.split('(')[0].trim() ?? '';
+  const q = encodeURIComponent(`${cantico.title} ${author}`.trim());
+  return {
+    listen: `https://www.youtube.com/results?search_query=${q}`,
+    lyrics: `https://www.google.com/search?q=${q}+letra`,
+  };
+}
 
 /**
  * id: slug usado no endereço.
