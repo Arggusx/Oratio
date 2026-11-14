@@ -1,9 +1,10 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ChevronDown, Sparkles, Calendar, HeartHandshake } from 'lucide-react';
+import { ArrowRight, ChevronDown, Sparkles, Calendar, HeartHandshake, ListOrdered } from 'lucide-react';
 import { getTodayMysteryKey } from '../utils/liturgicalCalendar';
 import RosaryExplorer from './anim/RosaryExplorer';
+import RosaryCheck from './RosaryCheck';
 import PrayedTodayButton from './PrayedTodayButton';
 import {
   closingPrayers,
@@ -27,6 +28,48 @@ const MYSTERY_ADJECTIVE = {
 const WEEKDAYS = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
 
 const lowerFirst = (text) => text.charAt(0).toLowerCase() + text.slice(1);
+
+// Passos marcados como rezados: valem só para o dia e ficam só neste aparelho.
+const CHECKS_PREFIX = 'oratio:terco-passos:';
+const todayKey = () => CHECKS_PREFIX + new Date().toLocaleDateString('sv-SE');
+
+function loadChecks() {
+  try {
+    // Limpa as marcações de dias anteriores.
+    Object.keys(localStorage)
+      .filter((k) => k.startsWith(CHECKS_PREFIX) && k !== todayKey())
+      .forEach((k) => localStorage.removeItem(k));
+    return new Set(JSON.parse(localStorage.getItem(todayKey()) ?? '[]'));
+  } catch {
+    return new Set();
+  }
+}
+
+function useDailyChecks() {
+  const [done, setDone] = useState(loadChecks);
+  const setStepDone = useCallback((id, value) => {
+    setDone((prev) => {
+      const next = new Set(prev);
+      if (value) next.add(id);
+      else next.delete(id);
+      try {
+        localStorage.setItem(todayKey(), JSON.stringify([...next]));
+      } catch {
+        // Sem armazenamento (aba anônima), a marcação vale só enquanto a página está aberta.
+      }
+      return next;
+    });
+  }, []);
+  const clear = useCallback(() => {
+    setDone(new Set());
+    try {
+      localStorage.removeItem(todayKey());
+    } catch {
+      // idem
+    }
+  }, []);
+  return { done, setStepDone, clear };
+}
 
 function Collapse({ isOpen, children, className }) {
   return (
@@ -275,14 +318,21 @@ export default function RosaryGuide({ layoutData }) {
   const defaultMysteryKey = useMemo(() => getTodayMysteryKey(), []);
   const [activeMysteryKey, setActiveMysteryKey] = useState(defaultMysteryKey);
 
+  // A lista de passos fica recolhida: o terço desenhado já mostra cada oração.
+  const [listOpen, setListOpen] = useState(false);
+  const { done, setStepDone, clear } = useDailyChecks();
+
   const toggleStep = (id) => {
     setOpenStepId((prev) => (prev === id ? null : id));
   };
 
-  // Clicar numa conta abre o passo e rola até ele.
+  // "Ver o roteiro" no terço: abre a lista no passo e rola até ele, depois que ela aparece.
   const openStepFromBead = (id) => {
+    setListOpen(true);
     setOpenStepId(id);
-    document.getElementById(`passo-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => {
+      document.getElementById(`passo-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 350);
   };
   const activeStepIndex = layoutData.steps?.findIndex((s) => s.id === openStepId) ?? -1;
 
@@ -337,7 +387,11 @@ export default function RosaryGuide({ layoutData }) {
       {/* 3. GUIA PASSO A PASSO COMPLETO */}
       <section className="rosary-timeline-section">
         <h3 className="timeline-heading">Roteiro Passo a Passo do {layoutData.title}</h3>
-        <p className="timeline-subtext">Siga as etapas sequenciais abaixo para a recitação completa:</p>
+        <p className="timeline-subtext">
+          {layoutData.id === 'nordico'
+            ? 'Siga as etapas sequenciais abaixo para a recitação completa:'
+            : 'Toque numa parte do terço ou use “Próximo”: a oração de cada passo aparece ao lado, sem precisar rolar a página.'}
+        </p>
 
         {layoutData.id === 'nordico' ? (
           <NordicTimeline key={activeMysteryKey} mystery={currentMystery} />
@@ -349,15 +403,38 @@ export default function RosaryGuide({ layoutData }) {
               onOpenStep={openStepFromBead}
               mysteryKey={activeMysteryKey}
               mystery={currentMystery}
+              done={done}
+              onSetDone={setStepDone}
             />
-            <div className="rosary-steps-timeline">
+
+            <div className="rosary-list-toggle-row">
+              <button
+                type="button"
+                className="btn btn-secondary rosary-list-toggle"
+                onClick={() => setListOpen((v) => !v)}
+                aria-expanded={listOpen}
+                aria-controls="roteiro-em-lista"
+              >
+                <ListOrdered size={18} aria-hidden="true" />
+                {listOpen ? 'Esconder o roteiro em lista' : 'Ver o roteiro em lista'}
+                <ChevronDown size={18} aria-hidden="true" className={`arrow-icon ${listOpen ? 'rotated' : ''}`} />
+              </button>
+              {done.size > 0 && (
+                <button type="button" className="rosary-checks-clear" onClick={clear}>
+                  {done.size === 1 ? 'Desmarcar o passo rezado' : `Desmarcar os ${done.size} passos rezados`}
+                </button>
+              )}
+            </div>
+
+            <Collapse isOpen={listOpen}>
+            <div className="rosary-steps-timeline" id="roteiro-em-lista">
               {layoutData.steps.map((step, index) => {
                 const isOpen = openStepId === step.id;
                 return (
                   <motion.article
                     key={step.id}
                     id={`passo-${step.id}`}
-                    className={`rosary-step-card ${isOpen ? 'is-open' : ''}`}
+                    className={`rosary-step-card ${isOpen ? 'is-open' : ''} ${done.has(step.id) ? 'is-done' : ''}`}
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.05 }}
@@ -373,6 +450,11 @@ export default function RosaryGuide({ layoutData }) {
                           <span className="bead-tag">{step.bead}</span>
                           {step.beadBadge && <span className="action-tag">{step.beadBadge}</span>}
                         </div>
+                        <RosaryCheck
+                          checked={done.has(step.id)}
+                          onChange={(v) => setStepDone(step.id, v)}
+                          label="Rezei"
+                        />
                       </div>
 
                       <h4 className="step-action-title">{step.action}</h4>
@@ -407,6 +489,7 @@ export default function RosaryGuide({ layoutData }) {
                 );
               })}
             </div>
+            </Collapse>
           </>
         )}
       </section>
