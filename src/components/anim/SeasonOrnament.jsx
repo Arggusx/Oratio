@@ -1,22 +1,5 @@
 import { useSeason } from '../../utils/useSeasonTheme';
-
-const LABELS = {
-  advento: 'Tempo do Advento',
-  natal: 'Tempo do Natal',
-  quaresma: 'Tempo da Quaresma',
-  triduo: 'Tríduo Pascal',
-  pascoa: 'Tempo Pascal',
-  pentecostes: 'Domingo de Pentecostes',
-};
-
-const NOTES = {
-  advento: 'Preparamos o coração para a vinda do Senhor.',
-  natal: 'O Verbo se fez carne e habitou entre nós.',
-  quaresma: 'Quarenta dias de oração, jejum e caridade.',
-  triduo: 'Paixão, morte e ressurreição do Senhor.',
-  pascoa: 'Cristo ressuscitou! Aleluia!',
-  pentecostes: 'Vinde, Espírito Santo!',
-};
+import { seasonDisplay } from '../../data/seasonDecor';
 
 // Coroa do Advento: três velas roxas e uma rosa (3º domingo), acesas conforme a semana.
 function AdventWreath({ week }) {
@@ -76,7 +59,66 @@ function Calvary() {
   return (
     <svg viewBox="0 0 120 100" className="season-svg season-triduo">
       <path className="hill" d="M4 96 Q60 60 116 96z" />
-      <path className="cross" d="M60 18v58M46 32h28" />
+      <path className="cross draw" pathLength="1" d="M60 18v58M46 32h28" />
+    </svg>
+  );
+}
+
+// Ostensório: hóstia branca que pulsa, com raios girando devagar.
+function Monstrance() {
+  return (
+    <svg viewBox="0 0 120 100" className="season-svg season-corpus">
+      <g className="rays">
+        <path d="M60 8v10M60 70v10M24 44h10M86 44h10M34.5 18.5l7 7M78.5 62.5l7 7M34.5 69.5l7-7M78.5 25.5l7-7" />
+      </g>
+      <circle className="frame" cx="60" cy="44" r="22" />
+      <circle className="host" cx="60" cy="44" r="12" />
+      <path className="mark" d="M60 38v12M54 43h12" />
+      <path className="stand" d="M60 66v22M50 90h20" />
+    </svg>
+  );
+}
+
+// Coroa de Nossa Senhora Aparecida com as doze estrelas girando em volta.
+function CrownOfStars() {
+  const stars = [...Array(12)].map((_, i) => {
+    const a = (i / 12) * Math.PI * 2 - Math.PI / 2;
+    return [60 + 44 * Math.cos(a), 52 + 44 * Math.sin(a)];
+  });
+  return (
+    <svg viewBox="0 0 120 100" className="season-svg season-aparecida">
+      <g className="ring">
+        {stars.map(([x, y]) => (
+          <path key={`${x}-${y}`} d={`M${x} ${y - 8}l2 6 6 2-6 2-2 6-2-6-6-2 6-2z`} />
+        ))}
+      </g>
+      <g className="crown">
+        <path className="crown-body" d="M40 62l-4-22 12 10 12-18 12 18 12-10-4 22z" />
+        <rect className="crown-base" x="36" y="62" width="48" height="8" rx="2" />
+        <circle className="gem" cx="60" cy="56" r="3" />
+        <circle className="gem" cx="48" cy="58" r="2" />
+        <circle className="gem" cx="72" cy="58" r="2" />
+      </g>
+    </svg>
+  );
+}
+
+// Três santos com auréola, o do meio à frente; flutuam devagar, um de cada vez.
+function Saints() {
+  const saints = [
+    { x: 28, top: 44, head: 48, r: 7.5, halo: 11, body: 'M14 96c0-18 6-28 14-28s14 10 14 28z' },
+    { x: 92, top: 44, head: 48, r: 7.5, halo: 11, body: 'M78 96c0-18 6-28 14-28s14 10 14 28z' },
+    { x: 60, top: 30, head: 35, r: 9.5, halo: 14, body: 'M42 96c0-22 7-36 18-36s18 14 18 36z' },
+  ];
+  return (
+    <svg viewBox="0 0 120 100" className="season-svg season-santos">
+      {saints.map((s, i) => (
+        <g key={s.x} className="saint" style={{ '--i': i }}>
+          <circle className="halo" cx={s.x} cy={s.top} r={s.halo} />
+          <path className="robe" d={s.body} />
+          <circle className="robe" cx={s.x} cy={s.head} r={s.r} />
+        </g>
+      ))}
     </svg>
   );
 }
@@ -102,8 +144,10 @@ function EmptyTomb() {
 function PentecostDove() {
   return (
     <svg viewBox="0 0 120 100" className="season-svg season-pentecostes">
-      <path className="dove" d="M30 52c14-10 34-12 50-6 6 2 10 0 13-4 2 3 2 7 0 10-4 4-10 6-16 6-10 0-20 3-27 8l-10-1 5-4c-6-2-11-5-15-9z" />
-      <path className="dove-wing" d="M60 47C56 34 48 26 36 22c5 10 8 18 13 28z" />
+      <g className="dove-body">
+        <path className="dove" d="M30 52c14-10 34-12 50-6 6 2 10 0 13-4 2 3 2 7 0 10-4 4-10 6-16 6-10 0-20 3-27 8l-10-1 5-4c-6-2-11-5-15-9z" />
+        <path className="dove-wing" d="M60 47C56 34 48 26 36 22c5 10 8 18 13 28z" />
+      </g>
       {[22, 48, 74, 100].map((x, i) => (
         <path key={x} className="tongue" style={{ '--i': i }} d={`M${x} 88c5 6 6 10 0 12-6-2-5-6 0-12z`} transform={`translate(0 -16)`} />
       ))}
@@ -112,33 +156,42 @@ function PentecostDove() {
 }
 
 /**
- * Enfeite do tempo litúrgico na página inicial: muda sozinho com o calendário.
- * No Tempo Comum não aparece nada (o site usa o visual padrão).
+ * Enfeite do tempo litúrgico (ou do dia especial) na página inicial: muda sozinho com o calendário.
+ * No Tempo Comum, fora dos dias especiais, não aparece nada (o site usa o visual padrão).
  */
 export default function SeasonOrnament() {
-  const { theme, adventWeek } = useSeason();
-  if (!LABELS[theme]) return null;
+  const season = useSeason();
+  const { theme, adventWeek, feast } = season;
 
-  const art = {
-    advento: <AdventWreath week={adventWeek} />,
-    natal: <BethlehemStar />,
-    quaresma: <CrossOfThorns />,
-    triduo: <Calvary />,
-    pascoa: <EmptyTomb />,
-    pentecostes: <PentecostDove />,
-  }[theme];
+  const art =
+    {
+      'corpus-christi': <Monstrance />,
+      aparecida: <CrownOfStars />,
+      'todos-os-santos': <Saints />,
+    }[feast] ??
+    {
+      advento: <AdventWreath week={adventWeek} />,
+      natal: <BethlehemStar />,
+      quaresma: <CrossOfThorns />,
+      triduo: <Calvary />,
+      pascoa: <EmptyTomb />,
+      pentecostes: <PentecostDove />,
+    }[theme];
+  if (!art) return null;
+
+  const { label, note } = seasonDisplay(season);
 
   return (
-    <aside className="season-banner" aria-label={LABELS[theme]}>
+    <aside className="season-banner" aria-label={label}>
       <span className="season-art" aria-hidden="true">
         {art}
       </span>
       <span className="season-text">
         <strong>
-          {LABELS[theme]}
+          {label}
           {theme === 'advento' && adventWeek > 0 && ` · ${adventWeek}ª semana`}
         </strong>
-        <span>{NOTES[theme]}</span>
+        <span>{note}</span>
       </span>
     </aside>
   );

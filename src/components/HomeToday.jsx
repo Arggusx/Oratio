@@ -4,6 +4,8 @@ import { Check, ChevronRight } from 'lucide-react';
 import { todayKey, useJourney } from '../utils/journeyStore';
 import { getTodayMysteryKey } from '../utils/liturgicalCalendar';
 import { MYSTERY_TITLES } from '../data/mysteryTitles';
+import { useSeason } from '../utils/useSeasonTheme';
+import { seasonTodayItem } from '../data/seasonDecor';
 
 /** Santo cuja festa é hoje, se houver. A lista de santos é baixada à parte, para não pesar no início. */
 function useSaintOfToday() {
@@ -21,10 +23,14 @@ function useSaintOfToday() {
   return saint;
 }
 
-/** "Para hoje" na página inicial: o terço, a leitura do dia e, quando houver, o santo do dia. */
+/**
+ * "Para hoje" na página inicial: o terço, a leitura do dia, o item do tempo litúrgico ou do dia
+ * especial (Regina Caeli na Páscoa, jejum nas Cinzas...) e, quando houver, o santo do dia.
+ */
 export default function HomeToday() {
   const { prayedDays } = useJourney();
   const saint = useSaintOfToday();
+  const seasonItem = seasonTodayItem(useSeason());
   const prayed = prayedDays.includes(todayKey());
 
   const items = [
@@ -37,6 +43,7 @@ export default function HomeToday() {
     },
     { key: 'leitura', href: '#leitura-do-dia', title: 'Leitura do dia', hint: '3 trechos breves · 5 a 10 min' },
   ];
+  if (seasonItem) items.push({ key: 'tempo', season: true, ...seasonItem });
   if (saint) items.push({ key: 'santo', to: `/home/santos/${saint.slug}`, title: 'Santo do dia', hint: saint.name });
 
   return (
@@ -57,7 +64,7 @@ export default function HomeToday() {
             </>
           );
           return (
-            <li key={item.key} className={item.done ? 'is-done' : ''}>
+            <li key={item.key} className={[item.done && 'is-done', item.season && 'is-season'].filter(Boolean).join(' ')}>
               {item.to ? <Link to={item.to}>{inner}</Link> : <a href={item.href}>{inner}</a>}
             </li>
           );

@@ -8,6 +8,7 @@ import LogoDraw from '../components/anim/LogoDraw';
 import HandwritingText from '../components/anim/HandwritingText';
 import PrayerNow from '../components/anim/PrayerNow';
 import SeasonOrnament from '../components/anim/SeasonOrnament';
+import SeasonPhotoOrnament from '../components/anim/SeasonPhotoOrnament';
 import HomeToday from '../components/HomeToday';
 import { MYSTERY_TITLES } from '../data/mysteryTitles';
 import { getTodayMysteryKey } from '../utils/liturgicalCalendar';
@@ -60,6 +61,7 @@ export default function Home() {
             height="408"
             alt="Mãos segurando um terço em oração"
           />
+          <SeasonPhotoOrnament />
           <div className="hero-image-caption">
             <span className="hero-image-kicker">Terço de hoje · ~20 min</span>
             <strong>{MYSTERY_TITLES[getTodayMysteryKey()]}</strong>
