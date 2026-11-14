@@ -35,7 +35,112 @@
 
 .hero-image {
   border-radius: var(--radius-xl);
-  box-shadow: 0 14px 30px rgba(94, 59, 36, 0.14);
+  /* O contorno fino segue a cor do tempo litúrgico (transparente no Tempo Comum). */
+  box-shadow:
+    0 14px 30px rgba(94, 59, 36, 0.14),
+    0 0 0 1px color-mix(in srgb, var(--season-edge, var(--season, transparent)) 45%, transparent);
+}
+
+/* ── Decoração do tempo litúrgico sobre a foto do terço ── */
+.hero-photo-ornament {
+  position: absolute;
+  z-index: 1;
+  top: 0.7rem;
+  right: 0.8rem;
+  pointer-events: none;
+}
+
+.photo-art {
+  display: block;
+  width: 5.4rem;
+  height: 5.4rem;
+  overflow: visible;
+}
+
+/* Páscoa: lírio que balança */
+.photo-lily { transform-origin: 50% 100%; animation: photo-sway 5s ease-in-out infinite; }
+.photo-lily .stem { fill: none; stroke: #FFFDF9; stroke-width: 2; stroke-linecap: round; }
+.photo-lily .petal { fill: #FFFDF9; stroke: #D6CEC2; stroke-width: 1.4; }
+.photo-lily .side { fill: #FFFFFF; stroke-width: 1.2; }
+.photo-lily .leaf { fill: none; stroke: #CFE3D0; stroke-width: 2; stroke-linecap: round; }
+
+/* Natal: estrela branca com raios girando */
+.photo-star .rays { fill: none; stroke: #FFFFFF; stroke-width: 1; opacity: 0.7; transform-origin: 48px 48px; animation: rays-spin 60s linear infinite; }
+.photo-star .star { fill: #FFFFFF; filter: drop-shadow(0 0 6px #FFFFFF); transform-box: fill-box; transform-origin: center; animation: star-twinkle 2.4s ease-in-out infinite; }
+
+/* Pentecostes: três línguas de fogo */
+.photo-flames { width: 7.5rem; height: 3.75rem; }
+.photo-flames .flame { fill: #F2A33A; transform-box: fill-box; transform-origin: 50% 100%; animation: candle-flicker 0.9s ease-in-out calc(var(--i) * 0.2s) infinite alternate; }
+.photo-flames .flame:nth-child(2) { fill: #E8643C; }
+
+/* Tríduo: vela acesa e véu roxo sobre a foto */
+.photo-candle { width: 2.5rem; height: 5.5rem; }
+.photo-candle .flame { fill: #F2B544; filter: drop-shadow(0 0 6px #F2B544); transform-box: fill-box; transform-origin: 50% 100%; animation: candle-flicker 1.2s ease-in-out infinite alternate; }
+.photo-candle .core { fill: #FFF4D6; }
+.photo-candle .wax { fill: #FBF3E6; }
+
+.hero-photo-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(74, 46, 80, 0.35) 0%, rgba(45, 36, 31, 0.5) 100%);
+  pointer-events: none;
+  animation: fadeIn 3s ease-out both;
+}
+
+/* Corpus Christi: hóstia com raios */
+.photo-host .rays { fill: none; stroke: #FFFFFF; stroke-width: 1.2; stroke-linecap: round; opacity: 0.8; transform-origin: 44px 44px; animation: rays-spin 48s linear infinite; }
+.photo-host .host { fill: #FFFFFF; stroke: #D6CEC2; stroke-width: 1.5; transform-box: fill-box; transform-origin: center; animation: host-glow 3s ease-in-out infinite; }
+.photo-host .mark { fill: none; stroke: #B9B0A3; stroke-width: 1.8; stroke-linecap: round; }
+
+/* Aparecida: coroa de doze estrelas girando */
+.photo-ring .ring { fill: #FFFFFF; transform-origin: 46px 46px; animation: rays-spin 70s linear infinite; }
+.photo-ring .center { fill: #FFFFFF; opacity: 0.9; }
+
+/* Todos os Santos: auréola com raios */
+.photo-halo .rays { fill: none; stroke: #FFFFFF; stroke-width: 1.2; stroke-linecap: round; opacity: 0.7; transform-origin: 44px 44px; animation: rays-spin 60s linear infinite; }
+.photo-halo .halo { fill: none; stroke: #FFFFFF; stroke-width: 2.5; filter: drop-shadow(0 0 6px #FFFFFF); transform-box: fill-box; transform-origin: center; animation: season-halo-pulse 3s ease-in-out infinite; }
+.photo-halo .inner { fill: none; stroke: #FFFDF9; stroke-width: 1.2; opacity: 0.8; }
+
+/* Quaresma: contagem até a Páscoa */
+.photo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.8rem 0.35rem 0.35rem;
+  border-radius: var(--radius-full);
+  background: rgba(45, 36, 31, 0.6);
+  color: #F1E3D6;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  animation: fadeIn 1.6s ease-out both;
+}
+
+.photo-badge-icon {
+  display: grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: #8C8078;
+}
+
+.photo-badge-icon path { fill: none; stroke: #2D241F; stroke-width: 3; stroke-linecap: round; }
+
+@keyframes photo-sway {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+/* A foto fica mais sóbria nos tempos penitenciais */
+:root[data-season='quaresma'] .hero-image img { filter: saturate(0.55) sepia(0.12) brightness(0.92); }
+:root[data-season='triduo'] .hero-image img { filter: saturate(0.4) sepia(0.15) brightness(0.8); }
+
+/* Aparecida: o escurecido da foto puxa para o azul */
+:root[data-feast='aparecida'] .hero-image::after {
+  background: linear-gradient(180deg, rgba(31, 42, 68, 0) 30%, rgba(31, 42, 68, 0.86) 100%);
 }
 
 /* Escurece a parte de baixo da foto para o texto do terço de hoje ficar legível. */
@@ -146,6 +251,15 @@
   border-radius: 50%;
   border: 2px solid var(--color-gold);
   color: #FFFAF4;
+}
+
+/* Item do tempo litúrgico: círculo e fundo na cor do tempo (com contorno quando é branca). */
+.home-today li.is-season {
+  background: color-mix(in srgb, var(--season-ink, var(--season)) 7%, var(--color-surface));
+}
+
+.home-today li.is-season .home-today-check {
+  border-color: var(--season-edge, var(--season));
 }
 
 .home-today li.is-done .home-today-check {

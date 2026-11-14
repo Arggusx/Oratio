@@ -39,12 +39,34 @@
 
 .season-chip-roxo { --chip: var(--liturgical-roxo); --chip-text: #5A3F61; }
 .season-chip-vermelho { --chip: var(--liturgical-vermelho); --chip-text: #8A3730; }
-.season-chip-branco { --chip: var(--color-gold); --chip-text: var(--color-gold-text); }
+.season-chip-azul { --chip: #2E4F8F; --chip-text: #2E4F8F; }
+
+/* Branco: o dourado fica só para o Tempo Comum. Ponto branco com contorno, para aparecer no fundo creme. */
+.season-chip-branco {
+  --chip-text: #6F675C;
+  background: #FFFFFF;
+  box-shadow: inset 0 0 0 1px var(--color-border);
+}
+
+.season-chip-branco:hover {
+  background: #FFFFFF;
+  box-shadow: inset 0 0 0 1px #B9B0A3;
+}
+
+.season-chip-branco .season-chip-dot {
+  background: #FFFFFF;
+  box-shadow: 0 0 0 1.5px #B9B0A3;
+}
 
 :root[data-theme='dark'] .season-chip { --chip-text: #B9D3BC; }
 :root[data-theme='dark'] .season-chip-roxo { --chip-text: #D2BCD8; }
 :root[data-theme='dark'] .season-chip-vermelho { --chip-text: #EBB3AC; }
-:root[data-theme='dark'] .season-chip-branco { --chip-text: var(--color-gold-text); }
+:root[data-theme='dark'] .season-chip-azul { --chip: #9DB4E0; --chip-text: #B9CAEA; }
+:root[data-theme='dark'] .season-chip-branco {
+  --chip-text: #F3EDE6;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+}
 
 .season-chip-short {
   display: none;
