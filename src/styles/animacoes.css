@@ -827,24 +827,34 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26'%3E%3Cpath d='M13 11v4M11 13h4' stroke='%23C8963E' stroke-opacity='0.2' stroke-width='1' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
+/* Os brilhos são gradientes, e não círculos com filter: blur. O blur grande, animado e
+   embaixo do cabeçalho de vidro fosco, fazia o celular redesenhar tudo a cada quadro e a
+   tela piscar. */
 .site-bg-glow {
   position: absolute;
   width: 34rem;
   height: 34rem;
   border-radius: 50%;
-  filter: blur(90px);
-  opacity: 0.16;
+  background: radial-gradient(circle closest-side, var(--glow), transparent);
+  opacity: 0.2;
 }
 
-:root[data-theme='dark'] .site-bg-glow { opacity: 0.22; }
+:root[data-theme='dark'] .site-bg-glow { opacity: 0.26; }
 
-.site-bg-glow-gold { background: #E3B55A; left: -10rem; top: -8rem; animation: site-glow-a 28s ease-in-out infinite alternate; }
-.site-bg-glow-blue { background: #6E8FD6; right: -12rem; top: 30vh; animation: site-glow-b 34s ease-in-out infinite alternate; }
-.site-bg-glow-rose { background: #C77D9A; left: 30vw; bottom: -14rem; width: 26rem; height: 26rem; animation: site-glow-c 40s ease-in-out infinite alternate; }
+.site-bg-glow-gold { --glow: #E3B55A; left: -10rem; top: -8rem; animation: site-glow-a 28s ease-in-out infinite alternate; }
+.site-bg-glow-blue { --glow: #6E8FD6; right: -12rem; top: 30%; animation: site-glow-b 34s ease-in-out infinite alternate; }
+.site-bg-glow-rose { --glow: #C77D9A; left: 30%; bottom: -14rem; width: 26rem; height: 26rem; animation: site-glow-c 40s ease-in-out infinite alternate; }
 
-@keyframes site-glow-a { to { transform: translate(18vw, 14vh) scale(1.15); } }
-@keyframes site-glow-b { to { transform: translate(-22vw, -10vh) scale(0.9); } }
-@keyframes site-glow-c { to { transform: translate(-12vw, -18vh) scale(1.25); } }
+/* Só deslocamento (sem scale): o navegador move a camada pronta, sem redesenhá-la. */
+@keyframes site-glow-a { to { transform: translate3d(18vw, 14vh, 0); } }
+@keyframes site-glow-b { to { transform: translate3d(-22vw, -10vh, 0); } }
+@keyframes site-glow-c { to { transform: translate3d(-12vw, -18vh, 0); } }
+
+/* No celular os brilhos ficam parados: a barra de endereço que some e volta muda o vh,
+   e o movimento lento não compensa o custo. */
+@media (max-width: 719px) {
+  .site-bg-glow { animation: none; }
+}
 
 /* ── Página inicial: logo que se desenha e título escrito à mão ── */
 .hero-mark {
@@ -1404,9 +1414,9 @@
 :root[data-theme='dark'][data-season='pentecostes'] { --season-title: #F08A6A; }
 :root[data-theme='dark'][data-feast='aparecida'] { --season-ink: #9DB4E0; --season-title: #9DB4E0; }
 
-.site-bg-glow-gold { background: var(--season-glow-a); }
-.site-bg-glow-blue { background: var(--season-glow-b); }
-.site-bg-glow-rose { background: var(--season-glow-c); }
+.site-bg-glow-gold { --glow: var(--season-glow-a); }
+.site-bg-glow-blue { --glow: var(--season-glow-b); }
+.site-bg-glow-rose { --glow: var(--season-glow-c); }
 
 /* Faixa fina na cor do tempo, embaixo do topo do site (com um fio de contorno quando é branca) */
 .site-header {
