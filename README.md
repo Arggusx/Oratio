@@ -139,7 +139,7 @@ O botão flutuante **Feedback** abre um formulário enviado pelo Formspree. A **
 - [Framer Motion](https://www.framer.com/motion/) para animações e transições;
 - [Lucide React](https://lucide.dev/) para ícones;
 - [Vercel Web Analytics](https://vercel.com/docs/analytics);
-- CSS próprio em `src/index.css` (tokens, layout e páginas) e `src/animations.css` (animações, terço interativo e temas litúrgicos).
+- CSS próprio dividido por área em `src/styles/` (tokens e base, cada página, Jornada, modo escuro, animações e temas litúrgicos); `src/index.css` só importa esses arquivos, na ordem da cascata.
 
 ## Estrutura do projeto
 
@@ -161,8 +161,8 @@ O botão flutuante **Feedback** abre um formulário enviado pelo Formspree. A **
 │   ├── pages/               # Páginas associadas às rotas
 │   ├── utils/               # Calendário litúrgico, Jornada, comunidade, tema litúrgico, SEO
 │   ├── App.jsx              # Rotas e animação entre páginas
-│   ├── index.css            # Tokens, estilos globais e páginas
-│   ├── animations.css       # Animações e temas do ano litúrgico
+│   ├── styles/              # CSS por área (base, páginas, Jornada, modo escuro, animações)
+│   ├── index.css            # Importa os arquivos de styles/ na ordem da cascata
 │   └── main.jsx             # Ponto de entrada React
 ├── index.html               # Metadados e carregamento da aplicação
 ├── vercel.json              # Reescrita de rotas para a SPA

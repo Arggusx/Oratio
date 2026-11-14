@@ -3,8 +3,8 @@ import { addDays, fromKey, startOfDay, toKey } from './liturgicalCalendar';
 import { community } from './community';
 
 /**
- * Progresso da Jornada, guardado só neste aparelho (localStorage). Nada é enviado a servidor.
- * Quando houver login, este mesmo objeto poderá ser sincronizado.
+ * Progresso da Jornada, guardado neste aparelho (localStorage). Sem conta, nada é enviado a servidor;
+ * quem entra com Google tem este mesmo objeto sincronizado com a conta (src/utils/account.js).
  */
 const STORAGE_KEY = 'oratio:jornada';
 
@@ -63,6 +63,13 @@ function subscribe(listener) {
 export function useJourney() {
   return useSyncExternalStore(subscribe, () => state, () => EMPTY);
 }
+
+/** Para a sincronização com a conta: o estado inteiro, trocar tudo de uma vez e ouvir mudanças. */
+export const journeySync = {
+  get: () => state,
+  replace: (next) => write({ ...EMPTY, ...next }),
+  subscribe,
+};
 
 const toggleIn = (list, value) => (list.includes(value) ? list.filter((v) => v !== value) : [...list, value]);
 

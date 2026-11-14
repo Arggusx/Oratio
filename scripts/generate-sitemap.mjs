@@ -4,6 +4,7 @@ import { writeFileSync } from 'node:fs';
 import { saints } from '../src/data/saints.js';
 import { novenas } from '../src/data/novenas.js';
 import { trails } from '../src/data/trails.js';
+import { canticos, hasPage } from '../src/data/canticos.js';
 import { loadEnv } from 'vite';
 
 // As trilhas (ilhas e quizzes) estão em teste: só entram no sitemap com VITE_JORNADA=true,
@@ -17,6 +18,7 @@ const today = new Date().toISOString().slice(0, 10);
 const pages = [
   { path: '/', changefreq: 'daily', priority: '1.0' },
   { path: '/home/leituras', changefreq: 'daily', priority: '0.9' },
+  { path: '/home/ordinario-da-missa', changefreq: 'daily', priority: '0.8' },
   { path: '/home/oracoes', changefreq: 'weekly', priority: '0.9' },
   { path: '/home/misterio', changefreq: 'monthly', priority: '0.8' },
   { path: '/home/calendario', changefreq: 'monthly', priority: '0.8' },
@@ -31,6 +33,9 @@ const pages = [
   ...(TRILHAS_ATIVAS
     ? trails.map((t) => ({ path: `/home/trilhas/${t.id}`, changefreq: 'yearly', priority: '0.5' }))
     : []),
+  { path: '/home/canticos', changefreq: 'monthly', priority: '0.6' },
+  // Todos os cânticos têm página; a dos protegidos mostra onde encontrar a letra.
+  ...canticos.filter(hasPage).map((c) => ({ path: `/home/canticos/${c.id}`, changefreq: 'yearly', priority: '0.5' })),
   { path: '/home/escola-da-fe?secao=missa', changefreq: 'monthly', priority: '0.6' },
   { path: '/home/escola-da-fe?secao=simbolos', changefreq: 'monthly', priority: '0.6' },
   { path: '/privacidade', changefreq: 'yearly', priority: '0.2' },

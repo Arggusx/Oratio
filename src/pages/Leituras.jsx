@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react';
-import { X, BookOpen, ExternalLink } from 'lucide-react';
+import { X, BookOpen, ExternalLink, Church, Music } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { isAlleluiaSuppressed } from '../utils/liturgicalCalendar';
 import BibleFlip from '../components/anim/BibleFlip';
 import RosaryLoader from '../components/anim/RosaryLoader';
+import ShareButton from '../components/ShareButton';
+import { ACCLAMATION, DIALOGUE } from '../data/massOrder';
+import { LITURGY_API_URL, LITURGICAL_COLORS as liturgicalColors } from '../utils/liturgyApi';
 
 /* ── Fallback readings when API is unavailable ── */
 const fallback = {
@@ -73,15 +77,6 @@ const tabNames = {
   homilia: 'Homilia',
 };
 
-// Tons escurecidos o suficiente para serem legíveis como texto (contraste ≥ 4,5:1).
-const liturgicalColors = {
-  Verde: '#517255',
-  Vermelho: '#AE463D',
-  Roxo: '#73537B',
-  Branco: '#6A6A6A',
-  Rosa: '#A15268',
-};
-
 /* ── Salmo responsorial: o refrão é repetido depois de cada estrofe ── */
 function PsalmText({ reading }) {
   const stanzas = (reading.texto || '')
@@ -120,7 +115,7 @@ export default function Leituras() {
 
   useEffect(() => {
     // 1. Fetch liturgia da API principal
-    const fetchLiturgia = fetch('https://liturgia.up.railway.app/v2/')
+    const fetchLiturgia = fetch(LITURGY_API_URL)
       .then((r) => {
         if (!r.ok) throw new Error('Falha na API da Liturgia');
         return r.json();
@@ -257,19 +252,19 @@ export default function Leituras() {
         <div className="liturgy-dialogue">
           <p className="liturgy-label">Aclamação ao Evangelho</p>
           {alleluiaSuppressed ? (
-            <p className="liturgy-acclamation">Louvor e glória a vós, Senhor Jesus Cristo!</p>
+            <p className="liturgy-acclamation">{ACCLAMATION.lent}</p>
           ) : (
-            <p className="liturgy-acclamation">Aleluia, aleluia, aleluia!</p>
+            <p className="liturgy-acclamation">{ACCLAMATION.alleluia}</p>
           )}
           <p>
-            <strong>— O Senhor esteja convosco.</strong>
+            <strong>— {DIALOGUE.greeting[0]}</strong>
             <br />
-            — Ele está no meio de nós.
+            — {DIALOGUE.greeting[1]}
           </p>
           <p>
             <strong>— {reading.titulo || 'Proclamação do Evangelho de Jesus Cristo'}.</strong>
             <br />
-            — Glória a vós, Senhor.
+            — {DIALOGUE.gospelAnnounce}
           </p>
         </div>
       )}
@@ -282,9 +277,9 @@ export default function Leituras() {
 
       {(active === 'primeiraLeitura' || active === 'segundaLeitura') && (
         <p className="reading-text liturgy-response">
-          <strong>— Palavra do Senhor.</strong>
+          <strong>— {DIALOGUE.wordOfTheLord[0]}</strong>
           <br />
-          — Graças a Deus.
+          — {DIALOGUE.wordOfTheLord[1]}
         </p>
       )}
 
@@ -308,9 +303,9 @@ export default function Leituras() {
 
       {active === 'evangelho' && (
         <p className="reading-text liturgy-response">
-          <strong>— Palavra da Salvação.</strong>
+          <strong>— {DIALOGUE.gospelEnd[0]}</strong>
           <br />
-          — Glória a vós, Senhor.
+          — {DIALOGUE.gospelEnd[1]}
         </p>
       )}
     </article>
@@ -322,14 +317,22 @@ export default function Leituras() {
       {/* ── Page header ── */}
       <div className="page-title-row">
         <div>
-          <span className="eyebrow">Palavra de hoje</span>
-          <h1 className="section-title">{liturgia}</h1>
+          <span className="eyebrow">{liturgia && liturgia !== 'Liturgia diária' ? liturgia : 'Palavra de hoje'}</span>
+          <h1 className="section-title">Liturgia diária</h1>
         </div>
         <BibleFlip />
       </div>
       <p className="lead">
         Acompanhe a liturgia e reserve alguns minutos para acolher a Palavra.
       </p>
+      <div className="page-share">
+        <ShareButton
+          path="/home/leituras"
+          title="Liturgia diária"
+          text="A liturgia e o Evangelho de hoje, para rezar com calma:"
+          label="Compartilhar a liturgia de hoje"
+        />
+      </div>
 
       {/* ── Liturgical color indicator ── */}
       <div
@@ -409,6 +412,16 @@ export default function Leituras() {
           </motion.div>
         )}
       </AnimatePresence>
+    <p className="liturgy-mass-link">
+      <Link to="/home/ordinario-da-missa">
+        <Church size={16} aria-hidden="true" />
+        Acompanhe a Missa de hoje, parte por parte
+      </Link>
+      <Link to="/home/canticos">
+        <Music size={16} aria-hidden="true" />
+        Cânticos para cada momento da Missa
+      </Link>
+    </p>
     <a 
       href='https://liturgia.cancaonova.com/pb/' 
       target="_blank" rel="noopener noreferrer" 

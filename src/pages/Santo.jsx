@@ -7,6 +7,7 @@ import { prayers } from '../data/prayers';
 import SaoBentoSection from '../components/SaoBentoSection';
 import { SaintInitial } from '../components/SaintsDirectory';
 import ImageCredit from '../components/ImageCredit';
+import ShareButton from '../components/ShareButton';
 import { saintImages } from '../data/imageCredits';
 import { journey, useJourney } from '../utils/journeyStore';
 import { JORNADA_ATIVA } from '../utils/features';
@@ -122,7 +123,13 @@ export default function Santo() {
             {saint.lifespan && <span>{saint.lifespan}</span>}
           </p>
           {saint.feastNote && <p className="saint-hero-note">{saint.feastNote}</p>}
-          {JORNADA_ATIVA && <CollectButton slug={saint.slug} />}
+          <div className="saint-hero-actions">
+            {JORNADA_ATIVA && <CollectButton slug={saint.slug} />}
+            <ShareButton
+              title={`${saint.name} | Oratio Daily`}
+              text={`A história e a oração de ${saint.name}:`}
+            />
+          </div>
         </div>
       </header>
       <ImageCredit image={saintImages[saint.slug]} className="saint-image-credit" />

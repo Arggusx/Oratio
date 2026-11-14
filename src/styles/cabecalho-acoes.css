@@ -1,0 +1,213 @@
+/* ============================================================
+   NAV ACTIONS & THEME TOGGLE
+   ============================================================ */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Etiqueta do tempo litúrgico: ponto na cor do dia e fundo no mesmo tom, bem claro. */
+.season-chip {
+  --chip: var(--liturgical-verde);
+  --chip-text: #3D5E42;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2rem;
+  padding: 0 0.7rem;
+  margin-right: 0.25rem;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--chip) 14%, var(--color-surface));
+  color: var(--chip-text);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background var(--duration-fast);
+}
+
+.season-chip:hover {
+  background: color-mix(in srgb, var(--chip) 24%, var(--color-surface));
+}
+
+.season-chip-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--chip);
+}
+
+.season-chip-roxo { --chip: var(--liturgical-roxo); --chip-text: #5A3F61; }
+.season-chip-vermelho { --chip: var(--liturgical-vermelho); --chip-text: #8A3730; }
+.season-chip-azul { --chip: #2E4F8F; --chip-text: #2E4F8F; }
+
+/* Branco: o dourado fica só para o Tempo Comum. Ponto branco com contorno, para aparecer no fundo creme. */
+.season-chip-branco {
+  --chip-text: #6F675C;
+  background: #FFFFFF;
+  box-shadow: inset 0 0 0 1px var(--color-border);
+}
+
+.season-chip-branco:hover {
+  background: #FFFFFF;
+  box-shadow: inset 0 0 0 1px #B9B0A3;
+}
+
+.season-chip-branco .season-chip-dot {
+  background: #FFFFFF;
+  box-shadow: 0 0 0 1.5px #B9B0A3;
+}
+
+:root[data-theme='dark'] .season-chip { --chip-text: #B9D3BC; }
+:root[data-theme='dark'] .season-chip-roxo { --chip-text: #D2BCD8; }
+:root[data-theme='dark'] .season-chip-vermelho { --chip-text: #EBB3AC; }
+:root[data-theme='dark'] .season-chip-azul { --chip: #9DB4E0; --chip-text: #B9CAEA; }
+:root[data-theme='dark'] .season-chip-branco {
+  --chip-text: #F3EDE6;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+}
+
+.season-chip-short {
+  display: none;
+}
+
+/* No celular, o nome curto ("Comum", "Advento"), para a marca não ser espremida. */
+@media (max-width: 479px) {
+  .season-chip {
+    padding: 0 0.6rem;
+    margin-right: 0;
+  }
+
+  .season-chip-full {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .season-chip-short {
+    display: inline;
+  }
+}
+
+/* Em telas muito estreitas fica só o ponto. */
+@media (max-width: 339px) {
+  .season-chip-short {
+    display: none;
+  }
+}
+
+.header-icon-link {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  color: var(--color-text-muted);
+  transition: color var(--duration-fast), background var(--duration-fast);
+}
+
+.header-icon-link:hover,
+.header-icon-link.active {
+  color: var(--color-terracotta);
+  background: color-mix(in srgb, var(--color-terracotta) 10%, transparent);
+}
+
+@media (min-width: 768px) {
+  .header-icon-link {
+    display: none;
+  }
+}
+
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-terracotta);
+  cursor: pointer;
+  transition: background var(--duration-fast), transform var(--duration-fast);
+}
+
+.theme-toggle:hover {
+  background: var(--color-cream-warm);
+  transform: rotate(-12deg);
+}
+
+/* Ícone do tema: Hóstia dourada (claro) e lua com cruz em azul da noite (escuro) */
+.theme-toggle {
+  --toggle-light: #C8963E;
+  --toggle-glow: #E8C46A;
+  --toggle-cross: #B5862F;
+  transition: background 0.4s ease, border-color 0.4s ease, transform var(--duration-fast);
+}
+
+.theme-icon {
+  overflow: visible;
+}
+
+.theme-icon line,
+.theme-icon path {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.theme-icon-rays line {
+  stroke: var(--toggle-glow);
+  stroke-width: 1.3;
+}
+
+.theme-icon-body {
+  fill: var(--toggle-light);
+  transition: fill 0.4s ease;
+}
+
+.theme-icon-host-cross {
+  stroke: color-mix(in srgb, var(--toggle-light) 55%, #fff);
+  stroke-width: 1.1;
+}
+
+.theme-icon-cross {
+  stroke: var(--toggle-cross);
+  stroke-width: 1.5;
+}
+
+.theme-icon-star {
+  stroke: var(--toggle-glow);
+  stroke-width: 0.9;
+}
+
+:root[data-theme='dark'] .theme-toggle {
+  --toggle-light: #E9D9AA;
+  --toggle-glow: #F1E3B8;
+  --toggle-cross: #D4A84F;
+  background: #1B2440;
+  border-color: #33406A;
+}
+
+:root[data-theme='dark'] .theme-toggle:hover {
+  background: #232E52;
+}
+
+@media (min-width: 768px) and (max-width: 1099px) {
+  .desktop-nav {
+    gap: 0.9rem;
+    font-size: 0.8rem;
+  }
+  .brand-mark {
+    width: 3rem;
+    height: 3rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .nav-actions {
+    margin-left: 1rem;
+  }
+}

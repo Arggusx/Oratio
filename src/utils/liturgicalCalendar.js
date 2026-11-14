@@ -319,16 +319,55 @@ export function getLiturgicalCycle(date = new Date()) {
 }
 
 /**
- * Tema visual do site para uma data: o tempo litúrgico, com Pentecostes destacado no seu domingo.
- * adventWeek (1 a 4) diz quantas velas da coroa do Advento estão acesas.
+ * Dia com decoração própria no site, além da do tempo litúrgico:
+ * 'natal-dia' | 'cinzas' | 'sexta-santa' | 'pascoa-dia' | 'corpus-christi' | 'aparecida' | 'todos-os-santos' | null.
+ */
+export function getFeastTheme(date = new Date()) {
+  const start = startOfDay(date);
+  const day = start.getTime();
+  const year = start.getFullYear();
+  const k = getKeyDates(year);
+  const feasts = [
+    [k.christmas, 'natal-dia'],
+    [k.ashWednesday, 'cinzas'],
+    [k.goodFriday, 'sexta-santa'],
+    [k.easter, 'pascoa-dia'],
+    [k.corpusChristi, 'corpus-christi'],
+    [makeDate(year, 10, 12), 'aparecida'],
+    // No Brasil, Todos os Santos é celebrado no domingo seguinte a 1º de novembro.
+    [sundayOnOrAfter(makeDate(year, 11, 1)), 'todos-os-santos'],
+  ];
+  return feasts.find(([d]) => d.getTime() === day)?.[1] ?? null;
+}
+
+/**
+ * Tema visual do site para uma data: o tempo litúrgico, com Pentecostes destacado no seu domingo,
+ * e o dia especial (feast), quando houver. adventWeek (1 a 4) diz quantas velas da coroa estão acesas.
  */
 export function getSeasonTheme(date = new Date()) {
   const day = startOfDay(date);
   const k = getKeyDates(day.getFullYear());
   const season = getLiturgicalSeason(day);
-  if (day.getTime() === k.pentecost.getTime()) return { theme: 'pentecostes', adventWeek: 0 };
+  const feast = getFeastTheme(day);
+  if (day.getTime() === k.pentecost.getTime()) return { theme: 'pentecostes', adventWeek: 0, feast };
   const adventWeek = season === 'advento' ? Math.min(4, Math.floor((day - k.advent1) / (7 * 86400000)) + 1) : 0;
-  return { theme: season, adventWeek };
+  return { theme: season, adventWeek, feast };
+}
+
+/** Dias até o Domingo de Páscoa (para a contagem da Quaresma). */
+export function daysUntilEaster(date = new Date()) {
+  return daysBetween(date, getEaster(startOfDay(date).getFullYear()));
 }
 
 export const SEASON_THEMES = ['advento', 'natal', 'quaresma', 'triduo', 'pascoa', 'pentecostes', 'comum'];
+
+/** Para pré-visualizar um dia especial: o tempo litúrgico em que ele cai. */
+export const FEAST_THEMES = {
+  'natal-dia': 'natal',
+  cinzas: 'quaresma',
+  'sexta-santa': 'triduo',
+  'pascoa-dia': 'pascoa',
+  'corpus-christi': 'comum',
+  aparecida: 'comum',
+  'todos-os-santos': 'comum',
+};

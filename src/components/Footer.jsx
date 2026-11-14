@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Cross, Github } from 'lucide-react';
+import ShareButton from './ShareButton';
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -17,6 +18,15 @@ export default function Footer() {
             <p className="footer-description">
               Um espaço dedicado à contemplação, oração e espiritualidade católica. Que a Palavra e a devoção diária tragam paz e esperança ao seu coração.
             </p>
+            <div className="footer-share">
+              <ShareButton
+                path="/"
+                title="Oratio Daily"
+                text="Conheça o Oratio: terço, liturgia diária e orações, tudo num lugar só."
+                label="Compartilhar o Oratio"
+                variant="solid"
+              />
+            </div>
           </div>
 
           {/* Coluna 2: Navegação Rápida */}

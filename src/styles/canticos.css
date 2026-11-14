@@ -1,0 +1,442 @@
+/* ---------- Cânticos da Missa: lista, cartões e página do cântico ---------- */
+.canticos-count {
+  margin: -0.4rem 0 1rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+/* Cartões de largura fixa numa lista centralizada (.card-list), inclusive a última linha. */
+.cantico-card-item {
+  display: flex;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .cantico-card-item {
+    width: calc((100% - 0.9rem) / 2);
+  }
+}
+
+@media (min-width: 1024px) {
+  .cantico-card-item {
+    width: calc((100% - 1.8rem) / 3);
+  }
+}
+
+.cantico-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.9rem;
+  width: 100%;
+  padding: 1.1rem 1.2rem 1rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  border-top: 3px solid var(--color-gold);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color var(--duration-fast), transform var(--duration-fast), box-shadow var(--duration-fast);
+}
+
+a.cantico-card:hover {
+  border-color: var(--color-gold);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.cantico-card.is-protected {
+  border-top-color: var(--color-border);
+}
+
+.cantico-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.cantico-card-moments {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-terracotta);
+}
+
+.cantico-card-title {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  line-height: 1.15;
+  color: var(--color-charcoal);
+}
+
+.cantico-card-subtitle {
+  font-size: 0.86rem;
+  font-style: italic;
+  color: var(--color-text);
+}
+
+.cantico-card-author {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.cantico-card-seasons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.4rem;
+}
+
+.cantico-season-tag {
+  display: inline-block;
+  padding: 0.1rem 0.55rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-cream-warm);
+  color: var(--color-text-muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.cantico-card-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.65rem 0 0;
+  border: 0;
+  border-top: 1px solid var(--color-border-soft);
+  background: none;
+  color: var(--color-terracotta);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cantico-card.is-protected .cantico-card-cta {
+  color: var(--color-text-muted);
+}
+
+.cantico-card.is-protected:hover .cantico-card-cta {
+  color: var(--color-terracotta);
+}
+
+.cantico-card-cta-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* Página de cântico protegido: links para ouvir e buscar a letra fora do site. */
+.cantico-search-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.cantico-note svg {
+  vertical-align: -2px;
+}
+
+.canticos-empty {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.canticos-note {
+  display: flex;
+  gap: 0.9rem;
+  max-width: 46rem;
+  margin: 2.5rem auto 0;
+  padding: 1.1rem 1.25rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-cream-warm);
+  color: var(--color-text);
+}
+
+.canticos-note > svg {
+  flex-shrink: 0;
+  color: var(--color-gold-text);
+  margin-top: 0.2rem;
+}
+
+.canticos-note h2 {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: var(--color-charcoal);
+}
+
+.canticos-note p {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.canticos-note a {
+  color: var(--color-terracotta);
+  text-decoration: underline;
+}
+
+/* ---------- Página do cântico ---------- */
+.cantico-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  margin-bottom: 1.25rem;
+}
+
+.cantico-hero .section-title {
+  margin-bottom: 0;
+}
+
+.cantico-hero-subtitle {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-style: italic;
+  color: var(--color-text);
+}
+
+.cantico-page .saint-bio {
+  margin-bottom: 2rem;
+}
+
+.cantico-note {
+  margin: 0.5rem 0 0.9rem;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+.cantico-lyrics {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  max-width: 52rem;
+  padding: 1.2rem 1rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.cantico-lyrics-head {
+  display: none;
+}
+
+.cantico-stanza-row {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.cantico-stanza {
+  margin: 0;
+  white-space: pre-line;
+  font-family: var(--font-serif);
+  font-size: 1.22rem;
+  line-height: 1.5;
+  color: var(--color-charcoal);
+}
+
+.cantico-stanza.is-translation {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+/* Com espaço, o original e a tradução ficam lado a lado, estrofe por estrofe. */
+@media (min-width: 768px) {
+  .cantico-lyrics {
+    padding: 1.75rem 2rem;
+  }
+
+  .has-translation .cantico-lyrics-head,
+  .has-translation .cantico-stanza-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .cantico-lyrics-head span {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-terracotta);
+  }
+
+  .has-translation .cantico-stanza.is-translation {
+    padding-top: 0.2rem;
+  }
+}
+
+.cantico-facts {
+  display: grid;
+  gap: 0.75rem;
+  max-width: 46rem;
+  margin: 0;
+}
+
+.cantico-facts div {
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.cantico-facts dt {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.cantico-facts dd {
+  margin: 0.2rem 0 0;
+  font-size: 0.92rem;
+  color: var(--color-text);
+}
+
+.cantico-related li {
+  display: flex;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .cantico-related li {
+    width: calc((100% - 0.9rem) / 2);
+  }
+}
+
+.cantico-related-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  color: var(--color-text);
+  text-decoration: none;
+  transition: border-color var(--duration-fast), transform var(--duration-fast);
+}
+
+.cantico-related-link:hover {
+  border-color: var(--color-gold);
+  transform: translateY(-2px);
+}
+
+.cantico-related-link > svg {
+  flex-shrink: 0;
+  color: var(--color-gold-text);
+}
+
+.cantico-related-link > svg:last-child {
+  color: var(--color-terracotta);
+}
+
+.cantico-related-link span {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.cantico-related-link strong {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: var(--color-charcoal);
+}
+
+.cantico-related-link small {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+/* Link para os cânticos na seção "Na Missa" da Escola da Fé */
+.canticos-invite {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  max-width: 40rem;
+  margin: 2rem auto 0;
+  padding: 1rem 1.2rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  border-top: 3px solid var(--color-gold);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  color: var(--color-text);
+  text-decoration: none;
+  transition: border-color var(--duration-fast), transform var(--duration-fast), box-shadow var(--duration-fast);
+}
+
+.canticos-invite:hover {
+  border-color: var(--color-gold);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.canticos-invite > svg {
+  flex-shrink: 0;
+  color: var(--color-gold-text);
+}
+
+.canticos-invite > svg:last-child {
+  color: var(--color-terracotta);
+}
+
+.canticos-invite span {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.canticos-invite strong {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: var(--color-charcoal);
+}
+
+.canticos-invite small {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+/* Fontes dos cânticos na página de Créditos */
+.credits-sources {
+  display: grid;
+  gap: 0.75rem;
+  max-width: 46rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.credits-sources li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--color-border-soft);
+  font-size: 0.9rem;
+  color: var(--color-text);
+}
+
+.credits-sources strong {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: var(--color-charcoal);
+}

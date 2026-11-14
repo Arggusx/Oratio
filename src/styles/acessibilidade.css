@@ -1,0 +1,75 @@
+/* ============================================================
+   ACESSIBILIDADE
+   ============================================================ */
+/* Texto disponível só para leitores de tela. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Campo anti-spam do formulário: invisível para pessoas. */
+.honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+/* "Pular para o conteúdo": aparece só quando recebe foco pelo teclado. */
+.skip-link {
+  position: fixed;
+  top: 0.6rem;
+  left: 0.6rem;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--color-charcoal);
+  color: var(--color-cream);
+  font-weight: 700;
+  transform: translateY(-160%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.content-anchor:focus {
+  outline: none;
+}
+
+/* Contorno de foco bem visível em toda navegação por teclado. */
+:focus-visible {
+  outline: 3px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+/* Respeita quem pediu menos movimento nas configurações do sistema. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Imagens com width/height no HTML (reservam espaço) mantêm a proporção ao encolher. */
+.brand-mark img,
+.terco-guide-img {
+  width: 100%;
+  height: auto;
+}
+
+.terco-guide-img {
+  max-width: 607px;
+}

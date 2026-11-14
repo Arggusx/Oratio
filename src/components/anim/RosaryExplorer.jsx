@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ChevronLeft, ChevronRight, BookOpen } from 'lucide-react';
+import RosaryCheck from '../RosaryCheck';
 import { rosaryLoop, rosaryPendant } from '../../utils/rosaryShape';
-import { ORDINAL_WORDS } from '../../data/rosaryData';
+import { FATIMA_PRAYER, GLORY_BE, ORDINAL_WORDS, OUR_FATHER } from '../../data/rosaryData';
 
 /**
  * Terço interativo do passo a passo: o terço se monta ao aparecer; tocar numa parte mostra,
- * ao lado, o que rezar nela. "Anterior" e "Próximo" percorrem o terço na ordem da oração.
+ * ao lado, o que rezar nela, já com o texto da oração (sem precisar rolar até a lista).
+ * Cada passo tem uma caixinha opcional "Rezei este passo" para não perder o fio. "Anterior" e "Próximo" percorrem o terço na ordem da oração.
  *
  * No passo das dezenas, o próprio desenho vira o contador: a pessoa reza dezena por dezena,
  * com o mistério e a Ave-Maria (com a cláusula) ao lado, e as contas acendem uma a uma.
@@ -24,7 +26,16 @@ const MYSTERY_ADJECTIVE = { gozosos: 'gozoso', luminosos: 'luminoso', dolorosos:
 const shortName = (name) => name.split(': ').slice(1).join(': ') || name;
 const capitalize = (text) => text.charAt(0).toUpperCase() + text.slice(1);
 
-export default function RosaryExplorer({ steps, activeIndex, onOpenStep, mysteryKey, mystery }) {
+export default function RosaryExplorer({
+  steps,
+  activeIndex,
+  onOpenStep,
+  mysteryKey,
+  mystery,
+  done,
+  onSetDone,
+  decadePlan,
+}) {
   const [picked, setPicked] = useState(null);
   const [assembled, setAssembled] = useState(false);
   const [decade, setDecade] = useState(0); // 0 a 4
@@ -80,7 +91,11 @@ export default function RosaryExplorer({ steps, activeIndex, onOpenStep, mystery
     else if (decade < 4) {
       setDecade(decade + 1);
       setAves(0);
-    } else setPicked(DECADES_STEP + 1);
+    } else {
+      // Terminou as cinco dezenas: o passo das dezenas fica marcado sozinho.
+      onSetDone?.(steps[DECADES_STEP].id, true);
+      setPicked(DECADES_STEP + 1);
+    }
   };
 
   const prevAve = () => {
@@ -160,7 +175,18 @@ export default function RosaryExplorer({ steps, activeIndex, onOpenStep, mystery
 
             <p className="rosary-x-prayer">
               {aves === 0 ? (
-                <>Anuncie o mistério, faça o seu pedido para esta dezena e reze o <strong>Pai-Nosso</strong> na conta grande.</>
+                <>
+                  <span className="rosary-x-instruction">
+                    Anuncie o mistério, faça o seu pedido para esta dezena e reze o Pai-Nosso na conta grande:
+                  </span>
+                  {decadePlan?.[decade] && (
+                    <span className="rosary-x-hint-intention">
+                      <strong>Intenção desta dezena: {decadePlan[decade].intention.short}.</strong>{' '}
+                      {decadePlan[decade].hint}
+                    </span>
+                  )}
+                  {OUR_FATHER}
+                </>
               ) : aves < AVES ? (
                 <>
                   Ave Maria, cheia de graça, o Senhor é convosco, bendita sois vós entre as mulheres e bendito é o fruto do
@@ -169,7 +195,13 @@ export default function RosaryExplorer({ steps, activeIndex, onOpenStep, mystery
                   Santa Maria, Mãe de Deus, rogai por nós pecadores, agora e na hora da nossa morte. Amém.
                 </>
               ) : (
-                <>Dezena completa. Reze o <strong>Glória ao Pai</strong> e a <strong>Jaculatória de Fátima</strong>.</>
+                <>
+                  <span className="rosary-x-instruction">Dezena completa. Reze o Glória ao Pai e a Jaculatória de Fátima:</span>
+                  {GLORY_BE}
+                  <br />
+                  <br />
+                  {FATIMA_PRAYER}
+                </>
               )}
             </p>
 
@@ -188,6 +220,7 @@ export default function RosaryExplorer({ steps, activeIndex, onOpenStep, mystery
                 <ChevronRight size={16} aria-hidden="true" />
               </button>
             </div>
+            {onSetDone && <RosaryCheck checked={done?.has(step.id) ?? false} onChange={(v) => onSetDone(step.id, v)} />}
             <button type="button" className="rosary-x-link" onClick={() => onOpenStep(step.id)}>
               <BookOpen size={15} aria-hidden="true" />
               Ver o roteiro completo das dezenas
@@ -201,6 +234,8 @@ export default function RosaryExplorer({ steps, activeIndex, onOpenStep, mystery
             </span>
             <h4>{step.action}</h4>
             <p>{step.summary}</p>
+            {step.prayerText && <p className="rosary-x-prayer rosary-x-prayer-text">{step.prayerText}</p>}
+            {onSetDone && <RosaryCheck checked={done?.has(step.id) ?? false} onChange={(v) => onSetDone(step.id, v)} />}
 
             <div className="rosary-x-actions">
               <button type="button" className="fx-small-btn" onClick={() => setPicked(Math.max(current - 1, 0))} disabled={current === 0}>
@@ -215,10 +250,6 @@ export default function RosaryExplorer({ steps, activeIndex, onOpenStep, mystery
               >
                 Próximo
                 <ChevronRight size={16} aria-hidden="true" />
-              </button>
-              <button type="button" className="rosary-x-open" onClick={() => onOpenStep(step.id)}>
-                <BookOpen size={16} aria-hidden="true" />
-                Ver a oração deste passo
               </button>
             </div>
             <p className="rosary-x-hint">

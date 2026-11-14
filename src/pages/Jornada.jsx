@@ -28,6 +28,7 @@ import MiracleMap, { MapDrawing } from '../components/journey/MiracleMap';
 import SpiritualBouquet, { BouquetVase } from '../components/journey/SpiritualBouquet';
 import Passport from '../components/journey/Passport';
 import { AvatarFrame } from '../components/journey/Rewards';
+import AccountPanel from '../components/AccountPanel';
 import { DiaryCandle, MiniBeads, MiniCandles, MiniRose, MiniStamps } from '../components/journey/GamePreviews';
 import { allFrames, islandRewards } from '../data/rewards';
 import { journey, prayerWeeks, todayKey, useJourney } from '../utils/journeyStore';
@@ -767,7 +768,12 @@ export default function Jornada() {
               <h1 className="section-title">Jornada</h1>
             </div>
           </div>
-          <p className="lead">O que fazer hoje e o seu caminho até aqui. Fica tudo só neste aparelho, sem pontos e sem ranking.</p>
+          <p className="lead">
+            O que fazer hoje e o seu caminho até aqui, sem pontos e sem ranking. Fica neste aparelho e, se você quiser, na
+            sua conta.
+          </p>
+          {/* Logo no topo: quem entra na Jornada vê na hora que pode guardar o progresso na conta. */}
+          <AccountPanel />
           <JourneyHome onOpen={open} />
         </>
       )}

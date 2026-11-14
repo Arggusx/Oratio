@@ -1,0 +1,341 @@
+/* ============================================================
+   CALENDÁRIO
+   ============================================================ */
+.calendar-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.calendar-year-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.calendar-year {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  color: var(--color-charcoal);
+  min-width: 4.2rem;
+  text-align: center;
+}
+
+.calendar-search {
+  flex: 1;
+  min-width: min(100%, 260px);
+}
+
+.calendar-clear-search {
+  position: absolute;
+  right: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  border: none;
+  background: none;
+  color: var(--color-text-faint);
+  cursor: pointer;
+  padding: 0.2rem;
+}
+
+/* Legenda só de leitura: o filtro fica no botão "Filtros". */
+.calendar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.1rem;
+  margin: 0.9rem 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.calendar-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.calendar-legend-dot {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: var(--type-color);
+}
+
+
+.calendar-results,
+.calendar-day-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 1.2rem 1.3rem;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.2rem;
+}
+
+.calendar-day-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-terracotta);
+}
+
+.calendar-panel-title {
+  font-size: 1.35rem;
+  color: var(--color-charcoal);
+}
+
+.calendar-panel-title::first-letter {
+  text-transform: uppercase;
+}
+
+.calendar-season {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-pale);
+  margin: 0.3rem 0 0.8rem;
+}
+
+.calendar-empty {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.calendar-day-events {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.calendar-day-events li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.calendar-day-events strong {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: var(--color-charcoal);
+}
+
+.calendar-day-events p {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.calendar-type-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.calendar-type-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-full);
+  color: var(--color-charcoal);
+  background: color-mix(in srgb, var(--type-color) 18%, var(--color-surface));
+  border: 1px solid color-mix(in srgb, var(--type-color) 45%, transparent);
+}
+
+.calendar-results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.8rem;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.calendar-result {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: 0.2rem 0.8rem;
+  align-items: center;
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  background: var(--color-cream);
+  text-align: left;
+  cursor: pointer;
+  color: var(--color-text);
+}
+
+.calendar-result:hover,
+.calendar-result.active {
+  border-color: var(--color-terracotta-light);
+}
+
+.calendar-result-date {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-terracotta);
+}
+
+.calendar-result-date::first-letter {
+  text-transform: uppercase;
+}
+
+.calendar-result-name {
+  font-weight: 600;
+}
+
+.calendar-result .calendar-type-badges {
+  grid-column: 2;
+}
+
+@media (max-width: 539px) {
+  .calendar-result {
+    grid-template-columns: 1fr;
+  }
+  .calendar-result .calendar-type-badges {
+    grid-column: 1;
+  }
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 560px) {
+  .calendar-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .calendar-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1100px) {
+  .calendar-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.calendar-month {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 0.9rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.calendar-month-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.6rem;
+  color: var(--color-charcoal);
+}
+
+.calendar-weekdays,
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+
+.calendar-weekdays span {
+  text-align: center;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--color-text-pale);
+  padding-bottom: 0.3rem;
+}
+
+.calendar-day {
+  position: relative;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: none;
+  font-size: 0.8rem;
+  color: var(--color-text-soft);
+  cursor: pointer;
+  transition: background var(--duration-fast), opacity var(--duration-fast);
+}
+
+.calendar-day:hover {
+  background: var(--color-cream-warm);
+}
+
+.calendar-day.is-marked {
+  font-weight: 700;
+  color: var(--color-charcoal);
+  background: color-mix(in srgb, var(--type-color) 22%, var(--color-surface));
+  border-color: color-mix(in srgb, var(--type-color) 55%, transparent);
+}
+
+/* Dia de preceito: cruz no alto da célula, sem cor; o número desce um pouco. */
+.calendar-day.is-precept {
+  font-weight: 700;
+  color: var(--color-charcoal);
+}
+
+.calendar-day.is-precept .calendar-day-number {
+  transform: translateY(3px);
+}
+
+.calendar-day-cross {
+  position: absolute;
+  top: 1px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-text-soft);
+}
+
+/* Hoje: anel dourado externo. */
+.calendar-day.is-today {
+  box-shadow: 0 0 0 2px var(--color-gold);
+}
+
+.calendar-day.is-selected {
+  outline: 2px solid var(--color-charcoal);
+  outline-offset: 1px;
+}
+
+.calendar-day.is-dimmed {
+  opacity: 0.3;
+}
+
+.calendar-day-dots {
+  position: absolute;
+  bottom: 1px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 2px;
+}
+
+.calendar-day-dots span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+}
+
+.calendar-footnote {
+  margin-top: 1.5rem;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}

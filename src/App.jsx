@@ -5,21 +5,32 @@ import Header from './components/Header';
 import BottomNav from './components/BottomNav';
 import Footer from './components/Footer';
 import Feedback from './components/Feedback';
+import RelatedLinks from './components/RelatedLinks';
 import Home from './pages/Home';
 import usePageMeta from './utils/usePageMeta';
 import { SeasonContext, useSeasonTheme } from './utils/useSeasonTheme';
+import { account } from './utils/account';
 import Angel from './components/anim/Angel';
 import SiteBackground from './components/anim/SiteBackground';
 import RosaryLoader from './components/anim/RosaryLoader';
 import { JORNADA_ATIVA, TRILHAS_ATIVAS } from './utils/features';
 
 // A página inicial vem no pacote principal; as demais são baixadas só quando abertas.
+// As do menu também são baixadas em segundo plano depois que o site abre: assim, ao
+// tocar nelas, não aparece o carregador entre uma página e outra (era uma das piscadas).
+const loadLeituras = () => import('./pages/Leituras');
+const loadOracoes = () => import('./pages/Oracoes');
+const loadEscolaDaFe = () => import('./pages/EscolaDaFe');
+const loadCalendario = () => import('./pages/Calendario');
+const loadSantos = () => import('./pages/Santos');
+const MENU_PAGES = [loadLeituras, loadOracoes, loadEscolaDaFe, loadCalendario, loadSantos];
+
 const Misterios = lazy(() => import('./pages/Misterios'));
-const Leituras = lazy(() => import('./pages/Leituras'));
-const Oracoes = lazy(() => import('./pages/Oracoes'));
-const EscolaDaFe = lazy(() => import('./pages/EscolaDaFe'));
-const Calendario = lazy(() => import('./pages/Calendario'));
-const Santos = lazy(() => import('./pages/Santos'));
+const Leituras = lazy(loadLeituras);
+const Oracoes = lazy(loadOracoes);
+const EscolaDaFe = lazy(loadEscolaDaFe);
+const Calendario = lazy(loadCalendario);
+const Santos = lazy(loadSantos);
 const Santo = lazy(() => import('./pages/Santo'));
 const Privacidade = lazy(() => import('./pages/Privacidade'));
 const Creditos = lazy(() => import('./pages/Creditos'));
@@ -31,6 +42,9 @@ const Novenas = lazy(() => import('./pages/Novenas'));
 const Trilhas = TRILHAS_ATIVAS ? lazy(() => import('./pages/Trilhas')) : null;
 const Quiz = TRILHAS_ATIVAS ? lazy(() => import('./pages/Quiz')) : null;
 const Comunidade = lazy(() => import('./pages/Comunidade'));
+const Canticos = lazy(() => import('./pages/Canticos'));
+const Cantico = lazy(() => import('./pages/Cantico'));
+const OrdinarioMissa = lazy(() => import('./pages/OrdinarioMissa'));
 
 function NotFound() {
   return (
@@ -57,30 +71,41 @@ function PageFallback() {
     </main>
   );
 }
+// A página que sai some rápido, para a troca não parecer um piscar.
 const pageVariants = {
   initial: { opacity: 0, y: 16 },
   animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -10 },
+  exit: { opacity: 0, transition: { duration: 0.15, ease: 'easeIn' } },
 };
 
 const pageTransition = {
-  duration: 0.4,
+  duration: 0.35,
   ease: [0.33, 1, 0.68, 1],
 };
 
 function AnimatedRoutes() {
   const location = useLocation();
 
-  // Ao abrir outra página (ex.: a página de um santo), começa do topo.
+  // Depois que o site abre, baixa as páginas do menu sem atrapalhar.
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location.pathname]);
+    const preload = () => MENU_PAGES.forEach((load) => load().catch(() => {}));
+    if ('requestIdleCallback' in window) {
+      const id = window.requestIdleCallback(preload, { timeout: 4000 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const t = setTimeout(preload, 2500);
+    return () => clearTimeout(t);
+  }, []);
+
+  // Ao abrir outra página, começa do topo, mas só depois que a anterior sumiu: rolar
+  // antes fazia a página que saía pular para o topo e piscar.
+  const scrollToTop = () => window.scrollTo(0, 0);
 
   // Título, descrição e endereço canônico de cada página (SEO).
   usePageMeta(location.pathname);
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode="wait" onExitComplete={scrollToTop}>
       <motion.div
         key={location.pathname}
         variants={pageVariants}
@@ -94,6 +119,7 @@ function AnimatedRoutes() {
             <Route path="/" element={<Home />} />
             <Route path="/home/misterio" element={<Misterios />} />
             <Route path="/home/leituras" element={<Leituras />} />
+            <Route path="/home/ordinario-da-missa" element={<OrdinarioMissa />} />
             <Route path="/home/oracoes" element={<Oracoes />} />
             <Route path="/home/escola-da-fe" element={<EscolaDaFe />} />
             {/* Endereço antigo da página */}
@@ -101,6 +127,8 @@ function AnimatedRoutes() {
             <Route path="/home/calendario" element={<Calendario />} />
             <Route path="/home/santos" element={<Santos />} />
             <Route path="/home/santos/:slug" element={<Santo />} />
+            <Route path="/home/canticos" element={<Canticos />} />
+            <Route path="/home/canticos/:id" element={<Cantico />} />
             <Route path="/privacidade" element={<Privacidade />} />
             <Route path="/creditos" element={<Creditos />} />
             <Route path="/home/confissao" element={<Confissao />} />
@@ -136,6 +164,11 @@ export default function App() {
   // Tema do tempo litúrgico (Advento, Natal, Quaresma, Páscoa...): troca cores e enfeites sozinho.
   const season = useSeasonTheme();
 
+  // Quem já entrou com Google: traz o progresso feito em outros aparelhos e volta a salvar sozinho.
+  useEffect(() => {
+    account.resume();
+  }, []);
+
   return (
     <SeasonContext.Provider value={season}>
       <BrowserRouter>
@@ -149,6 +182,7 @@ export default function App() {
             <Header />
             <div id="conteudo" tabIndex={-1} className="content-anchor">
               <AnimatedRoutes />
+              <RelatedLinks />
             </div>
             <Feedback />
             <Footer />

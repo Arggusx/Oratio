@@ -3,7 +3,7 @@ import { JORNADA_ATIVA } from '../utils/features';
 
 // Canal de contato do responsável pelo site (exigido pela LGPD, art. 41).
 const CONTACT_EMAIL = 'dougclasher9@gmail.com';
-const LAST_UPDATE = '5 de novembro de 2026';
+const LAST_UPDATE = '6 de novembro de 2026';
 
 export default function Privacidade() {
   return (
@@ -15,7 +15,7 @@ export default function Privacidade() {
         </div>
       </div>
       <p className="lead">
-        O Oratio é um site de oração e não exige cadastro. Esta página explica, de forma simples, quais dados podem
+        O Oratio é um site de oração e não exige cadastro: a conta com Google é opcional. Esta página explica, de forma simples, quais dados podem
         ser tratados quando você o usa, por quê e quais são os seus direitos, conforme a Lei Geral de Proteção de
         Dados (Lei nº 13.709/2018 — LGPD).
       </p>
@@ -57,7 +57,7 @@ export default function Privacidade() {
           ) : (
             <>o seu progresso (dias de terço marcados, novenas, trilhas e respostas dos quizzes)</>
           )}
-          . Essas informações <strong>ficam apenas no seu
+          . Sem conta, essas informações <strong>ficam apenas no seu
           aparelho</strong> e não são enviadas para nós. Você pode apagá-las a qualquer momento limpando os dados do site nas configurações do navegador.
         </p>
         {JORNADA_ATIVA && (
@@ -66,6 +66,33 @@ export default function Privacidade() {
             dele: não é enviada para nós nem para ninguém. Para apagá-la, toque em “Remover foto” na Jornada.
           </p>
         )}
+
+        <h3>Conta com Google (opcional)</h3>
+        {JORNADA_ATIVA ? (
+          <p>
+            Se você escolher <strong>entrar com Google</strong> na Jornada, recebemos do Google o identificador da sua
+            conta, o seu e-mail e o primeiro nome, e guardamos uma cópia do progresso da Jornada para que ele fique igual
+            em todos os seus aparelhos. A <strong>foto do medalhão não vai para a conta</strong>: continua só no aparelho.
+            Não recebemos a sua senha do Google. A base legal é o seu consentimento, dado ao entrar (LGPD, art. 7º, I). Você
+            pode sair ou <strong>apagar a conta</strong> a qualquer momento na própria Jornada; apagar a conta apaga o
+            progresso guardado nela.
+          </p>
+        ) : (
+          <p>
+            Se você <strong>entrou com Google</strong>, recebemos do Google o identificador da sua conta, o seu e-mail e o
+            primeiro nome, e guardamos uma cópia do seu progresso para que ele fique igual em todos os seus aparelhos.
+            Não recebemos a sua senha do Google. A base legal é o seu consentimento, dado ao entrar (LGPD, art. 7º, I).
+            Para <strong>apagar a conta</strong> e o progresso guardado nela, escreva para{' '}
+            <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+          </p>
+        )}
+
+        <h3>Mensagens por e-mail (opcional)</h3>
+        <p>
+          Quem tem conta pode pedir para receber a Palavra do dia por e-mail, às 6h. Usamos o seu e-mail só para isso, e
+          o envio é feito pelo serviço <strong>Resend</strong>. Para parar,{' '}
+          {JORNADA_ATIVA ? 'desmarque a opção na Jornada ou use o link' : 'use o link'} que vem em toda mensagem.
+        </p>
 
         <h3>Registros técnicos de acesso</h3>
         <p>
@@ -103,6 +130,9 @@ export default function Privacidade() {
           <li><strong>Vercel</strong> — hospedagem do site e da API de leituras.</li>
           <li><strong>Google Fonts</strong> — fornece as fontes de texto usadas no site.</li>
           <li><strong>Formspree</strong> — envio do formulário de feedback (somente se você usá-lo).</li>
+          <li><strong>Google</strong> — login da conta (somente se você entrar com Google).</li>
+          <li><strong>Resend</strong> — envio das mensagens por e-mail (somente se você pedir).</li>
+          <li><strong>Neon</strong> — banco de dados da nossa API, onde ficam a Comunidade e as contas.</li>
           <li>
             <strong>Cloudflare Turnstile</strong> — confirma que quem publica um pedido no mural da Comunidade não é
             um robô. Só é carregado na página da Comunidade e analisa sinais técnicos do navegador, sem cookies de
@@ -125,7 +155,7 @@ export default function Privacidade() {
         <ul>
           <li>Não usamos cookies de rastreamento nem anúncios.</li>
           <li>Não vendemos nem compartilhamos seus dados para fins comerciais.</li>
-          <li>Não pedimos cadastro, senha nem dados de pagamento.</li>
+          <li>Não exigimos cadastro e nunca pedimos senha nem dados de pagamento; a conta com Google é opcional.</li>
         </ul>
       </section>
 
@@ -134,7 +164,7 @@ export default function Privacidade() {
         <p>
           As mensagens do formulário de feedback são guardadas pelo tempo necessário para analisá-las, por no máximo
           12 meses, e depois apagadas. Os pedidos do mural deixam de aparecer depois de 30 dias e são apagados em
-          até 12 meses; as marcações anônimas da Comunidade são mantidas só como contagem. Os registros técnicos de acesso são mantidos pelos provedores de hospedagem
+          até 12 meses; as marcações anônimas da Comunidade são mantidas só como contagem. Os dados da conta e o progresso guardado nela ficam até você apagar a conta. Os registros técnicos de acesso são mantidos pelos provedores de hospedagem
           conforme suas próprias políticas e as exigências legais.
         </p>
       </section>
@@ -145,7 +175,10 @@ export default function Privacidade() {
         <ul>
           <li>a confirmação de que tratamos dados seus e o acesso a eles;</li>
           <li>a correção de dados incompletos ou desatualizados;</li>
-          <li>a exclusão das mensagens que você enviou;</li>
+          <li>
+            a exclusão das mensagens que você enviou e da sua conta
+            {JORNADA_ATIVA && ' (o botão “Apagar conta” na Jornada faz isso na hora)'};
+          </li>
           <li>informações sobre com quem os dados foram compartilhados;</li>
           <li>a revogação do seu consentimento.</li>
         </ul>

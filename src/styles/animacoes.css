@@ -827,24 +827,34 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26'%3E%3Cpath d='M13 11v4M11 13h4' stroke='%23C8963E' stroke-opacity='0.2' stroke-width='1' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
+/* Os brilhos são gradientes, e não círculos com filter: blur. O blur grande, animado e
+   embaixo do cabeçalho de vidro fosco, fazia o celular redesenhar tudo a cada quadro e a
+   tela piscar. */
 .site-bg-glow {
   position: absolute;
   width: 34rem;
   height: 34rem;
   border-radius: 50%;
-  filter: blur(90px);
-  opacity: 0.16;
+  background: radial-gradient(circle closest-side, var(--glow), transparent);
+  opacity: 0.2;
 }
 
-:root[data-theme='dark'] .site-bg-glow { opacity: 0.22; }
+:root[data-theme='dark'] .site-bg-glow { opacity: 0.26; }
 
-.site-bg-glow-gold { background: #E3B55A; left: -10rem; top: -8rem; animation: site-glow-a 28s ease-in-out infinite alternate; }
-.site-bg-glow-blue { background: #6E8FD6; right: -12rem; top: 30vh; animation: site-glow-b 34s ease-in-out infinite alternate; }
-.site-bg-glow-rose { background: #C77D9A; left: 30vw; bottom: -14rem; width: 26rem; height: 26rem; animation: site-glow-c 40s ease-in-out infinite alternate; }
+.site-bg-glow-gold { --glow: #E3B55A; left: -10rem; top: -8rem; animation: site-glow-a 28s ease-in-out infinite alternate; }
+.site-bg-glow-blue { --glow: #6E8FD6; right: -12rem; top: 30%; animation: site-glow-b 34s ease-in-out infinite alternate; }
+.site-bg-glow-rose { --glow: #C77D9A; left: 30%; bottom: -14rem; width: 26rem; height: 26rem; animation: site-glow-c 40s ease-in-out infinite alternate; }
 
-@keyframes site-glow-a { to { transform: translate(18vw, 14vh) scale(1.15); } }
-@keyframes site-glow-b { to { transform: translate(-22vw, -10vh) scale(0.9); } }
-@keyframes site-glow-c { to { transform: translate(-12vw, -18vh) scale(1.25); } }
+/* Só deslocamento (sem scale): o navegador move a camada pronta, sem redesenhá-la. */
+@keyframes site-glow-a { to { transform: translate3d(18vw, 14vh, 0); } }
+@keyframes site-glow-b { to { transform: translate3d(-22vw, -10vh, 0); } }
+@keyframes site-glow-c { to { transform: translate3d(-12vw, -18vh, 0); } }
+
+/* No celular os brilhos ficam parados: a barra de endereço que some e volta muda o vh,
+   e o movimento lento não compensa o custo. */
+@media (max-width: 719px) {
+  .site-bg-glow { animation: none; }
+}
 
 /* ── Página inicial: logo que se desenha e título escrito à mão ── */
 .hero-mark {
@@ -1357,7 +1367,11 @@
 /* ════════════════════════════════════════════════════════════════
    TEMAS DO ANO LITÚRGICO
    <html data-season="..."> é definido por useSeasonTheme. Cada tempo troca a cor de destaque
-   (--season), os brilhos do fundo e, nos tempos festivos, as partículas. Tempo Comum = visual padrão.
+   (--season), os brilhos do fundo e, nos tempos festivos, as partículas. Tempo Comum = visual padrão
+   (o dourado fica só para ele). <html data-feast="..."> marca os dias especiais; Corpus Christi,
+   Aparecida e Todos os Santos têm decoração própria, os outros usam a do tempo em que caem.
+   --season-edge: contorno para a cor branca aparecer no fundo creme.
+   --season-ink: cor dos textos da decoração (o branco não serve para texto).
    ════════════════════════════════════════════════════════════════ */
 :root {
   --season: transparent;
@@ -1366,20 +1380,52 @@
   --season-glow-c: #C77D9A;
 }
 
-:root[data-season='advento'] { --season: #7A5A9E; --season-glow-a: #8E6BBF; --season-glow-b: #D98BA8; --season-glow-c: #6B4C9A; }
-:root[data-season='natal'] { --season: #C8963E; --season-glow-a: #F1D27A; --season-glow-b: #FFF4D6; --season-glow-c: #E3B55A; }
-:root[data-season='quaresma'] { --season: #6B4C7A; --season-glow-a: #7D6A86; --season-glow-b: #9A8C9F; --season-glow-c: #5C4466; }
-:root[data-season='triduo'] { --season: #9E2F2F; --season-glow-a: #8A2B2B; --season-glow-b: #4A3B3B; --season-glow-c: #6E2222; }
-:root[data-season='pascoa'] { --season: #D4A84F; --season-glow-a: #FFE8A3; --season-glow-b: #F7F2E6; --season-glow-c: #E9C46A; }
-:root[data-season='pentecostes'] { --season: #C8402A; --season-glow-a: #E8643C; --season-glow-b: #F2A33A; --season-glow-c: #C8402A; }
+:root[data-season='advento'] { --season: #7A5A9E; --season-glow-a: #8E6BBF; --season-glow-b: #D98BA8; --season-glow-c: #6B4C9A; --season-title: #7A5A9E; }
+:root[data-season='quaresma'] { --season: #6B4C7A; --season-glow-a: #7D6A86; --season-glow-b: #9A8C9F; --season-glow-c: #5C4466; --season-title: #6B4C7A; }
+:root[data-season='triduo'] { --season: #9E2F2F; --season-glow-a: #8A2B2B; --season-glow-b: #4A3B3B; --season-glow-c: #6E2222; --season-title: #9E2F2F; }
+:root[data-season='pentecostes'] { --season: #C8402A; --season-glow-a: #E8643C; --season-glow-b: #F2A33A; --season-glow-c: #C8402A; --season-title: #C8402A; }
 
-.site-bg-glow-gold { background: var(--season-glow-a); }
-.site-bg-glow-blue { background: var(--season-glow-b); }
-.site-bg-glow-rose { background: var(--season-glow-c); }
+/* Cor litúrgica branca: Natal, Páscoa, Corpus Christi e Todos os Santos. */
+:root[data-season='natal'],
+:root[data-season='pascoa'],
+:root[data-feast='corpus-christi'],
+:root[data-feast='todos-os-santos'] {
+  --season: #FFFFFF;
+  --season-edge: #CFC6B8;
+  --season-ink: var(--color-text-muted);
+  --season-glow-a: #FFFFFF;
+  --season-glow-b: #F3EFE8;
+  --season-glow-c: #FFFFFF;
+}
 
-/* Faixa fina na cor do tempo, embaixo do topo do site */
+/* Aparecida: branco da solenidade nos enfeites e o azul mariano na faixa e nos textos. */
+:root[data-feast='aparecida'] {
+  --season: #2E4F8F;
+  --season-ink: #2E4F8F;
+  --season-title: #2E4F8F;
+  --season-glow-a: #6E8FD6;
+  --season-glow-b: #FFFFFF;
+  --season-glow-c: #4A6FB5;
+}
+
+:root[data-theme='dark'][data-season='advento'] { --season-title: #C9B3E6; }
+:root[data-theme='dark'][data-season='quaresma'] { --season-title: #C9A9D6; }
+:root[data-theme='dark'][data-season='triduo'] { --season-title: #E58A8A; }
+:root[data-theme='dark'][data-season='pentecostes'] { --season-title: #F08A6A; }
+:root[data-theme='dark'][data-feast='aparecida'] { --season-ink: #9DB4E0; --season-title: #9DB4E0; }
+
+.site-bg-glow-gold { --glow: var(--season-glow-a); }
+.site-bg-glow-blue { --glow: var(--season-glow-b); }
+.site-bg-glow-rose { --glow: var(--season-glow-c); }
+
+/* Faixa fina na cor do tempo, embaixo do topo do site (com um fio de contorno quando é branca) */
 .site-header {
-  box-shadow: inset 0 -2px 0 var(--season);
+  box-shadow: inset 0 -2px 0 var(--season), inset 0 -3px 0 var(--season-edge, transparent);
+}
+
+/* "Viva com fé." na cor do tempo, quando a cor serve para texto */
+.hero-title-hand .fx-hand-line:nth-of-type(2) {
+  fill: var(--season-title, var(--color-text));
 }
 
 /* Quaresma e Tríduo: fundo mais sóbrio, brilhos quase parados */
@@ -1399,29 +1445,70 @@
   border-radius: 50%;
 }
 
+/* Estrela branca com contorno perolado (Natal e Aparecida) */
+:root[data-season='natal'] .site-bg-particle,
+:root[data-feast='aparecida'] .site-bg-particle {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l1.8 7.2L21 12l-7.2 2.8L12 22l-1.8-7.2L3 12l7.2-2.8z' fill='%23FFFFFF' stroke='%23B9B0A3' stroke-width='1.4' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.9));
+  border-radius: 0;
+}
+
 :root[data-season='natal'] .site-bg-particle {
   display: block;
   top: -2rem;
-  background: #F1D27A;
-  box-shadow: 0 0 8px #F1D27A;
-  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
-  width: 10px;
-  height: 10px;
-  border-radius: 0;
+  width: 12px;
+  height: 12px;
   animation: season-fall calc(14s + var(--i) * 1.3s) linear calc(var(--i) * -2.1s) infinite;
 }
 
 :root[data-season='pascoa'] .site-bg-particle,
-:root[data-season='pentecostes'] .site-bg-particle {
+:root[data-season='pentecostes'] .site-bg-particle,
+:root[data-feast='todos-os-santos'] .site-bg-particle {
   display: block;
   bottom: -2rem;
   animation: season-rise calc(12s + var(--i) * 1.1s) ease-in calc(var(--i) * -1.7s) infinite;
 }
 
+/* Páscoa: pontos de luz brancos subindo */
 :root[data-season='pascoa'] .site-bg-particle {
-  background: #FFE8A3;
-  box-shadow: 0 0 10px #FFE8A3;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 1px #DCD4C8, 0 0 10px #FFFFFF;
 }
+
+/* Todos os Santos: pequenas auréolas subindo */
+:root[data-feast='todos-os-santos'] .site-bg-particle {
+  width: 12px;
+  height: 12px;
+  background: transparent;
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 0 0 1px #D6CEC2, inset 0 0 0 1px #D6CEC2, 0 0 8px #FFFFFF;
+  animation-duration: calc(16s + var(--i) * 1.2s);
+}
+
+/* Aparecida: estrelinhas paradas que piscam, espalhadas pela tela */
+:root[data-feast='aparecida'] .site-bg-particle {
+  display: block;
+  top: calc(var(--i) * 6.7% + 3%);
+  left: calc(mod(var(--i) * 37%, 94%) + 2%);
+  width: 11px;
+  height: 11px;
+  animation: season-twinkle 3.2s ease-in-out calc(var(--i) * -0.4s) infinite;
+}
+
+/* Corpus Christi: pétalas caindo (branco, rosa e verde das flores do tapete) */
+:root[data-feast='corpus-christi'] .site-bg-particle {
+  display: block;
+  top: -2rem;
+  width: 9px;
+  height: 13px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 1px #E0D8CC;
+  animation: season-petal calc(16s + var(--i) * 1s) linear calc(var(--i) * -2.3s) infinite;
+}
+
+:root[data-feast='corpus-christi'] .site-bg-particle:nth-child(3n) { background: #E9A6B8; box-shadow: none; }
+:root[data-feast='corpus-christi'] .site-bg-particle:nth-child(4n) { background: #B95E78; box-shadow: none; }
 
 :root[data-season='pentecostes'] .site-bg-particle {
   width: 7px;
@@ -1444,6 +1531,19 @@
   to { transform: translateY(-110vh) scale(1.1); opacity: 0; }
 }
 
+@keyframes season-twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.7); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+@keyframes season-petal {
+  from { transform: translateY(0) translateX(0) rotate(0); opacity: 0; }
+  10% { opacity: 0.9; }
+  50% { transform: translateY(55vh) translateX(24px) rotate(180deg); }
+  90% { opacity: 0.9; }
+  to { transform: translateY(110vh) translateX(-16px) rotate(360deg); opacity: 0; }
+}
+
 /* Faixa do tempo na página inicial */
 .season-banner {
   display: flex;
@@ -1451,9 +1551,10 @@
   gap: 0.8rem;
   margin: 0.2rem 0 1rem;
   padding: 0.5rem 0.9rem 0.5rem 0.5rem;
-  border: 1px solid color-mix(in srgb, var(--season) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--season-edge, var(--season)) 55%, transparent);
   border-radius: var(--radius-full);
   background: color-mix(in srgb, var(--season) 10%, var(--color-surface));
+  box-shadow: var(--shadow-sm);
   width: fit-content;
   max-width: 100%;
   animation: fadeIn 0.6s var(--ease-out);
@@ -1479,12 +1580,16 @@
 .season-text strong {
   font-family: var(--font-serif);
   font-size: 1.05rem;
-  color: var(--season);
+  color: var(--season-ink, var(--season));
 }
 
-:root[data-season='pascoa'] .season-text strong,
-:root[data-season='natal'] .season-text strong {
-  color: var(--color-gold-muted);
+/* Branco no escuro: a faixa fica translúcida, para não virar um bloco claro. */
+:root[data-theme='dark'][data-season='natal'] .season-banner,
+:root[data-theme='dark'][data-season='pascoa'] .season-banner,
+:root[data-theme='dark'][data-feast='corpus-christi'] .season-banner,
+:root[data-theme='dark'][data-feast='todos-os-santos'] .season-banner {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.28);
 }
 
 .season-text span {
@@ -1508,9 +1613,9 @@
 }
 
 /* Natal: estrela que pisca e raios girando devagar */
-.season-natal .star { fill: #E3B55A; filter: drop-shadow(0 0 4px #F1D27A); animation: star-twinkle 2.4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
-.season-natal .star-rays { stroke: #F1D27A; stroke-width: 1.4; opacity: 0.6; transform-origin: 60px 40px; animation: rays-spin 40s linear infinite; }
-.season-natal .tail { fill: none; stroke: #E3B55A; stroke-width: 2; stroke-linecap: round; opacity: 0.6; }
+.season-natal .star { fill: #FFFFFF; stroke: #B9B0A3; stroke-width: 1.4; stroke-linejoin: round; filter: drop-shadow(0 0 4px #FFFFFF); animation: star-twinkle 2.4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.season-natal .star-rays { stroke: #D6CEC2; stroke-width: 1.4; opacity: 0.9; transform-origin: 60px 40px; animation: rays-spin 40s linear infinite; }
+.season-natal .tail { fill: none; stroke: #C9C2B6; stroke-width: 2; stroke-linecap: round; opacity: 0.8; }
 
 @keyframes star-twinkle {
   50% { transform: scale(1.12); }
@@ -1571,6 +1676,57 @@
 }
 
 :root[data-theme='dark'] .season-pascoa .tomb-door { fill: #0F0B09; }
+
+/* Tríduo: a cruz se desenha sobre o Calvário */
+.season-triduo .draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: season-draw 2.6s ease-out forwards;
+}
+
+/* Pentecostes: a pomba flutua */
+.season-pentecostes .dove-body {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: season-float 3.2s ease-in-out infinite;
+}
+
+/* Corpus Christi: hóstia que pulsa e raios girando */
+.season-corpus .rays { stroke: #D6CEC2; stroke-width: 1.6; stroke-linecap: round; transform-origin: 60px 44px; animation: rays-spin 36s linear infinite; }
+.season-corpus .frame { fill: none; stroke: #B9B0A3; stroke-width: 2; }
+.season-corpus .host { fill: #FFFFFF; stroke: #B9B0A3; stroke-width: 1.4; transform-box: fill-box; transform-origin: center; animation: host-glow 3s ease-in-out infinite; }
+.season-corpus .mark { fill: none; stroke: #B9B0A3; stroke-width: 1.6; stroke-linecap: round; }
+.season-corpus .stand { fill: none; stroke: #B9B0A3; stroke-width: 2.5; stroke-linecap: round; }
+
+@keyframes host-glow {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px #FFFFFF); }
+  50% { transform: scale(1.06); filter: drop-shadow(0 0 8px #FFFFFF); }
+}
+
+/* Aparecida: doze estrelas brancas girando em volta da coroa */
+.season-aparecida .ring { fill: #FFFFFF; stroke: #7F95C2; stroke-width: 1.2; stroke-linejoin: round; transform-origin: 60px 52px; animation: rays-spin 50s linear infinite; }
+.season-aparecida .crown { transform-box: fill-box; transform-origin: center; animation: season-float 4s ease-in-out infinite; }
+.season-aparecida .crown-body { fill: #FFFFFF; stroke: #7F95C2; stroke-width: 2; stroke-linejoin: round; }
+.season-aparecida .crown-base { fill: #C9D3E6; stroke: #7F95C2; stroke-width: 1; }
+.season-aparecida .gem { fill: #2E4F8F; }
+
+/* Todos os Santos: auréolas que pulsam e santos que flutuam, um de cada vez */
+.season-santos .saint { transform-box: fill-box; transform-origin: center; animation: season-float 5s ease-in-out calc(var(--i) * -1.7s) infinite; }
+.season-santos .halo { fill: none; stroke: #D6CEC2; stroke-width: 2.4; filter: drop-shadow(0 0 4px #FFFFFF); transform-box: fill-box; transform-origin: center; animation: season-halo-pulse 3s ease-in-out calc(var(--i) * -1s) infinite; }
+.season-santos .robe { fill: #FFFFFF; stroke: #B9B0A3; stroke-width: 1.6; }
+
+@keyframes season-halo-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+@keyframes season-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+:root[data-theme='dark'] .season-corpus .host,
+:root[data-theme='dark'] .season-santos .robe { fill: #F3EDE6; }
 
 /* Nos tempos fortes, os brilhos do fundo ficam um pouco mais visíveis. */
 :root[data-season='advento'] .site-bg-glow,

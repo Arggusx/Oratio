@@ -1,0 +1,430 @@
+/* ============================================================
+   ORDINÁRIO DA MISSA
+   ============================================================ */
+.missa-page {
+  --missa-color: var(--color-terracotta);
+}
+
+/* ── Dia da Missa: botão que abre o painel (o mesmo dos filtros) ── */
+.missa-day-picker {
+  margin-bottom: var(--space-lg);
+}
+
+.missa-date-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.missa-date-field input {
+  min-height: var(--control-height);
+  padding: 0 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-weight: 400;
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] .missa-date-field input {
+  color-scheme: dark;
+}
+
+.missa-date-field input:focus-visible {
+  outline: none;
+  border-color: var(--color-terracotta);
+  box-shadow: 0 0 0 3px rgba(184, 74, 19, 0.15);
+}
+
+.missa-loading {
+  display: grid;
+  place-items: center;
+  min-height: 14rem;
+}
+
+/* ── Cartão do dia ── */
+.missa-day.color-verde { --missa-color: var(--liturgical-verde); }
+.missa-day.color-vermelho { --missa-color: var(--liturgical-vermelho); }
+.missa-day.color-roxo { --missa-color: var(--liturgical-roxo); }
+.missa-day.color-branco { --missa-color: var(--liturgical-branco); }
+.missa-day.color-rosa { --missa-color: var(--liturgical-rosa); }
+
+.missa-day {
+  position: relative;
+  padding: var(--space-lg);
+  border-top: 4px solid var(--missa-color);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.missa-day .eyebrow {
+  color: var(--color-text-muted);
+}
+
+.missa-day-title {
+  margin: 0.35rem 0 0.9rem;
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--color-charcoal);
+}
+
+.missa-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: var(--space-md);
+}
+
+.missa-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-full);
+  background: var(--color-cream-warm);
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.missa-color-dot {
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+  background: var(--missa-color);
+  box-shadow: 0 0 0 1px var(--color-border);
+}
+
+.missa-rules {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.missa-rule {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.missa-rule-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: 0.05rem;
+  border-radius: 50%;
+  background: var(--color-cream-warm);
+  color: var(--color-text-muted);
+}
+
+.missa-rule.is-yes .missa-rule-icon {
+  background: var(--missa-color);
+  color: var(--color-cream-light);
+}
+
+.missa-alert {
+  display: flex;
+  gap: 0.55rem;
+  margin: 0 0 var(--space-md);
+  padding: 0.75rem 0.9rem;
+  border-radius: var(--radius-md);
+  background: var(--color-cream-warm);
+  color: var(--color-charcoal);
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.missa-alert svg {
+  flex: none;
+  margin-top: 0.2rem;
+  color: var(--missa-color);
+}
+
+.missa-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  margin: var(--space-md) 0 0;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.missa-notice svg {
+  flex: none;
+  margin-top: 0.2rem;
+}
+
+/* ── Atalhos para as partes ── */
+.missa-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: var(--space-xl) 0 var(--space-md);
+}
+
+.missa-nav-link {
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-full);
+  background: var(--color-cream-warm);
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+}
+
+.missa-nav-link:hover,
+.missa-nav-link:focus-visible {
+  background: var(--color-terracotta);
+  color: var(--color-cream-light);
+}
+
+/* ── Partes e passos ── */
+.missa-part {
+  margin-top: var(--space-2xl);
+  scroll-margin-top: 6.5rem;
+}
+
+.missa-part-title {
+  margin: 0.3rem 0 0.4rem;
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--color-charcoal);
+}
+
+.missa-part-intro {
+  max-width: 42rem;
+  margin: 0 0 var(--space-lg);
+  color: var(--color-text-muted);
+}
+
+.missa-steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.missa-step {
+  padding: var(--space-md) var(--space-lg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  scroll-margin-top: 6.5rem;
+}
+
+.missa-step.is-skipped {
+  padding-block: 0.8rem;
+  border-style: dashed;
+  background: transparent;
+  box-shadow: none;
+}
+
+.missa-step-title {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--color-charcoal);
+}
+
+.missa-step.is-skipped .missa-step-title {
+  font-size: 1.2rem;
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+.missa-skip-reason,
+.missa-step-note {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.missa-why {
+  margin: 0.4rem 0 0;
+  padding-left: 0.7rem;
+  border-left: 3px solid var(--color-gold);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.missa-dialogue {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 0.8rem;
+}
+
+.missa-line {
+  display: grid;
+  gap: 0.1rem;
+  margin: 0;
+  line-height: 1.6;
+  color: var(--color-text);
+}
+
+.missa-who {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* O que o povo diz: em destaque, como num folheto de Missa. */
+.missa-line.is-people {
+  padding: 0.55rem 0.8rem;
+  border-left: 3px solid var(--color-terracotta);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--color-cream-warm);
+}
+
+.missa-line.is-people .missa-who {
+  color: var(--color-terracotta);
+}
+
+.missa-line.is-people .missa-text {
+  font-weight: 600;
+  color: var(--color-charcoal);
+}
+
+.missa-proper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 0.8rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--color-text);
+}
+
+.missa-proper p {
+  margin: 0;
+}
+
+.missa-proper-label {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-gold-text);
+}
+
+.missa-proper-missing {
+  margin: 0.6rem 0 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.missa-readings-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  align-self: flex-start;
+  margin-top: 0.3rem;
+  font-weight: 700;
+  color: var(--color-terracotta);
+}
+
+.missa-alt {
+  margin-top: 0.8rem;
+  font-size: 0.95rem;
+}
+
+.missa-alt summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--color-terracotta);
+}
+
+.missa-alt p {
+  margin: 0.5rem 0 0;
+  line-height: 1.6;
+}
+
+.missa-more {
+  margin-top: var(--space-2xl);
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.missa-more a {
+  color: var(--color-terracotta);
+  font-weight: 600;
+}
+
+/* ── Modo escuro ── */
+:root[data-theme='dark'] .missa-day.color-branco {
+  --missa-color: var(--color-gold);
+}
+
+:root[data-theme='dark'] .missa-rule.is-yes .missa-rule-icon {
+  color: var(--color-charcoal);
+}
+
+@media (min-width: 768px) {
+  .missa-day {
+    padding: var(--space-xl);
+  }
+
+  .missa-line {
+    grid-template-columns: 8.5rem 1fr;
+    gap: 0.8rem;
+    align-items: baseline;
+  }
+}
+
+/* ── Link na página de Leituras ── */
+.liturgy-mass-link {
+  margin: 2rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem 1.75rem;
+  text-align: center;
+}
+
+.liturgy-mass-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 700;
+  color: var(--color-terracotta);
+}
+
+.missa-proper-missing a {
+  color: var(--color-terracotta);
+  font-weight: 600;
+}

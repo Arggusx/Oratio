@@ -1,6 +1,6 @@
 // Trilhas: cada assunto é uma ilha, com um caminho de paradas. A primeira parada é o estudo da ilha, que explica
 // todos os assuntos do caminho (os "steps" abaixo); as seguintes são quizzes sobre esse estudo, cada um mais
-// difícil que o anterior, até o desafio final (ver LEVELS em data/quizBank.js). A próxima parada abre quando a
+// difícil que o anterior, até o desafio final (ver LEVELS em data/quizLevels.js). A próxima parada abre quando a
 // atual é concluída.
 // "icon" escolhe o desenho que flutua sobre a ilha (ver components/TrailIsland.jsx).
 // "quizTopic" liga a ilha ao banco de perguntas (data/quizBank.js).
@@ -102,7 +102,7 @@ export const trails = [
     short: 'Os sinais de Cristo que acompanham toda a vida.',
     icon: 'hostia',
     color: '#5E8C63',
-    quizTopic: 'fe',
+    quizTopic: 'sacramentos',
     intro: 'Os sete sacramentos: o que é cada um, de onde vem na Bíblia e como vivê-lo hoje.',
     steps: [
       {

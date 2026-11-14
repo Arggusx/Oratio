@@ -1,0 +1,24 @@
+/* ============================================================
+   CALENDÁRIO — DIAS DE PRECEITO
+   ============================================================ */
+.calendar-legend-cross {
+  font-size: 0.85rem;
+  line-height: 1;
+  color: var(--color-text-soft);
+}
+
+.calendar-legend-item.is-precept {
+  font-weight: 600;
+}
+
+.calendar-legend-help {
+  margin: -0.6rem 0 1.4rem;
+  max-width: 52rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+.calendar-legend-help strong {
+  color: var(--color-text-soft);
+}

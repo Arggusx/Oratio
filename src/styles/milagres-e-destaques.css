@@ -1,0 +1,673 @@
+/* ============================================================
+   MILAGRES EUCARÍSTICOS (Escola da Fé → Curiosidades)
+   ============================================================ */
+.miracles-section {
+  margin-top: 1.4rem;
+}
+
+.miracles-intro {
+  max-width: 46rem;
+  margin-bottom: 1.4rem;
+}
+
+.miracles-intro p {
+  color: var(--color-text-muted);
+  line-height: 1.7;
+}
+
+.miracles-intro a {
+  color: var(--color-terracotta);
+  font-weight: 600;
+}
+
+.miracles-quote {
+  margin-top: 1rem;
+  padding: 0.9rem 1.1rem;
+  border-left: 3px solid var(--color-gold);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: color-mix(in srgb, var(--color-gold) 8%, var(--color-surface));
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--color-text);
+}
+
+.miracles-quote cite {
+  display: block;
+  margin-top: 0.3rem;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-style: normal;
+  color: var(--color-text-muted);
+}
+
+.miracles-filter {
+  margin-bottom: 0.8rem;
+}
+
+.miracles-filter-label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-pale);
+}
+
+.miracles-filter-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.miracles-count {
+  margin: 0.4rem 0 0.9rem;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.miracles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: 1rem;
+}
+
+.miracle-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.2rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  scroll-margin-top: 6rem;
+}
+
+/* Milagre aberto pelo mapa da Jornada: brilha por alguns segundos */
+.miracle-card.is-focused {
+  border-color: var(--color-gold);
+  animation: miracle-focus 2.6s var(--ease-out);
+}
+
+@keyframes miracle-focus {
+  0%, 40% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-gold) 45%, transparent), var(--shadow-md); }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+/* Milagre escolhido no mapa: aberto em destaque antes do catálogo */
+.miracle-focus {
+  display: grid;
+  gap: 0.6rem;
+  max-width: 40rem;
+  margin: 0 auto 2rem;
+  scroll-margin-top: 6rem;
+}
+
+.miracle-focus .miracle-card h3 {
+  font-size: 1.6rem;
+}
+
+.miracle-focus-more {
+  justify-self: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-terracotta);
+}
+
+.miracle-card-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.6rem;
+}
+
+.miracle-year {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-terracotta);
+}
+
+.miracle-recognition {
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-text-soft);
+  background: var(--color-cream-warm);
+}
+
+.miracle-recognition.is-culto {
+  border-color: color-mix(in srgb, var(--color-gold) 55%, var(--color-border));
+}
+
+.miracle-card h3 {
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+
+.miracle-country {
+  margin-bottom: 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-pale);
+}
+
+.miracle-summary {
+  flex: 1;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--color-text-soft);
+}
+
+.miracle-where {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.9rem;
+  padding-top: 0.7rem;
+  border-top: 1px dashed var(--color-border);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.miracle-where svg {
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  color: var(--color-terracotta);
+}
+
+.miracles-footer {
+  max-width: 46rem;
+  margin-top: 1.6rem;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--color-text-muted);
+}
+
+.miracles-external {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.8rem;
+  font-weight: 600;
+  color: var(--color-terracotta);
+}
+
+@media (max-width: 480px) {
+  .miracles-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Cartão de destaque (milagres na Escola da Fé, santos em Terço e Orações) */
+.feature-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  margin-bottom: 1.4rem;
+  padding: 1.1rem 1.3rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid color-mix(in srgb, var(--color-gold) 45%, var(--color-border));
+  background:
+    radial-gradient(circle at 12% 50%, color-mix(in srgb, var(--color-gold) 22%, transparent), transparent 60%),
+    color-mix(in srgb, var(--color-gold) 9%, var(--color-surface));
+  color: var(--color-text);
+  text-align: left;
+  cursor: pointer;
+  transition: transform var(--duration-fast), box-shadow var(--duration-fast), border-color var(--duration-fast);
+}
+
+.feature-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-gold);
+  box-shadow: 0 10px 28px -18px color-mix(in srgb, var(--color-gold) 80%, transparent);
+}
+
+.feature-card-icon {
+  flex-shrink: 0;
+  width: 3.4rem;
+  height: 3.4rem;
+}
+
+.feature-card-icon line {
+  stroke: var(--color-gold);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+.feature-card-icon .host {
+  fill: color-mix(in srgb, var(--color-gold) 25%, var(--color-surface));
+  stroke: var(--color-gold);
+  stroke-width: 1.6;
+}
+
+.feature-card-icon .host-cross,
+.feature-card-icon .stand {
+  fill: none;
+  stroke: var(--color-gold);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+.feature-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.feature-card-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-pale);
+}
+
+.feature-card strong {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  line-height: 1.15;
+}
+
+.feature-card-text > span:last-child {
+  font-size: 0.88rem;
+  color: var(--color-text-soft);
+}
+
+.feature-card-arrow {
+  flex-shrink: 0;
+  color: var(--color-terracotta);
+  transition: transform var(--duration-fast);
+}
+
+.feature-card:hover .feature-card-arrow {
+  transform: translateX(4px);
+}
+
+.miracles-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.6rem;
+  padding: 0.3rem 0;
+  border: none;
+  background: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-terracotta);
+  cursor: pointer;
+}
+
+@media (max-width: 480px) {
+  .feature-card {
+    padding: 1rem;
+    gap: 0.8rem;
+  }
+  .feature-card-icon {
+    width: 2.8rem;
+    height: 2.8rem;
+  }
+  .feature-card strong {
+    font-size: 1.25rem;
+  }
+}
+
+/* Botão "Ver mais" (santos e curiosidades) */
+.load-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1.4rem auto 0;
+  padding: 0.75rem 1.4rem;
+  border-radius: var(--radius-full);
+  border: 1px solid color-mix(in srgb, var(--color-gold) 50%, var(--color-border));
+  background: var(--color-surface);
+  font-weight: 600;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: border-color var(--duration-fast), background var(--duration-fast);
+}
+
+.load-more:hover {
+  border-color: var(--color-gold);
+  background: color-mix(in srgb, var(--color-gold) 8%, var(--color-surface));
+}
+
+.load-more-count {
+  padding: 0.1rem 0.5rem;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-gold) 18%, var(--color-surface));
+  font-size: 0.8rem;
+}
+
+/* Cartões de destaque lado a lado nas Curiosidades */
+.feature-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+  gap: 0.9rem;
+  margin-bottom: 1.4rem;
+}
+
+.feature-cards .feature-card {
+  margin-bottom: 0;
+}
+
+/* Títulos de Nossa Senhora */
+.marian-types {
+  display: grid;
+  gap: 0.45rem;
+  max-width: 46rem;
+  margin: 0 0 1.2rem;
+  padding: 0;
+  list-style: none;
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+}
+
+.marian-types li {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  align-items: start;
+  gap: 0.6rem;
+}
+
+.marian-types .marian-type-tag {
+  justify-self: start;
+}
+
+.marian-type-tag {
+  padding: 0.18rem 0.6rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-soft);
+  background: var(--color-cream-warm);
+  white-space: nowrap;
+}
+
+.marian-type-tag.is-dogma {
+  border-color: color-mix(in srgb, var(--color-gold) 60%, var(--color-border));
+  background: color-mix(in srgb, var(--color-gold) 14%, var(--color-surface));
+}
+
+.marian-type-tag.is-aparicao {
+  border-color: color-mix(in srgb, #4A6FA5 45%, var(--color-border));
+  background: color-mix(in srgb, #4A6FA5 10%, var(--color-surface));
+}
+
+.marian-meta .miracle-where + .miracle-where {
+  margin-top: 0.35rem;
+  padding-top: 0;
+  border-top: none;
+}
+
+.miracle-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-terracotta);
+}
+
+.miracle-link:hover {
+  text-decoration: underline;
+}
+
+/* Retratos dos santos no medalhão e imagens dos títulos de Maria */
+.saint-initial.has-image {
+  overflow: hidden;
+  background: var(--color-cream-warm);
+}
+
+.saint-initial.has-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 18%;
+}
+
+.saint-initial.is-large.has-image {
+  width: 6.5rem;
+  height: 6.5rem;
+}
+
+.image-credit {
+  margin-top: 0.6rem;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.image-credit a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+}
+
+.saint-image-credit {
+  margin: -0.6rem 0 1.4rem;
+}
+
+.miracle-card.has-image {
+  padding-top: 0;
+  overflow: hidden;
+}
+
+.marian-card-image {
+  display: block;
+  width: calc(100% + 2.4rem);
+  max-width: none;
+  height: 13rem;
+  margin: 0 -1.2rem 1rem;
+  object-fit: cover;
+  object-position: 50% 20%;
+  background: var(--color-cream-warm);
+}
+
+/* Página de créditos das imagens */
+.credits-note {
+  max-width: 46rem;
+  margin: 0.8rem 0 2rem;
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+}
+
+.credits-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: 0.8rem;
+  padding: 0;
+  list-style: none;
+}
+
+.credits-item {
+  display: flex;
+  gap: 0.8rem;
+  align-items: flex-start;
+  padding: 0.8rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.credits-item img {
+  flex-shrink: 0;
+  width: 3.4rem;
+  height: 3.4rem;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  object-position: 50% 18%;
+}
+
+.credits-item a,
+.credits-item strong {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.credits-item .image-credit {
+  margin-top: 0.2rem;
+}
+
+.saint-card .saint-initial.has-image {
+  width: 4.4rem;
+  height: 4.4rem;
+}
+
+/* Link para a página dos mistérios, dentro do guia do terço */
+.mysteries-all-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-terracotta);
+}
+
+.mysteries-all-link svg {
+  transition: transform var(--duration-fast);
+}
+
+.mysteries-all-link:hover svg {
+  transform: translateX(4px);
+}
+
+/* Nossa Senhora em destaque na aba Santos da Escola da Fé */
+.marian-feature {
+  display: grid;
+  grid-template-columns: minmax(7rem, 11rem) 1fr;
+  width: 100%;
+  margin-bottom: 1.6rem;
+  padding: 0;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid color-mix(in srgb, var(--color-gold) 55%, var(--color-border));
+  background:
+    radial-gradient(circle at 85% 20%, color-mix(in srgb, #4A6FA5 16%, transparent), transparent 55%),
+    color-mix(in srgb, var(--color-gold) 10%, var(--color-surface));
+  color: var(--color-text);
+  text-align: left;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--duration-fast), box-shadow var(--duration-fast), border-color var(--duration-fast);
+}
+
+.marian-feature:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-gold);
+  box-shadow: 0 16px 36px -22px color-mix(in srgb, var(--color-gold) 90%, transparent);
+}
+
+.marian-feature img {
+  width: 100%;
+  height: 100%;
+  min-height: 12rem;
+  object-fit: cover;
+  object-position: 50% 15%;
+}
+
+.marian-feature-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 1.3rem 1.4rem;
+}
+
+.marian-feature strong {
+  font-family: var(--font-serif);
+  font-size: clamp(1.7rem, 4.5vw, 2.3rem);
+  line-height: 1.1;
+}
+
+.marian-feature-text > span:nth-child(3) {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--color-text-soft);
+}
+
+.marian-feature-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.4rem;
+  font-weight: 700;
+  color: var(--color-terracotta);
+}
+
+.marian-feature:hover .marian-feature-cta svg {
+  transform: translateX(4px);
+}
+
+.marian-feature-cta svg {
+  transition: transform var(--duration-fast);
+}
+
+@media (max-width: 480px) {
+  .marian-feature {
+    grid-template-columns: 6.5rem 1fr;
+  }
+  .marian-feature img {
+    min-height: 10rem;
+  }
+  .marian-feature-text {
+    padding: 1rem;
+  }
+}
+
+/* Calendário: realce ao passar o mouse e dica com o nome da celebração */
+.calendar-day {
+  transition: background var(--duration-fast), opacity var(--duration-fast), transform var(--duration-fast),
+    box-shadow var(--duration-fast);
+}
+
+@media (hover: hover) {
+  .calendar-day:hover {
+    z-index: 2;
+    transform: translateY(-2px) scale(1.12);
+    border-color: var(--color-gold);
+    box-shadow: 0 6px 14px -6px rgba(94, 59, 36, 0.35);
+  }
+
+  .calendar-day[data-tip]:hover::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: 13rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: var(--radius-md);
+    background: var(--color-charcoal);
+    color: var(--color-surface);
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1.35;
+    white-space: normal;
+    text-align: center;
+    pointer-events: none;
+    z-index: 3;
+  }
+}
+
+/* O painel do dia fica visível abaixo do cabeçalho fixo ao rolar até ele */
+.calendar-day-panel {
+  scroll-margin-top: 6rem;
+}
