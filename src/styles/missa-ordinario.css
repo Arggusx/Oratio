@@ -5,23 +5,21 @@
   --missa-color: var(--color-terracotta);
 }
 
-/* ── Seletor de data ── */
-.missa-date {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.6rem;
+/* ── Dia da Missa: botão que abre o painel (o mesmo dos filtros) ── */
+.missa-day-picker {
   margin-bottom: var(--space-lg);
 }
 
-.missa-date label {
-  flex-basis: 100%;
+.missa-date-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
   font-size: var(--text-sm);
   font-weight: 600;
   color: var(--color-text-muted);
 }
 
-.missa-date input {
+.missa-date-field input {
   min-height: var(--control-height);
   padding: 0 0.9rem;
   border: 1px solid var(--color-border);
@@ -29,24 +27,18 @@
   background: var(--color-surface);
   color: var(--color-text);
   font: inherit;
+  font-weight: 400;
   color-scheme: light;
 }
 
-:root[data-theme='dark'] .missa-date input {
+:root[data-theme='dark'] .missa-date-field input {
   color-scheme: dark;
 }
 
-.missa-date input:focus-visible {
+.missa-date-field input:focus-visible {
   outline: none;
   border-color: var(--color-terracotta);
   box-shadow: 0 0 0 3px rgba(184, 74, 19, 0.15);
-}
-
-.missa-date .btn:disabled {
-  opacity: 0.55;
-  cursor: default;
-  transform: none;
-  box-shadow: none;
 }
 
 .missa-loading {
@@ -403,10 +395,6 @@
 }
 
 @media (min-width: 768px) {
-  .missa-date label {
-    flex-basis: auto;
-  }
-
   .missa-day {
     padding: var(--space-xl);
   }

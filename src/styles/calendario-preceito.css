@@ -7,9 +7,7 @@
   color: var(--color-text-soft);
 }
 
-.calendar-legend-item.is-precept.active {
-  border-color: var(--color-text-soft);
-  background: var(--color-surface);
+.calendar-legend-item.is-precept {
   font-weight: 600;
 }
 

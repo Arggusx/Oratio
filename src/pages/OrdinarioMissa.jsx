@@ -1,8 +1,8 @@
 /* O projeto não usa PropTypes (os componentes aqui são internos à página). */
 /* eslint-disable react/prop-types */
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { BookOpen, Check, CloudOff, Info, Minus } from 'lucide-react';
+import { BookOpen, CalendarDays, Check, CloudOff, Info, Minus, X } from 'lucide-react';
 import Bell from '../components/anim/Bell';
 import RosaryLoader from '../components/anim/RosaryLoader';
 import ShareButton from '../components/ShareButton';
@@ -205,6 +205,70 @@ function Step({ step, rules, api, isToday }) {
   );
 }
 
+
+/**
+ * Dia da Missa atrás de um botão (como os filtros do site): o botão mostra o dia escolhido
+ * e abre um painel com o calendário e o atalho "Hoje".
+ */
+function DayPicker({ dateKey, todayKey, onChange }) {
+  const dialogRef = useRef(null);
+  const [draft, setDraft] = useState(dateKey);
+  const isToday = dateKey === todayKey;
+  const label = isToday ? 'Hoje' : dateKey.split('-').reverse().join('/');
+
+  const open = () => {
+    setDraft(dateKey);
+    dialogRef.current?.showModal();
+  };
+  const close = () => dialogRef.current?.close();
+  const apply = (key) => {
+    if (key) onChange(key);
+    close();
+  };
+
+  return (
+    <div className="filter-bar missa-day-picker">
+      <button type="button" className="filter-open" onClick={open} aria-haspopup="dialog">
+        <CalendarDays size={16} aria-hidden="true" />
+        Dia: {label}
+      </button>
+      {!isToday && (
+        <button type="button" className="filter-clear-link" onClick={() => onChange(todayKey)}>
+          Voltar para hoje
+        </button>
+      )}
+
+      <dialog
+        ref={dialogRef}
+        className="filter-sheet"
+        aria-labelledby="missa-day-title-sheet"
+        onClick={(e) => e.target === dialogRef.current && close()}
+      >
+        <header className="filter-sheet-head">
+          <h2 id="missa-day-title-sheet">Dia da Missa</h2>
+          <button type="button" className="filter-sheet-close" onClick={close} aria-label="Fechar sem mudar">
+            <X size={20} />
+          </button>
+        </header>
+        <div className="filter-sheet-body">
+          <label className="missa-date-field">
+            Escolha o dia
+            <input type="date" value={draft} onChange={(e) => setDraft(e.target.value)} />
+          </label>
+        </div>
+        <footer className="filter-sheet-foot">
+          <button type="button" className="filter-sheet-clear" onClick={() => apply(todayKey)}>
+            Hoje
+          </button>
+          <button type="button" className="btn filter-sheet-apply" onClick={() => apply(draft)}>
+            Ver este dia
+          </button>
+        </footer>
+      </dialog>
+    </div>
+  );
+}
+
 export default function OrdinarioMissa() {
   const [params, setParams] = useSearchParams();
   const season = useSeason();
@@ -262,18 +326,7 @@ export default function OrdinarioMissa() {
         />
       </div>
 
-      <div className="missa-date">
-        <label htmlFor="missa-date-input">Dia da Missa</label>
-        <input
-          id="missa-date-input"
-          type="date"
-          value={dateKey}
-          onChange={(e) => changeDate(e.target.value)}
-        />
-        <button type="button" className="btn btn-ghost" onClick={() => changeDate(todayKey)} disabled={isToday}>
-          Hoje
-        </button>
-      </div>
+      <DayPicker dateKey={dateKey} todayKey={todayKey} onChange={changeDate} />
 
       {loading ? (
         <div className="missa-loading" aria-busy="true">
