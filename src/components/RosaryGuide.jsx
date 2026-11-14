@@ -3,7 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useSearchParams } from 'react-router-dom';
 import { ArrowRight, ChevronDown, Sparkles, Calendar, HeartHandshake, ListOrdered } from 'lucide-react';
 import { getTodayMysteryKey } from '../utils/liturgicalCalendar';
-import { closingPrayerIds, getRosaryIntention } from '../data/rosaryIntentions';
+import {
+  MAX_INTENTIONS,
+  buildOffering,
+  closingPrayerIds,
+  decadePlan,
+  getRosaryIntention,
+} from '../data/rosaryIntentions';
 import { prayers } from '../data/prayers';
 import RosaryExplorer from './anim/RosaryExplorer';
 import RosaryCheck from './RosaryCheck';
@@ -337,35 +343,45 @@ export default function RosaryGuide({ layoutData }) {
       document.getElementById(`passo-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 350);
   };
-  // Intenção escolhida (opcional): fica no endereço (?intencao=saude) para poder ser compartilhada.
+  // Intenções escolhidas (opcionais, até cinco): ficam no endereço (?intencao=saude,familia)
+  // para o terço personalizado poder ser compartilhado.
   const [searchParams, setSearchParams] = useSearchParams();
-  const intention = layoutData.id === 'nordico' ? null : getRosaryIntention(searchParams.get('intencao'));
-  const setIntention = (id) =>
+  const intentionParam = searchParams.get('intencao') ?? '';
+  const selectedIntentions = useMemo(
+    () =>
+      layoutData.id === 'nordico'
+        ? []
+        : [...new Set(intentionParam.split(','))].map(getRosaryIntention).filter(Boolean).slice(0, MAX_INTENTIONS),
+    [intentionParam, layoutData.id]
+  );
+  const setIntentions = (ids) =>
     setSearchParams(
       (prev) => {
         const next = new URLSearchParams(prev);
-        if (id) next.set('intencao', id);
+        if (ids.length) next.set('intencao', ids.join(','));
         else next.delete('intencao');
         return next;
       },
       { replace: true, preventScrollReset: true }
     );
+  const plan = useMemo(() => decadePlan(selectedIntentions), [selectedIntentions]);
 
-  // Com intenção, o oferecimento (passo 2) é o dela e o último passo ganha a oração ao santo.
+  // Com intenções, o oferecimento (passo 2) é o delas e o último passo ganha a oração de cada santo.
   const steps = useMemo(() => {
-    if (!layoutData.steps || !intention) return layoutData.steps;
-    const closing = closingPrayerIds(intention)
+    if (!layoutData.steps || !selectedIntentions.length) return layoutData.steps;
+    const closingIds = [...new Set(selectedIntentions.flatMap(closingPrayerIds))];
+    const closing = closingIds
       .map((id) => prayers.find((p) => p.id === id))
       .filter(Boolean)
-      .map((p) => `Pela sua intenção, ${p.title}:\n${p.text}`)
+      .map((p) => `Pelas suas intenções, ${p.title}:\n${p.text}`)
       .join('\n\n');
     const last = layoutData.steps.length - 1;
     return layoutData.steps.map((step, i) => {
-      if (step.id === 'step-2') return { ...step, prayerText: intention.offering };
+      if (step.id === 'step-2') return { ...step, prayerText: buildOffering(selectedIntentions) };
       if (i === last && closing) return { ...step, prayerText: `${step.prayerText}\n\n${closing}` };
       return step;
     });
-  }, [layoutData.steps, intention]);
+  }, [layoutData.steps, selectedIntentions]);
 
   const activeStepIndex = steps?.findIndex((s) => s.id === openStepId) ?? -1;
 
@@ -417,9 +433,6 @@ export default function RosaryGuide({ layoutData }) {
         </Link>
       </section>
 
-      {/* Intenção opcional: personaliza o terço tradicional. */}
-      {layoutData.id !== 'nordico' && <RosaryIntention intention={intention} onChange={setIntention} />}
-
       {/* 3. GUIA PASSO A PASSO COMPLETO */}
       <section className="rosary-timeline-section">
         <h3 className="timeline-heading">Roteiro Passo a Passo do {layoutData.title}</h3>
@@ -433,9 +446,12 @@ export default function RosaryGuide({ layoutData }) {
           <NordicTimeline key={activeMysteryKey} mystery={currentMystery} />
         ) : (
           <>
+            {/* Intenções opcionais: o roteiro abaixo muda com elas. */}
+            <RosaryIntention selected={selectedIntentions} onChange={setIntentions} />
+
             <RosaryExplorer
               steps={steps}
-              decadeHints={intention?.decades}
+              decadePlan={plan}
               activeIndex={activeStepIndex}
               onOpenStep={openStepFromBead}
               mysteryKey={activeMysteryKey}
