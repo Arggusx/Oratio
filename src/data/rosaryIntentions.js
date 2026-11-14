@@ -11,12 +11,6 @@
    pela intercessão de Maria e dos santos, aceitando a sua vontade.
    ============================================================ */
 
-/** Fecho comum do oferecimento: o mesmo do terço tradicional. */
-const OFFERING_END =
-  'Concedei-nos, por intercessão da Virgem Maria, Mãe de Deus e nossa Mãe, as virtudes que nos são necessárias para bem rezá-lo. Amém.';
-
-const offering = (text) =>
-  `Divino Jesus, nós Vos oferecemos este terço que vamos rezar, meditando nos mistérios da nossa Redenção. ${text} ${OFFERING_END}`;
 
 export const rosaryIntentions = [
   {
@@ -29,9 +23,7 @@ export const rosaryIntentions = [
     prayerIds: ['santo-antonio', 'sao-rafael-encontros'],
     about:
       'Santo Antônio é lembrado como protetor dos noivos e das famílias, e São Rafael, como o anjo dos encontros felizes. Peça uma pessoa que te aproxime de Deus, e não só alguém para não ficar sozinho(a).',
-    offering: offering(
-      'Oferecemos particularmente pelo(a) companheiro(a) que Vós preparastes para mim: que eu o(a) encontre no tempo certo, que nos reconheçamos e que caminhemos juntos para Vós.'
-    ),
+    offerFor: 'pelo(a) companheiro(a) que Vós preparastes para mim: que eu o(a) encontre no tempo certo, que nos reconheçamos e que caminhemos juntos para Vós.',
     decades: [
       'Agradeça pelas pessoas que já te amam: família, amigos, quem reza por você.',
       'Peça um coração preparado: paciência, maturidade e capacidade de amar de verdade.',
@@ -54,9 +46,7 @@ export const rosaryIntentions = [
     prayerId: 'oracao-a-sao-rafael',
     about:
       'São Rafael, cujo nome quer dizer “Deus cura”, acompanhou Tobias e curou o seu pai. Reze pela cura, pelos médicos e pela força de quem cuida.',
-    offering: offering(
-      'Oferecemos particularmente pela saúde de [nome]: que ele(a) receba a cura, se for da vossa vontade, e a paz em qualquer caso.'
-    ),
+    offerFor: 'pela saúde de [nome]: que ele(a) receba a cura, se for da vossa vontade, e a paz em qualquer caso.',
     decades: [
       'Agradeça pelo dom da vida e pela saúde que você ainda tem.',
       'Peça a cura do corpo e da alma de quem está doente.',
@@ -79,9 +69,7 @@ export const rosaryIntentions = [
     prayerId: 'a-vos-sao-jose',
     about:
       'São José guardou a Sagrada Família nas horas difíceis. Reze por cada pessoa da sua casa, inclusive por quem está longe ou brigado.',
-    offering: offering(
-      'Oferecemos particularmente pela nossa família: pela união, pelo perdão entre nós e pela fé de cada um.'
-    ),
+    offerFor: 'pela nossa família: pela união, pelo perdão entre nós e pela fé de cada um.',
     decades: [
       'Agradeça por cada pessoa da sua família, dizendo o nome dela.',
       'Peça pela união do casal (ou dos seus pais) e pelo diálogo em casa.',
@@ -104,9 +92,7 @@ export const rosaryIntentions = [
     prayerId: 'sao-miguel-arcanjo',
     about:
       'São Miguel é o defensor do povo de Deus no combate espiritual. Reze pela proteção da sua casa, do seu caminho e da sua fé.',
-    offering: offering(
-      'Oferecemos particularmente pela nossa proteção: livrai-nos de todo mal, do perigo e da tentação, e guardai a nossa casa.'
-    ),
+    offerFor: 'pela nossa proteção: livrai-nos de todo mal, do perigo e da tentação, e guardai a nossa casa.',
     decades: [
       'Agradeça pelos perigos de que você foi livrado(a), mesmo sem saber.',
       'Peça proteção para a sua casa e para quem mora nela.',
@@ -129,9 +115,7 @@ export const rosaryIntentions = [
     prayerId: 'sao-jose',
     about:
       'São José, o carpinteiro de Nazaré, é o padroeiro dos trabalhadores. Reze por um emprego, pelo trabalho que você tem e por quem trabalha com você.',
-    offering: offering(
-      'Oferecemos particularmente pelo nosso trabalho: que nunca falte o sustento e que o nosso trabalho seja honesto e sirva aos outros.'
-    ),
+    offerFor: 'pelo nosso trabalho: que nunca falte o sustento e que o nosso trabalho seja honesto e sirva aos outros.',
     decades: [
       'Agradeça pelo trabalho que você tem (ou já teve) e pelo que aprendeu nele.',
       'Peça um emprego digno, para você ou para quem está desempregado.',
@@ -154,9 +138,7 @@ export const rosaryIntentions = [
     prayerId: 'oracao-a-sao-judas-tadeu',
     about:
       'São Judas Tadeu e Santa Rita são lembrados nas causas que parecem sem saída. Reze com confiança e com abandono: Deus sabe o que é melhor.',
-    offering: offering(
-      'Oferecemos particularmente por esta causa que parece impossível: [diga qual]. Que se faça a vossa vontade, e que nos deis força para aceitá-la.'
-    ),
+    offerFor: 'por esta causa que parece impossível: [diga qual]. Que se faça a vossa vontade, e que nos deis força para aceitá-la.',
     decades: [
       'Agradeça pelas outras vezes em que Deus te ajudou quando parecia não haver saída.',
       'Apresente o seu pedido com todas as palavras, sem esconder nada.',
@@ -178,9 +160,7 @@ export const rosaryIntentions = [
     prayerId: 'jesus-eu-confio-em-vos',
     about:
       'Para os dias de ansiedade, tristeza ou cabeça cheia. Reze devagar, sem pressa de terminar: o terço também é um descanso em Deus.',
-    offering: offering(
-      'Oferecemos particularmente pela paz do nosso coração: acalmai a ansiedade, curai a tristeza e ensinai-nos a confiar.'
-    ),
+    offerFor: 'pela paz do nosso coração: acalmai a ansiedade, curai a tristeza e ensinai-nos a confiar.',
     decades: [
       'Agradeça por três coisas boas do seu dia, mesmo pequenas.',
       'Entregue a Deus a preocupação que mais pesa agora.',
@@ -202,9 +182,7 @@ export const rosaryIntentions = [
     prayerId: 'antes-de-estudar',
     about:
       'Para quem estuda, faz prova, vestibular ou concurso. Reze pedindo memória, calma e honestidade, e estude como se tudo dependesse de você.',
-    offering: offering(
-      'Oferecemos particularmente pelos nossos estudos: inteligência para aprender, memória para lembrar e calma na hora da prova.'
-    ),
+    offerFor: 'pelos nossos estudos: inteligência para aprender, memória para lembrar e calma na hora da prova.',
     decades: [
       'Agradeça pela oportunidade de estudar e pelos seus professores.',
       'Peça foco e disciplina para os dias de estudo.',
@@ -227,7 +205,7 @@ export const rosaryIntentions = [
     prayerId: 'responsorio-santo-antonio',
     about:
       'Santo Antônio é lembrado por quem perdeu algo. Vale para objetos e também para o que se perde por dentro: a fé, a esperança, a alegria.',
-    offering: offering('Oferecemos particularmente para reencontrar [o que se perdeu], e também a fé e a esperança, se elas se perderam.'),
+    offerFor: 'para reencontrar [o que se perdeu], e também a fé e a esperança, se elas se perderam.',
     decades: [
       'Agradeça pelo que você tem e às vezes esquece de valorizar.',
       'Peça para reencontrar o que se perdeu.',
@@ -249,7 +227,7 @@ export const rosaryIntentions = [
     saintSlug: 'sao-rafael',
     prayerId: 'oracao-a-sao-rafael',
     about: 'São Rafael guiou Tobias no caminho, na ida e na volta. Reze antes de viajar ou por alguém que está na estrada.',
-    offering: offering('Oferecemos particularmente por esta viagem: que todos vão e voltem em paz e com saúde.'),
+    offerFor: 'por esta viagem: que todos vão e voltem em paz e com saúde.',
     decades: [
       'Agradeça pela viagem e pelo motivo dela.',
       'Peça proteção na estrada, no ar ou no mar.',
@@ -271,9 +249,7 @@ export const rosaryIntentions = [
     prayerId: 'lembrai-vos',
     about:
       'Maria esperou Jesus por nove meses. Reze pelo desejo de ter um filho, por uma gravidez tranquila ou pelas mães que você conhece.',
-    offering: offering(
-      'Oferecemos particularmente pela [gravidez / pelo desejo de ser mãe e pai]: que a criança seja acolhida com amor e que tudo corra bem.'
-    ),
+    offerFor: 'pela [gravidez / pelo desejo de ser mãe e pai]: que a criança seja acolhida com amor e que tudo corra bem.',
     decades: [
       'Agradeça pelo dom da vida e pela sua própria mãe.',
       'Peça pela saúde da mãe e do bebê (ou pelo desejo de engravidar).',
@@ -296,9 +272,7 @@ export const rosaryIntentions = [
     prayerId: 'sao-jose',
     about:
       'São José sustentou a Sagrada Família com o seu trabalho. Reze pela solução das dívidas e por sabedoria para cuidar do dinheiro.',
-    offering: offering(
-      'Oferecemos particularmente pelas nossas dificuldades financeiras: que nunca falte o necessário e que encontremos o caminho para sair das dívidas.'
-    ),
+    offerFor: 'pelas nossas dificuldades financeiras: que nunca falte o necessário e que encontremos o caminho para sair das dívidas.',
     decades: [
       'Agradeça pelo que não faltou até hoje.',
       'Peça uma saída para as dívidas e um trabalho que dê o sustento.',
@@ -321,9 +295,7 @@ export const rosaryIntentions = [
     prayerId: 'pelas-almas-do-purgatorio',
     about:
       'São José, que morreu ao lado de Jesus e Maria, é o padroeiro da boa morte. Reze por quem está perto de partir e pelas almas de quem já partiu.',
-    offering: offering(
-      'Oferecemos particularmente por [nome], que está perto de partir (ou que já partiu): que seja acolhido(a) na casa do Pai.'
-    ),
+    offerFor: 'por [nome], que está perto de partir (ou que já partiu): que seja acolhido(a) na casa do Pai.',
     decades: [
       'Agradeça pela vida de quem está partindo ou já partiu.',
       'Peça que ele(a) receba os sacramentos e morra em paz com Deus.',
@@ -343,3 +315,33 @@ export const getRosaryIntention = (id) => rosaryIntentions.find((i) => i.id === 
 
 /** Ids das orações do fim do terço (uma ou mais, na ordem). */
 export const closingPrayerIds = (intention) => intention.prayerIds ?? [intention.prayerId];
+
+/** Até cinco intenções: uma para cada dezena. */
+export const MAX_INTENTIONS = 5;
+
+/**
+ * Oferecimento do terço com as intenções escolhidas (offerFor de cada uma),
+ * no mesmo texto do terço tradicional.
+ */
+export function buildOffering(list) {
+  const end = (t) => (/[.!?]$/.test(t) ? t : `${t}.`);
+  const parts = list.map((it, i) => `${i === 0 ? 'Oferecemos particularmente' : 'Oferecemos também'} ${end(it.offerFor)}`);
+  return [
+    'Divino Jesus, nós Vos oferecemos este terço que vamos rezar, meditando nos mistérios da nossa Redenção.',
+    ...parts,
+    'Concedei-nos, por intercessão da Virgem Maria, Mãe de Deus e nossa Mãe, as virtudes que nos são necessárias para bem rezá-lo. Amém.',
+  ].join(' ');
+}
+
+/**
+ * A intenção de cada dezena: com menos de cinco, elas se revezam
+ * (duas intenções → 1ª, 3ª e 5ª para a primeira; 2ª e 4ª para a segunda).
+ * O pedido sugerido é o da própria intenção para aquela dezena.
+ */
+export function decadePlan(list) {
+  if (!list.length) return [];
+  return [0, 1, 2, 3, 4].map((d) => {
+    const intention = list[d % list.length];
+    return { intention, hint: intention.decades[d] };
+  });
+}

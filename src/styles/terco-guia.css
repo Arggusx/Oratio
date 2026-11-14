@@ -671,48 +671,62 @@
 
 /* ── Terço por intenção ── */
 .rosary-intention {
-  margin: 0 0 2rem;
+  margin: 0 0 1.25rem;
 }
 
-.rosary-intention-optional {
-  margin-left: 0.25rem;
-  padding: 0.1rem 0.55rem;
-  border-radius: var(--radius-pill, 999px);
-  background: color-mix(in srgb, var(--color-gold) 14%, transparent);
-  font-size: 0.72rem;
-  font-weight: 600;
+.rosary-intention-card h4 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+}
+
+.rosary-intention-plan {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.7rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rosary-intention-plan li {
+  display: flex;
+  flex-direction: column;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  font-size: 0.85rem;
+  line-height: 1.3;
+}
+
+.rosary-intention-plan-n {
+  font-size: 0.7rem;
+  font-weight: 700;
   color: var(--color-gold-text);
 }
 
-.rosary-intention-chips {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.5rem;
-  margin: 0.9rem 0 0;
+.rosary-intention-details {
+  margin-top: 0.6rem;
+  border-top: 1px solid var(--color-border-soft);
+  padding-top: 0.6rem;
 }
 
-.rosary-intention-chip {
-  min-height: 2.5rem;
-  padding: 0.45rem 1rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-pill, 999px);
-  background: var(--color-surface);
-  font: inherit;
-  font-size: 0.88rem;
-  color: var(--color-text);
+.rosary-intention-details summary {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-terracotta);
   cursor: pointer;
-  transition: border-color var(--duration-fast), background var(--duration-fast), color var(--duration-fast);
 }
 
-.rosary-intention-chip:hover {
-  border-color: var(--color-terracotta);
+.rosary-intention-details > p {
+  margin: 0.5rem 0 0;
+  line-height: 1.6;
 }
 
-.rosary-intention-chip.active {
-  border-color: var(--color-terracotta);
-  background: var(--color-terracotta);
-  color: #fff;
+.filter-group-hint {
+  margin: 0 0 0.6rem;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
 }
 
 .rosary-intention-card {
@@ -726,33 +740,6 @@
 .rosary-intention-card > p {
   margin: 0.5rem 0 0;
   line-height: 1.6;
-}
-
-.rosary-intention-card-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.5rem;
-}
-
-.rosary-intention-card-head h4 {
-  margin: 0;
-  font-family: var(--font-serif);
-  font-size: 1.35rem;
-}
-
-.rosary-intention-clear {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  border: 0;
-  background: none;
-  padding: 0.3rem;
-  font: inherit;
-  font-size: 0.82rem;
-  color: var(--color-text-muted);
-  cursor: pointer;
 }
 
 .rosary-intention-tips {

@@ -34,7 +34,7 @@ export default function RosaryExplorer({
   mystery,
   done,
   onSetDone,
-  decadeHints,
+  decadePlan,
 }) {
   const [picked, setPicked] = useState(null);
   const [assembled, setAssembled] = useState(false);
@@ -179,9 +179,10 @@ export default function RosaryExplorer({
                   <span className="rosary-x-instruction">
                     Anuncie o mistério, faça o seu pedido para esta dezena e reze o Pai-Nosso na conta grande:
                   </span>
-                  {decadeHints?.[decade] && (
+                  {decadePlan?.[decade] && (
                     <span className="rosary-x-hint-intention">
-                      <strong>Pedido sugerido:</strong> {decadeHints[decade]}
+                      <strong>Intenção desta dezena: {decadePlan[decade].intention.short}.</strong>{' '}
+                      {decadePlan[decade].hint}
                     </span>
                   )}
                   {OUR_FATHER}
