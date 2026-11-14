@@ -26,7 +26,16 @@ const MYSTERY_ADJECTIVE = { gozosos: 'gozoso', luminosos: 'luminoso', dolorosos:
 const shortName = (name) => name.split(': ').slice(1).join(': ') || name;
 const capitalize = (text) => text.charAt(0).toUpperCase() + text.slice(1);
 
-export default function RosaryExplorer({ steps, activeIndex, onOpenStep, mysteryKey, mystery, done, onSetDone }) {
+export default function RosaryExplorer({
+  steps,
+  activeIndex,
+  onOpenStep,
+  mysteryKey,
+  mystery,
+  done,
+  onSetDone,
+  decadeHints,
+}) {
   const [picked, setPicked] = useState(null);
   const [assembled, setAssembled] = useState(false);
   const [decade, setDecade] = useState(0); // 0 a 4
@@ -170,6 +179,11 @@ export default function RosaryExplorer({ steps, activeIndex, onOpenStep, mystery
                   <span className="rosary-x-instruction">
                     Anuncie o mistério, faça o seu pedido para esta dezena e reze o Pai-Nosso na conta grande:
                   </span>
+                  {decadeHints?.[decade] && (
+                    <span className="rosary-x-hint-intention">
+                      <strong>Pedido sugerido:</strong> {decadeHints[decade]}
+                    </span>
+                  )}
                   {OUR_FATHER}
                 </>
               ) : aves < AVES ? (

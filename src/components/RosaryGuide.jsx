@@ -1,10 +1,13 @@
 import { useState, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { ArrowRight, ChevronDown, Sparkles, Calendar, HeartHandshake, ListOrdered } from 'lucide-react';
 import { getTodayMysteryKey } from '../utils/liturgicalCalendar';
+import { closingPrayerIds, getRosaryIntention } from '../data/rosaryIntentions';
+import { prayers } from '../data/prayers';
 import RosaryExplorer from './anim/RosaryExplorer';
 import RosaryCheck from './RosaryCheck';
+import RosaryIntention from './RosaryIntention';
 import PrayedTodayButton from './PrayedTodayButton';
 import {
   closingPrayers,
@@ -334,7 +337,37 @@ export default function RosaryGuide({ layoutData }) {
       document.getElementById(`passo-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 350);
   };
-  const activeStepIndex = layoutData.steps?.findIndex((s) => s.id === openStepId) ?? -1;
+  // Intenção escolhida (opcional): fica no endereço (?intencao=saude) para poder ser compartilhada.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const intention = layoutData.id === 'nordico' ? null : getRosaryIntention(searchParams.get('intencao'));
+  const setIntention = (id) =>
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        if (id) next.set('intencao', id);
+        else next.delete('intencao');
+        return next;
+      },
+      { replace: true, preventScrollReset: true }
+    );
+
+  // Com intenção, o oferecimento (passo 2) é o dela e o último passo ganha a oração ao santo.
+  const steps = useMemo(() => {
+    if (!layoutData.steps || !intention) return layoutData.steps;
+    const closing = closingPrayerIds(intention)
+      .map((id) => prayers.find((p) => p.id === id))
+      .filter(Boolean)
+      .map((p) => `Pela sua intenção, ${p.title}:\n${p.text}`)
+      .join('\n\n');
+    const last = layoutData.steps.length - 1;
+    return layoutData.steps.map((step, i) => {
+      if (step.id === 'step-2') return { ...step, prayerText: intention.offering };
+      if (i === last && closing) return { ...step, prayerText: `${step.prayerText}\n\n${closing}` };
+      return step;
+    });
+  }, [layoutData.steps, intention]);
+
+  const activeStepIndex = steps?.findIndex((s) => s.id === openStepId) ?? -1;
 
   const currentMystery = layoutData.mysteriesList[activeMysteryKey];
   const isToday = activeMysteryKey === defaultMysteryKey;
@@ -384,6 +417,9 @@ export default function RosaryGuide({ layoutData }) {
         </Link>
       </section>
 
+      {/* Intenção opcional: personaliza o terço tradicional. */}
+      {layoutData.id !== 'nordico' && <RosaryIntention intention={intention} onChange={setIntention} />}
+
       {/* 3. GUIA PASSO A PASSO COMPLETO */}
       <section className="rosary-timeline-section">
         <h3 className="timeline-heading">Roteiro Passo a Passo do {layoutData.title}</h3>
@@ -398,7 +434,8 @@ export default function RosaryGuide({ layoutData }) {
         ) : (
           <>
             <RosaryExplorer
-              steps={layoutData.steps}
+              steps={steps}
+              decadeHints={intention?.decades}
               activeIndex={activeStepIndex}
               onOpenStep={openStepFromBead}
               mysteryKey={activeMysteryKey}
@@ -428,7 +465,7 @@ export default function RosaryGuide({ layoutData }) {
 
             <Collapse isOpen={listOpen}>
             <div className="rosary-steps-timeline" id="roteiro-em-lista">
-              {layoutData.steps.map((step, index) => {
+              {steps.map((step, index) => {
                 const isOpen = openStepId === step.id;
                 return (
                   <motion.article
