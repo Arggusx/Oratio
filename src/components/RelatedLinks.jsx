@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { BookOpen, CalendarDays, Church, Compass, Flame, HandHeart, Heart, Music, Sparkles, Users } from 'lucide-react';
+import { TRILHAS_ATIVAS } from '../utils/features';
 import './RelatedLinks.css';
 
 /**
@@ -29,10 +30,11 @@ const RELATED = [
   ['/home/misterio', ['oracoes', 'leituras', 'novenas']],
   ['/home/calendario', ['leituras', 'santos', 'novenas']],
   ['/home/santos', ['novenas', 'calendario', 'oracoes']],
-  ['/home/escola-da-fe', ['trilhas', 'canticos', 'confissao']],
+  ['/home/escola-da-fe', ['trilhas', 'canticos', 'confissao', 'santos']],
   ['/home/confissao', ['oracoes', 'escola', 'leituras']],
   ['/home/novenas', ['santos', 'oracoes', 'comunidade']],
   ['/home/trilhas', ['escola', 'santos', 'misterio']],
+  // (com as trilhas desligadas, estes endereços nem existem)
   ['/home/quiz', ['escola', 'trilhas', 'santos']],
   ['/comunidade', ['oracoes', 'novenas', 'leituras']],
   ['/home/canticos', ['missa', 'leituras', 'escola']],
@@ -42,6 +44,8 @@ export default function RelatedLinks() {
   const { pathname } = useLocation();
   const entry = RELATED.find(([prefix]) => pathname === prefix || pathname.startsWith(`${prefix}/`));
   if (!entry) return null;
+  // Sem as trilhas (produção), o atalho delas sai e entra a próxima sugestão da lista.
+  const keys = entry[1].filter((k) => TRILHAS_ATIVAS || k !== 'trilhas').slice(0, 3);
 
   return (
     <nav className="related-links" aria-labelledby="related-links-title">
@@ -50,7 +54,7 @@ export default function RelatedLinks() {
         Para o próximo passo
       </h2>
       <ul className="related-links-list">
-        {entry[1].map((key) => {
+        {keys.map((key) => {
           const { to, title, text, Icon } = LINKS[key];
           return (
             <li key={key}>
