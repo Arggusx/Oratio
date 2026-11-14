@@ -16,6 +16,7 @@ import { eucharisticMiracles } from '../data/eucharisticMiracles';
 import Angel from '../components/anim/Angel';
 import TrailIsland from '../components/TrailIsland';
 import { getTrail, trails } from '../data/trails';
+import { TRILHAS_ATIVAS } from '../utils/features';
 
 const countryCount = new Set(eucharisticMiracles.map((m) => m.country)).size;
 
@@ -311,6 +312,7 @@ function CuriosidadesSection() {
           </span>
           <ArrowRight size={20} className="feature-card-arrow" aria-hidden="true" />
         </button>
+        {TRILHAS_ATIVAS && (
         <Link to="/home/trilhas" className="feature-card">
           <TrailIcon />
           <span className="feature-card-text">
@@ -320,6 +322,7 @@ function CuriosidadesSection() {
           </span>
           <ArrowRight size={20} className="feature-card-arrow" aria-hidden="true" />
         </Link>
+        )}
       </div>
 
       {/* ── Search bar ── */}
@@ -496,8 +499,8 @@ export default function EscolaDaFe() {
         {section === 'simbolos' && <SymbolsSection />}
         {section === 'curiosidades' && <CuriosidadesSection />}
         {section === 'santos' && <SantosSection />}
-        {/* No fim de cada aba, um convite para a ilha de quiz do assunto */}
-        <QuizInvite section={section} />
+        {/* No fim de cada aba, um convite para a ilha de quiz do assunto (só com as trilhas ligadas) */}
+        {TRILHAS_ATIVAS && <QuizInvite section={section} />}
       </motion.div>
     </main>
   );
