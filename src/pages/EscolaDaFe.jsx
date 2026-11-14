@@ -11,6 +11,7 @@ import { marianTitles } from '../data/marianTitles';
 import { marianImages } from '../data/imageCredits';
 import SaintsDirectory from '../components/SaintsDirectory';
 import { LoadMoreButton } from '../components/LoadMore';
+import FilterPanel from '../components/FilterPanel';
 import { useLoadMore } from '../utils/useLoadMore';
 import { eucharisticMiracles } from '../data/eucharisticMiracles';
 import Angel from '../components/anim/Angel';
@@ -257,16 +258,11 @@ function CuriosidadesSection() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const shown = useMemo(() => {
-    return facts.filter((f) => {
-      const matchesCat = category === 'Todos' || f[0] === category;
-      const matchesQuery = f
-        .join(' ')
-        .toLowerCase()
-        .includes(query.toLowerCase());
-      return matchesCat && matchesQuery;
-    });
-  }, [category, query]);
+  const searched = useMemo(() => facts.filter((f) => f.join(' ').toLowerCase().includes(query.toLowerCase())), [query]);
+  const shown = useMemo(
+    () => searched.filter((f) => category === 'Todos' || f[0] === category),
+    [searched, category]
+  );
 
   // Com busca ou categoria escolhida, mostra todos os resultados de uma vez.
   const isFiltering = query.trim() !== '' || category !== 'Todos';
@@ -334,18 +330,19 @@ function CuriosidadesSection() {
         />
       </div>
 
-      {/* ── Category pills ── */}
-      <div className="faq-categories">
-        {allCategories.map((c) => (
-          <button
-            className={`category ${category === c ? 'active' : ''}`}
-            onClick={() => setCategory(c)}
-            key={c}
-          >
-            {c}
-          </button>
-        ))}
-      </div>
+      {/* ── Assuntos, atrás do botão "Filtros" ── */}
+      <FilterPanel
+        groups={[
+          {
+            id: 'assunto',
+            label: 'Assunto',
+            options: allCategories.filter((c) => c !== 'Todos').map((c) => ({ id: c, label: c })),
+          },
+        ]}
+        values={{ assunto: category === 'Todos' ? null : category }}
+        onApply={(v) => setCategory(v.assunto ?? 'Todos')}
+        countResults={(draft) => searched.filter((f) => !draft.assunto || f[0] === draft.assunto).length}
+      />
 
       {/* ── FAQ items ── */}
       <div>

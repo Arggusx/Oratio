@@ -6,6 +6,7 @@ import { getSaint } from '../data/saints';
 import Bell from '../components/anim/Bell';
 import LiturgicalYearRing from '../components/anim/LiturgicalYearRing';
 import LiturgicalCycles from '../components/LiturgicalCycles';
+import FilterPanel from '../components/FilterPanel';
 import {
   EVENT_TYPES,
   MONTH_NAMES,
@@ -63,7 +64,12 @@ function TypeBadges({ types }) {
 export default function Calendario() {
   const todayKey = toKey(new Date());
   const [year, setYear] = useState(new Date().getFullYear());
-  const [activeTypes, setActiveTypes] = useState(() => new Set(ALL_TYPES));
+  // Filtro "Mostrar só": nenhuma escolha mostra todas as datas.
+  const [shown, setShown] = useState([]);
+  const activeTypes = useMemo(
+    () => new Set(shown.length ? LEGEND.filter((l) => shown.includes(l.id)).flatMap((l) => l.types) : ALL_TYPES),
+    [shown]
+  );
   const [query, setQuery] = useState('');
   const [selectedKey, setSelectedKey] = useState(todayKey);
   const panelRef = useRef(null);
@@ -97,16 +103,6 @@ export default function Calendario() {
       .flatMap(([key, list]) => list.map((e) => ({ key, ...e })));
   }, [visibleByDay, normalizedQuery]);
 
-  const isLegendActive = (item) => item.types.every((t) => activeTypes.has(t));
-
-  const toggleLegend = (item) => {
-    setActiveTypes((prev) => {
-      const next = new Set(prev);
-      const active = item.types.every((t) => next.has(t));
-      item.types.forEach((t) => (active ? next.delete(t) : next.add(t)));
-      return next;
-    });
-  };
 
   const changeYear = (delta) => {
     const nextYear = year + delta;
@@ -160,29 +156,37 @@ export default function Calendario() {
         </div>
       </div>
 
-      <div className="calendar-legend" role="group" aria-label="Filtrar por legenda">
+      {/* O filtro fica no botão; a legenda embaixo só explica as cores. */}
+      <FilterPanel
+        groups={[
+          {
+            id: 'mostrar',
+            label: 'Mostrar só',
+            hint: 'Sem escolha, o calendário mostra todas as datas.',
+            multiple: true,
+            options: LEGEND.map((l) => ({ id: l.id, label: l.label })),
+          },
+        ]}
+        values={{ mostrar: shown }}
+        onApply={(v) => setShown(v.mostrar)}
+      />
+
+      <ul className="calendar-legend" aria-label="Legenda das cores">
         {LEGEND.map((item) => (
-          <button
+          <li
             key={item.id}
-            className={`calendar-legend-item ${isLegendActive(item) ? 'active' : ''} ${item.isPrecept ? 'is-precept' : ''}`}
+            className={`calendar-legend-item ${item.isPrecept ? 'is-precept' : ''}`}
             style={item.color ? { '--type-color': item.color } : undefined}
-            onClick={() => toggleLegend(item)}
-            aria-pressed={isLegendActive(item)}
           >
             {item.isPrecept ? (
               <span className="calendar-legend-cross" aria-hidden="true">✝</span>
             ) : (
-              <span className="calendar-legend-dot" />
+              <span className="calendar-legend-dot" aria-hidden="true" />
             )}
             {item.label}
-          </button>
+          </li>
         ))}
-        {activeTypes.size !== ALL_TYPES.length && (
-          <button className="calendar-legend-reset" onClick={() => setActiveTypes(new Set(ALL_TYPES))}>
-            Mostrar todas
-          </button>
-        )}
-      </div>
+      </ul>
 
       <p className="calendar-legend-help">
         A <strong>cruz (✝)</strong> marca os dias de preceito: todos os domingos e os dias santos de guarda,
@@ -196,7 +200,7 @@ export default function Calendario() {
             {searchResults.length} resultado{searchResults.length === 1 ? '' : 's'} para “{query.trim()}” em {year}
           </h2>
           {searchResults.length === 0 ? (
-            <p className="calendar-empty">Nenhuma data encontrada. Verifique os filtros da legenda ou tente outro nome.</p>
+            <p className="calendar-empty">Nenhuma data encontrada. Verifique os filtros ou tente outro nome.</p>
           ) : (
             <ul className="calendar-results-list">
               {searchResults.map((r) => (
