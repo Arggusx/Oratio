@@ -369,7 +369,14 @@ export default function RosaryGuide({ layoutData }) {
   // Com intenções, o oferecimento (passo 2) é o delas e o último passo ganha a oração de cada santo.
   const steps = useMemo(() => {
     if (!layoutData.steps || !selectedIntentions.length) return layoutData.steps;
-    const closingIds = [...new Set(selectedIntentions.flatMap(closingPrayerIds))];
+    // Uma oração por santo: Família e Trabalho, por exemplo, são as duas de São José,
+    // e duas orações a ele seguidas pareceriam repetição.
+    const seenSaints = new Set();
+    const closingIds = selectedIntentions.flatMap((it) => {
+      if (seenSaints.has(it.saint)) return [];
+      seenSaints.add(it.saint);
+      return closingPrayerIds(it);
+    });
     const closing = closingIds
       .map((id) => prayers.find((p) => p.id === id))
       .filter(Boolean)
