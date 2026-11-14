@@ -550,3 +550,121 @@
   gap: 0.5rem;
   margin-top: 1.5rem;
 }
+
+/* ── Terço passo a passo: oração no próprio passo, lista recolhida e "Rezei este passo" ── */
+.rosary-x-prayer-text {
+  max-height: 18rem;
+  overflow-y: auto;
+  white-space: pre-line;
+  font-size: 1rem;
+  overscroll-behavior: contain;
+}
+
+.rosary-x-prayer .rosary-x-instruction {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--color-text-muted);
+}
+
+.rosary-x-prayer {
+  white-space: pre-line;
+}
+
+.step-top-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.rosary-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2.25rem;
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+.step-top-bar .rosary-check {
+  margin-top: 0;
+}
+
+.rosary-check input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.rosary-check-box {
+  display: inline-grid;
+  place-items: center;
+  width: 1.3rem;
+  height: 1.3rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-surface);
+  color: transparent;
+  transition: background var(--duration-fast), border-color var(--duration-fast), color var(--duration-fast);
+}
+
+.rosary-check.is-checked {
+  color: var(--color-gold-text);
+}
+
+.rosary-check.is-checked .rosary-check-box {
+  border-color: var(--color-gold-text);
+  background: var(--color-gold-text);
+  color: var(--color-surface);
+}
+
+.rosary-check input:focus-visible + .rosary-check-box {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 2px;
+}
+
+.rosary-step-card.is-done {
+  border-color: color-mix(in srgb, var(--color-gold) 55%, var(--color-border));
+}
+
+.rosary-step-card.is-done .bead-number {
+  background: var(--color-gold-text);
+  color: var(--color-surface);
+}
+
+.rosary-list-toggle-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem 1.25rem;
+  margin: 0 0 1.25rem;
+}
+
+.rosary-list-toggle .arrow-icon {
+  transition: transform var(--duration-fast);
+}
+
+.rosary-list-toggle .arrow-icon.rotated {
+  transform: rotate(180deg);
+}
+
+.rosary-checks-clear {
+  border: 0;
+  background: none;
+  padding: 0.4rem;
+  font: inherit;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  cursor: pointer;
+}
