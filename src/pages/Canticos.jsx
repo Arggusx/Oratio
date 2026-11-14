@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, ChevronDown, Lock, Music, Search } from 'lucide-react';
+import { ArrowRight, Lock, Music, Search } from 'lucide-react';
 import {
   canticos,
   canticoSeasons,
   fitsSeason,
-  hasPage,
+  hasLyrics,
   massMoments,
   momentLabel,
   seasonFromTheme,
@@ -52,36 +52,19 @@ function cardHead(cantico) {
   );
 }
 
-/** Cântico protegido: o cartão não abre uma página, só mostra onde encontrar a letra. */
-function protectedCard(cantico, open, toggle) {
-  const detailsId = `cantico-${cantico.id}-onde`;
+/** Todo cartão abre a página do cântico; o protegido avisa que a letra não está aqui. */
+function canticoCard(cantico) {
+  const withLyrics = hasLyrics(cantico);
+  let cta = 'Onde encontrar a letra';
+  if (withLyrics) cta = cantico.translation ? 'Letra e tradução' : 'Ler a letra';
   return (
-    <article className={`cantico-card is-protected ${open ? 'is-open' : ''}`}>
-      {cardHead(cantico)}
-      <div id={detailsId} className="cantico-card-details" hidden={!open}>
-        <p>{cantico.about}</p>
-        <p>
-          <strong>Onde encontrar:</strong> {cantico.whereToFind}
-        </p>
-        <p className="cantico-card-license">
-          <Lock size={13} aria-hidden="true" />
-          {cantico.licenseNote}
-        </p>
-      </div>
-      <button type="button" className="cantico-card-cta" onClick={toggle} aria-expanded={open} aria-controls={detailsId}>
-        {open ? 'Fechar' : 'Onde encontrar a letra'}
-        <ChevronDown size={16} aria-hidden="true" className={`arrow-icon ${open ? 'rotated' : ''}`} />
-      </button>
-    </article>
-  );
-}
-
-function openCard(cantico) {
-  return (
-    <Link to={`/home/canticos/${cantico.id}`} className="cantico-card">
+    <Link to={`/home/canticos/${cantico.id}`} className={`cantico-card ${withLyrics ? '' : 'is-protected'}`}>
       {cardHead(cantico)}
       <span className="cantico-card-cta">
-        {cantico.translation ? 'Letra e tradução' : 'Ler a letra'}
+        <span className="cantico-card-cta-label">
+          {!withLyrics && <Lock size={14} aria-hidden="true" />}
+          {cta}
+        </span>
         <ArrowRight size={16} aria-hidden="true" />
       </span>
     </Link>
@@ -95,8 +78,6 @@ export default function Canticos() {
   const [query, setQuery] = useState('');
   // O tempo litúrgico de hoje já vem escolhido; a pessoa pode tirar ou trocar no painel.
   const [filters, setFilters] = useState({ moment: null, season: todaySeason });
-  // Cartão protegido aberto (mostra onde encontrar a letra); um de cada vez.
-  const [openId, setOpenId] = useState(null);
 
   const searched = useMemo(() => {
     const q = normalizeText(query.trim());
@@ -157,9 +138,7 @@ export default function Canticos() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, delay: Math.min((index % PAGE_SIZE) * 0.03, 0.3) }}
           >
-            {hasPage(c)
-              ? openCard(c)
-              : protectedCard(c, openId === c.id, () => setOpenId(openId === c.id ? null : c.id))}
+            {canticoCard(c)}
           </motion.li>
         ))}
       </ul>
@@ -180,7 +159,7 @@ export default function Canticos() {
             A maior parte dos cânticos católicos brasileiros tem autor vivo ou editora com os direitos da obra.
             Por respeito a eles, publicamos a letra só de textos em domínio público: hinos latinos antigos, cantos
             gregorianos e salmos em tradução feita aqui. Para os demais, indicamos onde encontrar a letra e a
-            partitura. As fontes estão nos <Link to="/creditos">créditos</Link>.
+            partitura, com links para ouvir e achar a letra. As fontes estão nos <Link to="/creditos">créditos</Link>.
           </p>
         </div>
       </aside>

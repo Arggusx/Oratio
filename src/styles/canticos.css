@@ -123,42 +123,27 @@ a.cantico-card:hover {
   color: var(--color-text-muted);
 }
 
-.cantico-card.is-protected .cantico-card-cta:hover {
+.cantico-card.is-protected:hover .cantico-card-cta {
   color: var(--color-terracotta);
 }
 
-.cantico-card-cta .arrow-icon {
-  transition: transform var(--duration-fast);
-}
-
-.cantico-card-cta .arrow-icon.rotated {
-  transform: rotate(180deg);
-}
-
-.cantico-card-details {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  font-size: 0.85rem;
-  line-height: 1.55;
-  color: var(--color-text);
-}
-
-.cantico-card-details p {
-  margin: 0;
-}
-
-.cantico-card-license {
-  display: flex;
-  align-items: flex-start;
+.cantico-card-cta-label {
+  display: inline-flex;
+  align-items: center;
   gap: 0.35rem;
-  font-size: 0.78rem;
-  color: var(--color-text-muted);
 }
 
-.cantico-card-license svg {
-  flex-shrink: 0;
-  margin-top: 0.2rem;
+/* Página de cântico protegido: links para ouvir e buscar a letra fora do site. */
+.cantico-search-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.cantico-note svg {
+  vertical-align: -2px;
 }
 
 .canticos-empty {
@@ -454,8 +439,4 @@ a.cantico-card:hover {
   font-family: var(--font-serif);
   font-size: 1.15rem;
   color: var(--color-charcoal);
-}
-
-.cantico-card-details[hidden] {
-  display: none;
 }
