@@ -11,7 +11,7 @@ import { SeasonContext, useSeasonTheme } from './utils/useSeasonTheme';
 import Angel from './components/anim/Angel';
 import SiteBackground from './components/anim/SiteBackground';
 import RosaryLoader from './components/anim/RosaryLoader';
-import { JORNADA_ATIVA } from './utils/features';
+import { JORNADA_ATIVA, TRILHAS_ATIVAS } from './utils/features';
 
 // A página inicial vem no pacote principal; as demais são baixadas só quando abertas.
 const Misterios = lazy(() => import('./pages/Misterios'));
@@ -27,8 +27,9 @@ const Confissao = lazy(() => import('./pages/Confissao'));
 // A Jornada só entra no build quando a flag está ligada (VITE_JORNADA=true); sem ela, /jornada mostra um "Em breve".
 const Jornada = JORNADA_ATIVA ? lazy(() => import('./pages/Jornada')) : lazy(() => import('./pages/JornadaEmBreve'));
 const Novenas = lazy(() => import('./pages/Novenas'));
-const Trilhas = lazy(() => import('./pages/Trilhas'));
-const Quiz = lazy(() => import('./pages/Quiz'));
+// Trilhas e quizzes só entram no build com a flag ligada (em teste, como a Jornada).
+const Trilhas = TRILHAS_ATIVAS ? lazy(() => import('./pages/Trilhas')) : null;
+const Quiz = TRILHAS_ATIVAS ? lazy(() => import('./pages/Quiz')) : null;
 const Comunidade = lazy(() => import('./pages/Comunidade'));
 
 function NotFound() {
@@ -107,10 +108,20 @@ function AnimatedRoutes() {
             <Route path="/comunidade" element={<Comunidade />} />
             <Route path="/home/novenas" element={<Novenas />} />
             <Route path="/home/novenas/:id" element={<Novenas />} />
-            <Route path="/home/trilhas" element={<Trilhas />} />
-            <Route path="/home/trilhas/:id" element={<Trilhas />} />
-            <Route path="/home/trilhas/:id/quiz/:level" element={<Quiz />} />
-            <Route path="/home/quiz/aleatorio" element={<Quiz />} />
+            {TRILHAS_ATIVAS ? (
+              <>
+                <Route path="/home/trilhas" element={<Trilhas />} />
+                <Route path="/home/trilhas/:id" element={<Trilhas />} />
+                <Route path="/home/trilhas/:id/quiz/:level" element={<Quiz />} />
+                <Route path="/home/quiz/aleatorio" element={<Quiz />} />
+              </>
+            ) : (
+              // Sem as trilhas, os endereços antigos levam à Escola da Fé.
+              <>
+                <Route path="/home/trilhas/*" element={<Navigate to="/home/escola-da-fe" replace />} />
+                <Route path="/home/quiz/*" element={<Navigate to="/home/escola-da-fe" replace />} />
+              </>
+            )}
             {/* O antigo modo foco virou parte do guia do terço (as dezenas são rezadas lá). */}
             <Route path="/home/misterio/foco/*" element={<Navigate to="/home/oracoes" replace />} />
             <Route path="*" element={<NotFound />} />
