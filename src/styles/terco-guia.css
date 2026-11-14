@@ -668,3 +668,136 @@
   text-decoration: underline;
   cursor: pointer;
 }
+
+/* ── Terço por intenção ── */
+.rosary-intention {
+  margin: 0 0 2rem;
+}
+
+.rosary-intention-optional {
+  margin-left: 0.25rem;
+  padding: 0.1rem 0.55rem;
+  border-radius: var(--radius-pill, 999px);
+  background: color-mix(in srgb, var(--color-gold) 14%, transparent);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-gold-text);
+}
+
+.rosary-intention-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0.9rem 0 0;
+}
+
+.rosary-intention-chip {
+  min-height: 2.5rem;
+  padding: 0.45rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill, 999px);
+  background: var(--color-surface);
+  font: inherit;
+  font-size: 0.88rem;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: border-color var(--duration-fast), background var(--duration-fast), color var(--duration-fast);
+}
+
+.rosary-intention-chip:hover {
+  border-color: var(--color-terracotta);
+}
+
+.rosary-intention-chip.active {
+  border-color: var(--color-terracotta);
+  background: var(--color-terracotta);
+  color: #fff;
+}
+
+.rosary-intention-card {
+  margin-top: 1.2rem;
+  padding: 1.2rem 1.3rem;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 40%, var(--color-border));
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-gold) 6%, var(--color-surface));
+}
+
+.rosary-intention-card > p {
+  margin: 0.5rem 0 0;
+  line-height: 1.6;
+}
+
+.rosary-intention-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.rosary-intention-card-head h4 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+}
+
+.rosary-intention-clear {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border: 0;
+  background: none;
+  padding: 0.3rem;
+  font: inherit;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.rosary-intention-tips {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0 0;
+}
+
+.rosary-intention-tips div {
+  padding: 0.75rem 0.9rem;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.rosary-intention-tips dt {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-gold-text);
+}
+
+.rosary-intention-tips dd {
+  margin: 0.3rem 0 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.rosary-intention-how {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.rosary-x-prayer .rosary-x-hint-intention {
+  display: block;
+  margin-bottom: 0.6rem;
+  padding: 0.5rem 0.7rem;
+  border-left: 3px solid var(--color-terracotta);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--color-terracotta) 7%, var(--color-surface));
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
