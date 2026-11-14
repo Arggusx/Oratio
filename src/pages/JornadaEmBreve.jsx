@@ -26,8 +26,8 @@ export default function JornadaEmBreve() {
           <Link to="/home/novenas" className="fx-small-btn">
             Novenas
           </Link>
-          <Link to="/home/trilhas" className="fx-small-btn">
-            Trilhas da fé
+          <Link to="/home/escola-da-fe" className="fx-small-btn">
+            Escola da Fé
           </Link>
         </div>
       </section>

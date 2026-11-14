@@ -5,6 +5,12 @@ import { saints } from '../src/data/saints.js';
 import { novenas } from '../src/data/novenas.js';
 import { trails } from '../src/data/trails.js';
 import { canticos, hasPage } from '../src/data/canticos.js';
+import { loadEnv } from 'vite';
+
+// As trilhas (ilhas e quizzes) estão em teste: só entram no sitemap com VITE_JORNADA=true,
+// lida como o Vite lê (do .env local ou das variáveis da Vercel).
+const env = { ...loadEnv(process.env.NODE_ENV ?? 'production', process.cwd(), 'VITE_'), ...process.env };
+const TRILHAS_ATIVAS = env.VITE_JORNADA === 'true';
 
 const SITE_URL = 'https://www.oratiodaily.com';
 const today = new Date().toISOString().slice(0, 10);
@@ -22,11 +28,13 @@ const pages = [
   { path: '/home/confissao', changefreq: 'monthly', priority: '0.7' },
   { path: '/home/novenas', changefreq: 'monthly', priority: '0.7' },
   ...novenas.map((n) => ({ path: `/home/novenas/${n.id}`, changefreq: 'yearly', priority: '0.6' })),
-  { path: '/home/trilhas', changefreq: 'monthly', priority: '0.6' },
+  ...(TRILHAS_ATIVAS ? [{ path: '/home/trilhas', changefreq: 'monthly', priority: '0.6' }] : []),
   { path: '/comunidade', changefreq: 'daily', priority: '0.6' },
-  ...trails.map((t) => ({ path: `/home/trilhas/${t.id}`, changefreq: 'yearly', priority: '0.5' })),
+  ...(TRILHAS_ATIVAS
+    ? trails.map((t) => ({ path: `/home/trilhas/${t.id}`, changefreq: 'yearly', priority: '0.5' }))
+    : []),
   { path: '/home/canticos', changefreq: 'monthly', priority: '0.6' },
-  // Só os cânticos com letra publicada têm página própria.
+  // Todos os cânticos têm página; a dos protegidos mostra onde encontrar a letra.
   ...canticos.filter(hasPage).map((c) => ({ path: `/home/canticos/${c.id}`, changefreq: 'yearly', priority: '0.5' })),
   { path: '/home/escola-da-fe?secao=missa', changefreq: 'monthly', priority: '0.6' },
   { path: '/home/escola-da-fe?secao=simbolos', changefreq: 'monthly', priority: '0.6' },
