@@ -555,7 +555,7 @@
   width: 100%;
   margin-bottom: 1.6rem;
   padding: 0;
-  overflow: hidden;
+  /* Sem overflow: hidden, para não cortar a faixa de hover (base.css); a foto arredonda os próprios cantos. */
   border-radius: var(--radius-lg);
   border: 1px solid color-mix(in srgb, var(--color-gold) 55%, var(--color-border));
   background:
@@ -580,6 +580,7 @@
   min-height: 12rem;
   object-fit: cover;
   object-position: 50% 15%;
+  border-radius: calc(var(--radius-lg) - 1px) 0 0 calc(var(--radius-lg) - 1px);
 }
 
 .marian-feature-text {

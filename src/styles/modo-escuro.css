@@ -145,7 +145,16 @@ body {
   color: color-mix(in srgb, var(--liturgical-color) 55%, #fff);
 }
 
-:root[data-theme='dark'] .hero-image img,
-:root[data-theme='dark'] .terco-guide-img {
+:root[data-theme='dark'] .hero-image img {
   filter: saturate(0.8) brightness(0.88);
+}
+
+/* Guia do terço: no escuro entra a versão com texto e linhas claros (sem auréola branca). */
+:root[data-theme='dark'] .terco-guide-img--claro,
+:root:not([data-theme='dark']) .terco-guide-img--escuro {
+  display: none;
+}
+
+:root[data-theme='dark'] .terco-guide-img--escuro {
+  filter: saturate(0.85);
 }

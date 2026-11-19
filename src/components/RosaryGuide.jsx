@@ -563,9 +563,19 @@ export default function RosaryGuide({ layoutData }) {
       {/* GUIA ILUSTRATIVO DE POSIÇÃO DAS CONTAS */}
       <div className="rosary-visual-guide">
         <h4>Guia Visual de Posição das Contas</h4>
+        {/* Duas versões com fundo transparente: texto escuro (tema claro) e texto claro (tema escuro).
+            O CSS mostra só a do tema ativo; a oculta, por ser lazy e display:none, não é baixada. */}
         <img
-          className="terco-guide-img"
+          className="terco-guide-img terco-guide-img--claro"
           src="/img2/passo-a-passo-como-rezar-o-terco.webp"
+          width="607"
+          height="885"
+          loading="lazy"
+          alt="Guia visual ilustrado para rezar o terço"
+        />
+        <img
+          className="terco-guide-img terco-guide-img--escuro"
+          src="/img2/passo-a-passo-como-rezar-o-terco-escuro.webp"
           width="607"
           height="885"
           loading="lazy"
