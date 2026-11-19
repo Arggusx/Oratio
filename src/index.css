@@ -25,6 +25,8 @@
 @import './styles/acessibilidade.css'; /* Acessibilidade */
 @import './styles/feedback-modal.css'; /* Janela de feedback e homilia */
 @import './styles/milagres-e-destaques.css'; /* Milagres, cartões de destaque, títulos de Maria, créditos e realce do calendário */
+@import './styles/milagres-globo.css'; /* Globo 3D dos milagres: cartão de entrada, globo em tela cheia e busca */
+@import './styles/milagres-globo-3d.css'; /* Globo dos milagres: vista 3D do lugar, fotos e Street View */
 @import './styles/filtros.css'; /* Filtros em painel */
 @import './styles/ciclos-leituras.css'; /* Ciclos de leituras (Anos A, B e C) */
 @import './styles/confissao.css'; /* Exame de consciência */

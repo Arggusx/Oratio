@@ -1,0 +1,325 @@
+/* ============================================================
+   Globo dos milagres: vista 3D do lugar, fotos e Street View.
+   Usa as variáveis --globe-* de milagres-globo.css.
+   ============================================================ */
+
+.site3d {
+  --globe-glass: rgba(24, 16, 6, 0.74);
+  --globe-glass-border: rgba(224, 169, 63, 0.45);
+  --globe-neon: #e0a93f;
+  --globe-text: #fbf1dc;
+  --globe-text-muted: #cdb68a;
+  --globe-gold: #ffd27a;
+}
+
+/* ---------- Botões para a vista 3D ---------- */
+
+.globe-3d-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  width: 100%;
+  margin: 0.9rem 0 0;
+  padding: 0.65rem 1rem;
+  border: 1px solid var(--globe-glass-border);
+  border-radius: 999px;
+  background: rgba(224, 169, 63, 0.16);
+  color: var(--globe-gold);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.globe-3d-button:hover { background: rgba(224, 169, 63, 0.26); }
+
+.globe-3d-chip {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: max(2.4rem, calc(env(safe-area-inset-bottom) + 2rem));
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.6rem 1.1rem;
+  border: 1px solid var(--globe-neon);
+  border-radius: 999px;
+  background: var(--globe-glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: var(--globe-gold);
+  font: inherit;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 0 18px rgba(224, 169, 63, 0.35);
+  animation: globe-chip-in 0.25s var(--ease-out);
+}
+
+.globe-3d-chip small { font-weight: 400; color: var(--globe-text-muted); }
+
+@keyframes globe-chip-in {
+  from { opacity: 0; transform: translate(-50%, 8px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* No celular, com o painel aberto, o botão vai para o topo para não ficar por baixo dele. */
+@media (max-width: 640px) {
+  .globe-3d-chip small { display: none; }
+  .globe-panel ~ .globe-3d-chip { bottom: auto; top: 4.6rem; }
+
+  /* Na folha do celular o texto empurra o botão para baixo da dobra: ele fica preso no pé da folha. */
+  .globe-panel .globe-3d-button {
+    position: sticky;
+    z-index: 1;
+    bottom: 0;
+    background: #3b2a10;
+    box-shadow: 0 -10px 16px 4px rgba(24, 16, 6, 0.9);
+  }
+  .globe-panel .globe-3d-button:hover { background: #4a3514; }
+
+  /* Os créditos ficariam por trás da folha, aparecendo através do vidro. */
+  .globe-panel ~ .globe-credit { display: none; }
+}
+
+/* ---------- Fotos do lugar ---------- */
+
+.place-photos {
+  margin-top: 1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(255, 230, 168, 0.2);
+}
+
+.place-photos-title {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0 0.6rem;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--globe-neon);
+}
+
+.place-photos-note { margin: 0 0 0.6rem; font-size: 0.85rem; color: var(--globe-text-muted); }
+
+.place-photos-strip {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0 -1rem;
+  padding: 0 1rem 0.4rem;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+}
+
+.place-photos-strip li { flex: none; scroll-snap-align: start; }
+
+.place-photos-strip a {
+  position: relative;
+  display: block;
+  width: 150px;
+  height: 112px;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 230, 168, 0.25);
+}
+
+.place-photos-strip img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+.place-photos-strip a:focus-visible { outline: 2px solid var(--globe-gold); outline-offset: 2px; }
+
+.place-photos-credit {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.9rem 0.4rem 0.25rem;
+  overflow: hidden;
+  font-size: 0.62rem;
+  line-height: 1.25;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #fff;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.75));
+}
+
+.place-photos-streetview {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.6rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--globe-gold);
+}
+
+.place-photos-source { margin: 0.35rem 0 0; font-size: 0.68rem; color: var(--globe-text-muted); }
+
+/* ---------- Vista 3D do lugar (MapLibre) ---------- */
+
+.site3d {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  background: #21170a;
+  animation: site3d-in 0.5s var(--ease-out);
+}
+
+@keyframes site3d-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* O CSS do MapLibre põe "position: relative" no container; aqui ele precisa ocupar a tela toda. */
+.site3d .site3d-map { position: absolute; inset: 0; }
+
+/* Com a vista 3D aberta, o globo (e os alfinetes dele) some por baixo. */
+.globe-overlay.is-3d .globe-stage,
+.globe-overlay.is-3d .globe-credit { visibility: hidden; }
+
+.site3d-top {
+  position: absolute;
+  z-index: 2;
+  top: max(1rem, env(safe-area-inset-top));
+  left: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  pointer-events: none;
+}
+
+.site3d-top > * { pointer-events: auto; }
+
+.site3d-back,
+.site3d-mode {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  gap: 0.4rem;
+  height: 42px;
+  padding: 0 1rem;
+  border: 1px solid var(--globe-glass-border);
+  border-radius: 999px;
+  background: var(--globe-glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: var(--globe-text);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.site3d-back:hover,
+.site3d-mode:hover { border-color: var(--globe-neon); }
+
+.site3d-back:focus-visible,
+.site3d-mode:focus-visible { outline: 2px solid var(--globe-gold); outline-offset: 2px; }
+
+.site3d-title {
+  flex: 1;
+  min-width: 0;
+  padding: 0.35rem 1rem;
+  border-radius: 14px;
+  background: var(--globe-glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  text-align: center;
+  pointer-events: none;
+}
+
+.site3d-title strong,
+.site3d-title small { display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+
+.site3d-title strong { font-family: var(--font-serif); font-size: 1.15rem; color: #fff; }
+.site3d-title small { font-size: 0.78rem; color: var(--globe-text-muted); }
+
+.site3d-panel { top: 4.8rem; }
+.site3d-panel .place-photos { margin-top: 0; padding-top: 0; border-top: 0; }
+
+/* Celular: o título ganha a linha de baixo inteira e as fotos viram uma folha no pé da tela. */
+@media (max-width: 640px) {
+  .site3d-top { flex-wrap: wrap; }
+  .site3d-title { order: 3; flex-basis: 100%; padding: 0.3rem 0.8rem; }
+  .site3d-title strong { font-size: 1.05rem; }
+  .site3d-back { margin-right: auto; }
+  .site3d-back,
+  .site3d-mode { padding: 0 0.8rem; }
+  .site3d-panel { top: auto; max-height: 34vh; }
+}
+
+/* Alfinetes dos milagres no mapa 3D: pequenos; o milagre aberto fica maior e pulsando. */
+.site3d-miracle {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.site3d-miracle .site3d-marker-dot { inset: 8px; box-shadow: 0 0 8px 2px rgba(255, 210, 122, 0.7); transition: inset 0.2s; }
+.site3d-miracle .site3d-marker-pulse { display: none; }
+.site3d-miracle:hover .site3d-marker-dot,
+.site3d-miracle:focus-visible .site3d-marker-dot { inset: 5px; }
+.site3d-miracle:focus-visible { outline: 2px solid var(--globe-gold); outline-offset: 2px; border-radius: 50%; }
+
+.site3d-miracle.is-current .site3d-marker-dot { inset: 4px; }
+.site3d-miracle.is-current .site3d-marker-pulse { display: block; }
+
+/* Marcadores no mapa 3D */
+.site3d-marker { position: relative; width: 22px; height: 22px; pointer-events: none; }
+
+.site3d-marker-dot {
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  border: 2px solid #fff3d6;
+  background: var(--globe-gold);
+  box-shadow: 0 0 12px 3px rgba(255, 210, 122, 0.8);
+}
+
+.site3d-marker-pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--globe-gold);
+  animation: site3d-pulse 1.6s ease-out infinite;
+}
+
+@keyframes site3d-pulse {
+  from { transform: scale(0.6); opacity: 1; }
+  to { transform: scale(2.6); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site3d-marker-pulse { animation: none; opacity: 0; }
+}
+
+/* Controles e atribuição do MapLibre no tom do globo */
+.site3d .maplibregl-ctrl-group {
+  border: 1px solid var(--globe-glass-border);
+  background: var(--globe-glass);
+  backdrop-filter: blur(14px);
+}
+
+.site3d .maplibregl-ctrl-group button + button { border-top-color: rgba(255, 230, 168, 0.2); }
+.site3d .maplibregl-ctrl-group button .maplibregl-ctrl-icon { filter: invert(84%) sepia(40%) saturate(500%) hue-rotate(350deg); }
+.site3d .maplibregl-ctrl-bottom-right { margin-bottom: max(0.5rem, env(safe-area-inset-bottom)); }
+
+.site3d .maplibregl-ctrl.maplibregl-ctrl-attrib,
+.site3d .maplibregl-ctrl.maplibregl-ctrl-attrib.maplibregl-compact-show {
+  background: rgba(24, 16, 6, 0.85);
+  color: var(--globe-text-muted);
+}
+.site3d .maplibregl-ctrl-attrib a { color: var(--globe-text); }
+.site3d .maplibregl-ctrl-attrib-button { filter: invert(1); }
+
+/* No celular a pinça e os dois dedos já fazem zoom e giro: sem os botões. */
+@media (max-width: 640px) {
+  .site3d .maplibregl-ctrl-bottom-right .maplibregl-ctrl-group { display: none; }
+}

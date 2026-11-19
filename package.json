@@ -17,7 +17,9 @@
     "@vercel/analytics": "^2.0.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.26",
+    "globe.gl": "2.46.2",
     "lucide-react": "^0.476.0",
+    "maplibre-gl": "5.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.5.1"
